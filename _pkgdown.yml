@@ -1,0 +1,30 @@
+url: https://gipsousp.github.io/actstudio
+
+development:
+  mode: auto
+  destination: doc
+  version_label: warning
+
+template:
+  opengraph:
+     twitter:
+       creator: "@danielvartan"
+       site: "@gipsousp"
+  params:
+    bootswatch: cosmo
+    ganalytics: G-2MF22QDC2E
+    noindex: true
+
+authors:
+  Daniel Vartanian:
+    href: https://github.com/danielvartan
+  Bruno Furlan:
+    href: https://github.com/brfurlan
+  Cássio Serrano:
+    href: https://github.com/cassioserrano
+  Vinícius Matias:
+    href: https://github.com/matiasvinicius
+  GIPSO:
+    href: http://each.usp.br/gipso
+  USP:
+    href: https://www5.usp.br

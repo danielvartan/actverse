@@ -1,0 +1,67 @@
+Package: actstudio
+Title: The R package for actigraphic data
+Version: 0.0.0.9000
+Authors@R: 
+    c(person(given = "Daniel",
+             family = "Vartanian",
+             role = c("aut", "cre"),
+             email = "danvartan@gmail.com",
+             comment = c(ORCID = "0000-0001-7782-759X")),
+      person(given = "Bruno",
+             family = "Furlan",
+             role = c("aut"),
+             email = "brfrlan@gmail.com",
+             comment = c(ORCID = "0000-0003-1654-0899")),
+      person(given = "Cássio",
+             family = "Serrano",
+             email = "cassio.serrano@usp.br",
+             role = c("aut"),
+             comment = c(ORCID = "0000-0001-7149-1829")),
+      person(given = "Vinícius",
+             family = "Matias",
+             email = "viniciusmatias@usp.br",
+             role = c("aut"),
+             comment = c(ORCID = "0000-0002-2047-5420")),
+      person(given = "Ana Amélia",
+             family = "Benedito-Silva",
+             email = "aamelia@usp.br",
+             role = c("aut", "exp", "sad")),
+      person(given = "Mario",
+             family = "Pedrazzoli",
+             email = "pedrazzo@usp.br",
+             role = c("aut", "exp", "sad"),
+             comment = c(ORCID = "0000-0002-5257-591X")),
+      person(given = "GIPSO",
+             role = c("cph", "fnd")),
+      person(given = "USP",
+             role = c("fnd")))
+Description: A set of tools for processing, analyzing and visualizing 
+    actigraphy/actimetric data.
+License: MIT + file LICENSE
+URL: https://github.com/gipsousp/actstudio
+BugReports: https://github.com/gipsousp/actstudio/issues
+Encoding: UTF-8
+LazyData: true
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.1.1
+Depends:
+    R (>= 4.0)
+Imports: 
+    checkmate,
+    dplyr,
+    glue,
+    hms,
+    lifecycle,
+    lubridate,
+    magrittr,
+    readr,
+    rlang,
+    stringr,
+    tibble,
+    utils
+Suggests: 
+    testthat (>= 2.0.0),
+    knitr,
+    rmarkdown
+Config/testthat/edition: 2
+VignetteBuilder: knitr

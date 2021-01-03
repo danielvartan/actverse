@@ -1,0 +1,105 @@
+---
+title: "Função Inicial Sadeh"
+author: "Bruno Ramalho Furlan"
+date: "22/10/2020"
+output: pdf_document
+---
+```{r setup}
+library(dplyr)
+library(sf)
+library(tidyr)
+library(purrr)
+library(ggplot2)
+```
+
+## Importando dados 
+
+
+1. Importando arquivo .txt;
+2. Criando data frame;
+3. Selecionando clounas de interesse;
+4. Criando nova tabela.
+
+
+
+
+```{r}
+mydata <- read.delim("2019-12-23.txt",header = TRUE,sep =';', skip = 25 )
+
+
+tabela <- data.frame(mydata)
+tabela1 <- tabela%>%
+  select(DATE, TIME,ZCM)
+
+head(tabela1)
+
+```
+
+## Criando as novas colunas para a tabela1, onde são definidos os valores prévios e próximos
+
+Foram definidas colunas para os 5 valores anteriores de cada linha e para os 9 próximos valores de cada linha.
+
+
+```{r}
+tabela1<- mutate(
+      tabela1 
+      , s51 = lag(ZCM, n = 1)
+      , s52 = lag(ZCM, n = 2)
+      , s53 = lag(ZCM, n = 3)
+      , s54 = lag(ZCM, n = 4)
+      , s55 = lag(ZCM, n = 5)
+      , s91 = lead(ZCM, n = 1)
+      , s92 = lead(ZCM, n = 2)
+      , s93 = lead(ZCM, n = 3)
+      , s94 = lead(ZCM, n = 4)
+      , s95 = lead(ZCM, n = 5)
+      , s96 = lead(ZCM, n = 6)
+      , s97 = lead(ZCM, n = 7)
+      , s98 = lead(ZCM, n = 8)
+      , s99 = lead(ZCM, n = 9)
+      )
+head(tabela1)
+```
+
+## Criando as novas colunas para a tabela1, onde serão armazenadas as variáveis para o cáclculo do PS
+
+### ___Variáveis utilizadas:___
+
+1. ZCN- dada na base de dados, é utilizado no cálulo o valor do minuto vigente;
+2. s5- desvio padrão dos valores de ZCN dos 5 minutos anteriores;
+3. s9- desvio padrão dos valores dev ZCN dos 9 minutos seguintes;
+4. M2- menor valor de ZCN dos 2 minutos seguntes;
+5. s2- desvio padráo dos valores de ZCN dos 2 minutos anteriores;
+6. PS- iimdocador de estágio de sono, sendo dados pela fórmula:
+
+
+PS = 4.532 - ((0.06828 * ZCM) - (0.0385 * s5) - (0.038 * s9) + (0.0298 * m2) - (0.0299 * s2))
+
+
+
+```{r}
+tabela1$s5 = apply(tabela1[,4:8],1,sd)
+tabela1$s9 = apply(tabela1[,9:17],1,sd)
+tabela1$m2 = apply(tabela1[,9:10],1,min)
+tabela1$s2 = apply(tabela1[,4:5],1,sd)
+tabela1$PS = 4.532 - ((0.06828 * tabela1$ZCM) - (0.0385 * tabela1$s5) - (0.038 * tabela1$s9) + (0.0298 * tabela1$m2) - (0.0299 * tabela1$s2))
+
+tabela1%>%
+  select(DATE, TIME, PS) %>%
+  head(30)
+
+```
+## Inserindo duas últimas colunas que indicam sono ou vigília 
+
+
+
+```{r}
+tabela1$estagio = ifelse(tabela1$PS >= 0, "sono", "vigília")
+tabela1$acordado = ifelse(tabela1$PS >= 0, 0, 1)
+
+tabela1 %>%
+  select(DATE, TIME, PS, estagio, acordado)%>%
+  head(30)
+
+```
+

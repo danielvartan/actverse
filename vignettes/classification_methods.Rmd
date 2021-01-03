@@ -1,0 +1,21 @@
+---
+title: "classification_methods"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{classification_methods}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(actstudio)
+```
+
+__UNDER DEVELOPMENT__

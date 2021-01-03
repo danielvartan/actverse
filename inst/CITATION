@@ -1,0 +1,22 @@
+citHeader("To cite actstudio in publications use:")
+
+citEntry(
+  entry       = "Unpublished",
+  title       = paste0("A R package for processing, analyzing and ",
+                       "visualizing actigraphy/actimetric data"),
+  author      = personList(as.person("Daniel Vartanian"),
+  				                as.person("Bruno Furlan"),
+  			     	            as.person("Cássio Serrano"),
+  			                  as.person("Vinícius Matias"),
+                          as.person("Ana Amélia Benedito-Silva"),
+                          as.person("Mario Pedrazzoli")),
+  year        = "2021",
+  url         = "http://gipsousp.github.io/actstudio",
+  textVersion = paste0("Vartanian D., Furlan, B., Serrano, C., Matias, v., ",
+                        "Benedito-Silva, A. A., Pedrazzoli, M. ",
+                        "(2021). A R package for processing, analyzing and ",
+                        "visualizing actigraphy/actimetric data. ",
+                        "Retrieved from ",
+                        "http://github.com/gipsousp/actstudio."),
+  note        = "Not yet released"
+)
