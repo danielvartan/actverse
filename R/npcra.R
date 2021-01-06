@@ -76,44 +76,47 @@ npcra_m10 <- function(data, col_name = "pim", timestamp="timestamp", method=1, f
 #' \dontrun{
 #' npcra_m10_each_day(test_log, fast = FALSE)}
 npcra_m10_each_day <- function(data, col_name = "pim", timestamp="timestamp", fast=TRUE){
+    time_begin <- Sys.time()
     valid_data <- data %>%
         dplyr::select(timestamp, col_name) %>%
         dplyr::rename("timestamp" = timestamp, "x" = col_name) %>%
-        dplyr::mutate(day = ymd(strftime(timestamp, format="%y%m%d")),
+        dplyr::mutate(day = lubridate::ymd(strftime(timestamp, format="%y%m%d")),
                       endWindow = timestamp+hours(10),
-                      hourEndWindow = as.numeric(strftime(endWindow,format="%H")))
+                      hourEndWindow = as.numeric(strftime(endWindow,format="%H")),
+                      mean_10_hours = 0)
 
     unique_days <- unique(valid_data$day)
     index_first_days <- match(unique_days,valid_data$day)
-
+    last_valid_register <- last(valid_data$timestamp)-hours(10)
     quant_days <- length(unique_days)
-    m10 <- rep(0,quant_days)
-    m10_first_date <- rep(0, quant_days)
-
 
     for (index_day in seq(quant_days)){
         index = index_first_days[index_day]
         sum_in_10_hours <- 0
-        window_index <-0
-
+        window_index <- index
         current_day <- day(unique_days[index_day])
-        while (valid_data$hourEndWindow[index] != 0) {
-            while(valid_data$timestamp[index+window_index] < valid_data$hourEndWindow[index]){
-                sum_in_10_hours <- sum_in_10_hours + valid_data$x[index+window_index]
+        while (valid_data$timestamp[index] < last_valid_register & valid_data$hourEndWindow[index] != 0) {
+            end_window <- valid_data$endWindow[index]
+            window_sum <- 0
+            while (valid_data$timestamp[window_index] <= end_window) {
+                window_sum <- window_sum + valid_data$x[window_index]
                 window_index <- window_index+1
             }
-            print(window_index)
-            if(sum_in_10_hours/(window_index-index) > m10[index_day]){
-                m10[index_day] <- sum_in_10_hours/(window_index-index)
-                m10_first_date[index_day] <- valid_data$timestamp[index]
-            }
+            #Ajustar -valid_data$x[index-1]
+            sum_in_10_hours <- sum_in_10_hours - valid_data$x[index] + window_sum
+            valid_data$mean_10_hours[index] <- sum_in_10_hours/(window_index-index)
             index<-index+1
         }
     }
 
+    m10 <- tapply(valid_data$mean_10_hours, valid_data$day, max)
+    m10_first_date <- valid_data$timestamp[match(m10,valid_data$mean_10_hours)]
     m10_each_day <- cbind.data.frame(unique_days, m10, m10_first_date)
+    m10_each_day <- m10_each_day %>%
+        dplyr::rename("day"=unique_days) %>%
+        dplyr::as_tibble()
 
-    #Ajustar atualização de window_index
+    message("TIME: ", Sys.time()-time_begin)
     m10_each_day
 }
 
