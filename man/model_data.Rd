@@ -14,3 +14,9 @@ This function return a data frame conformed to the proposed data structure
 of the \code{\link[=tidy_data]{tidy_data()}} function. It can be used for testing and structuring
 other routines.
 }
+\seealso{
+Other Utility functions: 
+\code{\link{data_example}()},
+\code{\link{is_tidy}()}
+}
+\concept{Utility functions}

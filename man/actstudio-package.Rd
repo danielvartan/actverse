@@ -4,10 +4,10 @@
 \name{actstudio-package}
 \alias{actstudio}
 \alias{actstudio-package}
-\title{actstudio: A Set of Tools for Actigraphy/Actimetry Data Manipulation}
+\title{actstudio: The R package for actigraphic data}
 \description{
-Open source package of applications for processing, analyzing 
-    and visualizing actigraphy/actimetric data.
+A set of tools for processing, analyzing and visualizing 
+    actigraphy/actimetric data.
 }
 \seealso{
 Useful links:

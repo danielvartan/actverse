@@ -24,3 +24,9 @@ directory. This function make them easy to access.
 data_example()
 data_example("test_log.txt")}
 }
+\seealso{
+Other Utility functions: 
+\code{\link{is_tidy}()},
+\code{\link{model_data}()}
+}
+\concept{Utility functions}

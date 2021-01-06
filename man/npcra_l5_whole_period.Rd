@@ -25,7 +25,8 @@ dataframe dates.}
 Scans completely and returns the correct L5 value, but more slowly}
 }
 \value{
-a Dataframe with the value of L5 in the first position and the start date of the 5 least active window in the period in the second position.
+a Dataframe with the value of L5 in the first position and the start
+date of the 5 least active window in the period in the second position.
 }
 \description{
 \ifelse{html}{\out{<a href='https://www.tidyverse.org/lifecycle/#experimental'><img src='figures/lifecycle-experimental.svg' alt='Experimental lifecycle'></a>}}{\strong{Experimental}}
@@ -37,5 +38,15 @@ active for all data.
 \examples{
 \dontrun{
 npcra_l5_whole_period(test_log, fast = FALSE)}
-
 }
+\seealso{
+Other NPCRA functions: 
+\code{\link{npcra_is}()},
+\code{\link{npcra_iv}()},
+\code{\link{npcra_l5}()},
+\code{\link{npcra_m10_each_day}()},
+\code{\link{npcra_m10_whole_period}()},
+\code{\link{npcra_m10}()},
+\code{\link{npcra_test_args}()}
+}
+\concept{NPCRA functions}

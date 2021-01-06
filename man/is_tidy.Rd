@@ -22,3 +22,9 @@ time using the functions, and may be more prone to error.
 \dontrun{
 is_tidy(test_log)}
 }
+\seealso{
+Other Utility functions: 
+\code{\link{data_example}()},
+\code{\link{model_data}()}
+}
+\concept{Utility functions}

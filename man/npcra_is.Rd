@@ -29,5 +29,15 @@ WITTING, W. (1990)
 \examples{
 \dontrun{
 npcra_is(test_log, "pim", "timestamp")}
-
 }
+\seealso{
+Other NPCRA functions: 
+\code{\link{npcra_iv}()},
+\code{\link{npcra_l5_whole_period}()},
+\code{\link{npcra_l5}()},
+\code{\link{npcra_m10_each_day}()},
+\code{\link{npcra_m10_whole_period}()},
+\code{\link{npcra_m10}()},
+\code{\link{npcra_test_args}()}
+}
+\concept{NPCRA functions}
