@@ -31,16 +31,90 @@ npcra_m10 <- function(data, col_name = "pim", timestamp="timestamp", method=1, f
     npcra_test_args(data, col_name, timestamp, method, fast)
 
     m10 <- data.frame()
-
-    #CALCULATION OF M10 ACCORDING TO THE CHOSEN METHOD
-    if(method==1){
+    if (method==1) {
         m10 <- npcra_m10_whole_period(data, col_name, timestamp, fast)
+    }
+    if (method==3) {
+        m10 <- npcra_m10_each_day(data, col_name, timestamp, fast)
     }
 
     duration <- Sys.time() - time_begin
     message("M10 was calculated in ", duration, " seconds")
 
     m10
+}
+
+#' Non-Parametric Function M10 (Most Active 10 Hours) for each day
+#'
+#' @description
+#'
+#' `r lifecycle::badge("experimental")`
+#'
+#' "M10 represents activity during the most active period of the day. This
+#' measure may be influenced by daytime napping" - WITTING, W. (1990) This
+#' calculation method considers the 10-hour window most active for each day.
+#'
+#' @param data Dataframe that contains the date variable and the variable that
+#'   will be used to identify the 10 most active hours.
+#' @param col_name String with the name of the column that will be used in the
+#'   calculation.
+#' @param timestamp String with the name of the column that contains the
+#'   dataframe dates.
+#' @param fast True: It makes the M10 quick calculation, prone to errors; False:
+#'   Scans completely and returns the correct M10 value, but more slowly
+#'
+#' @return a Dataframe with the value of M10 in the first position and the start
+#'   date of the 10 most active window by day in the second position.
+#'
+#' @family NPCRA functions
+#' @importFrom lubridate hours
+#' @importFrom lubridate years
+#' @importFrom magrittr %>%
+#' @export
+#'
+#' @examples
+#' \dontrun{
+#' npcra_m10_each_day(test_log, fast = FALSE)}
+npcra_m10_each_day <- function(data, col_name = "pim", timestamp="timestamp", fast=TRUE){
+    valid_data <- data %>%
+        dplyr::select(timestamp, col_name) %>%
+        dplyr::rename("timestamp" = timestamp, "x" = col_name) %>%
+        dplyr::mutate(day = ymd(strftime(timestamp, format="%y%m%d")),
+                      endWindow = timestamp+hours(10),
+                      hourEndWindow = as.numeric(strftime(endWindow,format="%H")))
+
+    unique_days <- unique(valid_data$day)
+    index_first_days <- match(unique_days,valid_data$day)
+
+    quant_days <- length(unique_days)
+    m10 <- rep(0,quant_days)
+    m10_first_date <- rep(0, quant_days)
+
+
+    for (index_day in seq(quant_days)){
+        index = index_first_days[index_day]
+        sum_in_10_hours <- 0
+        window_index <-0
+
+        current_day <- day(unique_days[index_day])
+        while (valid_data$hourEndWindow[index] != 0) {
+            while(valid_data$timestamp[index+window_index] < valid_data$hourEndWindow[index]){
+                sum_in_10_hours <- sum_in_10_hours + valid_data$x[index+window_index]
+                window_index <- window_index+1
+            }
+            print(window_index)
+            if(sum_in_10_hours/(window_index-index) > m10[index_day]){
+                m10[index_day] <- sum_in_10_hours/(window_index-index)
+                m10_first_date[index_day] <- valid_data$timestamp[index]
+            }
+            index<-index+1
+        }
+    }
+
+    m10_each_day <- cbind.data.frame(unique_days, m10, m10_first_date)
+
+    #Ajustar atualização de window_index
+    m10_each_day
 }
 
 #' Non-Parametric Function M10 (Most Active 10 Hours) for the entire period
