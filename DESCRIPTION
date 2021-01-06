@@ -47,7 +47,6 @@ RoxygenNote: 7.1.1
 Depends:
     R (>= 4.0)
 Imports: 
-    checkmate,
     dplyr,
     glue,
     hms,
