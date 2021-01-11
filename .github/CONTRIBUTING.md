@@ -1,10 +1,10 @@
-# Contributing to actstudio
+# Contributing to `actstudio`
 
 <!-- This CONTRIBUTING.md is adapted from https://gist.github.com/peterdesmet/e90a1b0dc17af6c12daf6e8b2f044e7c -->
 
-First of all, thanks for considering contributing to actstudio! 👍 It's people like you that make it rewarding for us - the project maintainers - to work on actstudio. 😊
+First of all, thanks for considering contributing to `actstudio`! 👍 It's people like you that make it rewarding for us - the project maintainers - to work on `actstudio`. 😊
 
-actstudio is an open source project, maintained by people who care. We are not directly funded to do so.
+`actstudio` is an open source project, maintained by people who care. We are not directly funded to do so.
 
 [repo]: https://github.com/gipsousp/actstudio
 [issues]: https://github.com/gipsousp/actstudio/issues
@@ -25,19 +25,19 @@ There are several ways you can contribute to this project. If you want to know m
 
 ### Share the love ❤️
 
-Think actstudio is useful? Let others discover it, by telling them in person, via Twitter or a blog post.
+Think `actstudio` is useful? Let others discover it, by telling them in person, via Twitter or a blog post.
 
-Using actstudio for a paper you are writing? Consider [citing it][citation].
+Using `actstudio` for a paper you are writing? Consider [citing it][citation].
 
 ### Ask a question ⁉️
 
-Using actstudio and got stuck? Browse the [documentation][website] to see if you can find a solution. Still stuck? Post your question as an [new discussion on GitHub][new_discussion]. While we cannot offer user support, we'll try to do our best to address it, as questions often lead to better documentation or the discovery of bugs.
+Using `actstudio` and got stuck? Browse the [documentation][website] to see if you can find a solution. Still stuck? Post your question as an [new discussion on GitHub][new_discussion]. While we cannot offer user support, we'll try to do our best to address it, as questions often lead to better documentation or the discovery of bugs.
 
 Want to ask a question in private? Contact the package maintainer by [email][mailto:email].
 
 ### Propose an idea 💡
 
-Have an idea for a new actstudio feature? Take a look at the [documentation][website] and [discussion list][discussion] to see if it isn't included or suggested yet. If not, suggest your idea as an [discussion on GitHub][new_discussion]. While we can't promise to implement your idea, it helps to:
+Have an idea for a new `actstudio` feature? Take a look at the [documentation][website] and [discussion list][discussion] to see if it isn't included or suggested yet. If not, suggest your idea as an [discussion on GitHub][new_discussion]. While we can't promise to implement your idea, it helps to:
 
 * Explain in detail how it would work.
 * Keep the scope as narrow as possible.
@@ -46,7 +46,7 @@ See below if you want to contribute code for your idea as well.
 
 ### Report a bug 🐛
 
-Using actstudio and discovered a bug? That's annoying! Don't let others have the same experience and report it as an [issue on GitHub][new_issue] so we can fix it. A good bug report makes it easier for us to do so, so please include:
+Using `actstudio` and discovered a bug? That's annoying! Don't let others have the same experience and report it as an [issue on GitHub][new_issue] so we can fix it. A good bug report makes it easier for us to do so, so please include:
 
 * The content of `utils::sessionInfo()`.
 * Any details about your local setup that might be helpful in troubleshooting.
@@ -70,7 +70,7 @@ Functions are described as comments near their code and translated to documentat
 
 ### Contribute code 📝
 
-Care to fix bugs or implement new functionality for actstudio? Awesome! 👏 Have a look at the [discussion list][issues] and leave a comment on the things you want to work on. See also the development guidelines below.
+Care to fix bugs or implement new functionality for `actstudio`? Awesome! 👏 Have a look at the [discussion list][issues] and leave a comment on the things you want to work on. See also the development guidelines below.
 
 ## Development guidelines
 
