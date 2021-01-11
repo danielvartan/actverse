@@ -16,9 +16,9 @@ Covenant](https://img.shields.io/badge/Contributor%20Covenant-v2.0%20adopted-ff6
 <!-- badges: end -->
 
 The goal of `actstudio` is to provide a fast and friendly way to
-process, analyze and visualize actimetric/actigraphic data. It is
-designed to flexibly parse output data from many devices used for clinic
-and research proposes.
+process, analyze and visualize actimetric/actigraphic data in R. It is
+designed to parse data from many devices used for clinic and research
+proposes.
 
 ## Installation
 
@@ -30,9 +30,12 @@ You can install the development version from
 devtools::install_github("gipsousp/actstudio")
 ```
 
-## Code of Conduct
+## Contributing
+
+`actstudio` is a community project, anyone and everyone is welcome to
+contribute. Please take a moment to review the [Guidelines for
+Contributing](CONTRIBUTING.md).
 
 Please note that the `actstudio` project is released with a [Contributor
-Code of
-Conduct](https://contributor-covenant.org/version/2/0/CODE_OF_CONDUCT.html).
+Code of Conduct](https://gipsousp.github.io/mctq/CODE_OF_CONDUCT.html).
 By contributing to this project, you agree to abide by its terms.

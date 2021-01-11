@@ -37,7 +37,7 @@ Want to ask a question in private? Contact the package maintainer by [email][mai
 
 ### Propose an idea 💡
 
-Have an idea for a new `actstudio` feature? Take a look at the [documentation][website] and [discussion list][discussion] to see if it isn't included or suggested yet. If not, suggest your idea as an [discussion on GitHub][new_discussion]. While we can't promise to implement your idea, it helps to:
+Have an idea for a new `actstudio` feature? Take a look at the [documentation][website] and [discussion list][discussions] to see if it isn't included or suggested yet. If not, suggest your idea as an [discussion on GitHub][new_discussion]. While we can't promise to implement your idea, it helps to:
 
 * Explain in detail how it would work.
 * Keep the scope as narrow as possible.
