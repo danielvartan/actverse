@@ -60,8 +60,6 @@ npcra_m10 <- function(data, col_name = "pim", timestamp="timestamp", method=1, f
 #'   calculation.
 #' @param timestamp String with the name of the column that contains the
 #'   dataframe dates.
-#' @param fast True: It makes the M10 quick calculation, prone to errors; False:
-#'   Scans completely and returns the correct M10 value, but more slowly
 #'
 #' @return a Dataframe with the value of M10 in the first position and the start
 #'   date of the 10 most active window by day in the second position.
@@ -75,7 +73,7 @@ npcra_m10 <- function(data, col_name = "pim", timestamp="timestamp", method=1, f
 #' @examples
 #' \dontrun{
 #' npcra_m10_each_day(test_log, fast = FALSE)}
-npcra_m10_each_day <- function(data, col_name = "pim", timestamp="timestamp", fast=TRUE){
+npcra_m10_each_day <- function(data, col_name = "pim", timestamp="timestamp"){
     time_begin <- Sys.time()
     valid_data <- data %>%
         dplyr::select(timestamp, col_name) %>%
@@ -83,40 +81,43 @@ npcra_m10_each_day <- function(data, col_name = "pim", timestamp="timestamp", fa
         dplyr::mutate(day = lubridate::ymd(strftime(timestamp, format="%y%m%d")),
                       endWindow = timestamp+hours(10),
                       hourEndWindow = as.numeric(strftime(endWindow,format="%H")),
-                      mean_10_hours = 0)
+                      mean_10_hours = 0,
+                      )
 
     unique_days <- unique(valid_data$day)
     index_first_days <- match(unique_days,valid_data$day)
-    last_valid_register <- last(valid_data$timestamp)-hours(10)
+    index_last_valid_register <- which.min(valid_data$endWindow < last(valid_data$timestamp))
     quant_days <- length(unique_days)
 
     for (index_day in seq(quant_days)){
         index = index_first_days[index_day]
+        value_to_remove <- 0
         sum_in_10_hours <- 0
         window_index <- index
         current_day <- day(unique_days[index_day])
-        while (valid_data$timestamp[index] < last_valid_register & valid_data$hourEndWindow[index] != 0) {
+        while (index < index_last_valid_register & valid_data$hourEndWindow[index] != 0) {
             end_window <- valid_data$endWindow[index]
             window_sum <- 0
             while (valid_data$timestamp[window_index] <= end_window) {
                 window_sum <- window_sum + valid_data$x[window_index]
                 window_index <- window_index+1
             }
-            #Ajustar -valid_data$x[index-1]
-            sum_in_10_hours <- sum_in_10_hours - valid_data$x[index] + window_sum
+            sum_in_10_hours <- sum_in_10_hours - value_to_remove + window_sum
             valid_data$mean_10_hours[index] <- sum_in_10_hours/(window_index-index)
+            value_to_remove <- valid_data$x[index]
             index<-index+1
         }
     }
 
     m10 <- tapply(valid_data$mean_10_hours, valid_data$day, max)
     m10_first_date <- valid_data$timestamp[match(m10,valid_data$mean_10_hours)]
-    m10_each_day <- cbind.data.frame(unique_days, m10, m10_first_date)
+    m10_each_day <- cbind.data.frame(m10, unique_days, m10_first_date)
     m10_each_day <- m10_each_day %>%
-        dplyr::rename("day"=unique_days) %>%
+        dplyr::rename("day"=unique_days, "start_date"=m10_first_date) %>%
         dplyr::as_tibble()
 
-    message("TIME: ", Sys.time()-time_begin)
+    duration <- round(Sys.time()-time_begin,digits = 2)
+    message("Time spent: ", duration, " seconds")
     m10_each_day
 }
 
@@ -136,8 +137,6 @@ npcra_m10_each_day <- function(data, col_name = "pim", timestamp="timestamp", fa
 #'   calculation.
 #' @param timestamp String with the name of the column that contains the
 #'   dataframe dates.
-#' @param fast True: It makes the M10 quick calculation, prone to errors; False:
-#'   Scans completely and returns the correct M10 value, but more slowly
 #'
 #' @return a Dataframe with the value of M10 in the first position and the start
 #'   date of the 10 most active window in the period in the second position.
@@ -150,60 +149,39 @@ npcra_m10_each_day <- function(data, col_name = "pim", timestamp="timestamp", fa
 #' \dontrun{
 #' npcra_m10_whole_period(test_log, fast = FALSE)}
 
-npcra_m10_whole_period <- function(data, col_name = "pim", timestamp="timestamp", fast=TRUE) {
+npcra_m10_whole_period <- function(data, col_name = "pim", timestamp="timestamp") {
+    time_begin <- Sys.time()
+    valid_data <- data %>%
+        dplyr::select(timestamp, col_name) %>%
+        dplyr::rename("timestamp" = timestamp, "x" = col_name) %>%
+        dplyr::mutate(endWindow = timestamp+lubridate::hours(10)) %>%
+        dplyr::mutate(m10 = 0)
+
+    index_last_valid_register <- which.min(valid_data$endWindow < last(valid_data$timestamp))
+    window_index <- 1
+    value_to_remove <- 0
     sum_in_10_hours <- 0
-    window_index <- 0
-    index <- 1
 
-    valid_data <- cbind.data.frame(data[, timestamp], data[, col_name])
-    colnames(valid_data) <- c("timestamp", "x")
-
-    #Average activity for the first 10-hour window of the data.frame
-    end_first_window <- valid_data$timestamp[index] + hours(10)
-    while (valid_data$timestamp[index + window_index] <= end_first_window) {
-        sum_in_10_hours <-
-            sum_in_10_hours + valid_data$x[index + window_index]
-        window_index <- window_index + index
-    }
-    m_10 <- sum_in_10_hours / window_index - 1
-    m_10_first_date <- valid_data$timestamp[index]
-
-    #find the highest average activity between the second index and the last full 10-hour window
-    last_valid_register <- last(valid_data$timestamp) - hours(10)
-    index <- 2
-
-    if (fast) {
-        while (valid_data$timestamp[index] <= last_valid_register) {
-            sum_in_10_hours <-
-                sum_in_10_hours - valid_data$x[index - 1] + valid_data$x[index + window_index]
-            if (sum_in_10_hours / (window_index) > m_10) {
-                m_10 <- sum_in_10_hours / (window_index)
-                m_10_first_date <- valid_data$timestamp[index]
-            }
-            index <- index + 1
+    for (index in seq_len(index_last_valid_register-1)) {
+        window_sum <- 0
+        while (valid_data$timestamp[window_index] < valid_data$endWindow[index]) {
+            window_sum <- window_sum + valid_data$x[window_index]
+            window_index <- window_index + 1
         }
-    }
-    else {
-        while (valid_data$timestamp[index] <= last_valid_register) {
-            window_sum <- 0
-            finish_window <-
-                valid_data$timestamp[index] + hours(10)
-            while (valid_data$timestamp[window_index] <= finish_window) {
-                window_sum <- window_sum + valid_data$x[window_index]
-                window_index <- window_index + 1
-            }
-            sum_in_10_hours <-
-                sum_in_10_hours - valid_data$x[index - 1] + window_sum
-            if (sum_in_10_hours / (window_index - index) > m_10) {
-                m_10 <- sum_in_10_hours / (window_index - index)
-                m_10_first_date <- valid_data$timestamp[index]
-                message("New M10: ", m_10, " on date ", m_10_first_date)
-            }
-            index <- index + 1
-        }
+        sum_in_10_hours <- sum_in_10_hours - value_to_remove + window_sum
+        value_to_remove <- valid_data$x[index]
+        valid_data$m10[index] <- sum_in_10_hours / (window_index-index)
     }
 
-    data.frame(m_10, m_10_first_date)
+    max_m10 <- max(valid_data$m10)
+    m10_data <- valid_data %>%
+        dplyr::select(m10, timestamp) %>%
+        dplyr::filter(m10 == max_m10) %>%
+        dplyr::rename("start_date"=timestamp)
+
+    duration <- round(Sys.time()-time_begin,digits = 2)
+    message("Time spent: ", duration, " seconds")
+    m10_data
 }
 
 #' Non-Parametric Function L5 (Least Active 5  Hours)
