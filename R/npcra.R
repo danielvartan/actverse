@@ -187,33 +187,29 @@ npcra_m10_whole_period <- function(data, col_name = "pim", timestamp="timestamp"
     m10_data
 }
 
+
 npcra_m10_average_day <- function(data, col_name = "pim", timestamp="timestamp") {
     time_begin <- Sys.time()
     valid_data <- data %>%
         dplyr::select(timestamp, col_name) %>%
         dplyr::rename("timestamp" = timestamp, "x" = col_name) %>%
-        dplyr::mutate(hour = as.POSIXct(format(timestamp, format="%H:%M:%S"),
-                                        format="%T", tz = "GMT")) %>%
+        dplyr::mutate(hour = data.table::as.ITime(timestamp)) %>%
         dplyr::mutate(m10 = 0) %>%
-        dplyr::mutate(endWindow = as.POSIXct(format(timestamp+lubridate::hours(10), format="%H:%M:%S"),
-                                        format="%T", tz = "GMT")) %>%
-        dplyr::select(x, hour, endWindow, m10) %>%
         dplyr::arrange(hour)
-    return (valid_data)
-    first_10_hours <- valid_data %>%
-        dplyr::filter(hour<=10 & hour>=0)
 
-    valid_data <- rbind.data.frame(valid_data, first_10_hours)
     index<-1
     window_index <- 1
     value_to_remove <- 0
     sum_in_10_hours <- 0
-    while (index <= dplyr::n_distinct(valid_data)) {
+    last_valid_index <- dplyr::n_distinct(valid_data)
+
+    #Deduzir fórmula de diferença entre tempos
+    while (index <= last_valid_index) {
         window_sum <- 0
-        #TO DO: ajuste da janela à meia-noite
-        while (difftime(valid_data$hour[window_index], valid_data$hour[index], units = "hour") <10) {
+        while (abs(difftime(valid_data$hour[window_index], valid_data$hour[index], units = "hour")) <10) {
             window_sum <- window_sum + valid_data$x[window_index]
             window_index <- window_index + 1
+            if (window_index == last_valid_index) window_index <-1
         }
         sum_in_10_hours <- sum_in_10_hours - value_to_remove + window_sum
         value_to_remove <- valid_data$x[index]
