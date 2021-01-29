@@ -8,3 +8,4 @@
 ^docs$
 ^pkgdown$
 ^\.archive$
+^codecov\.yml$

@@ -5,14 +5,13 @@
 
 <!-- badges: start -->
 
-<!-- To do: Add Code coverage (when possible) <https://docs.codecov.io/> -->
-
 [![Lifecycle:
 experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://www.tidyverse.org/lifecycle/#experimental)
 [![R-CMD-check](https://github.com/gipsousp/actstudio/workflows/R-CMD-check/badge.svg)](https://github.com/gipsousp/actstudio/actions)
+[![Codecov test
+coverage](https://codecov.io/gh/gipsousp/actstudio/branch/master/graph/badge.svg)](https://codecov.io/gh/gipsousp/actstudio?branch=master)
 [![Contributor
-Covenant](https://img.shields.io/badge/Contributor%20Covenant-v2.0%20adopted-ff69b4.svg)](code_of_conduct.md)
-
+Covenant](https://img.shields.io/badge/Contributor%20Covenant-v2.0%20adopted-ff69b4.svg)](https://gipsousp.github.io/actstudio/CODE_OF_CONDUCT.html)
 <!-- badges: end -->
 
 The goal of `actstudio` is to provide a fast and friendly way to
@@ -34,8 +33,9 @@ devtools::install_github("gipsousp/actstudio")
 
 `actstudio` is a community project, anyone and everyone is welcome to
 contribute. Please take a moment to review the [Guidelines for
-Contributing](CONTRIBUTING.md).
+Contributing](https://gipsousp.github.io/actstudio/CONTRIBUTING.html).
 
 Please note that the `actstudio` project is released with a [Contributor
-Code of Conduct](https://gipsousp.github.io/mctq/CODE_OF_CONDUCT.html).
-By contributing to this project, you agree to abide by its terms.
+Code of
+Conduct](https://gipsousp.github.io/actstudio/CODE_OF_CONDUCT.html). By
+contributing to this project, you agree to abide by its terms.
