@@ -4,20 +4,34 @@
 #'
 #' `r lifecycle::badge("experimental")`
 #'
-#' "M10 represents activity during the most active period of the day. This
-#' measure may be influenced by daytime napping" - WITTING, W. (1990)
+#' M10 is calculated by identifying the 10-hour window with the highest activity in
+#' the given period.
+#'
+#' The function calculates the averages of a quantitative variable
+#' (typically the representative of the activity in the data set) in an interval
+#' that comprises each observation until the end of a 10-hour window, moving on
+#' to the next observation with the same approach. Note that the accuracy of the
+#' M10 is related to the validity of the given data range.
 #'
 #' @param data Dataframe that contains the date variable and the variable that
 #'   will be used to identify the 10 most active hours.
-#' @param col_name String with the name of the column that will be used in the
-#'   calculation.
-#' @param timestamp String with the name of the column that contains the
-#'   dataframe dates.
-#' @param method 1 = whole period, 2 = average day, 3 = each day
-#' @param fast True: It makes the M10 quick calculation, prone to errors; False:
-#'   Scans completely and returns the correct M10 value, but more slowly
+#' @param col_activity String with the name of the column that will be used in the
+#'   calculation. The observations in this column must be in numeric format.
+#' @param timestamp String with the name of the column that contains the date
+#'  and time of each observation (POSIX format).
+#' @param method An integer that represents one of the three common methods for
+#' calculating and analyzing M10:
 #'
-#' @return a Dataframe with the value of M10 in the first position and the start
+#' 1 = whole period,
+#'
+#' 2 = average day,
+#'
+#' 3 = each day.
+#'
+#' If you prefer you can also directly call the functions npcra_m10_whole_period,
+#' npcra_m10_average_day or npcra_m10_each_day.
+#'
+#' @return A Dataframe with the value of M10 in the first position and the start
 #'   date of the 10 most active window in the period in the second position.
 #'
 #' @family NPCRA functions
@@ -25,20 +39,22 @@
 #'
 #' @examples
 #' \dontrun{
-#' npcra_m10(test_log, "pim")}
-npcra_m10 <- function(data, col_name = "pim", timestamp="timestamp", method=1, fast=TRUE) {
+#' npcra_m10(test_log, "pim")
+#' npcra_m10(test_log, method=3)
+#' }
+npcra_m10 <- function(data, col_activity = "pim", timestamp="timestamp", method=1) {
     time_begin <- Sys.time()
-    npcra_test_args(data, col_name, timestamp, method, fast)
+    npcra_test_args(data, col_activity, timestamp, method, fast)
 
     m10 <- data.frame()
     if (method==1) {
-        m10 <- npcra_m10_whole_period(data, col_name, timestamp)
+        m10 <- npcra_m10_whole_period(data, col_activity, timestamp)
     }
     if (method==2) {
-       m10 <- npcra_m10_average_day(data, col_name, timestamp)
+       m10 <- npcra_m10_average_day(data, col_activity, timestamp)
     }
     if (method==3) {
-        m10 <- npcra_m10_each_day(data, col_name, timestamp)
+        m10 <- npcra_m10_each_day(data, col_activity, timestamp)
     }
 
     duration <- Sys.time() - time_begin
@@ -206,10 +222,16 @@ npcra_m10_average_day <- function(data, col_name = "pim", timestamp="timestamp")
     sum_in_10_hours <- 0
     first_14h_index <- which.max(lubridate::hour(valid_data$timestamp_same_origin) == 14)
     last_valid_index <- dplyr::n_distinct(valid_data)
+    index_in_window = abs(difftime(valid_data$timestamp_same_origin[window_index], valid_data$timestamp_same_origin[index], units = "hour")) < 10
 
-    while (index < first_14h_index) {
+    while (index < last_valid_index) {
         window_sum <- 0
-        while (abs(difftime(valid_data$timestamp_same_origin[window_index], valid_data$timestamp_same_origin[index], units = "hour")) < 10) {
+        message(index)
+        if(index == first_14h_index){
+            index_in_window <- abs(difftime(valid_data$timestamp_same_origin[window_index], valid_data$timestamp_same_origin[index], units = "hour")) > 14
+        }
+
+        while (index_in_window) {
             window_sum <- window_sum + valid_data$x[window_index]
             window_index <- window_index + 1
             size_window <- size_window+1
@@ -224,20 +246,6 @@ npcra_m10_average_day <- function(data, col_name = "pim", timestamp="timestamp")
     }
 
     window_index <-1
-
-    while (index <= last_valid_index) {
-        window_sum <- 0
-        while (abs(difftime(valid_data$timestamp_same_origin[window_index], valid_data$timestamp_same_origin[index], units = "hour")) > 14) {
-            window_sum <- window_sum + valid_data$x[window_index]
-            window_index <- window_index + 1
-            size_window <- size_window+1
-        }
-        sum_in_10_hours <- sum_in_10_hours - value_to_remove + window_sum
-        value_to_remove <- valid_data$x[index]
-        valid_data$m10[index] <- sum_in_10_hours / (size_window-index)
-
-        index <- index+1
-    }
 
     max_m10 <- max(valid_data$m10)
     m10_data <- valid_data %>%
@@ -514,9 +522,6 @@ npcra_test_args <- function(data, col_name, timestamp, method, fast) {
     }
     if (!is.element(method, c(1,2,3))) {
         stop("Parameter 'method' expects an integer value equal to 1,2 or 3, but received ", method, " (classe ", class(method), ")")
-    }
-    if (!is.element(fast, c(TRUE,FALSE))) {
-        stop("Parameter 'fast' expects an logical value (TRUE or FALSE), but received ", fast, " (classe ", class(fast), ")")
     }
     if(any(is.na(data[,col_name]))){
         stop("Column 'col_name' = ", col_name, " has NA values")

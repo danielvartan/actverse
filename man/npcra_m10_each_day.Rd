@@ -4,12 +4,7 @@
 \alias{npcra_m10_each_day}
 \title{Non-Parametric Function M10 (Most Active 10 Hours) for each day}
 \usage{
-npcra_m10_each_day(
-  data,
-  col_name = "pim",
-  timestamp = "timestamp",
-  fast = TRUE
-)
+npcra_m10_each_day(data, col_name = "pim", timestamp = "timestamp")
 }
 \arguments{
 \item{data}{Dataframe that contains the date variable and the variable that
@@ -20,9 +15,6 @@ calculation.}
 
 \item{timestamp}{String with the name of the column that contains the
 dataframe dates.}
-
-\item{fast}{True: It makes the M10 quick calculation, prone to errors; False:
-Scans completely and returns the correct M10 value, but more slowly}
 }
 \value{
 a Dataframe with the value of M10 in the first position and the start
