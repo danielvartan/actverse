@@ -194,33 +194,62 @@ npcra_m10_average_day <- function(data, col_name = "pim", timestamp="timestamp")
         dplyr::select(timestamp, col_name) %>%
         dplyr::rename("timestamp" = timestamp, "x" = col_name) %>%
         dplyr::mutate(hour = data.table::as.ITime(timestamp)) %>%
+        dplyr::mutate(timestamp_same_origin = timestamp) %>%
         dplyr::mutate(m10 = 0) %>%
         dplyr::arrange(hour)
+    lubridate::date(valid_data$timestamp_same_origin) <- lubridate::origin
 
     index<-1
     window_index <- 1
+    size_window <- 1
     value_to_remove <- 0
     sum_in_10_hours <- 0
+    first_14h_index <- which.max(lubridate::hour(valid_data$timestamp_same_origin) == 14)
     last_valid_index <- dplyr::n_distinct(valid_data)
 
-    #Deduzir fórmula de diferença entre tempos
-    while (index <= last_valid_index) {
+    while (index < first_14h_index) {
         window_sum <- 0
-        while (abs(difftime(valid_data$hour[window_index], valid_data$hour[index], units = "hour")) <10) {
+        while (abs(difftime(valid_data$timestamp_same_origin[window_index], valid_data$timestamp_same_origin[index], units = "hour")) < 10) {
             window_sum <- window_sum + valid_data$x[window_index]
             window_index <- window_index + 1
-            if (window_index == last_valid_index) window_index <-1
+            size_window <- size_window+1
+            if (window_index == last_valid_index) break
+
         }
         sum_in_10_hours <- sum_in_10_hours - value_to_remove + window_sum
         value_to_remove <- valid_data$x[index]
-        valid_data$m10[index] <- sum_in_10_hours / (window_index-index)
+        valid_data$m10[index] <- sum_in_10_hours / (size_window-index)
 
-        message(index, " | ", valid_data$hour[index], " | ", valid_data$m10[index], " | ", window_index)
         index <- index+1
     }
+
+    window_index <-1
+
+    while (index <= last_valid_index) {
+        window_sum <- 0
+        while (abs(difftime(valid_data$timestamp_same_origin[window_index], valid_data$timestamp_same_origin[index], units = "hour")) > 14) {
+            window_sum <- window_sum + valid_data$x[window_index]
+            window_index <- window_index + 1
+            size_window <- size_window+1
+        }
+        sum_in_10_hours <- sum_in_10_hours - value_to_remove + window_sum
+        value_to_remove <- valid_data$x[index]
+        valid_data$m10[index] <- sum_in_10_hours / (size_window-index)
+
+        index <- index+1
+    }
+
+    max_m10 <- max(valid_data$m10)
+    m10_data <- valid_data %>%
+        dplyr::select(m10, timestamp_same_origin) %>%
+        dplyr::filter(m10 == max_m10) %>%
+        dplyr::rename("start_date"=timestamp_same_origin) %>%
+        dplyr::mutate(start_date = strftime(start_date, format="%H:%M:%S"))
+
+
     duration <- round(Sys.time()-time_begin,digits = 2)
     message("Time spent: ", duration, " seconds")
-    valid_data
+    m10_data
 }
 
 #' Non-Parametric Function L5 (Least Active 5  Hours)
