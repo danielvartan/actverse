@@ -34,7 +34,7 @@
 #' @return A Dataframe with the value of M10 in the first position and the start
 #'   date of the 10 most active window in the period in the second position.
 #'
-#'@references
+#' @references
 #' WITTING, W. et al. Alterations in the circadian rest-activity rhythm in aging
 #'and Alzheimer's disease. Biological Psychiatry, v. 27, n. 6, p. 563-572,
 #'Mar. 1990. doi: 10.1016/0006-3223(90)90523-5.
@@ -91,6 +91,17 @@ npcra_m10 <- function(data, col_activity = "pim", timestamp="timestamp", method=
 #'   date of the 10 most active window in the period in the second position.
 #'
 #' @family NPCRA functions
+#'
+#' @references
+#' WITTING, W. et al. Alterations in the circadian rest-activity rhythm in aging
+#'and Alzheimer's disease. Biological Psychiatry, v. 27, n. 6, p. 563-572,
+#'Mar. 1990. doi: 10.1016/0006-3223(90)90523-5.
+#'
+#' GONCALVES, Bruno da Silva Brandao et al. A fresh look at the use of
+#' nonparametric analysis in actimetry. Sleep Medicine Reviews, v. 20,
+#' p. 84-91, Apr. 2015. doi: 10.1016/j.smrv.2014.06.002.
+#'
+#'
 #' @importFrom lubridate hours
 #' @importFrom magrittr %>%
 #' @importFrom dplyr select
@@ -105,10 +116,10 @@ npcra_m10 <- function(data, col_activity = "pim", timestamp="timestamp", method=
 #' \dontrun{
 #' npcra_m10_whole_period(test_log)}
 
-npcra_m10_whole_period <- function(data, col_name = "pim", timestamp="timestamp") {
+npcra_m10_whole_period <- function(data, col_activity = "pim", timestamp="timestamp") {
     valid_data <- data %>%
-        select(timestamp, col_name) %>%
-        rename("timestamp" = timestamp, "x" = col_name) %>%
+        select(timestamp, col_activity) %>%
+        rename("timestamp" = timestamp, "x" = col_activity) %>%
         mutate(endWindow = timestamp+lubridate::hours(10)) %>%
         mutate(m10 = 0)
 
@@ -160,6 +171,16 @@ npcra_m10_whole_period <- function(data, col_name = "pim", timestamp="timestamp"
 #'   second position.
 #'
 #' @family NPCRA functions
+#'
+#' @references
+#' WITTING, W. et al. Alterations in the circadian rest-activity rhythm in aging
+#'and Alzheimer's disease. Biological Psychiatry, v. 27, n. 6, p. 563-572,
+#'Mar. 1990. doi: 10.1016/0006-3223(90)90523-5.
+#'
+#' GONCALVES, Bruno da Silva Brandao et al. A fresh look at the use of
+#'nonparametric analysis in actimetry. Sleep Medicine Reviews, v. 20,
+#'p. 84-91, Apr. 2015. doi: 10.1016/j.smrv.2014.06.002.
+#'
 #' @importFrom lubridate hour
 #' @importFrom lubridate date<-
 #' @importFrom magrittr %>%
@@ -176,10 +197,10 @@ npcra_m10_whole_period <- function(data, col_name = "pim", timestamp="timestamp"
 #' @examples
 #' \dontrun{
 #' npcra_m10_average_day(test_log)}
-npcra_m10_average_day <- function(data, col_name = "pim", timestamp="timestamp") {
+npcra_m10_average_day <- function(data, col_activity = "pim", timestamp="timestamp") {
     valid_data <- data %>%
-        select(timestamp, col_name) %>%
-        rename("timestamp" = timestamp, "x" = col_name) %>%
+        select(timestamp, col_activity) %>%
+        rename("timestamp" = timestamp, "x" = col_activity) %>%
         mutate(time = data.table::as.ITime(timestamp)) %>%
         mutate(timestamp_same_origin = timestamp) %>%
         mutate(m10 = 0) %>%
@@ -245,7 +266,7 @@ npcra_m10_average_day <- function(data, col_name = "pim", timestamp="timestamp")
 #'
 #' `r lifecycle::badge("experimental")`
 #'
-#' "Calculate the most active window of 10 hours for each different day.
+#' Calculate the most active window of 10 hours for each different day.
 #'
 #' @param data Dataframe that contains the date column and the column that
 #'   will be used to identify the 10 most active hours.
@@ -258,6 +279,15 @@ npcra_m10_average_day <- function(data, col_name = "pim", timestamp="timestamp")
 #'   date of the 10 most active window by day in the second position.
 #'
 #' @family NPCRA functions
+#'
+#' @references
+#' WITTING, W. et al. Alterations in the circadian rest-activity rhythm in aging
+#'and Alzheimer's disease. Biological Psychiatry, v. 27, n. 6, p. 563-572,
+#'Mar. 1990. doi: 10.1016/0006-3223(90)90523-5.
+#'
+#' GONCALVES, Bruno da Silva Brandao et al. A fresh look at the use of
+#' nonparametric analysis in actimetry. Sleep Medicine Reviews, v. 20,
+#' p. 84-91, Apr. 2015. doi: 10.1016/j.smrv.2014.06.002.
 #'
 #' @importFrom lubridate hours
 #' @importFrom lubridate ymd
@@ -272,10 +302,10 @@ npcra_m10_average_day <- function(data, col_name = "pim", timestamp="timestamp")
 #' @examples
 #' \dontrun{
 #' npcra_m10_each_day(test_log)}
-npcra_m10_each_day <- function(data, col_name = "pim", timestamp="timestamp"){
+npcra_m10_each_day <- function(data, col_activity = "pim", timestamp="timestamp"){
     valid_data <- data %>%
-        select(timestamp, col_name) %>%
-        rename("timestamp" = timestamp, "x" = col_name) %>%
+        select(timestamp, col_activity) %>%
+        rename("timestamp" = timestamp, "x" = col_activity) %>%
         mutate(day = ymd(strftime(timestamp, format="%y%m%d")),
                endWindow = timestamp+hours(10),
                hourEndWindow = as.numeric(strftime(endWindow,format="%H")),
@@ -322,121 +352,349 @@ npcra_m10_each_day <- function(data, col_name = "pim", timestamp="timestamp"){
 #'
 #' `r lifecycle::badge("experimental")`
 #'
-#' "L5 represents movement-activity during sleep plus nighttime arousals" -
-#' WITTING, W. (1990)
+#' L5 is calculated by identifying the 5-hour window with the least activity in
+#' the given period.
 #'
-#' @param data Dataframe that contains the date variable and the variable that
-#'   will be used to identify the least Active 5  Hours.
-#' @param col_name String with the name of the column that will be used in the
-#'   calculation.
-#' @param method 1 = whole period, 2 = average day, 3 = each day
-#' @param fast True: It makes the L5 quick calculation, prone to errors; False:
-#'   Scans completely and returns the correct L5 value, but more slowly
+#' The function calculates the averages of a quantitative variable
+#' (typically the representative of the activity in the data set) in an interval
+#' that comprises each observation until the end of a 10-hour window, moving on
+#' to the next observation with the same approach. Note that the accuracy of the
+#' L5 is related to the validity of the given data range.
 #'
-#' @return a Dataframe with the value of M10 in the first position and the start
-#'   date of the 10 most active window in the period in the second position.
+#' @param data Dataframe that contains the date column and the column that
+#'   will be used to identify the least active 5 hours.
+#' @param col_activity String with the name of the column that will be used in the
+#'   calculation. The observations in this column must be in numeric format.
+#' @param timestamp String with the name of the column that contains the date
+#'  and time of each observation (POSIX format).
+#' @param method An integer that represents one of the three common methods for
+#' calculating and analyzing L5:
+#'
+#' 1 = whole period,
+#'
+#' 2 = average day,
+#'
+#' 3 = each day.
+#'
+#' If you prefer you can also directly call the functions npcra_l5_whole_period,
+#' npcra_l5_average_day or npcra_l5_each_day.
+#'
+#' @return A Dataframe with the value of L5 in the first position and the start
+#'   date of the 5-hour window with less activity in the period in the second position.
+#'
+#' @references
+#' WITTING, W. et al. Alterations in the circadian rest-activity rhythm in aging
+#'and Alzheimer's disease. Biological Psychiatry, v. 27, n. 6, p. 563-572,
+#'Mar. 1990. doi: 10.1016/0006-3223(90)90523-5.
+#'
+#' GONCALVES, Bruno da Silva Brandao et al. A fresh look at the use of
+#' nonparametric analysis in actimetry. Sleep Medicine Reviews, v. 20,
+#' p. 84-91, Apr. 2015. doi: 10.1016/j.smrv.2014.06.002.
 #'
 #' @family NPCRA functions
 #' @export
 #'
 #' @examples
 #' \dontrun{
-#' npcra_l5(test_log, "pim")}
-npcra_l5 <- function(data, col_name = "pim", timestamp="timestamp", method=1, fast=TRUE) {
+#' npcra_l5(test_log, "pim")
+#' npcra_l5(test_log, method=3)
+#' }
+npcra_l5 <- function(data, col_activity = "pim", timestamp="timestamp", method=1) {
     time_begin <- Sys.time()
-    npcra_test_args(data, col_name, timestamp, method, fast)
+    npcra_test_args(data, col_activity, timestamp, method)
 
     l5 <- data.frame()
-
-    #CALCULATION OF L5 ACCORDING TO THE CHOSEN METHOD
-    if(method==1){
-        l5 <- npcra_l5_whole_period(data, col_name, timestamp, fast)
+    if (method==1) {
+        l5 <- npcra_l5_whole_period(data, col_activity, timestamp)
+    }
+    if (method==2) {
+        l5 <- npcra_l5_average_day(data, col_activity, timestamp)
+    }
+    if (method==3) {
+        l5 <- npcra_l5_each_day(data, col_activity, timestamp)
     }
 
-    duration <- Sys.time() - time_begin
+    duration <- round(Sys.time()-time_begin,digits = 2)
     message("L5 was calculated in ", duration, " seconds")
 
     l5
 }
 
-#' Non-Parametric Function L5 (Least Active 5  Hours) for the entire period
+#' Non-Parametric Function L5 (Least Active 5  Hours) for the full period.
 #'
 #' @description
 #'
 #' `r lifecycle::badge("experimental")`
 #'
-#' "L5 represents movement-activity during sleep plus nighttime arousals" -
-#' WITTING, W. (1990) This calculation method considers the 5-hour window less
-#' active for all data.
+#' Calculates and finds the least active window of 5 hours in all records.
 #'
-#' @param data Dataframe that contains the date variable and the variable that
-#'   will be used to identify the least Active 5  Hours.
-#' @param col_name String with the name of the column that will be used in the
-#'   calculation.
-#' @param timestamp String with the name of the column that contains the
-#'   dataframe dates.
-#' @param fast True: It makes the L5 quick calculation, prone to errors; False:
-#'   Scans completely and returns the correct L5 value, but more slowly
+#' @param data Dataframe that contains the date column and the column that
+#'   will be used to identify the 5 least active hours.
+#' @param col_activity String with the name of the column that will be used in the
+#'   calculation. The observations in this column must be in numeric format.
+#' @param timestamp String with the name of the column that contains the date
+#'  and time of each observation (POSIX format).
 #'
 #' @return a Dataframe with the value of L5 in the first position and the start
 #'   date of the 5 least active window in the period in the second position.
 #'
 #' @family NPCRA functions
+#'
+#' @references
+#' WITTING, W. et al. Alterations in the circadian rest-activity rhythm in aging
+#'and Alzheimer's disease. Biological Psychiatry, v. 27, n. 6, p. 563-572,
+#'Mar. 1990. doi: 10.1016/0006-3223(90)90523-5.
+#'
+#' GONCALVES, Bruno da Silva Brandao et al. A fresh look at the use of
+#' nonparametric analysis in actimetry. Sleep Medicine Reviews, v. 20,
+#' p. 84-91, Apr. 2015. doi: 10.1016/j.smrv.2014.06.002.
+#'
+#'
 #' @importFrom lubridate hours
+#' @importFrom magrittr %>%
+#' @importFrom dplyr select
+#' @importFrom dplyr rename
+#' @importFrom dplyr mutate
+#' @importFrom dplyr as_tibble
+#' @importFrom dplyr filter
+#'
 #' @export
+#'
 #' @examples
 #' \dontrun{
-#' npcra_l5_whole_period(test_log, fast = FALSE)}
-npcra_l5_whole_period <- function(data, col_name = "pim", timestamp="timestamp", fast=TRUE) {
+#' npcra_l5_whole_period(test_log)}
+
+npcra_l5_whole_period <- function(data, col_activity = "pim", timestamp="timestamp") {
+    valid_data <- data %>%
+        select(timestamp, col_activity) %>%
+        rename("timestamp" = timestamp, "x" = col_activity) %>%
+        mutate(endWindow = timestamp+hours(5)) %>%
+        mutate(l5 = 0)
+
+    index_last_valid_register <- which.min(valid_data$endWindow < last(valid_data$timestamp))
+    window_index <- 1
+    value_to_remove <- 0
     sum_in_5_hours <- 0
-    window_index <- 0
-    index <- 1
 
-    valid_data <- cbind.data.frame(data[, timestamp], data[, col_name])
-    colnames(valid_data) <- c("timestamp", "x")
-
-    end_first_window <- valid_data$timestamp[index] + hours(5)
-    while (valid_data$timestamp[index + window_index] <= end_first_window) {
-        sum_in_5_hours <- sum_in_5_hours + valid_data$x[index + window_index]
-        window_index <- window_index + index
-    }
-    l_5 <- sum_in_5_hours / (window_index - 1)
-    l_5_first_date <- valid_data$timestamp[index]
-
-    last_valid_register <- last(valid_data$timestamp) - hours(5)
-    index <- 2
-    if (fast) {
-        while (valid_data$timestamp[index] <= last_valid_register) {
-            sum_in_5_hours <- sum_in_5_hours - valid_data$x[index - 1]
-            sum_in_5_hours <- sum_in_5_hours + valid_data$x[index + window_index]
-            if (sum_in_5_hours / (window_index) < l_5) {
-                l_5 <- sum_in_5_hours / (window_index)
-                l_5_first_date <- valid_data$timestamp[index]
-            }
-            index <- index + 1
+    for (index in seq_len(index_last_valid_register-1)) {
+        window_sum <- 0
+        while (valid_data$timestamp[window_index] < valid_data$endWindow[index]) {
+            window_sum <- window_sum + valid_data$x[window_index]
+            window_index <- window_index + 1
         }
-    }
-    else {
-        while (valid_data$timestamp[index] <= last_valid_register) {
-            window_sum <- 0
-            finish_window <- valid_data$timestamp[index] + hours(5)
-            while (valid_data$timestamp[window_index] < finish_window) {
-                window_sum <- window_sum + valid_data$x[window_index]
-                window_index <- window_index + 1
-            }
-            sum_in_5_hours <-
-                sum_in_5_hours - valid_data$x[index - 1] + window_sum
-            if (sum_in_5_hours / (window_index - index) < l_5) {
-                l_5 <- sum_in_5_hours / (window_index - index)
-                l_5_first_date <- valid_data$timestamp[index]
-                message("New L5: ", l_5, " on date ", l_5_first_date)
-            }
-            index <- index + 1
-        }
+        sum_in_5_hours <- sum_in_5_hours - value_to_remove + window_sum
+        value_to_remove <- valid_data$x[index]
+        valid_data$l5[index] <- sum_in_5_hours / (window_index-index)
     }
 
-    data.frame(l_5, l_5_first_date)
+    l5_data <- valid_data %>%
+        select(l5, timestamp) %>%
+        filter(l5 > 0) %>%
+        filter(l5 == min(l5)) %>%
+        rename("start_date"=timestamp)
+
+    l5_data
 }
+
+#' Non-Parametric Function L5 (Least Active 5  Hours) for the avarage day
+#'
+#' @description
+#'
+#' `r lifecycle::badge("experimental")`
+#'
+#' Calculates the least active window of 5 hours considering the average day of
+#'  the observations, that is, the window of the next 5 hours disregarding the
+#'   difference in days. The composition of all activities is considered
+#'   as a single day: the average day.
+#'
+#' @param data Dataframe that contains the date column and the column that
+#'   will be used to identify the least active 5-hour period.
+#' @param col_activity String with the name of the column that will be used in the
+#'   calculation. The observations in this column must be in numeric format.
+#' @param timestamp String with the name of the column that contains the date
+#'  and time of each observation (POSIX format).
+#'
+#' @return a Dataframe with the value of L5 in the first position and the start
+#'   time (character format) of the 5-hour least active window in the period in the
+#'   second position.
+#'
+#' @family NPCRA functions
+#'
+#' @references
+#' WITTING, W. et al. Alterations in the circadian rest-activity rhythm in aging
+#'and Alzheimer's disease. Biological Psychiatry, v. 27, n. 6, p. 563-572,
+#'Mar. 1990. doi: 10.1016/0006-3223(90)90523-5.
+#'
+#' GONCALVES, Bruno da Silva Brandao et al. A fresh look at the use of
+#'nonparametric analysis in actimetry. Sleep Medicine Reviews, v. 20,
+#'p. 84-91, Apr. 2015. doi: 10.1016/j.smrv.2014.06.002.
+#'
+#' @importFrom lubridate hour
+#' @importFrom lubridate date<-
+#' @importFrom magrittr %>%
+#' @importFrom dplyr select
+#' @importFrom dplyr rename
+#' @importFrom dplyr mutate
+#' @importFrom dplyr as_tibble
+#' @importFrom dplyr filter
+#' @importFrom dplyr arrange
+#' @importFrom dplyr n_distinct
+#'
+#' @export
+#'
+#' @examples
+#' \dontrun{
+#' npcra_l50_average_day(test_log)}
+npcra_l5_average_day <- function(data, col_activity = "pim", timestamp="timestamp") {
+    valid_data <- data %>%
+        select(timestamp, col_activity) %>%
+        rename("timestamp" = timestamp, "x" = col_activity) %>%
+        mutate(time = data.table::as.ITime(timestamp)) %>%
+        mutate(timestamp_same_origin = timestamp) %>%
+        mutate(l5 = 0) %>%
+        arrange(time)
+    date(valid_data$timestamp_same_origin) <- lubridate::origin
+
+    index<-1
+    window_index <- 1
+    size_window <- 1
+    value_to_remove <- 0
+    sum_in_5_hours <- 0
+    first_19h_index <- which.max(hour(valid_data$timestamp_same_origin) == 19)
+    last_valid_index <- n_distinct(valid_data)
+    index_in_window = abs(difftime(valid_data$timestamp_same_origin[window_index], valid_data$timestamp_same_origin[index], units = "hour")) < 10
+
+
+    while (index < first_19h_index) {
+        window_sum <- 0
+        while (abs(difftime(valid_data$timestamp_same_origin[window_index], valid_data$timestamp_same_origin[index], units = "hour")) < 5) {
+            window_sum <- window_sum + valid_data$x[window_index]
+            window_index <- window_index + 1
+            size_window <- size_window+1
+            if (window_index == last_valid_index) break
+
+        }
+        sum_in_5_hours <- sum_in_5_hours - value_to_remove + window_sum
+        value_to_remove <- valid_data$x[index]
+        valid_data$l5[index] <- sum_in_5_hours / (size_window-index)
+
+        index <- index+1
+    }
+
+    window_index <-1
+
+    while (index <= last_valid_index) {
+        window_sum <- 0
+        while (abs(difftime(valid_data$timestamp_same_origin[window_index], valid_data$timestamp_same_origin[index], units = "hour")) > 14) {
+            window_sum <- window_sum + valid_data$x[window_index]
+            window_index <- window_index + 1
+            size_window <- size_window+1
+        }
+        sum_in_5_hours <- sum_in_5_hours - value_to_remove + window_sum
+        value_to_remove <- valid_data$x[index]
+        valid_data$l5[index] <- sum_in_5_hours / (size_window-index)
+
+        index <- index+1
+    }
+
+    l5_data <- valid_data %>%
+        select(l5, timestamp_same_origin) %>%
+        filter(l5 > 0) %>%
+        filter(l5 == min(l5)) %>%
+        rename("start_date"=timestamp_same_origin) %>%
+        mutate(start_date = strftime(start_date, format="%H:%M:%S"))
+
+    l5_data
+}
+
+#' Non-Parametric Function L5 (Least Active 5  Hours) for each day
+#'
+#' @description
+#'
+#' `r lifecycle::badge("experimental")`
+#'
+#' Calculate the least active period of 5 hours for each different day.
+#'
+#' @param data Dataframe that contains the date column and the column that
+#'   will be used to identify the 5 least active hours.
+#' @param col_activity String with the name of the column that will be used in the
+#'   calculation. The observations in this column must be in numeric format.
+#' @param timestamp String with the name of the column that contains the date
+#'  and time of each observation (POSIX format).
+#'
+#' @return A Dataframe with the value of L5 in the first position and the start
+#'   date of the 5-hour least active window by day in the second position.
+#'
+#' @family NPCRA functions
+#'
+#' @references
+#' WITTING, W. et al. Alterations in the circadian rest-activity rhythm in aging
+#'and Alzheimer's disease. Biological Psychiatry, v. 27, n. 6, p. 563-572,
+#'Mar. 1990. doi: 10.1016/0006-3223(90)90523-5.
+#'
+#' GONCALVES, Bruno da Silva Brandao et al. A fresh look at the use of
+#' nonparametric analysis in actimetry. Sleep Medicine Reviews, v. 20,
+#' p. 84-91, Apr. 2015. doi: 10.1016/j.smrv.2014.06.002.
+#'
+#' @importFrom lubridate hours
+#' @importFrom lubridate ymd
+#' @importFrom magrittr %>%
+#' @importFrom dplyr select
+#' @importFrom dplyr rename
+#' @importFrom dplyr mutate
+#' @importFrom dplyr as_tibble
+#'
+#' @export
+#'
+#' @examples
+#' \dontrun{
+#' npcra_l5_each_day(test_log)}
+npcra_l5_each_day <- function(data, col_activity = "pim", timestamp="timestamp"){
+    valid_data <- data %>%
+        select(timestamp, col_activity) %>%
+        rename("timestamp" = timestamp, "x" = col_activity) %>%
+        mutate(day = ymd(strftime(timestamp, format="%y%m%d")),
+               endWindow = timestamp+hours(5),
+               hourEndWindow = as.numeric(strftime(endWindow,format="%H")),
+               mean_5_hours = 0)
+
+    unique_days <- unique(valid_data$day)
+    index_first_days <- match(unique_days,valid_data$day)
+    index_last_valid_register <- which.min(valid_data$endWindow < last(valid_data$timestamp))
+    quant_days <- length(unique_days)
+
+    for (index_day in seq(quant_days)){
+        index = index_first_days[index_day]
+        value_to_remove <- 0
+        sum_in_5_hours <- 0
+        window_index <- index
+        current_day <- day(unique_days[index_day])
+        while (index < index_last_valid_register & valid_data$hourEndWindow[index] != 0) {
+            end_window <- valid_data$endWindow[index]
+            window_sum <- 0
+            while (valid_data$timestamp[window_index] <= end_window) {
+                window_sum <- window_sum + valid_data$x[window_index]
+                window_index <- window_index+1
+            }
+            sum_in_5_hours <- sum_in_5_hours - value_to_remove + window_sum
+            valid_data$mean_5_hours[index] <- sum_in_5_hours/(window_index-index)
+            value_to_remove <- valid_data$x[index]
+            index<-index+1
+        }
+    }
+
+    valid_data <- valid_data %>% filter(mean_5_hours>0)
+
+    l5 <- tapply(valid_data$mean_5_hours, valid_data$day, min)
+    l5_first_date <- valid_data$timestamp[match(l5,valid_data$mean_5_hours)]
+    l5_each_day <- cbind.data.frame(l5,  l5_first_date)
+    l5_each_day <- l5_each_day %>%
+        rename("start_date"=l5_first_date) %>%
+        as_tibble()
+
+    l5_each_day
+}
+
 
 #' Non-Parametric Function IS (Interdaily Stability )
 #'
@@ -547,31 +805,36 @@ npcra_iv <- function(data, col_x = "pim"){
 #' Performs the verification of the types of expected values as arguments to the
 #' npcra functions.
 #'
-#' @param data Dataframe that contains the date variable and the variable that
-#'   will be used to identify the 10 most active hours.
-#' @param col_name String with the name of the column that will be used in the
-#'   calculation.
-#' @param timestamp String with the name of the column that contains the
-#'   dataframe dates.
-#' @param method 1 = whole period, 2 = average day, 3 = each day
-#' @param fast True: It makes the M10 quick calculation, prone to errors; False:
-#'   Scans completely and returns the correct M10 value, but more slowly
+#' @param data Dataframe that contains the date column and the column that
+#'   will be used to identify the period of activity.
+#' @param col_activity String with the name of the column that will be used in the
+#'   calculation. The observations in this column must be in numeric format.
+#' @param timestamp String with the name of the column that contains the date
+#'  and time of each observation (POSIX format).
+#' @param method An integer that represents one of the three common methods for
+#' calculating and analyzing M10:
+#'
+#' 1 = whole period,
+#'
+#' 2 = average day,
+#'
+#' 3 = each day.
+
 #'
 #' @return If no test stops, TRUE will be returned.
 #' @family NPCRA functions
-#' @export
 #'
 #' @examples
 #' \dontrun{
-#' npcra_test_args(test_log, "pim", "timestamp", 1, TRUE)}
-npcra_test_args <- function(data, col_name, timestamp, method) {
+#' npcra_test_args(test_log, "pim", "timestamp", 1)}
+npcra_test_args <- function(data, col_activity, timestamp, method) {
     data_col_names <- colnames(data)
 
     if (!is.data.frame(data)) {
         stop("Parameter 'data' expects a dataframe but received a ", class(data))
     }
-    if (!is.element(col_name, data_col_names)) {
-        stop("Parameter 'col_name' = ", col_name, " is not a column of the given dataframe")
+    if (!is.element(col_activity, data_col_names)) {
+        stop("Parameter 'col_activity' = ", col_activity, " is not a column of the given dataframe")
     }
     if (!is.element(timestamp, data_col_names)) {
         stop("Parameter 'timestamp' = ", timestamp, " is not a column of the given dataframe")
@@ -579,17 +842,17 @@ npcra_test_args <- function(data, col_name, timestamp, method) {
     if (!is.element(method, c(1,2,3))) {
         stop("Parameter 'method' expects an integer value equal to 1,2 or 3, but received ", method, " (classe ", class(method), ")")
     }
-    if(any(is.na(data[,col_name]))){
-        stop("Column 'col_name' = ", col_name, " has NA values")
+    if(any(is.na(data[,col_activity]))){
+        stop("Column 'col_activity' = ", col_activity, " has NA values")
     }
     if(any(is.na(data[,timestamp]))){
         stop("Column 'timestamp' = ", timestamp, " has NA values")
     }
 
-    col_name_class <- lapply(data[, col_name], class)
-    col_timestamp_class <- unlist(col_name_class)
-    if (!is.element("numeric", col_name_class)) {
-        stop("col_name must be a column that has only 'numeric' values. col_name is composed of: ", col_name_class)
+    col_activity_class <- lapply(data[, col_activity], class)
+    col_timestamp_class <- unlist(col_activity_class)
+    if (!is.element("numeric", col_activity_class)) {
+        stop("col_activity must be a column that has only 'numeric' values. col_name is composed of: ", col_activity_class)
     }
 
     col_timestamp_class <- lapply(data[, timestamp], class)
@@ -597,6 +860,5 @@ npcra_test_args <- function(data, col_name, timestamp, method) {
     if (!is.element("POSIXct", col_timestamp_class) || !is.element("POSIXt", col_timestamp_class)) {
         stop("timestamp must be a column that has 'POSIXct' or 'POSIXt' values. timestamp is composed of: ", col_timestamp_class)
     }
-
     TRUE
 }

@@ -7,19 +7,23 @@
 npcra_test_args(data, col_name, timestamp, method)
 }
 \arguments{
-\item{data}{Dataframe that contains the date variable and the variable that
-will be used to identify the 10 most active hours.}
+\item{data}{Dataframe that contains the date column and the column that
+will be used to identify the period of activity.}
 
-\item{col_name}{String with the name of the column that will be used in the
-calculation.}
+\item{timestamp}{String with the name of the column that contains the date
+and time of each observation (POSIX format).}
 
-\item{timestamp}{String with the name of the column that contains the
-dataframe dates.}
+\item{method}{An integer that represents one of the three common methods for
+calculating and analyzing M10:
 
-\item{method}{1 = whole period, 2 = average day, 3 = each day}
+1 = whole period,
 
-\item{fast}{True: It makes the M10 quick calculation, prone to errors; False:
-Scans completely and returns the correct M10 value, but more slowly}
+2 = average day,
+
+3 = each day.}
+
+\item{col_activity}{String with the name of the column that will be used in the
+calculation. The observations in this column must be in numeric format.}
 }
 \value{
 If no test stops, TRUE will be returned.
@@ -32,12 +36,14 @@ npcra functions.
 }
 \examples{
 \dontrun{
-npcra_test_args(test_log, "pim", "timestamp", 1, TRUE)}
+npcra_test_args(test_log, "pim", "timestamp", 1)}
 }
 \seealso{
 Other NPCRA functions: 
 \code{\link{npcra_is}()},
 \code{\link{npcra_iv}()},
+\code{\link{npcra_l5_average_day}()},
+\code{\link{npcra_l5_each_day}()},
 \code{\link{npcra_l5_whole_period}()},
 \code{\link{npcra_l5}()},
 \code{\link{npcra_m10_average_day}()},

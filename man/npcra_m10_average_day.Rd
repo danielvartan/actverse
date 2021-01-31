@@ -2,19 +2,19 @@
 % Please edit documentation in R/npcra.R
 \name{npcra_m10_average_day}
 \alias{npcra_m10_average_day}
-\title{Non-Parametric Function M10 (Most Active 10 Hours) for the full period.}
+\title{Non-Parametric Function M10 (Most Active 10 Hours) for the avarage day}
 \usage{
-npcra_m10_average_day(data, col_name = "pim", timestamp = "timestamp")
+npcra_m10_average_day(data, col_activity = "pim", timestamp = "timestamp")
 }
 \arguments{
 \item{data}{Dataframe that contains the date column and the column that
 will be used to identify the 10 most active hours.}
 
-\item{timestamp}{String with the name of the column that contains the date
-and time of each observation (POSIX format).}
-
 \item{col_activity}{String with the name of the column that will be used in the
 calculation. The observations in this column must be in numeric format.}
+
+\item{timestamp}{String with the name of the column that contains the date
+and time of each observation (POSIX format).}
 }
 \value{
 a Dataframe with the value of M10 in the first position and the start
@@ -24,16 +24,30 @@ second position.
 \description{
 \ifelse{html}{\out{<a href='https://www.tidyverse.org/lifecycle/#experimental'><img src='figures/lifecycle-experimental.svg' alt='Experimental lifecycle'></a>}}{\strong{Experimental}}
 
-Calculates and finds the most active window of 10 hours in all records.
+Calculates the most active window of 10 hours considering the average day of
+the observations, that is, the window of the next 10 hours disregarding the
+difference in days. The composition of all activities is considered
+as a single day: the average day.
 }
 \examples{
 \dontrun{
 npcra_m10_average_day(test_log)}
 }
+\references{
+WITTING, W. et al. Alterations in the circadian rest-activity rhythm in aging
+and Alzheimer's disease. Biological Psychiatry, v. 27, n. 6, p. 563-572,
+Mar. 1990. doi: 10.1016/0006-3223(90)90523-5.
+
+GONCALVES, Bruno da Silva Brandao et al. A fresh look at the use of
+nonparametric analysis in actimetry. Sleep Medicine Reviews, v. 20,
+p. 84-91, Apr. 2015. doi: 10.1016/j.smrv.2014.06.002.
+}
 \seealso{
 Other NPCRA functions: 
 \code{\link{npcra_is}()},
 \code{\link{npcra_iv}()},
+\code{\link{npcra_l5_average_day}()},
+\code{\link{npcra_l5_each_day}()},
 \code{\link{npcra_l5_whole_period}()},
 \code{\link{npcra_l5}()},
 \code{\link{npcra_m10_each_day}()},
