@@ -13,7 +13,7 @@
 #' to the next observation with the same approach. Note that the accuracy of the
 #' M10 is related to the validity of the given data range.
 #'
-#' @param data Dataframe that contains the date variable and the variable that
+#' @param data Dataframe that contains the date column and the column that
 #'   will be used to identify the 10 most active hours.
 #' @param col_activity String with the name of the column that will be used in the
 #'   calculation. The observations in this column must be in numeric format.
@@ -34,6 +34,15 @@
 #' @return A Dataframe with the value of M10 in the first position and the start
 #'   date of the 10 most active window in the period in the second position.
 #'
+#'@references
+#' WITTING, W. et al. Alterations in the circadian rest-activity rhythm in aging
+#'and Alzheimer's disease. Biological Psychiatry, v. 27, n. 6, p. 563-572,
+#'Mar. 1990. doi: 10.1016/0006-3223(90)90523-5.
+#'
+#' GONCALVES, Bruno da Silva Brandao et al. A fresh look at the use of
+#' nonparametric analysis in actimetry. Sleep Medicine Reviews, v. 20,
+#' p. 84-91, Apr. 2015. doi: 10.1016/j.smrv.2014.06.002.
+#'
 #' @family NPCRA functions
 #' @export
 #'
@@ -44,7 +53,7 @@
 #' }
 npcra_m10 <- function(data, col_activity = "pim", timestamp="timestamp", method=1) {
     time_begin <- Sys.time()
-    npcra_test_args(data, col_activity, timestamp, method, fast)
+    npcra_test_args(data, col_activity, timestamp, method)
 
     m10 <- data.frame()
     if (method==1) {
@@ -57,10 +66,177 @@ npcra_m10 <- function(data, col_activity = "pim", timestamp="timestamp", method=
         m10 <- npcra_m10_each_day(data, col_activity, timestamp)
     }
 
-    duration <- Sys.time() - time_begin
+    duration <- round(Sys.time()-time_begin,digits = 2)
     message("M10 was calculated in ", duration, " seconds")
 
     m10
+}
+
+#' Non-Parametric Function M10 (Most Active 10 Hours) for the full period.
+#'
+#' @description
+#'
+#' `r lifecycle::badge("experimental")`
+#'
+#' Calculates and finds the most active window of 10 hours in all records.
+#'
+#' @param data Dataframe that contains the date column and the column that
+#'   will be used to identify the 10 most active hours.
+#' @param col_activity String with the name of the column that will be used in the
+#'   calculation. The observations in this column must be in numeric format.
+#' @param timestamp String with the name of the column that contains the date
+#'  and time of each observation (POSIX format).
+#'
+#' @return a Dataframe with the value of M10 in the first position and the start
+#'   date of the 10 most active window in the period in the second position.
+#'
+#' @family NPCRA functions
+#' @importFrom lubridate hours
+#' @importFrom magrittr %>%
+#' @importFrom dplyr select
+#' @importFrom dplyr rename
+#' @importFrom dplyr mutate
+#' @importFrom dplyr as_tibble
+#' @importFrom dplyr filter
+#'
+#' @export
+#'
+#' @examples
+#' \dontrun{
+#' npcra_m10_whole_period(test_log)}
+
+npcra_m10_whole_period <- function(data, col_name = "pim", timestamp="timestamp") {
+    valid_data <- data %>%
+        select(timestamp, col_name) %>%
+        rename("timestamp" = timestamp, "x" = col_name) %>%
+        mutate(endWindow = timestamp+lubridate::hours(10)) %>%
+        mutate(m10 = 0)
+
+    index_last_valid_register <- which.min(valid_data$endWindow < last(valid_data$timestamp))
+    window_index <- 1
+    value_to_remove <- 0
+    sum_in_10_hours <- 0
+
+    for (index in seq_len(index_last_valid_register-1)) {
+        window_sum <- 0
+        while (valid_data$timestamp[window_index] < valid_data$endWindow[index]) {
+            window_sum <- window_sum + valid_data$x[window_index]
+            window_index <- window_index + 1
+        }
+        sum_in_10_hours <- sum_in_10_hours - value_to_remove + window_sum
+        value_to_remove <- valid_data$x[index]
+        valid_data$m10[index] <- sum_in_10_hours / (window_index-index)
+    }
+
+    max_m10 <- max(valid_data$m10)
+    m10_data <- valid_data %>%
+        select(m10, timestamp) %>%
+        filter(m10 == max_m10) %>%
+        rename("start_date"=timestamp)
+
+    m10_data
+}
+
+#' Non-Parametric Function M10 (Most Active 10 Hours) for the avarage day
+#'
+#' @description
+#'
+#' `r lifecycle::badge("experimental")`
+#'
+#' Calculates the most active window of 10 hours considering the average day of
+#'  the observations, that is, the window of the next 10 hours disregarding the
+#'   difference in days. The composition of all activities is considered
+#'   as a single day: the average day.
+#'
+#' @param data Dataframe that contains the date column and the column that
+#'   will be used to identify the 10 most active hours.
+#' @param col_activity String with the name of the column that will be used in the
+#'   calculation. The observations in this column must be in numeric format.
+#' @param timestamp String with the name of the column that contains the date
+#'  and time of each observation (POSIX format).
+#'
+#' @return a Dataframe with the value of M10 in the first position and the start
+#'   time (character format) of the 10 most active window in the period in the
+#'   second position.
+#'
+#' @family NPCRA functions
+#' @importFrom lubridate hour
+#' @importFrom lubridate date<-
+#' @importFrom magrittr %>%
+#' @importFrom dplyr select
+#' @importFrom dplyr rename
+#' @importFrom dplyr mutate
+#' @importFrom dplyr as_tibble
+#' @importFrom dplyr filter
+#' @importFrom dplyr arrange
+#' @importFrom dplyr n_distinct
+#'
+#' @export
+#'
+#' @examples
+#' \dontrun{
+#' npcra_m10_average_day(test_log)}
+npcra_m10_average_day <- function(data, col_name = "pim", timestamp="timestamp") {
+    valid_data <- data %>%
+        select(timestamp, col_name) %>%
+        rename("timestamp" = timestamp, "x" = col_name) %>%
+        mutate(time = data.table::as.ITime(timestamp)) %>%
+        mutate(timestamp_same_origin = timestamp) %>%
+        mutate(m10 = 0) %>%
+        arrange(time)
+    date(valid_data$timestamp_same_origin) <- lubridate::origin
+
+    index<-1
+    window_index <- 1
+    size_window <- 1
+    value_to_remove <- 0
+    sum_in_10_hours <- 0
+    first_14h_index <- which.max(hour(valid_data$timestamp_same_origin) == 14)
+    last_valid_index <- n_distinct(valid_data)
+    index_in_window = abs(difftime(valid_data$timestamp_same_origin[window_index], valid_data$timestamp_same_origin[index], units = "hour")) < 10
+
+
+    while (index < first_14h_index) {
+        window_sum <- 0
+        while (abs(difftime(valid_data$timestamp_same_origin[window_index], valid_data$timestamp_same_origin[index], units = "hour")) < 10) {
+            window_sum <- window_sum + valid_data$x[window_index]
+            window_index <- window_index + 1
+            size_window <- size_window+1
+            if (window_index == last_valid_index) break
+
+        }
+        sum_in_10_hours <- sum_in_10_hours - value_to_remove + window_sum
+        value_to_remove <- valid_data$x[index]
+        valid_data$m10[index] <- sum_in_10_hours / (size_window-index)
+
+        index <- index+1
+    }
+
+    window_index <-1
+
+    while (index <= last_valid_index) {
+        window_sum <- 0
+        while (abs(difftime(valid_data$timestamp_same_origin[window_index], valid_data$timestamp_same_origin[index], units = "hour")) > 14) {
+            window_sum <- window_sum + valid_data$x[window_index]
+            window_index <- window_index + 1
+            size_window <- size_window+1
+        }
+        sum_in_10_hours <- sum_in_10_hours - value_to_remove + window_sum
+        value_to_remove <- valid_data$x[index]
+        valid_data$m10[index] <- sum_in_10_hours / (size_window-index)
+
+        index <- index+1
+    }
+
+
+    max_m10 <- max(valid_data$m10)
+    m10_data <- valid_data %>%
+        select(m10, timestamp_same_origin) %>%
+        filter(m10 == max_m10) %>%
+        rename("start_date"=timestamp_same_origin) %>%
+        mutate(start_date = strftime(start_date, format="%H:%M:%S"))
+
+    m10_data
 }
 
 #' Non-Parametric Function M10 (Most Active 10 Hours) for each day
@@ -69,39 +245,41 @@ npcra_m10 <- function(data, col_activity = "pim", timestamp="timestamp", method=
 #'
 #' `r lifecycle::badge("experimental")`
 #'
-#' "M10 represents activity during the most active period of the day. This
-#' measure may be influenced by daytime napping" - WITTING, W. (1990) This
-#' calculation method considers the 10-hour window most active for each day.
+#' "Calculate the most active window of 10 hours for each different day.
 #'
-#' @param data Dataframe that contains the date variable and the variable that
+#' @param data Dataframe that contains the date column and the column that
 #'   will be used to identify the 10 most active hours.
-#' @param col_name String with the name of the column that will be used in the
-#'   calculation.
-#' @param timestamp String with the name of the column that contains the
-#'   dataframe dates.
+#' @param col_activity String with the name of the column that will be used in the
+#'   calculation. The observations in this column must be in numeric format.
+#' @param timestamp String with the name of the column that contains the date
+#'  and time of each observation (POSIX format).
 #'
-#' @return a Dataframe with the value of M10 in the first position and the start
+#' @return A Dataframe with the value of M10 in the first position and the start
 #'   date of the 10 most active window by day in the second position.
 #'
 #' @family NPCRA functions
+#'
 #' @importFrom lubridate hours
-#' @importFrom lubridate years
+#' @importFrom lubridate ymd
 #' @importFrom magrittr %>%
+#' @importFrom dplyr select
+#' @importFrom dplyr rename
+#' @importFrom dplyr mutate
+#' @importFrom dplyr as_tibble
+#'
 #' @export
 #'
 #' @examples
 #' \dontrun{
-#' npcra_m10_each_day(test_log, fast = FALSE)}
+#' npcra_m10_each_day(test_log)}
 npcra_m10_each_day <- function(data, col_name = "pim", timestamp="timestamp"){
-    time_begin <- Sys.time()
     valid_data <- data %>%
-        dplyr::select(timestamp, col_name) %>%
-        dplyr::rename("timestamp" = timestamp, "x" = col_name) %>%
-        dplyr::mutate(day = lubridate::ymd(strftime(timestamp, format="%y%m%d")),
-                      endWindow = timestamp+hours(10),
-                      hourEndWindow = as.numeric(strftime(endWindow,format="%H")),
-                      mean_10_hours = 0,
-                      )
+        select(timestamp, col_name) %>%
+        rename("timestamp" = timestamp, "x" = col_name) %>%
+        mutate(day = ymd(strftime(timestamp, format="%y%m%d")),
+               endWindow = timestamp+hours(10),
+               hourEndWindow = as.numeric(strftime(endWindow,format="%H")),
+               mean_10_hours = 0,)
 
     unique_days <- unique(valid_data$day)
     index_first_days <- match(unique_days,valid_data$day)
@@ -130,134 +308,12 @@ npcra_m10_each_day <- function(data, col_name = "pim", timestamp="timestamp"){
 
     m10 <- tapply(valid_data$mean_10_hours, valid_data$day, max)
     m10_first_date <- valid_data$timestamp[match(m10,valid_data$mean_10_hours)]
-    m10_each_day <- cbind.data.frame(m10, unique_days, m10_first_date)
+    m10_each_day <- cbind.data.frame(m10,  m10_first_date)
     m10_each_day <- m10_each_day %>%
-        dplyr::rename("day"=unique_days, "start_date"=m10_first_date) %>%
-        dplyr::as_tibble()
+        rename("start_date"=m10_first_date) %>%
+        as_tibble()
 
-    duration <- round(Sys.time()-time_begin,digits = 2)
-    message("Time spent: ", duration, " seconds")
     m10_each_day
-}
-
-#' Non-Parametric Function M10 (Most Active 10 Hours) for the entire period
-#'
-#' @description
-#'
-#' `r lifecycle::badge("experimental")`
-#'
-#' "M10 represents activity during the most active period of the day. This
-#' measure may be influenced by daytime napping" - WITTING, W. (1990) This
-#' calculation method considers the 10-hour window most active for all data.
-#'
-#' @param data Dataframe that contains the date variable and the variable that
-#'   will be used to identify the 10 most active hours.
-#' @param col_name String with the name of the column that will be used in the
-#'   calculation.
-#' @param timestamp String with the name of the column that contains the
-#'   dataframe dates.
-#'
-#' @return a Dataframe with the value of M10 in the first position and the start
-#'   date of the 10 most active window in the period in the second position.
-#'
-#' @family NPCRA functions
-#' @importFrom lubridate hours
-#' @export
-#'
-#' @examples
-#' \dontrun{
-#' npcra_m10_whole_period(test_log, fast = FALSE)}
-
-npcra_m10_whole_period <- function(data, col_name = "pim", timestamp="timestamp") {
-    time_begin <- Sys.time()
-    valid_data <- data %>%
-        dplyr::select(timestamp, col_name) %>%
-        dplyr::rename("timestamp" = timestamp, "x" = col_name) %>%
-        dplyr::mutate(endWindow = timestamp+lubridate::hours(10)) %>%
-        dplyr::mutate(m10 = 0)
-
-    index_last_valid_register <- which.min(valid_data$endWindow < last(valid_data$timestamp))
-    window_index <- 1
-    value_to_remove <- 0
-    sum_in_10_hours <- 0
-
-    for (index in seq_len(index_last_valid_register-1)) {
-        window_sum <- 0
-        while (valid_data$timestamp[window_index] < valid_data$endWindow[index]) {
-            window_sum <- window_sum + valid_data$x[window_index]
-            window_index <- window_index + 1
-        }
-        sum_in_10_hours <- sum_in_10_hours - value_to_remove + window_sum
-        value_to_remove <- valid_data$x[index]
-        valid_data$m10[index] <- sum_in_10_hours / (window_index-index)
-    }
-
-    max_m10 <- max(valid_data$m10)
-    m10_data <- valid_data %>%
-        dplyr::select(m10, timestamp) %>%
-        dplyr::filter(m10 == max_m10) %>%
-        dplyr::rename("start_date"=timestamp)
-
-    duration <- round(Sys.time()-time_begin,digits = 2)
-    message("Time spent: ", duration, " seconds")
-    m10_data
-}
-
-
-npcra_m10_average_day <- function(data, col_name = "pim", timestamp="timestamp") {
-    time_begin <- Sys.time()
-    valid_data <- data %>%
-        dplyr::select(timestamp, col_name) %>%
-        dplyr::rename("timestamp" = timestamp, "x" = col_name) %>%
-        dplyr::mutate(hour = data.table::as.ITime(timestamp)) %>%
-        dplyr::mutate(timestamp_same_origin = timestamp) %>%
-        dplyr::mutate(m10 = 0) %>%
-        dplyr::arrange(hour)
-    lubridate::date(valid_data$timestamp_same_origin) <- lubridate::origin
-
-    index<-1
-    window_index <- 1
-    size_window <- 1
-    value_to_remove <- 0
-    sum_in_10_hours <- 0
-    first_14h_index <- which.max(lubridate::hour(valid_data$timestamp_same_origin) == 14)
-    last_valid_index <- dplyr::n_distinct(valid_data)
-    index_in_window = abs(difftime(valid_data$timestamp_same_origin[window_index], valid_data$timestamp_same_origin[index], units = "hour")) < 10
-
-    while (index < last_valid_index) {
-        window_sum <- 0
-        message(index)
-        if(index == first_14h_index){
-            index_in_window <- abs(difftime(valid_data$timestamp_same_origin[window_index], valid_data$timestamp_same_origin[index], units = "hour")) > 14
-        }
-
-        while (index_in_window) {
-            window_sum <- window_sum + valid_data$x[window_index]
-            window_index <- window_index + 1
-            size_window <- size_window+1
-            if (window_index == last_valid_index) break
-
-        }
-        sum_in_10_hours <- sum_in_10_hours - value_to_remove + window_sum
-        value_to_remove <- valid_data$x[index]
-        valid_data$m10[index] <- sum_in_10_hours / (size_window-index)
-
-        index <- index+1
-    }
-
-    window_index <-1
-
-    max_m10 <- max(valid_data$m10)
-    m10_data <- valid_data %>%
-        dplyr::select(m10, timestamp_same_origin) %>%
-        dplyr::filter(m10 == max_m10) %>%
-        dplyr::rename("start_date"=timestamp_same_origin) %>%
-        dplyr::mutate(start_date = strftime(start_date, format="%H:%M:%S"))
-
-
-    duration <- round(Sys.time()-time_begin,digits = 2)
-    message("Time spent: ", duration, " seconds")
-    m10_data
 }
 
 #' Non-Parametric Function L5 (Least Active 5  Hours)
@@ -508,7 +564,7 @@ npcra_iv <- function(data, col_x = "pim"){
 #' @examples
 #' \dontrun{
 #' npcra_test_args(test_log, "pim", "timestamp", 1, TRUE)}
-npcra_test_args <- function(data, col_name, timestamp, method, fast) {
+npcra_test_args <- function(data, col_name, timestamp, method) {
     data_col_names <- colnames(data)
 
     if (!is.data.frame(data)) {

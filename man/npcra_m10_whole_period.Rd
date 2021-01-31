@@ -2,19 +2,19 @@
 % Please edit documentation in R/npcra.R
 \name{npcra_m10_whole_period}
 \alias{npcra_m10_whole_period}
-\title{Non-Parametric Function M10 (Most Active 10 Hours) for the entire period}
+\title{Non-Parametric Function M10 (Most Active 10 Hours) for the full period.}
 \usage{
 npcra_m10_whole_period(data, col_name = "pim", timestamp = "timestamp")
 }
 \arguments{
-\item{data}{Dataframe that contains the date variable and the variable that
+\item{data}{Dataframe that contains the date column and the column that
 will be used to identify the 10 most active hours.}
 
-\item{col_name}{String with the name of the column that will be used in the
-calculation.}
+\item{timestamp}{String with the name of the column that contains the date
+and time of each observation (POSIX format).}
 
-\item{timestamp}{String with the name of the column that contains the
-dataframe dates.}
+\item{col_activity}{String with the name of the column that will be used in the
+calculation. The observations in this column must be in numeric format.}
 }
 \value{
 a Dataframe with the value of M10 in the first position and the start
@@ -23,13 +23,11 @@ date of the 10 most active window in the period in the second position.
 \description{
 \ifelse{html}{\out{<a href='https://www.tidyverse.org/lifecycle/#experimental'><img src='figures/lifecycle-experimental.svg' alt='Experimental lifecycle'></a>}}{\strong{Experimental}}
 
-"M10 represents activity during the most active period of the day. This
-measure may be influenced by daytime napping" - WITTING, W. (1990) This
-calculation method considers the 10-hour window most active for all data.
+Calculates and finds the most active window of 10 hours in all records.
 }
 \examples{
 \dontrun{
-npcra_m10_whole_period(test_log, fast = FALSE)}
+npcra_m10_whole_period(test_log)}
 }
 \seealso{
 Other NPCRA functions: 
@@ -37,6 +35,7 @@ Other NPCRA functions:
 \code{\link{npcra_iv}()},
 \code{\link{npcra_l5_whole_period}()},
 \code{\link{npcra_l5}()},
+\code{\link{npcra_m10_average_day}()},
 \code{\link{npcra_m10_each_day}()},
 \code{\link{npcra_m10}()},
 \code{\link{npcra_test_args}()}

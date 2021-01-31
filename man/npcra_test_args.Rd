@@ -4,7 +4,7 @@
 \alias{npcra_test_args}
 \title{Testing the arguments of nonparametric functions}
 \usage{
-npcra_test_args(data, col_name, timestamp, method, fast)
+npcra_test_args(data, col_name, timestamp, method)
 }
 \arguments{
 \item{data}{Dataframe that contains the date variable and the variable that
@@ -40,6 +40,7 @@ Other NPCRA functions:
 \code{\link{npcra_iv}()},
 \code{\link{npcra_l5_whole_period}()},
 \code{\link{npcra_l5}()},
+\code{\link{npcra_m10_average_day}()},
 \code{\link{npcra_m10_each_day}()},
 \code{\link{npcra_m10_whole_period}()},
 \code{\link{npcra_m10}()}

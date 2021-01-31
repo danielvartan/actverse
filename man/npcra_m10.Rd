@@ -7,7 +7,7 @@
 npcra_m10(data, col_activity = "pim", timestamp = "timestamp", method = 1)
 }
 \arguments{
-\item{data}{Dataframe that contains the date variable and the variable that
+\item{data}{Dataframe that contains the date column and the column that
 will be used to identify the 10 most active hours.}
 
 \item{col_activity}{String with the name of the column that will be used in the
@@ -50,12 +50,22 @@ npcra_m10(test_log, "pim")
 npcra_m10(test_log, method=3)
 }
 }
+\references{
+WITTING, W. et al. Alterations in the circadian rest-activity rhythm in aging
+and Alzheimer's disease. Biological Psychiatry, v. 27, n. 6, p. 563-572,
+Mar. 1990. doi: 10.1016/0006-3223(90)90523-5.
+
+GONCALVES, Bruno da Silva Brandao et al. A fresh look at the use of
+nonparametric analysis in actimetry. Sleep Medicine Reviews, v. 20,
+p. 84-91, Apr. 2015. doi: 10.1016/j.smrv.2014.06.002.
+}
 \seealso{
 Other NPCRA functions: 
 \code{\link{npcra_is}()},
 \code{\link{npcra_iv}()},
 \code{\link{npcra_l5_whole_period}()},
 \code{\link{npcra_l5}()},
+\code{\link{npcra_m10_average_day}()},
 \code{\link{npcra_m10_each_day}()},
 \code{\link{npcra_m10_whole_period}()},
 \code{\link{npcra_test_args}()}
