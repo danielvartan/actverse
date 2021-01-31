@@ -4,11 +4,14 @@
 \alias{npcra_test_args}
 \title{Testing the arguments of nonparametric functions}
 \usage{
-npcra_test_args(data, col_name, timestamp, method)
+npcra_test_args(data, col_activity, timestamp, method)
 }
 \arguments{
 \item{data}{Dataframe that contains the date column and the column that
 will be used to identify the period of activity.}
+
+\item{col_activity}{String with the name of the column that will be used in the
+calculation. The observations in this column must be in numeric format.}
 
 \item{timestamp}{String with the name of the column that contains the date
 and time of each observation (POSIX format).}
@@ -21,9 +24,6 @@ calculating and analyzing M10:
 2 = average day,
 
 3 = each day.}
-
-\item{col_activity}{String with the name of the column that will be used in the
-calculation. The observations in this column must be in numeric format.}
 }
 \value{
 If no test stops, TRUE will be returned.
