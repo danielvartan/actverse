@@ -41,6 +41,7 @@ npcra_test_args(test_log, "pim", "timestamp", 1)}
 \seealso{
 Other NPCRA functions: 
 \code{\link{npcra_is}()},
+\code{\link{npcra_ivm}()},
 \code{\link{npcra_iv}()},
 \code{\link{npcra_l5_average_day}()},
 \code{\link{npcra_l5_each_day}()},

@@ -848,7 +848,7 @@ npcra_is <- function(data, col_x = "pim", col_date = "timestamp"){
 #' @importFrom dplyr select
 #' @importFrom dplyr rename
 #' @importFrom dplyr group_by
-#' @importFrom dplyr n_distinct
+#' @importFrom dplyr pull
 #'
 #' @export
 #'
@@ -856,15 +856,21 @@ npcra_is <- function(data, col_x = "pim", col_date = "timestamp"){
 #' \dontrun{
 #' npcra_iv(test_log, "body_temperature")}
 npcra_iv <- function(data, col_activity = "pim", timestamp="timestamp", minutes_interval=60){
-    time_interval <- paste(minutes_interval, "min")
-    data <- data %>%
-        rename("timestamp" = timestamp, "x" = col_activity) %>%
-        group_by(interval=cut(timestamp, time_interval)) %>%
-        select(x, interval)
+    if(minutes_interval == 1) {
+        means_activity <- data %>%
+            rename("x" = col_activity) %>%
+            pull(x)
+    }
+    else{
+        time_interval <- paste(minutes_interval, "min")
+        data <- data %>%
+            rename("timestamp" = timestamp, "x" = col_activity) %>%
+            group_by(interval=cut(timestamp, time_interval)) %>%
+            select(x, interval)
 
-    means_activity <- tapply(data$x, data$interval, mean)
-
-    n <- n_distinct(means_activity)
+        means_activity <- tapply(data$x, data$interval, mean)
+    }
+    n <- length(means_activity)
 
     square_diff <- diff(means_activity)
     square_diff <- square_diff^2
@@ -876,6 +882,42 @@ npcra_iv <- function(data, col_activity = "pim", timestamp="timestamp", minutes_
 
     iv <- numerator/denonimator
     iv
+}
+
+#' Non-Parametric Function IVm (Intradaily  Variability)
+#'
+#' @description
+#'
+#' `r lifecycle::badge("experimental")`
+#'
+#' "IV was included to detect fragmentation of the rest-activity rhythms. High
+#' IV may be an indicative of daytime napping and/or nighttime arousals" -
+#' WITTING, W. (1990)
+#'
+#' @param data Dataframe containing the column of numeric values that will be
+#'   used as X in the calculation.
+#' @param col_x String with the name of the column that will be used in the
+#'   calculation.
+#'
+#' @return A numeric value.
+#' @family NPCRA functions
+#'
+#' @export
+#'
+#' @examples
+#' \dontrun{
+#' npcra_iv(test_log, "body_temperature")}
+npcra_ivm<- function(data, col_activity = "pim", timestamp="timestamp", minute_limit=60){
+    current_minute <- 1
+    sum_iv <- 0
+    while (current_minute <= minute_limit) {
+        sum_iv <- sum_iv + npcra_iv(data, col_activity, timestamp, current_minute)
+        message( npcra_iv(data, col_activity, timestamp, current_minute))
+        current_minute <- current_minute + 1
+    }
+    iv_mean <- sum_iv/minute_limit
+
+    iv_mean
 }
 
 #' Testing the arguments of nonparametric functions
