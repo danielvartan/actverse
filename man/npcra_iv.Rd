@@ -2,7 +2,7 @@
 % Please edit documentation in R/npcra.R
 \name{npcra_iv}
 \alias{npcra_iv}
-\title{Non-Parametric Function IV (Intradaily  Variability)}
+\title{Non-Parametric Function IV (Intradaily Variability)}
 \usage{
 npcra_iv(
   data,
@@ -12,11 +12,20 @@ npcra_iv(
 )
 }
 \arguments{
-\item{data}{Dataframe containing the column of numeric values that will be
-used as X in the calculation.}
+\item{data}{Dataframe that contains the date column and the column with the
+activity values}
 
-\item{col_x}{String with the name of the column that will be used in the
-calculation.}
+\item{col_activity}{String with the name of the column that will be used in the
+calculation. The observations in this column must be in numeric format.}
+
+\item{timestamp}{String with the name of the column that contains the date
+and time of each observation (POSIX format).}
+
+\item{minutes_interval}{integer value representing the duration in minutes
+of the time interval for grouping the data. By default, 60 minutes are
+considered, this means that the activity will be averaged at hourly intervals.
+The minimum value is 1 minute, where all points will be considered
+(so there will be no average in intervals).}
 }
 \value{
 A numeric value.
@@ -24,13 +33,23 @@ A numeric value.
 \description{
 \ifelse{html}{\out{<a href='https://www.tidyverse.org/lifecycle/#experimental'><img src='figures/lifecycle-experimental.svg' alt='Experimental lifecycle'></a>}}{\strong{Experimental}}
 
-"IV was included to detect fragmentation of the rest-activity rhythms. High
-IV may be an indicative of daytime napping and/or nighttime arousals" -
-WITTING, W. (1990)
+Intradaily Variability identifies the fragmentation of the rest-activity rhythms.
+This fragmentation can have different results for the same data according
+to the chosen time interval, that is, a minute by minute calculation brings a
+more sensitive result than a check in hours, where small changes tend to have
+less influence on intraday variability.
 }
 \examples{
 \dontrun{
 npcra_iv(test_log, "body_temperature")}
+}
+\references{
+WITTING, W. et al. Alterations in the circadian rest-activity rhythm in aging
+and Alzheimer's disease. Biological Psychiatry, v. 27, n. 6, p. 563-572,
+Mar. 1990. doi: 10.1016/0006-3223(90)90523-5.
+
+GONCALVES, Bruno S. B. et al. Nonparametric methods in actigraphy: an update.
+Sleep Science, v. 7, n. 3, p. 158-164, 2014. doi: 10.1016/j.slsci.2014.09.013.
 }
 \seealso{
 Other NPCRA functions: 

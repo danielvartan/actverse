@@ -2,7 +2,7 @@
 % Please edit documentation in R/npcra.R
 \name{npcra_ivm}
 \alias{npcra_ivm}
-\title{Non-Parametric Function IVm (Intradaily  Variability)}
+\title{Non-Parametric Function IVm (Intradaily Variability mean)}
 \usage{
 npcra_ivm(
   data,
@@ -12,11 +12,18 @@ npcra_ivm(
 )
 }
 \arguments{
-\item{data}{Dataframe containing the column of numeric values that will be
-used as X in the calculation.}
+\item{data}{Dataframe that contains the date column and the column with the
+activity values}
 
-\item{col_x}{String with the name of the column that will be used in the
-calculation.}
+\item{col_activity}{String with the name of the column that will be used in the
+calculation. The observations in this column must be in numeric format.}
+
+\item{timestamp}{String with the name of the column that contains the date
+and time of each observation (POSIX format).}
+
+\item{minute_limit}{integer value that corresponds to the last minute interval
+to group the data. The default is 60, so 60 values of IR will be calculated to
+take the average, with the first every minute and the last every 60 minutes.}
 }
 \value{
 A numeric value.
@@ -24,13 +31,22 @@ A numeric value.
 \description{
 \ifelse{html}{\out{<a href='https://www.tidyverse.org/lifecycle/#experimental'><img src='figures/lifecycle-experimental.svg' alt='Experimental lifecycle'></a>}}{\strong{Experimental}}
 
-"IV was included to detect fragmentation of the rest-activity rhythms. High
-IV may be an indicative of daytime napping and/or nighttime arousals" -
-WITTING, W. (1990)
+Intradaily Variability identifies the fragmentation of the rest-activity rhythms.
+This method calculates the average of IVs up to a minute limit. By default,
+the limit is 60 minutes, so the 60 IVs will be calculated separately and the
+results will be averaged to be returned.
 }
 \examples{
 \dontrun{
 npcra_iv(test_log, "body_temperature")}
+}
+\references{
+WITTING, W. et al. Alterations in the circadian rest-activity rhythm in aging
+and Alzheimer's disease. Biological Psychiatry, v. 27, n. 6, p. 563-572,
+Mar. 1990. doi: 10.1016/0006-3223(90)90523-5.
+
+GONCALVES, Bruno S. B. et al. Nonparametric methods in actigraphy: an update.
+Sleep Science, v. 7, n. 3, p. 158-164, 2014. doi: 10.1016/j.slsci.2014.09.013.
 }
 \seealso{
 Other NPCRA functions: 

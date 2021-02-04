@@ -826,28 +826,47 @@ npcra_is <- function(data, col_x = "pim", col_date = "timestamp"){
     is
 }
 
-#' Non-Parametric Function IV (Intradaily  Variability)
+#' Non-Parametric Function IV (Intradaily Variability)
 #'
 #' @description
 #'
 #' `r lifecycle::badge("experimental")`
 #'
-#' "IV was included to detect fragmentation of the rest-activity rhythms. High
-#' IV may be an indicative of daytime napping and/or nighttime arousals" -
-#' WITTING, W. (1990)
+#' Intradaily Variability identifies the fragmentation of the rest-activity rhythms.
+#' This fragmentation can have different results for the same data according
+#' to the chosen time interval, that is, a minute by minute calculation brings a
+#'  more sensitive result than a check in hours, where small changes tend to have
+#'  less influence on intraday variability.
 #'
-#' @param data Dataframe containing the column of numeric values that will be
-#'   used as X in the calculation.
-#' @param col_x String with the name of the column that will be used in the
-#'   calculation.
+#' @param data Dataframe that contains the date column and the column with the
+#' activity values
+#' @param col_activity String with the name of the column that will be used in the
+#'   calculation. The observations in this column must be in numeric format.
+#' @param timestamp String with the name of the column that contains the date
+#'  and time of each observation (POSIX format).
+#' @param minutes_interval integer value representing the duration in minutes
+#' of the time interval for grouping the data. By default, 60 minutes are
+#' considered, this means that the activity will be averaged at hourly intervals.
+#'  The minimum value is 1 minute, where all points will be considered
+#'  (so there will be no average in intervals).
 #'
 #' @return A numeric value.
+#'
+#' @references
+#' WITTING, W. et al. Alterations in the circadian rest-activity rhythm in aging
+#'and Alzheimer's disease. Biological Psychiatry, v. 27, n. 6, p. 563-572,
+#'Mar. 1990. doi: 10.1016/0006-3223(90)90523-5.
+#'
+#' GONCALVES, Bruno S. B. et al. Nonparametric methods in actigraphy: an update.
+#'  Sleep Science, v. 7, n. 3, p. 158-164, 2014. doi: 10.1016/j.slsci.2014.09.013.
+#'
 #' @family NPCRA functions
 #'
 #' @importFrom stats var
 #' @importFrom dplyr select
 #' @importFrom dplyr rename
 #' @importFrom dplyr group_by
+#' @importFrom magrittr %>%
 #' @importFrom dplyr pull
 #'
 #' @export
@@ -884,22 +903,37 @@ npcra_iv <- function(data, col_activity = "pim", timestamp="timestamp", minutes_
     iv
 }
 
-#' Non-Parametric Function IVm (Intradaily  Variability)
+#' Non-Parametric Function IVm (Intradaily Variability mean)
 #'
 #' @description
 #'
 #' `r lifecycle::badge("experimental")`
 #'
-#' "IV was included to detect fragmentation of the rest-activity rhythms. High
-#' IV may be an indicative of daytime napping and/or nighttime arousals" -
-#' WITTING, W. (1990)
+#' Intradaily Variability identifies the fragmentation of the rest-activity rhythms.
+#' This method calculates the average of IVs up to a minute limit. By default,
+#' the limit is 60 minutes, so the 60 IVs will be calculated separately and the
+#'  results will be averaged to be returned.
 #'
-#' @param data Dataframe containing the column of numeric values that will be
-#'   used as X in the calculation.
-#' @param col_x String with the name of the column that will be used in the
-#'   calculation.
+#' @param data Dataframe that contains the date column and the column with the
+#' activity values
+#' @param col_activity String with the name of the column that will be used in the
+#'   calculation. The observations in this column must be in numeric format.
+#' @param timestamp String with the name of the column that contains the date
+#'  and time of each observation (POSIX format).
+#' @param minute_limit integer value that corresponds to the last minute interval
+#' to group the data. The default is 60, so 60 values of IR will be calculated to
+#' take the average, with the first every minute and the last every 60 minutes.
 #'
 #' @return A numeric value.
+#'
+#' @references
+#' WITTING, W. et al. Alterations in the circadian rest-activity rhythm in aging
+#'and Alzheimer's disease. Biological Psychiatry, v. 27, n. 6, p. 563-572,
+#'Mar. 1990. doi: 10.1016/0006-3223(90)90523-5.
+#'
+#' GONCALVES, Bruno S. B. et al. Nonparametric methods in actigraphy: an update.
+#'  Sleep Science, v. 7, n. 3, p. 158-164, 2014. doi: 10.1016/j.slsci.2014.09.013.
+#'
 #' @family NPCRA functions
 #'
 #' @export
@@ -912,7 +946,6 @@ npcra_ivm<- function(data, col_activity = "pim", timestamp="timestamp", minute_l
     sum_iv <- 0
     while (current_minute <= minute_limit) {
         sum_iv <- sum_iv + npcra_iv(data, col_activity, timestamp, current_minute)
-        message( npcra_iv(data, col_activity, timestamp, current_minute))
         current_minute <- current_minute + 1
     }
     iv_mean <- sum_iv/minute_limit
