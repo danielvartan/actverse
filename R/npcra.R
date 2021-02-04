@@ -694,7 +694,74 @@ npcra_l5_each_day <- function(data, col_activity = "pim", timestamp="timestamp")
 
     l5_each_day
 }
+#' Non-Parametric Function RA (Relative Amplitude)
+#'
+#' @description
+#'
+#' `r lifecycle::badge("experimental")`
+#'
+#' Calculate the amplitude of the rest-activity rhythm. the result is based on
+#' the difference between the 10 most active hours (M10) and the 5 least active hours (L5).
+#'
+#' @param data Dataframe that contains the date column and the column with the
+#' activity values
+#' @param col_activity String with the name of the column that will be used in the
+#'   calculation. The observations in this column must be in numeric format.
+#' @param timestamp String with the name of the column that contains the date
+#'  and time of each observation (POSIX format).
+#'
+#' @return For methods 1 and 2 returns the numerical value that represents the
+#' relative amplitude. For method equals 3 returns a tibble with the values of
+#' RA in the first column and the date in the second column.
+#'
+#' @family NPCRA functions
+#'
+#' @references
+#' WITTING, W. et al. Alterations in the circadian rest-activity rhythm in aging
+#'and Alzheimer's disease. Biological Psychiatry, v. 27, n. 6, p. 563-572,
+#'Mar. 1990. doi: 10.1016/0006-3223(90)90523-5.
+#'
+#' GONCALVES, Bruno da Silva Brandao et al. A fresh look at the use of
+#' nonparametric analysis in actimetry. Sleep Medicine Reviews, v. 20,
+#' p. 84-91, Apr. 2015. doi: 10.1016/j.smrv.2014.06.002.
+#'
+#' @export
+#'
+#' @examples
+#' \dontrun{
+#' npcra_ra(test_log, "pim", "timestamp", 3)}
+npcra_ra <- function(data, col_activity = "pim", timestamp="timestamp", method=1){
+    time_begin <- Sys.time()
+    if (!is.element(method, c(1,2,3))) {
+        stop("Parameter 'method' expects an integer value equal to 1,2 or 3, but received ", method, " (class ", class(method), ")")
+    }
 
+    m10 <- npcra_m10(data, col_activity, timestamp, method)
+    l5 <- npcra_l5(data, col_activity, timestamp, method)
+    ra <- 0
+
+    if(method==1 | method==2){
+        m10 <- m10[1]
+        l5 <- l5[1]
+        ra <- (m10-l5)/(m10+l5)
+        ra <- ra[1,1]
+    }
+    else{
+        m10_values <- m10[,1]
+        dates <- m10[,2]
+        l5_values <- l5[,1]
+
+        ra_values <- (m10_values-l5_values)/(m10_values+l5_values)
+        ra <- dplyr::as_tibble(c(ra_values, dates))
+
+        colnames(ra) <- c("ra", "date")
+        ra$date = lubridate::date(ra$date)
+    }
+
+    duration <- round(Sys.time()-time_begin,digits = 2)
+    message("RA was calculated in ", duration, " seconds")
+    ra
+}
 
 #' Non-Parametric Function IS (Interdaily Stability )
 #'
@@ -840,7 +907,7 @@ npcra_test_args <- function(data, col_activity, timestamp, method) {
         stop("Parameter 'timestamp' = ", timestamp, " is not a column of the given dataframe")
     }
     if (!is.element(method, c(1,2,3))) {
-        stop("Parameter 'method' expects an integer value equal to 1,2 or 3, but received ", method, " (classe ", class(method), ")")
+        stop("Parameter 'method' expects an integer value equal to 1,2 or 3, but received ", method, " (class ", class(method), ")")
     }
     if(any(is.na(data[,col_activity]))){
         stop("Column 'col_activity' = ", col_activity, " has NA values")
