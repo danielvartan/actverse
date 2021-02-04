@@ -49,6 +49,7 @@ Other NPCRA functions:
 \code{\link{npcra_m10_average_day}()},
 \code{\link{npcra_m10_each_day}()},
 \code{\link{npcra_m10_whole_period}()},
-\code{\link{npcra_m10}()}
+\code{\link{npcra_m10}()},
+\code{\link{npcra_ra}()}
 }
 \concept{NPCRA functions}

@@ -70,6 +70,7 @@ Other NPCRA functions:
 \code{\link{npcra_m10_average_day}()},
 \code{\link{npcra_m10_each_day}()},
 \code{\link{npcra_m10_whole_period}()},
+\code{\link{npcra_ra}()},
 \code{\link{npcra_test_args}()}
 }
 \concept{NPCRA functions}

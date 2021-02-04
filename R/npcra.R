@@ -781,6 +781,15 @@ npcra_ra <- function(data, col_activity = "pim", timestamp="timestamp", method=1
 #' @param col_date String with the name of the column with date values.
 #'
 #' @return A numeric value.
+#'
+#' @references
+#' WITTING, W. et al. Alterations in the circadian rest-activity rhythm in aging
+#'and Alzheimer's disease. Biological Psychiatry, v. 27, n. 6, p. 563-572,
+#'Mar. 1990. doi: 10.1016/0006-3223(90)90523-5.
+#'
+#' GONCALVES, Bruno S. B. et al. Nonparametric methods in actigraphy: an update.
+#'  Sleep Science, v. 7, n. 3, p. 158-164, 2014. doi: 10.1016/j.slsci.2014.09.013.
+#'
 #' @family NPCRA functions
 #' @importFrom lubridate day
 #' @export
@@ -834,29 +843,35 @@ npcra_is <- function(data, col_x = "pim", col_date = "timestamp"){
 #'
 #' @return A numeric value.
 #' @family NPCRA functions
+#'
+#' @importFrom stats var
+#' @importFrom dplyr select
+#' @importFrom dplyr rename
+#' @importFrom dplyr group_by
+#' @importFrom dplyr n_distinct
+#'
 #' @export
 #'
 #' @examples
 #' \dontrun{
 #' npcra_iv(test_log, "body_temperature")}
-npcra_iv <- function(data, col_x = "pim"){
-    #creates a vector containing only col_x data
-    data <- as.vector(rbind(data[col_x]))
-    data <- unlist(data)
+npcra_iv <- function(data, col_activity = "pim", timestamp="timestamp", minutes_interval=60){
+    time_interval <- paste(minutes_interval, "min")
+    data <- data %>%
+        rename("timestamp" = timestamp, "x" = col_activity) %>%
+        group_by(interval=cut(timestamp, time_interval)) %>%
+        select(x, interval)
 
-    n <- length(data)
+    means_activity <- tapply(data$x, data$interval, mean)
 
-    #numerator of function iv
-    #sum the squares of the differences of an element and its next
-    square_diff <- diff(data)
+    n <- n_distinct(means_activity)
+
+    square_diff <- diff(means_activity)
     square_diff <- square_diff^2
     sum_diff <- sum(square_diff)
     numerator <- n*sum_diff
 
-    #numerator of function iv
-    #calculates the data variance and multiplies by (n-1)
-    #var() function divides by n-1 by default, so it was squared
-    denonimator <- var(data)
+    denonimator <- var(means_activity)
     denonimator <- denonimator*(n-1)^2
 
     iv <- numerator/denonimator
