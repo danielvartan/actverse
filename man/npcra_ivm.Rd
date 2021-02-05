@@ -22,7 +22,7 @@ calculation. The observations in this column must be in numeric format.}
 and time of each observation (POSIX format).}
 
 \item{minute_limit}{integer value that corresponds to the last minute interval
-to group the data. The default is 60, so 60 values of IR will be calculated to
+to group the data. The default is 60, so 60 values of IV will be calculated to
 take the average, with the first every minute and the last every 60 minutes.}
 }
 \value{
@@ -50,6 +50,7 @@ Sleep Science, v. 7, n. 3, p. 158-164, 2014. doi: 10.1016/j.slsci.2014.09.013.
 }
 \seealso{
 Other NPCRA functions: 
+\code{\link{npcra_ism}()},
 \code{\link{npcra_is}()},
 \code{\link{npcra_iv}()},
 \code{\link{npcra_l5_average_day}()},

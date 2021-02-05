@@ -44,13 +44,14 @@
 #' p. 84-91, Apr. 2015. doi: 10.1016/j.smrv.2014.06.002.
 #'
 #' @family NPCRA functions
-#' @export
 #'
 #' @examples
 #' \dontrun{
 #' npcra_m10(test_log, "pim")
 #' npcra_m10(test_log, method=3)
 #' }
+#'
+#' @export
 npcra_m10 <- function(data, col_activity = "pim", timestamp="timestamp", method=1) {
     time_begin <- Sys.time()
     npcra_test_args(data, col_activity, timestamp, method)
@@ -101,7 +102,6 @@ npcra_m10 <- function(data, col_activity = "pim", timestamp="timestamp", method=
 #' nonparametric analysis in actimetry. Sleep Medicine Reviews, v. 20,
 #' p. 84-91, Apr. 2015. doi: 10.1016/j.smrv.2014.06.002.
 #'
-#'
 #' @importFrom lubridate hours
 #' @importFrom magrittr %>%
 #' @importFrom dplyr select
@@ -110,11 +110,10 @@ npcra_m10 <- function(data, col_activity = "pim", timestamp="timestamp", method=
 #' @importFrom dplyr as_tibble
 #' @importFrom dplyr filter
 #'
-#' @export
-#'
 #' @examples
 #' \dontrun{
 #' npcra_m10_whole_period(test_log)}
+#' @export
 
 npcra_m10_whole_period <- function(data, col_activity = "pim", timestamp="timestamp") {
     valid_data <- data %>%
@@ -192,11 +191,10 @@ npcra_m10_whole_period <- function(data, col_activity = "pim", timestamp="timest
 #' @importFrom dplyr arrange
 #' @importFrom dplyr n_distinct
 #'
-#' @export
-#'
 #' @examples
 #' \dontrun{
 #' npcra_m10_average_day(test_log)}
+#' @export
 npcra_m10_average_day <- function(data, col_activity = "pim", timestamp="timestamp") {
     valid_data <- data %>%
         select(timestamp, col_activity) %>%
@@ -297,11 +295,10 @@ npcra_m10_average_day <- function(data, col_activity = "pim", timestamp="timesta
 #' @importFrom dplyr mutate
 #' @importFrom dplyr as_tibble
 #'
-#' @export
-#'
 #' @examples
 #' \dontrun{
 #' npcra_m10_each_day(test_log)}
+#' @export
 npcra_m10_each_day <- function(data, col_activity = "pim", timestamp="timestamp"){
     valid_data <- data %>%
         select(timestamp, col_activity) %>%
@@ -321,7 +318,7 @@ npcra_m10_each_day <- function(data, col_activity = "pim", timestamp="timestamp"
         value_to_remove <- 0
         sum_in_10_hours <- 0
         window_index <- index
-        current_day <- day(unique_days[index_day])
+        current_day <- lubridate::day(unique_days[index_day])
         while (index < index_last_valid_register & valid_data$hourEndWindow[index] != 0) {
             end_window <- valid_data$endWindow[index]
             window_sum <- 0
@@ -392,13 +389,13 @@ npcra_m10_each_day <- function(data, col_activity = "pim", timestamp="timestamp"
 #' p. 84-91, Apr. 2015. doi: 10.1016/j.smrv.2014.06.002.
 #'
 #' @family NPCRA functions
-#' @export
 #'
 #' @examples
 #' \dontrun{
 #' npcra_l5(test_log, "pim")
 #' npcra_l5(test_log, method=3)
 #' }
+#' @export
 npcra_l5 <- function(data, col_activity = "pim", timestamp="timestamp", method=1) {
     time_begin <- Sys.time()
     npcra_test_args(data, col_activity, timestamp, method)
@@ -449,7 +446,6 @@ npcra_l5 <- function(data, col_activity = "pim", timestamp="timestamp", method=1
 #' nonparametric analysis in actimetry. Sleep Medicine Reviews, v. 20,
 #' p. 84-91, Apr. 2015. doi: 10.1016/j.smrv.2014.06.002.
 #'
-#'
 #' @importFrom lubridate hours
 #' @importFrom magrittr %>%
 #' @importFrom dplyr select
@@ -458,12 +454,10 @@ npcra_l5 <- function(data, col_activity = "pim", timestamp="timestamp", method=1
 #' @importFrom dplyr as_tibble
 #' @importFrom dplyr filter
 #'
-#' @export
-#'
 #' @examples
 #' \dontrun{
 #' npcra_l5_whole_period(test_log)}
-
+#' @export
 npcra_l5_whole_period <- function(data, col_activity = "pim", timestamp="timestamp") {
     valid_data <- data %>%
         select(timestamp, col_activity) %>%
@@ -540,11 +534,10 @@ npcra_l5_whole_period <- function(data, col_activity = "pim", timestamp="timesta
 #' @importFrom dplyr arrange
 #' @importFrom dplyr n_distinct
 #'
-#' @export
-#'
 #' @examples
 #' \dontrun{
 #' npcra_l50_average_day(test_log)}
+#' @export
 npcra_l5_average_day <- function(data, col_activity = "pim", timestamp="timestamp") {
     valid_data <- data %>%
         select(timestamp, col_activity) %>%
@@ -644,11 +637,11 @@ npcra_l5_average_day <- function(data, col_activity = "pim", timestamp="timestam
 #' @importFrom dplyr mutate
 #' @importFrom dplyr as_tibble
 #'
-#' @export
 #'
 #' @examples
 #' \dontrun{
 #' npcra_l5_each_day(test_log)}
+#' @export
 npcra_l5_each_day <- function(data, col_activity = "pim", timestamp="timestamp"){
     valid_data <- data %>%
         select(timestamp, col_activity) %>%
@@ -668,7 +661,7 @@ npcra_l5_each_day <- function(data, col_activity = "pim", timestamp="timestamp")
         value_to_remove <- 0
         sum_in_5_hours <- 0
         window_index <- index
-        current_day <- day(unique_days[index_day])
+        current_day <- lubridate::day(unique_days[index_day])
         while (index < index_last_valid_register & valid_data$hourEndWindow[index] != 0) {
             end_window <- valid_data$endWindow[index]
             window_sum <- 0
@@ -725,11 +718,10 @@ npcra_l5_each_day <- function(data, col_activity = "pim", timestamp="timestamp")
 #' nonparametric analysis in actimetry. Sleep Medicine Reviews, v. 20,
 #' p. 84-91, Apr. 2015. doi: 10.1016/j.smrv.2014.06.002.
 #'
-#' @export
-#'
 #' @examples
 #' \dontrun{
 #' npcra_ra(test_log, "pim", "timestamp", 3)}
+#' @export
 npcra_ra <- function(data, col_activity = "pim", timestamp="timestamp", method=1){
     time_begin <- Sys.time()
     if (!is.element(method, c(1,2,3))) {
@@ -763,22 +755,29 @@ npcra_ra <- function(data, col_activity = "pim", timestamp="timestamp", method=1
     ra
 }
 
-#' Non-Parametric Function IS (Interdaily Stability )
+#' Non-Parametric Function IS (Interdaily Stability)
 #'
 #' @description
 #'
 #' `r lifecycle::badge("experimental")`
 #'
-#' "Alterations in IS may indicate a  loose coupling between the rest-activity
-#' rhythm and its supposedly stable "Zeitgebers," as IS decreases with higher
-#' day-to-day variation (i.e. ,  a  looser coupling) of the activity patterns" -
-#' WITTING, W. (1990)
+#' Interdaily Stability identifies the synchronization with the 24h day-night cycle.
+#' This fragmentation can have different results for the same data according
+#' to the chosen time interval, that is, a minute by minute calculation brings a
+#'  more sensitive result than a check in hours, where small changes tend to have
+#'  less influence on interdaily stability
 #'
-#' @param data Dataframe containing the column of numeric values that will be
-#'   used as X in the calculation.
-#' @param col_x String with the name of the column that will be used in the
-#'   calculation.
-#' @param col_date String with the name of the column with date values.
+#' @param data Dataframe that contains the date column and the column with the
+#' activity values
+#' @param col_activity String with the name of the column that will be used in the
+#'   calculation. The observations in this column must be in numeric format.
+#' @param timestamp String with the name of the column that contains the date
+#'  and time of each observation (POSIX format).
+#' @param minutes_interval integer value representing the duration in minutes
+#' of the time interval for grouping the data. By default, 60 minutes are
+#' considered, this means that the activity will be averaged at hourly intervals.
+#'  The minimum value is 1 minute, where all points will be considered
+#'  (so there will be no average in intervals).
 #'
 #' @return A numeric value.
 #'
@@ -791,39 +790,97 @@ npcra_ra <- function(data, col_activity = "pim", timestamp="timestamp", method=1
 #'  Sleep Science, v. 7, n. 3, p. 158-164, 2014. doi: 10.1016/j.slsci.2014.09.013.
 #'
 #' @family NPCRA functions
-#' @importFrom lubridate day
-#' @export
+#'
+#' @importFrom stats var
+#' @importFrom dplyr select
+#' @importFrom dplyr rename
+#' @importFrom dplyr group_by
+#' @importFrom magrittr %>%
+#' @importFrom dplyr pull
 #'
 #' @examples
 #' \dontrun{
-#' npcra_is(test_log, "pim", "timestamp")}
-npcra_is <- function(data, col_x = "pim", col_date = "timestamp"){
-    #Attention: Wrong answer yet
-    x_values <- as.vector(rbind(data[,col_x]))
-    x_values <- unlist(x_values)
+#' npcra_is(test_log, "body_temperature")}
+#' @export
+npcra_is <- function(data, col_activity = "pim", timestamp="timestamp", minutes_interval=60){
+    is <- 0
+    data <- data %>%
+        rename("timestamp" = timestamp, "x" = col_activity)
+    hourly_means <- tapply(data$x, lubridate::hour(data$timestamp) , mean)
 
-    n <- length(x_values)
+    number_days <- dplyr::n_distinct(lubridate::date(data$timestamp))
+    activity_each_day <- data %>% pull(x)
+    means_activity <- c()
 
-    day_of_x <- day(data$timestamp)
-    p <- as.integer(mean(table(day(data$timestamp))))
+    if(minutes_interval == 1) {
+        means_activity <- activity_each_day
+    }
+    else{
+        time_interval <- paste(minutes_interval, "min")
+        data <- data %>%
+            group_by(interval=cut(timestamp, time_interval)) %>%
+            select(x, interval, timestamp)
+        means_activity <- tapply(data$x, data$interval, mean)
+    }
 
-    avg_x <- mean(x_values)
-    denominator <- sum((x_values - avg_x)^2)
-    denominator <- n*denominator
-
-    dados <- data.frame(cbind(x_values), day_of_x)
-
-    #media do grupo
-    dados$sqr_diff_from_day <- with(dados,x_values-ave(x_values,day_of_x))
-
-    numerator <- p*sum(dados$sqr_diff_from_day^2)
-
-    is <- numerator/denominator
-    print(n)
-    print(p)
-    print(numerator)
-    print(denominator)
+    is <- stats::var(hourly_means)/stats::var(means_activity)
     is
+}
+
+#' Non-Parametric Function ISm (Interdaily Stability mean)
+#'
+#' @description
+#'
+#' `r lifecycle::badge("experimental")`
+#'
+#' Interdaily Stability identifies the synchronization with the 24h day-night cycle.
+#' This method calculates the average of ISs up to a minute limit. By default,
+#' the limit is 60 minutes, so the 60 ISs will be calculated separately and the
+#'  results will be averaged to be returned.
+#'
+#' @param data Dataframe that contains the date column and the column with the
+#' activity values
+#' @param col_activity String with the name of the column that will be used in the
+#'   calculation. The observations in this column must be in numeric format.
+#' @param timestamp String with the name of the column that contains the date
+#'  and time of each observation (POSIX format).
+#' @param minute_limit integer value that corresponds to the last minute interval
+#' to group the data. The default is 60, so 60 values of IS will be calculated to
+#' take the average, with the first every minute and the last every 60 minutes.
+#'
+#' @return A numeric value.
+#'
+#' @references
+#' WITTING, W. et al. Alterations in the circadian rest-activity rhythm in aging
+#'and Alzheimer's disease. Biological Psychiatry, v. 27, n. 6, p. 563-572,
+#'Mar. 1990. doi: 10.1016/0006-3223(90)90523-5.
+#'
+#' GONCALVES, Bruno S. B. et al. Nonparametric methods in actigraphy: an update.
+#'  Sleep Science, v. 7, n. 3, p. 158-164, 2014. doi: 10.1016/j.slsci.2014.09.013.
+#'
+#' @family NPCRA functions
+#'
+#' @importFrom stats var
+#' @importFrom dplyr select
+#' @importFrom dplyr rename
+#' @importFrom dplyr group_by
+#' @importFrom magrittr %>%
+#' @importFrom dplyr pull
+#'
+#' @examples
+#' \dontrun{
+#' npcra_ism(test_log, "body_temperature")}
+#' @export
+npcra_ism <- function(data, col_activity = "pim", timestamp="timestamp", minute_limit=60){
+    current_minute <- 1
+    sum_is <- 0
+    while (current_minute <= minute_limit) {
+        sum_is <- sum_is + npcra_is(data, col_activity, timestamp, current_minute)
+        current_minute <- current_minute + 1
+    }
+    is_mean <- sum_is/minute_limit
+
+    is_mean
 }
 
 #' Non-Parametric Function IV (Intradaily Variability)
@@ -869,11 +926,10 @@ npcra_is <- function(data, col_x = "pim", col_date = "timestamp"){
 #' @importFrom magrittr %>%
 #' @importFrom dplyr pull
 #'
-#' @export
-#'
 #' @examples
 #' \dontrun{
 #' npcra_iv(test_log, "body_temperature")}
+#' @export
 npcra_iv <- function(data, col_activity = "pim", timestamp="timestamp", minutes_interval=60){
     if(minutes_interval == 1) {
         means_activity <- data %>%
@@ -921,7 +977,7 @@ npcra_iv <- function(data, col_activity = "pim", timestamp="timestamp", minutes_
 #' @param timestamp String with the name of the column that contains the date
 #'  and time of each observation (POSIX format).
 #' @param minute_limit integer value that corresponds to the last minute interval
-#' to group the data. The default is 60, so 60 values of IR will be calculated to
+#' to group the data. The default is 60, so 60 values of IV will be calculated to
 #' take the average, with the first every minute and the last every 60 minutes.
 #'
 #' @return A numeric value.
@@ -936,11 +992,10 @@ npcra_iv <- function(data, col_activity = "pim", timestamp="timestamp", minutes_
 #'
 #' @family NPCRA functions
 #'
-#' @export
-#'
 #' @examples
 #' \dontrun{
 #' npcra_iv(test_log, "body_temperature")}
+#' @export
 npcra_ivm<- function(data, col_activity = "pim", timestamp="timestamp", minute_limit=60){
     current_minute <- 1
     sum_iv <- 0
@@ -984,6 +1039,7 @@ npcra_ivm<- function(data, col_activity = "pim", timestamp="timestamp", minute_l
 #' @examples
 #' \dontrun{
 #' npcra_test_args(test_log, "pim", "timestamp", 1)}
+#' @export
 npcra_test_args <- function(data, col_activity, timestamp, method) {
     data_col_names <- colnames(data)
 
@@ -1018,4 +1074,19 @@ npcra_test_args <- function(data, col_activity, timestamp, method) {
         stop("timestamp must be a column that has 'POSIXct' or 'POSIXt' values. timestamp is composed of: ", col_timestamp_class)
     }
     TRUE
+}
+
+
+npcra_ifc <- function(data, col_activity = "pim", timestamp="timestamp") {
+    ism <- npcra_ism(data, col_activity, timestamp)
+    message("ISm = ", ism)
+    ivm <- npcra_ivm(data, col_activity, timestamp)
+    message("IVm = ", ivm)
+    ra <- npcra_ra(data, col_activity, timestamp, method=1)
+    message("RA = ", ra)
+
+    ifc<- (ism+ivm+ra)/3
+    message("IFC = ", ifc)
+    return(ifc)
+
 }

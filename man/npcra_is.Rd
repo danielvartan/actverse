@@ -2,18 +2,30 @@
 % Please edit documentation in R/npcra.R
 \name{npcra_is}
 \alias{npcra_is}
-\title{Non-Parametric Function IS (Interdaily Stability )}
+\title{Non-Parametric Function IS (Interdaily Stability)}
 \usage{
-npcra_is(data, col_x = "pim", col_date = "timestamp")
+npcra_is(
+  data,
+  col_activity = "pim",
+  timestamp = "timestamp",
+  minutes_interval = 60
+)
 }
 \arguments{
-\item{data}{Dataframe containing the column of numeric values that will be
-used as X in the calculation.}
+\item{data}{Dataframe that contains the date column and the column with the
+activity values}
 
-\item{col_x}{String with the name of the column that will be used in the
-calculation.}
+\item{col_activity}{String with the name of the column that will be used in the
+calculation. The observations in this column must be in numeric format.}
 
-\item{col_date}{String with the name of the column with date values.}
+\item{timestamp}{String with the name of the column that contains the date
+and time of each observation (POSIX format).}
+
+\item{minutes_interval}{integer value representing the duration in minutes
+of the time interval for grouping the data. By default, 60 minutes are
+considered, this means that the activity will be averaged at hourly intervals.
+The minimum value is 1 minute, where all points will be considered
+(so there will be no average in intervals).}
 }
 \value{
 A numeric value.
@@ -21,14 +33,15 @@ A numeric value.
 \description{
 \ifelse{html}{\out{<a href='https://www.tidyverse.org/lifecycle/#experimental'><img src='figures/lifecycle-experimental.svg' alt='Experimental lifecycle'></a>}}{\strong{Experimental}}
 
-"Alterations in IS may indicate a  loose coupling between the rest-activity
-rhythm and its supposedly stable "Zeitgebers," as IS decreases with higher
-day-to-day variation (i.e. ,  a  looser coupling) of the activity patterns" -
-WITTING, W. (1990)
+Interdaily Stability identifies the synchronization with the 24h day-night cycle.
+This fragmentation can have different results for the same data according
+to the chosen time interval, that is, a minute by minute calculation brings a
+more sensitive result than a check in hours, where small changes tend to have
+less influence on interdaily stability
 }
 \examples{
 \dontrun{
-npcra_is(test_log, "pim", "timestamp")}
+npcra_is(test_log, "body_temperature")}
 }
 \references{
 WITTING, W. et al. Alterations in the circadian rest-activity rhythm in aging
@@ -40,6 +53,7 @@ Sleep Science, v. 7, n. 3, p. 158-164, 2014. doi: 10.1016/j.slsci.2014.09.013.
 }
 \seealso{
 Other NPCRA functions: 
+\code{\link{npcra_ism}()},
 \code{\link{npcra_ivm}()},
 \code{\link{npcra_iv}()},
 \code{\link{npcra_l5_average_day}()},

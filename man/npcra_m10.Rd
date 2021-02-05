@@ -49,6 +49,7 @@ M10 is related to the validity of the given data range.
 npcra_m10(test_log, "pim")
 npcra_m10(test_log, method=3)
 }
+
 }
 \references{
 WITTING, W. et al. Alterations in the circadian rest-activity rhythm in aging
@@ -61,6 +62,7 @@ p. 84-91, Apr. 2015. doi: 10.1016/j.smrv.2014.06.002.
 }
 \seealso{
 Other NPCRA functions: 
+\code{\link{npcra_ism}()},
 \code{\link{npcra_is}()},
 \code{\link{npcra_ivm}()},
 \code{\link{npcra_iv}()},

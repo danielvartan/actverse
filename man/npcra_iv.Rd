@@ -53,6 +53,7 @@ Sleep Science, v. 7, n. 3, p. 158-164, 2014. doi: 10.1016/j.slsci.2014.09.013.
 }
 \seealso{
 Other NPCRA functions: 
+\code{\link{npcra_ism}()},
 \code{\link{npcra_is}()},
 \code{\link{npcra_ivm}()},
 \code{\link{npcra_l5_average_day}()},
