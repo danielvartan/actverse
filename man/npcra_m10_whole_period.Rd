@@ -12,13 +12,12 @@ npcra_m10_whole_period(
 )
 }
 \arguments{
-\item{data}{Dataframe that contains the date variable and the variable that
-will be used to identify the 10 most active hours.}
+\item{data}{A \code{data.frame} \code{object}}
 
-\item{col_name}{String with the name of the column that will be used in the
+\item{col_name}{A string with the name of the column that will be used in the
 calculation.}
 
-\item{timestamp}{String with the name of the column that contains the
+\item{timestamp}{A string with the name of the column that contains the
 dataframe dates.}
 
 \item{fast}{True: It makes the M10 quick calculation, prone to errors; False:
@@ -38,5 +37,14 @@ calculation method considers the 10-hour window most active for all data.
 \examples{
 \dontrun{
 npcra_m10_whole_period(test_log, fast = FALSE)}
-
 }
+\seealso{
+Other NPCRA functions: 
+\code{\link{npcra_is}()},
+\code{\link{npcra_iv}()},
+\code{\link{npcra_l5_whole_period}()},
+\code{\link{npcra_l5}()},
+\code{\link{npcra_m10}()},
+\code{\link{npcra_test_args}()}
+}
+\concept{NPCRA functions}

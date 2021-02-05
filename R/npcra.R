@@ -7,32 +7,36 @@
 #' "M10 represents activity during the most active period of the day. This
 #' measure may be influenced by daytime napping" - WITTING, W. (1990)
 #'
-#' @param data Dataframe that contains the date variable and the variable that
-#'   will be used to identify the 10 most active hours.
-#' @param col_name String with the name of the column that will be used in the
+#' @param data A `data.frame` `object`
+#' @param col_name A string with the name of the column that will be used in the
 #'   calculation.
-#' @param timestamp String with the name of the column that contains the
+#' @param timestamp A string with the name of the column that contains the
 #'   dataframe dates.
 #' @param method 1 = whole period, 2 = average day, 3 = each day
 #' @param fast True: It makes the M10 quick calculation, prone to errors; False:
 #'   Scans completely and returns the correct M10 value, but more slowly
 #'
-#' @return a Dataframe with the value of M10 in the first position and the start
-#'   date of the 10 most active window in the period in the second position.
+#' @return A `data.frame` object with the value of M10 in the first position and
+#'   the start date of the 10 most active window in the period in the second
+#'   position.
 #'
 #' @family NPCRA functions
 #' @export
 #'
 #' @examples
 #' \dontrun{
-#' npcra_m10(test_log, "pim")}
-npcra_m10 <- function(data, col_name = "pim", timestamp="timestamp", method=1, fast=TRUE) {
+#' npcra_m10(test_log, "pim")
+#' }
+npcra_m10 <- function(data, col_name = "pim", timestamp = "timestamp",
+                      method = 1, fast = TRUE) {
+
     time_begin <- Sys.time()
     npcra_test_args(data, col_name, timestamp, method, fast)
 
     m10 <- data.frame()
 
-    #CALCULATION OF M10 ACCORDING TO THE CHOSEN METHOD
+    # Calculation of M10 according to the chosen method
+
     if(method==1){
         m10 <- npcra_m10_whole_period(data, col_name, timestamp, fast)
     }
@@ -41,6 +45,7 @@ npcra_m10 <- function(data, col_name = "pim", timestamp="timestamp", method=1, f
     message("M10 was calculated in ", duration, " seconds")
 
     m10
+
 }
 
 #' Non-Parametric Function M10 (Most Active 10 Hours) for the entire period
@@ -53,27 +58,24 @@ npcra_m10 <- function(data, col_name = "pim", timestamp="timestamp", method=1, f
 #' measure may be influenced by daytime napping" - WITTING, W. (1990) This
 #' calculation method considers the 10-hour window most active for all data.
 #'
-#' @param data Dataframe that contains the date variable and the variable that
-#'   will be used to identify the 10 most active hours.
-#' @param col_name String with the name of the column that will be used in the
-#'   calculation.
-#' @param timestamp String with the name of the column that contains the
-#'   dataframe dates.
 #' @param fast True: It makes the M10 quick calculation, prone to errors; False:
 #'   Scans completely and returns the correct M10 value, but more slowly
 #'
 #' @return a Dataframe with the value of M10 in the first position and the start
 #'   date of the 10 most active window in the period in the second position.
 #'
-#' @family NPCRA functions
+#' @inheritParams npcra_m10
 #' @importFrom lubridate hours
+#' @family NPCRA functions
 #' @export
 #'
 #' @examples
 #' \dontrun{
 #' npcra_m10_whole_period(test_log, fast = FALSE)}
 
-npcra_m10_whole_period <- function(data, col_name = "pim", timestamp="timestamp", fast=TRUE) {
+npcra_m10_whole_period <- function(data, col_name = "pim",
+                                   timestamp = "timestamp", fast = TRUE) {
+
     sum_in_10_hours <- 0
     window_index <- 0
     index <- 1
@@ -92,7 +94,7 @@ npcra_m10_whole_period <- function(data, col_name = "pim", timestamp="timestamp"
     m_10_first_date <- valid_data$timestamp[index]
 
     #find the highest average activity between the second index and the last full 10-hour window
-    last_valid_register <- last(valid_data$timestamp) - hours(10)
+    last_valid_register <- dplyr::last(valid_data$timestamp) - hours(10)
     index <- 2
 
     if (fast) {
@@ -127,6 +129,7 @@ npcra_m10_whole_period <- function(data, col_name = "pim", timestamp="timestamp"
     }
 
     data.frame(m_10, m_10_first_date)
+
 }
 
 #' Non-Parametric Function L5 (Least Active 5  Hours)
@@ -138,10 +141,6 @@ npcra_m10_whole_period <- function(data, col_name = "pim", timestamp="timestamp"
 #' "L5 represents movement-activity during sleep plus nighttime arousals" -
 #' WITTING, W. (1990)
 #'
-#' @param data Dataframe that contains the date variable and the variable that
-#'   will be used to identify the least Active 5  Hours.
-#' @param col_name String with the name of the column that will be used in the
-#'   calculation.
 #' @param method 1 = whole period, 2 = average day, 3 = each day
 #' @param fast True: It makes the L5 quick calculation, prone to errors; False:
 #'   Scans completely and returns the correct L5 value, but more slowly
@@ -149,13 +148,17 @@ npcra_m10_whole_period <- function(data, col_name = "pim", timestamp="timestamp"
 #' @return a Dataframe with the value of M10 in the first position and the start
 #'   date of the 10 most active window in the period in the second position.
 #'
+#' @inheritParams npcra_m10
 #' @family NPCRA functions
 #' @export
 #'
 #' @examples
 #' \dontrun{
-#' npcra_l5(test_log, "pim")}
-npcra_l5 <- function(data, col_name = "pim", timestamp="timestamp", method=1, fast=TRUE) {
+#' npcra_l5(test_log, "pim")
+#' }
+npcra_l5 <- function(data, col_name = "pim", timestamp = "timestamp",
+                     method = 1, fast = TRUE) {
+
     time_begin <- Sys.time()
     npcra_test_args(data, col_name, timestamp, method, fast)
 
@@ -170,6 +173,7 @@ npcra_l5 <- function(data, col_name = "pim", timestamp="timestamp", method=1, fa
     message("L5 was calculated in ", duration, " seconds")
 
     l5
+
 }
 
 #' Non-Parametric Function L5 (Least Active 5  Hours) for the entire period
@@ -182,25 +186,23 @@ npcra_l5 <- function(data, col_name = "pim", timestamp="timestamp", method=1, fa
 #' WITTING, W. (1990) This calculation method considers the 5-hour window less
 #' active for all data.
 #'
-#' @param data Dataframe that contains the date variable and the variable that
-#'   will be used to identify the least Active 5  Hours.
-#' @param col_name String with the name of the column that will be used in the
-#'   calculation.
-#' @param timestamp String with the name of the column that contains the
-#'   dataframe dates.
 #' @param fast True: It makes the L5 quick calculation, prone to errors; False:
 #'   Scans completely and returns the correct L5 value, but more slowly
 #'
 #' @return a Dataframe with the value of L5 in the first position and the start
 #'   date of the 5 least active window in the period in the second position.
 #'
-#' @family NPCRA functions
+#' @inheritParams npcra_m10
 #' @importFrom lubridate hours
+#' @family NPCRA functions
 #' @export
+#'
 #' @examples
 #' \dontrun{
 #' npcra_l5_whole_period(test_log, fast = FALSE)}
-npcra_l5_whole_period <- function(data, col_name = "pim", timestamp="timestamp", fast=TRUE) {
+npcra_l5_whole_period <- function(data, col_name = "pim",
+                                  timestamp = "timestamp", fast = TRUE) {
+
     sum_in_5_hours <- 0
     window_index <- 0
     index <- 1
@@ -209,15 +211,18 @@ npcra_l5_whole_period <- function(data, col_name = "pim", timestamp="timestamp",
     colnames(valid_data) <- c("timestamp", "x")
 
     end_first_window <- valid_data$timestamp[index] + hours(5)
+
     while (valid_data$timestamp[index + window_index] <= end_first_window) {
         sum_in_5_hours <- sum_in_5_hours + valid_data$x[index + window_index]
         window_index <- window_index + index
     }
+
     l_5 <- sum_in_5_hours / (window_index - 1)
     l_5_first_date <- valid_data$timestamp[index]
 
-    last_valid_register <- last(valid_data$timestamp) - hours(5)
+    last_valid_register <- dplyr::last(valid_data$timestamp) - hours(5)
     index <- 2
+
     if (fast) {
         while (valid_data$timestamp[index] <= last_valid_register) {
             sum_in_5_hours <- sum_in_5_hours - valid_data$x[index - 1]
@@ -228,8 +233,7 @@ npcra_l5_whole_period <- function(data, col_name = "pim", timestamp="timestamp",
             }
             index <- index + 1
         }
-    }
-    else {
+    } else {
         while (valid_data$timestamp[index] <= last_valid_register) {
             window_sum <- 0
             finish_window <- valid_data$timestamp[index] + hours(5)
@@ -262,23 +266,23 @@ npcra_l5_whole_period <- function(data, col_name = "pim", timestamp="timestamp",
 #' day-to-day variation (i.e. ,  a  looser coupling) of the activity patterns" -
 #' WITTING, W. (1990)
 #'
-#' @param data Dataframe containing the column of numeric values that will be
-#'   used as X in the calculation.
-#' @param col_x String with the name of the column that will be used in the
-#'   calculation.
 #' @param col_date String with the name of the column with date values.
 #'
 #' @return A numeric value.
-#' @family NPCRA functions
+#'
+#' @inheritParams npcra_m10
 #' @importFrom lubridate day
+#' @family NPCRA functions
 #' @export
 #'
 #' @examples
 #' \dontrun{
-#' npcra_is(test_log, "pim", "timestamp")}
-npcra_is <- function(data, col_x = "pim", col_date = "timestamp"){
+#' npcra_is(test_log, "pim", "timestamp")
+#' }
+npcra_is <- function(data, col_name = "pim", col_date = "timestamp") {
+
     #Attention: Wrong answer yet
-    x_values <- as.vector(rbind(data[,col_x]))
+    x_values <- as.vector(rbind(data[,col_name]))
     x_values <- unlist(x_values)
 
     n <- length(x_values)
@@ -302,7 +306,9 @@ npcra_is <- function(data, col_x = "pim", col_date = "timestamp"){
     print(p)
     print(numerator)
     print(denominator)
+
     is
+
 }
 
 #' Non-Parametric Function IV (Intradaily  Variability)
@@ -315,21 +321,21 @@ npcra_is <- function(data, col_x = "pim", col_date = "timestamp"){
 #' IV may be an indicative of daytime napping and/or nighttime arousals" -
 #' WITTING, W. (1990)
 #'
-#' @param data Dataframe containing the column of numeric values that will be
-#'   used as X in the calculation.
-#' @param col_x String with the name of the column that will be used in the
-#'   calculation.
-#'
 #' @return A numeric value.
+#'
+#' @inheritParams npcra_m10
 #' @family NPCRA functions
 #' @export
 #'
 #' @examples
 #' \dontrun{
-#' npcra_iv(test_log, "body_temperature")}
-npcra_iv <- function(data, col_x = "pim"){
-    #creates a vector containing only col_x data
-    data <- as.vector(rbind(data[col_x]))
+#' npcra_iv(test_log, "body_temperature")
+#' }
+npcra_iv <- function(data, col_name = "pim") {
+
+    # Creates a vector containing only col_name data
+
+    data <- as.vector(rbind(data[col_name]))
     data <- unlist(data)
 
     n <- length(data)
@@ -337,18 +343,19 @@ npcra_iv <- function(data, col_x = "pim"){
     #numerator of function iv
     #sum the squares of the differences of an element and its next
     square_diff <- diff(data)
-    square_diff <- square_diff^2
+    square_diff <- square_diff ^ 2
     sum_diff <- sum(square_diff)
-    numerator <- n*sum_diff
+    numerator <- n * sum_diff
 
     #numerator of function iv
     #calculates the data variance and multiplies by (n-1)
     #var() function divides by n-1 by default, so it was squared
-    denonimator <- var(data)
+    denonimator <- stats::var(data)
     denonimator <- denonimator*(n-1)^2
 
     iv <- numerator/denonimator
     iv
+
 }
 
 #' Testing the arguments of nonparametric functions
@@ -358,26 +365,24 @@ npcra_iv <- function(data, col_x = "pim"){
 #' `r lifecycle::badge("experimental")`
 #'
 #' Performs the verification of the types of expected values as arguments to the
-#' npcra functions.
+#' NPCRA functions.
 #'
-#' @param data Dataframe that contains the date variable and the variable that
-#'   will be used to identify the 10 most active hours.
-#' @param col_name String with the name of the column that will be used in the
-#'   calculation.
-#' @param timestamp String with the name of the column that contains the
-#'   dataframe dates.
 #' @param method 1 = whole period, 2 = average day, 3 = each day
 #' @param fast True: It makes the M10 quick calculation, prone to errors; False:
 #'   Scans completely and returns the correct M10 value, but more slowly
 #'
 #' @return If no test stops, TRUE will be returned.
+#'
+#' @inheritParams npcra_m10
 #' @family NPCRA functions
 #' @export
 #'
 #' @examples
 #' \dontrun{
-#' npcra_test_args(test_log, "pim", "timestamp", 1, TRUE)}
+#' npcra_test_args(test_log, "pim", "timestamp", 1, TRUE)
+#' }
 npcra_test_args <- function(data, col_name, timestamp, method, fast) {
+
     data_col_names <- colnames(data)
 
     if (!is.data.frame(data)) {
@@ -404,12 +409,15 @@ npcra_test_args <- function(data, col_name, timestamp, method, fast) {
 
     col_name_class <- lapply(data[, col_name], class)
     col_timestamp_class <- unlist(col_name_class)
+
     if (!is.element("numeric", col_name_class)) {
-        stop("col_name must be a column that has only 'numeric' values. col_name is composed of: ", col_name_class)
+        stop("col_name must be a column that has only 'numeric' values. ",
+             "col_name is composed of: ", col_name_class, call. = FALSE)
     }
 
     col_timestamp_class <- lapply(data[, timestamp], class)
     col_timestamp_class <- unlist(col_timestamp_class)
+
     if (!is.element("POSIXct", col_timestamp_class) || !is.element("POSIXt", col_timestamp_class)) {
         stop("timestamp must be a column that has 'POSIXct' or 'POSIXt' values. timestamp is composed of: ", col_timestamp_class)
     }

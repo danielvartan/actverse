@@ -1,0 +1,312 @@
+{
+  "@context": ["https://doi.org/10.5063/schema/codemeta-2.0", "http://schema.org"],
+  "@type": "SoftwareSourceCode",
+  "identifier": "actstudio",
+  "description": "A set of tools for processing, analyzing and visualizing \n    actigraphy data.",
+  "name": "actstudio: The R package for actigraphic data",
+  "codeRepository": "https://github.com/gipsousp/actstudio/",
+  "relatedLink": "https://gipsousp.github.io/actstudio/",
+  "issueTracker": "https://github.com/gipsousp/actstudio/issues",
+  "license": "https://spdx.org/licenses/MIT",
+  "version": "0.0.0.9000",
+  "programmingLanguage": {
+    "@type": "ComputerLanguage",
+    "name": "R",
+    "url": "https://r-project.org"
+  },
+  "runtimePlatform": "R version 4.0.3 (2020-10-10)",
+  "author": [
+    {
+      "@type": "Person",
+      "givenName": "Daniel",
+      "familyName": "Vartanian",
+      "email": "danvartan@gmail.com",
+      "@id": "https://orcid.org/0000-0001-7782-759X"
+    },
+    {
+      "@type": "Person",
+      "givenName": "Bruno",
+      "familyName": "Furlan",
+      "email": "brfrlan@gmail.com",
+      "@id": "https://orcid.org/0000-0003-1654-0899"
+    },
+    {
+      "@type": "Person",
+      "givenName": "Vinicius",
+      "familyName": "Matias",
+      "email": "viniciusmatias@usp.br",
+      "@id": "https://orcid.org/0000-0002-2047-5420"
+    },
+    {
+      "@type": "Person",
+      "givenName": "Cassio",
+      "familyName": "Serrano",
+      "email": "cassio.serrano@usp.br",
+      "@id": "https://orcid.org/0000-0001-7149-1829"
+    },
+    {
+      "@type": "Person",
+      "givenName": "Ana Amelia",
+      "familyName": "Benedito-Silva",
+      "email": "aamelia@usp.br",
+      "@id": "https://orcid.org/0000-0003-4976-2623"
+    },
+    {
+      "@type": "Person",
+      "givenName": "Mario",
+      "familyName": "Pedrazzoli",
+      "email": "pedrazzo@usp.br",
+      "@id": "https://orcid.org/0000-0002-5257-591X"
+    }
+  ],
+  "contributor": {},
+  "copyrightHolder": [
+    {
+      "@type": "Organization",
+      "name": "GIPSO"
+    }
+  ],
+  "funder": [
+    {
+      "@type": "Organization",
+      "name": "GIPSO"
+    },
+    {
+      "@type": "Organization",
+      "name": "USP"
+    }
+  ],
+  "maintainer": [
+    {
+      "@type": "Person",
+      "givenName": "Daniel",
+      "familyName": "Vartanian",
+      "email": "danvartan@gmail.com",
+      "@id": "https://orcid.org/0000-0001-7782-759X"
+    }
+  ],
+  "softwareSuggestions": [
+    {
+      "@type": "SoftwareApplication",
+      "identifier": "covr",
+      "name": "covr",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=covr"
+    },
+    {
+      "@type": "SoftwareApplication",
+      "identifier": "knitr",
+      "name": "knitr",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=knitr"
+    },
+    {
+      "@type": "SoftwareApplication",
+      "identifier": "rmarkdown",
+      "name": "rmarkdown",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=rmarkdown"
+    },
+    {
+      "@type": "SoftwareApplication",
+      "identifier": "spelling",
+      "name": "spelling",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=spelling"
+    },
+    {
+      "@type": "SoftwareApplication",
+      "identifier": "testthat",
+      "name": "testthat",
+      "version": ">= 2.0.0",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=testthat"
+    },
+    {
+      "@type": "SoftwareApplication",
+      "identifier": "utils",
+      "name": "utils"
+    }
+  ],
+  "softwareRequirements": [
+    {
+      "@type": "SoftwareApplication",
+      "identifier": "R",
+      "name": "R",
+      "version": ">= 3.6"
+    },
+    {
+      "@type": "SoftwareApplication",
+      "identifier": "checkmate",
+      "name": "checkmate",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=checkmate"
+    },
+    {
+      "@type": "SoftwareApplication",
+      "identifier": "dplyr",
+      "name": "dplyr",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=dplyr"
+    },
+    {
+      "@type": "SoftwareApplication",
+      "identifier": "glue",
+      "name": "glue",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=glue"
+    },
+    {
+      "@type": "SoftwareApplication",
+      "identifier": "lifecycle",
+      "name": "lifecycle",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=lifecycle"
+    },
+    {
+      "@type": "SoftwareApplication",
+      "identifier": "lubridate",
+      "name": "lubridate",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=lubridate"
+    },
+    {
+      "@type": "SoftwareApplication",
+      "identifier": "magrittr",
+      "name": "magrittr",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=magrittr"
+    },
+    {
+      "@type": "SoftwareApplication",
+      "identifier": "rlang",
+      "name": "rlang",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=rlang"
+    },
+    {
+      "@type": "SoftwareApplication",
+      "identifier": "stats",
+      "name": "stats"
+    },
+    {
+      "@type": "SoftwareApplication",
+      "identifier": "stringr",
+      "name": "stringr",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=stringr"
+    }
+  ],
+  "releaseNotes": "https://github.com/gipsousp/actstudio/blob/master/NEWS.md",
+  "readme": "https://github.com/gipsousp/actstudio/blob/master/README.md",
+  "fileSize": "1931.71KB",
+  "contIntegration": ["https://travis-ci.com/gipsousp/actstudio", "https://codecov.io/gh/gipsousp/actstudio?branch=master"],
+  "developmentStatus": ["https://www.repostatus.org/#wip", "https://www.tidyverse.org/lifecycle/#experimental"],
+  "keywords": ["actimetry", "actigraphy", "r-package", "sleep", "chronobiology"],
+  "citation": [
+    {
+      "@type": "CreativeWork",
+      "datePublished": "2021",
+      "author": [
+        {
+          "@type": "Person",
+          "givenName": "Daniel",
+          "familyName": "Vartanian"
+        },
+        {
+          "@type": "Person",
+          "givenName": "Bruno",
+          "familyName": "Furlan"
+        },
+        {
+          "@type": "Person",
+          "givenName": "Vinicius",
+          "familyName": "Matias"
+        },
+        {
+          "@type": "Person",
+          "givenName": "Cassio",
+          "familyName": "Serrano"
+        },
+        {
+          "@type": "Person",
+          "givenName": ["Ana", "Amelia"],
+          "familyName": "Benedito-Silva"
+        },
+        {
+          "@type": "Person",
+          "givenName": "Mario",
+          "familyName": "Pedrazzoli"
+        }
+      ],
+      "name": "A R package for processing, analyzing and visualizing actigraphy data",
+      "url": "http://gipsousp.github.io/actstudio/",
+      "description": "Lifecycle: experimental"
+    }
+  ]
+}

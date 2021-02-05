@@ -4,13 +4,12 @@
 \alias{npcra_iv}
 \title{Non-Parametric Function IV (Intradaily  Variability)}
 \usage{
-npcra_iv(data, col_x = "pim")
+npcra_iv(data, col_name = "pim")
 }
 \arguments{
-\item{data}{Dataframe containing the column of numeric values that will be
-used as X in the calculation.}
+\item{data}{A \code{data.frame} \code{object}}
 
-\item{col_x}{String with the name of the column that will be used in the
+\item{col_name}{A string with the name of the column that will be used in the
 calculation.}
 }
 \value{
@@ -25,6 +24,16 @@ WITTING, W. (1990)
 }
 \examples{
 \dontrun{
-npcra_iv(test_log, "body_temperature")}
-
+npcra_iv(test_log, "body_temperature")
 }
+}
+\seealso{
+Other NPCRA functions: 
+\code{\link{npcra_is}()},
+\code{\link{npcra_l5_whole_period}()},
+\code{\link{npcra_l5}()},
+\code{\link{npcra_m10_whole_period}()},
+\code{\link{npcra_m10}()},
+\code{\link{npcra_test_args}()}
+}
+\concept{NPCRA functions}

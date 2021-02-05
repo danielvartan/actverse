@@ -2,15 +2,15 @@
 % Please edit documentation in R/epoch_change.R
 \name{epoch}
 \alias{epoch}
-\title{Check the epoch length of an actimetry dataset}
+\title{Return the epoch length of an actimetry dataset}
 \usage{
 epoch(data, timestamp = "timestamp")
 }
 \arguments{
-\item{data}{A data frame or tibble.}
+\item{data}{A \code{data.frame} or \code{tibble} object.}
 
 \item{timestamp}{A string indicating the name of the timestamp
-variable (Note: the timestamp variable must be class \code{POSIXct}).}
+variable. The timestamp variable must be class \code{POSIXct}.}
 }
 \value{
 A numeric value representing the epoch length in seconds.
@@ -20,5 +20,6 @@ A numeric value representing the epoch length in seconds.
 }
 \examples{
 \dontrun{
-epoch(test_log)}
+epoch(test_log)
+}
 }

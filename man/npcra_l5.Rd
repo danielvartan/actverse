@@ -13,11 +13,13 @@ npcra_l5(
 )
 }
 \arguments{
-\item{data}{Dataframe that contains the date variable and the variable that
-will be used to identify the least Active 5  Hours.}
+\item{data}{A \code{data.frame} \code{object}}
 
-\item{col_name}{String with the name of the column that will be used in the
+\item{col_name}{A string with the name of the column that will be used in the
 calculation.}
+
+\item{timestamp}{A string with the name of the column that contains the
+dataframe dates.}
 
 \item{method}{1 = whole period, 2 = average day, 3 = each day}
 
@@ -36,6 +38,16 @@ WITTING, W. (1990)
 }
 \examples{
 \dontrun{
-npcra_l5(test_log, "pim")}
-
+npcra_l5(test_log, "pim")
 }
+}
+\seealso{
+Other NPCRA functions: 
+\code{\link{npcra_is}()},
+\code{\link{npcra_iv}()},
+\code{\link{npcra_l5_whole_period}()},
+\code{\link{npcra_m10_whole_period}()},
+\code{\link{npcra_m10}()},
+\code{\link{npcra_test_args}()}
+}
+\concept{NPCRA functions}

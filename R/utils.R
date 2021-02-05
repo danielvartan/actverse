@@ -1,92 +1,155 @@
-#' Get path to data example
-#'
-#' @description
-#'
-#' Actverse comes bundled with a number of sample files in its `inst/extdata`
-#' directory. This function make them easy to access.
-#'
-#' @param path A string with the file name. If `NULL`, the example
-#'   files will be listed.
-#' @return If path is equal to `NULL`, returns a character vector with all
-#'   the example file names. Else, returns the full path where the file is
-#'   located.
-#'
-#' @family Utility functions
-#' @export
-#'
-#' @examples
-#' \dontrun{
-#' data_example()
-#' data_example("test_log.txt")}
+#' @family utility functions
+#' @noRd
+class_collapse <- function(x) {
 
-data_example <- function(path = NULL) {
+    glue::single_quote(glue::glue_collapse(class(x), sep = '/'))
 
-    if (is.null(path)) {
-        dir(system.file("extdata", package = "actstudio"))
+}
+
+#' @family utility functions
+#' @noRd
+is_numeric_ <- function(x) {
+
+    any(class(x) %in% c("integer", "double", "numeric"))
+
+}
+
+#' @family utility functions
+#' @noRd
+is_whole_number <- function(x, tol = .Machine$double.eps^0.5) {
+
+    checkmate::assert_multi_class(x, c("integer", "numeric"))
+
+    abs(x - round(x)) < tol # Example function from ?integer
+
+}
+
+#' @family utility functions
+#' @noRd
+inline_collapse <- function(x, single_quote = TRUE, serial_comma = TRUE) {
+
+    checkmate::assert_character(x)
+    checkmate::assert_flag(single_quote)
+    checkmate::assert_flag(serial_comma)
+
+    if (isTRUE(single_quote)) x <- glue::single_quote(x)
+
+    if (length(x) <= 2 || isFALSE(serial_comma)) {
+        glue::glue_collapse(x, sep = ", ", last = " and ")
     } else {
-        system.file("extdata", path, package = "actstudio", mustWork = TRUE)
+        glue::glue_collapse(x, sep = ", ", last = ", and ")
     }
 
 }
 
-#' Check if a data frame is tidy
-#'
-#' @description
-#'
-#' To use this package is best that your data conforms to the proposed
-#' data structure of the tidy_data function. You can still use the tools
-#' available without tiding your data, but by doing that you may spend more
-#' time using the functions, and may be more prone to error.
-#'
-#' @param data A data frame or tibble.
-#' @return A logic value indicating if the data frame is tidy.
-#' @family Utility functions
-#' @export
-#'
-#' @examples
-#' \dontrun{
-#' is_tidy(test_log)}
+#' @family utility functions
+#' @noRd
+shush <- function(x, quiet = TRUE){
 
-is_tidy <- function(data) {
-
-    # Check arguments --------------------
-
-    if (!(is.data.frame(data))) {
-        stop("data is not a data frame", call. = FALSE)
+    if (isTRUE(quiet)) {
+        suppressMessages(suppressWarnings(x))
+    } else {
+        x
     }
-
-    # Check if data conforms to the tidy structure --------------------
-
-    model <- model_data()
-    output <- TRUE
-
-    if (!(identical(names(data), names(model)))) {
-        output <- FALSE
-    }
-
-    if (!(identical(unlist(lapply(data, class)),
-                    unlist(lapply(model, class))))) {
-        output <- FALSE
-    }
-
-    # Return output --------------------
-
-    output
 
 }
 
-#' Return a tidy data frame
-#'
-#' @description
-#'
-#' This function return a data frame conformed to the proposed data structure
-#' of the [tidy_data()] function. It can be used for testing and structuring
-#' other routines.
-#'
-#' @return A tibble.
-#' @family Utility functions
-#' @export
+#' @family utility functions
+#' @noRd
+close_round <- function(x, digits = 5) {
 
-model_data <- function() {
-    test_log
+    pattern_9 <- paste0("\\.", paste(rep(9, digits), collapse = ""))
+    pattern_0 <- paste0("\\.", paste(rep(0, digits), collapse = ""))
+
+    dplyr::case_when(
+        stringr::str_detect(x, pattern_9) |
+            stringr::str_detect(x, pattern_0) ~ round(x),
+        TRUE ~ x
+    )
+
+}
+
+#' @family utility functions
+#' @noRd
+swap <- function(x, y) {
+
+    assert_identical(x, y, type = "length")
+    assert_identical(x, y, type = "class")
+
+    a <- x
+    b <- y
+
+    x <- b
+    y <- a
+
+    list(x = x, y = y)
+
+}
+
+#' @family utility functions
+#' @noRd
+swap_if <- function(x, y, condition = "x > y") {
+
+    choices <- c("x == y", "x < y", "x <= y", "x > y", "x >= y")
+
+    assert_identical(x, y, type = "length")
+    assert_identical(x, y, type = "class")
+    checkmate::assert_choice(condition, choices)
+
+    condition <- stringr::str_replace(condition, "x", "a")
+    condition <- stringr::str_replace(condition, "y", "b")
+
+    a <- x
+    b <- y
+
+    x <- dplyr::if_else(eval(parse(text = condition)), b, a)
+    y <- dplyr::if_else(eval(parse(text = condition)), a, b)
+
+    list(x = x, y = y)
+
+}
+
+#' @family utility functions
+#' @noRd
+count_na <- function(x) {
+
+    length(which(is.na(x)))
+
+}
+
+#' @family utility functions
+#' @noRd
+escape_regex <- function(x) {
+
+    gsub("([.|()\\^{}+$*?]|\\[|\\])", "\\\\\\1", x)
+
+}
+
+#' @family utility functions
+#' @noRd
+get_names <- function(...) {
+
+    out <- lapply(substitute(list(...))[-1], deparse)
+    out <- vapply(out, unlist, character(1))
+    out <- noquote(out)
+    out <- gsub("\\\"","", out)
+
+    out
+
+}
+
+#' @family utility functions
+#' @noRd
+get_class <- function(x) {
+
+    foo <- function(x) {
+        class(x)[1]
+    }
+
+    if (is.list(x) || is.data.frame(x)) {
+        vapply(x, foo, character(1))
+    } else {
+        class(x)[1]
+    }
+
 }

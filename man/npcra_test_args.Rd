@@ -7,13 +7,12 @@
 npcra_test_args(data, col_name, timestamp, method, fast)
 }
 \arguments{
-\item{data}{Dataframe that contains the date variable and the variable that
-will be used to identify the 10 most active hours.}
+\item{data}{A \code{data.frame} \code{object}}
 
-\item{col_name}{String with the name of the column that will be used in the
+\item{col_name}{A string with the name of the column that will be used in the
 calculation.}
 
-\item{timestamp}{String with the name of the column that contains the
+\item{timestamp}{A string with the name of the column that contains the
 dataframe dates.}
 
 \item{method}{1 = whole period, 2 = average day, 3 = each day}
@@ -28,11 +27,20 @@ If no test stops, TRUE will be returned.
 \ifelse{html}{\out{<a href='https://www.tidyverse.org/lifecycle/#experimental'><img src='figures/lifecycle-experimental.svg' alt='Experimental lifecycle'></a>}}{\strong{Experimental}}
 
 Performs the verification of the types of expected values as arguments to the
-npcra functions.
+NPCRA functions.
 }
 \examples{
 \dontrun{
-npcra_test_args(test_log, "pim", "timestamp", 1, TRUE)}
-
-
+npcra_test_args(test_log, "pim", "timestamp", 1, TRUE)
 }
+}
+\seealso{
+Other NPCRA functions: 
+\code{\link{npcra_is}()},
+\code{\link{npcra_iv}()},
+\code{\link{npcra_l5_whole_period}()},
+\code{\link{npcra_l5}()},
+\code{\link{npcra_m10_whole_period}()},
+\code{\link{npcra_m10}()}
+}
+\concept{NPCRA functions}

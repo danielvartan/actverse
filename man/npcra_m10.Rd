@@ -13,13 +13,12 @@ npcra_m10(
 )
 }
 \arguments{
-\item{data}{Dataframe that contains the date variable and the variable that
-will be used to identify the 10 most active hours.}
+\item{data}{A \code{data.frame} \code{object}}
 
-\item{col_name}{String with the name of the column that will be used in the
+\item{col_name}{A string with the name of the column that will be used in the
 calculation.}
 
-\item{timestamp}{String with the name of the column that contains the
+\item{timestamp}{A string with the name of the column that contains the
 dataframe dates.}
 
 \item{method}{1 = whole period, 2 = average day, 3 = each day}
@@ -28,8 +27,9 @@ dataframe dates.}
 Scans completely and returns the correct M10 value, but more slowly}
 }
 \value{
-a Dataframe with the value of M10 in the first position and the start
-date of the 10 most active window in the period in the second position.
+A \code{data.frame} object with the value of M10 in the first position and
+the start date of the 10 most active window in the period in the second
+position.
 }
 \description{
 \ifelse{html}{\out{<a href='https://www.tidyverse.org/lifecycle/#experimental'><img src='figures/lifecycle-experimental.svg' alt='Experimental lifecycle'></a>}}{\strong{Experimental}}
@@ -39,6 +39,16 @@ measure may be influenced by daytime napping" - WITTING, W. (1990)
 }
 \examples{
 \dontrun{
-npcra_m10(test_log, "pim")}
-
+npcra_m10(test_log, "pim")
 }
+}
+\seealso{
+Other NPCRA functions: 
+\code{\link{npcra_is}()},
+\code{\link{npcra_iv}()},
+\code{\link{npcra_l5_whole_period}()},
+\code{\link{npcra_l5}()},
+\code{\link{npcra_m10_whole_period}()},
+\code{\link{npcra_test_args}()}
+}
+\concept{NPCRA functions}

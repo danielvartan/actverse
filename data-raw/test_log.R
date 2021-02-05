@@ -1,3 +1,8 @@
+library(tidyverse)
+library(lubridate)
+
+# usethis::use_data(test_log, overwrite = TRUE)
+
 #' Load and tidy an actimetry raw dataset
 #'
 #' @description
@@ -17,12 +22,16 @@
 #' @param tz a character string that specifies which time zone to parse the
 #'   dates with. The string must be a time zone that is recognized by the
 #'   user's OS. For more information, see `?lubridate::ymd_hms`.
+#'
 #' @return A tibble.
+#'
+#' @importFrom magrittr %>%
+#' @noRd
+#'
 #' @examples
 #' \dontrun{
-#' load_and_tidy(data_example("test_log.txt"))}
-#' @importFrom magrittr %>%
-#' @export
+#' load_and_tidy(data_example("test_log.txt"))
+#' }
 
 load_and_tidy <- function(file = file.choose(),
                           device = "acttrust1",
@@ -69,12 +78,16 @@ load_and_tidy <- function(file = file.choose(),
 #'   by `NA` values in all the columns.
 #' @param trim_ws A logical value indicating if leading and trailing
 #'   whitespace must be trimmed from each field before parsing it.
+#'
 #' @return A tibble with all variables as character.
+#'
+#' @importFrom magrittr %>%
+#' @noRd
+#'
 #' @examples
 #' \dontrun{
-#' load_data(data_example("test_log.txt"))}
-#' @importFrom magrittr %>%
-#' @export
+#' load_data(data_example("test_log.txt"))
+#' }
 
 load_data <- function(file = file.choose(),
                       device = "acttrust1",
@@ -84,7 +97,7 @@ load_data <- function(file = file.choose(),
                       skip_empty_rows = TRUE,
                       trim_ws = TRUE) {
 
-    # Check arguments --------------------
+    # Check arguments -----
 
     for (i in c("file", "delim", "na")) {
         if (!(is.character(get(i)))) {
@@ -124,7 +137,7 @@ load_data <- function(file = file.choose(),
         }
     }
 
-    # Set values --------------------
+    # Set values -----
 
     if (is.null(device)) {
         # do nothing
@@ -149,19 +162,15 @@ load_data <- function(file = file.choose(),
         trim_ws <- TRUE
     }
 
-    # Load data --------------------
+    # Load data and return output -----
 
-    output <- file %>%
+    file %>%
         readr::read_delim(delim = delim,
                           na = na,
                           col_types = readr::cols(.default = "c"),
                           skip = skip,
                           trim_ws = trim_ws) %>%
         tibble::as_tibble()
-
-    # Return output --------------------
-
-    output
 
 }
 
@@ -188,27 +197,24 @@ load_data <- function(file = file.choose(),
 #' @param tz A character string that specifies which time zone to parse the
 #'   dates with. The string must be a time zone that is recognized by the
 #'   user's OS. For more information, see `?lubridate::ymd_hms`.
+#'
 #' @return A tibble.
-#' @examples
-#' \dontrun{
-#' tidy_data(load_data(data_example("test_log.txt")))}
-#' @note
-#'
-#' To do list:
-#'
-#' * Add new devices
-#' * Add parameters for unconformed data loading
 #'
 #' @importFrom magrittr %>%
 #' @importFrom rlang := .data is_true
 #' @importFrom utils head
-#' @export
+#' @noRd
+#'
+#' @examples
+#' \dontrun{
+#' tidy_data(load_data(data_example("test_log.txt")))
+#' }
 
 tidy_data <- function(data,
                       device = "acttrust1",
                       tz = "America/Sao_Paulo") {
 
-    # Check arguments --------------------
+    # Check arguments -----
 
     if (!(is.data.frame(data))) {
         stop("data is not a data frame", call. = FALSE)
@@ -220,13 +226,13 @@ tidy_data <- function(data,
         }
     }
 
-    # Transform values --------------------
+    # Transform values -----
 
     output <- data %>%
         dplyr::mutate_all(as.character) %>%
         dplyr::mutate_all(stringr::str_trim)
 
-    # Adjust variables and values --------------------
+    # Adjust variables and values -----
 
     if (is.null(device)) {
         # do nothing
@@ -326,9 +332,9 @@ tidy_data <- function(data,
         }
     }
 
-    # Tidy output --------------------
+    # Tidy data and return output -----
 
-    output <- output %>%
+    output %>%
         dplyr::transmute(
             timestamp = .data$timestamp,
             ms = as.numeric(.data$ms),
@@ -355,9 +361,5 @@ tidy_data <- function(data,
             uvb_light = as.numeric(.data$uvb_light),
             event = as.logical(.data$event),
             state = factor(.data$state, ordered = FALSE))
-
-    # Return output --------------------
-
-    output
 
 }

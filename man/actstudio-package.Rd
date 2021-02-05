@@ -4,15 +4,18 @@
 \name{actstudio-package}
 \alias{actstudio}
 \alias{actstudio-package}
-\title{actstudio: A Set of Tools for Actigraphy/Actimetry Data Manipulation}
+\title{actstudio: The R package for actigraphic data}
 \description{
-Open source package of applications for processing, analyzing 
-    and visualizing actigraphy/actimetric data.
+\if{html}{\figure{logo.png}{options: align='right' alt='logo' width='120'}}
+
+A set of tools for processing, analyzing and visualizing 
+    actigraphy data.
 }
 \seealso{
 Useful links:
 \itemize{
-  \item \url{https://github.com/gipsousp/actstudio}
+  \item \url{https://gipsousp.github.io/actstudio/}
+  \item \url{https://github.com/gipsousp/actstudio/}
   \item Report bugs at \url{https://github.com/gipsousp/actstudio/issues}
 }
 
@@ -23,9 +26,9 @@ Useful links:
 Authors:
 \itemize{
   \item Bruno Furlan \email{brfrlan@gmail.com} (\href{https://orcid.org/0000-0003-1654-0899}{ORCID})
-  \item Cássio Serrano \email{cassio.serrano@usp.br} (\href{https://orcid.org/0000-0001-7149-1829}{ORCID})
-  \item Vinícius Matias \email{viniciusmatias@usp.br} (\href{https://orcid.org/0000-0002-2047-5420}{ORCID})
-  \item Ana Amélia Benedito-Silva \email{aamelia@usp.br} [expert, scientific advisor]
+  \item Vinicius Matias \email{viniciusmatias@usp.br} (\href{https://orcid.org/0000-0002-2047-5420}{ORCID})
+  \item Cassio Serrano \email{cassio.serrano@usp.br} (\href{https://orcid.org/0000-0001-7149-1829}{ORCID})
+  \item Ana Amelia Benedito-Silva \email{aamelia@usp.br} (\href{https://orcid.org/0000-0003-4976-2623}{ORCID}) [expert, scientific advisor]
   \item Mario Pedrazzoli \email{pedrazzo@usp.br} (\href{https://orcid.org/0000-0002-5257-591X}{ORCID}) [expert, scientific advisor]
 }
 

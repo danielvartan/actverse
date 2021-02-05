@@ -1,19 +1,21 @@
-url: https://gipsousp.github.io/actstudio
-
-development:
-  mode: auto
-  destination: doc
-  version_label: warning
+url: https://gipsousp.github.io/actstudio/
 
 template:
-  opengraph:
-     twitter:
-       creator: "@danielvartan"
-       site: "@gipsousp"
   params:
     bootswatch: cosmo
     ganalytics: G-2MF22QDC2E
     noindex: true
+    mathjax: true
+
+navbar:
+  structure:
+    left:  [intro, reference, articles, news]
+    right: [github]
+  components:
+    home: ~
+    intro: ~
+    articles: ~
+    news: ~
 
 authors:
   Daniel Vartanian:
@@ -28,3 +30,8 @@ authors:
     href: http://each.usp.br/gipso
   USP:
     href: http://usp.br
+
+development:
+  mode: auto
+  destination: doc
+  version_label: warning

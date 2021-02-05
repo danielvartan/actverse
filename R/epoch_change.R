@@ -1,56 +1,32 @@
-#' Check the epoch length of an actimetry dataset
+#' Return the epoch length of an actimetry dataset
 #'
 #' @description
 #'
 #' `r lifecycle::badge("experimental")`
 #'
-#' @param data A data frame or tibble.
+#' @param data A `data.frame` or `tibble` object.
 #' @param timestamp A string indicating the name of the timestamp
-#'   variable (Note: the timestamp variable must be class `POSIXct`).
+#'   variable. The timestamp variable must be class `POSIXct`.
+#'
 #' @return A numeric value representing the epoch length in seconds.
-#' @importFrom utils head
+#'
+#' @export
+#'
 #' @examples
 #' \dontrun{
-#' epoch(test_log)}
-#' @export
+#' epoch(test_log)
+#' }
 
 epoch <- function(data,
                   timestamp = "timestamp") {
 
-    # Check arguments --------------------
+    checkmate::assert_data_frame(data, min.rows = 2)
+    checkmate::assert_string(timestamp)
+    checkmate::assert_subset(timestamp, names(data))
+    checkmate::assert_posixct(data[[timestamp]], all.missing = FALSE)
 
-    if (!(is.data.frame(data))) {
-        stop("data is not a data frame", call. = FALSE)
-    }
-
-    if (!(is.character(get(timestamp)))) {
-        stop(paste(timestamp, "value is not class character"), call. = FALSE)
-    }
-
-    if (!(timestamp %in% names(data))) {
-        stop(paste(timestamp, "were not found in data"), call. = FALSE)
-    }
-
-    if (!(lubridate::is.POSIXt(data[[timestamp]]))) {
-        stop(paste(timestamp, "is not POSIXt"), call. = FALSE)
-    }
-
-    if (length(data[[timestamp]]) < 2) {
-        stop(paste(timestamp, "length is less than 2"), call. = FALSE)
-    }
-
-    if (any(is.na(head(data[[timestamp]], 2)))) {
-        stop(paste(timestamp, "first 2 values have NAs"), call. = FALSE)
-    }
-
-    # Compute epoch --------------------
-
-    output <- as.numeric(
-        lubridate::as.duration(data[[timestamp]][2] - data[[timestamp]][1]))
-
-    # Return output --------------------
-
-    output
+    as.numeric(difftime(data[[timestamp]][2], data[[timestamp]][1],
+                        units = "secs"))
 
 }
 
@@ -60,7 +36,7 @@ epoch <- function(data,
 #'
 #' `r lifecycle::badge("experimental")`
 #'
-#' __UNDER DEVOLOPMENT__
+#' __UNDER DEVELOPMENT__
 #'
 #' Some computations may require a specific epoch length. This function change
 #' the epoch length using a method defined in the `method` variable. Be aware
@@ -69,6 +45,48 @@ epoch <- function(data,
 #' Note that some methods are not valid when dealing with a lower or greater
 #' epoch value than the original. Use [epoch()] to know the
 #' epoch value of your data.
+#'
+#' @details
+#'
+#' ## `new_epoch` argument
+#'
+#' Note that when the new epoch is smaller than the original, the value must be
+#' an integer divisor of the original epoch. (e.g. if the original epoch is 60,
+#' the possible values are 30 (60 %% 30 = 0), 20, 15, 12, 10, 6, 5, 4, 3 , 2 and
+#' 1)
+#'
+#' ## `method` argument
+#'
+#' This argument accepts only the following values.
+#'
+#' * `"divide"`: divide and equally distribute the value from the original epoch
+#' into the new epochs created (only when new epoch `<` original epoch)
+#' * `"same"`: assign the same value from the original epoch to the new epochs
+#' created (only when new epoch `<` original epoch)
+#' * `"first"`: use the first value from original epochs grouped in the new
+#' epoch interval (only when new epoch `>` original epoch)
+#' * `"last"`: use the last value from original epochs grouped in the new epoch
+#' interval (only when new epoch `>` original epoch) (only when new epoch `>`
+#' original epoch)
+#' * `"sum"`: sum all the values in the new epoch interval (only when new epoch
+#' `>` original epoch)
+#' * `"mean"`: compute the mean value in the new epoch interval (only when new
+#' epoch `>`original epoch)
+#' * `"median"`: compute the median value in the new epoch interval (only when
+#' new epoch `>`original epoch)
+#'
+#' Note that some methods are not valid when dealing with a lower or greater
+#' epoch value than the original. You can use the [epoch()] function to know the
+#' epoch value of your data.
+#'
+#' ## `variable` argument
+#'
+#'  When using a tidy dataset, the method will be used only for the activity and
+#'  light exposure variables. The variables `orientation`, `body_temperature`,
+#'  and `external_temperature` will be summarized by the `mean` method. If
+#'  there's a `TRUE` value for the `event` variable in the time interval
+#'  assessed, the final value will be `TRUE`. For the `state` variable, the
+#'  first value of the time interval assessed will be used.
 #'
 #' @section Representations:
 #'
@@ -107,68 +125,28 @@ epoch <- function(data,
 #'                   new epoch
 #' ```
 #'
-#' @param data A data frame or tibble.
-#' @param new_epoch A integer number indicating the number of seconds of the
-#'   new epoch.
+#' @param data A `data.frame` or `tibble` object.
+#' @param new_epoch An [integerish][checkmate::test_integerish()] `integer` or
+#'   `numeric` object indicating the number of seconds of the new epoch.
+#' @param method (optional) A string indicating the method that must be used for
+#'   data summarization. See Details section to learn more.
+#' @param timestamp (optional) A string indicating the name of the timestamp
+#'   variable. The timestamp variable must have class `POSIXct`.
+#' @param variable (optional) a string indicating a specific variable in `data`.
+#'   If not assigned, its required that the data conforms to the proposed data
+#'   structure of the [tidy_data()] function.
 #'
-#'   Note that when the new epoch is smaller than the original, the value
-#'   must be an integer divisor of the original epoch. (e.g. if the original
-#'   epoch is 60, the possible values are 30 (60 %% 30 = 0), 20,
-#'   15, 12, 10, 6, 5, 4, 3 , 2 and 1)
-#'
-#' @param method A string indicating the method that must be used for data
-#'   summarization.
-#'
-#' Note that some methods are not valid when dealing with a lower or greater
-#' epoch value than the original. You can use the [epoch()] function to know
-#' the epoch value of your data.
-#'
-#' This variable accepts only the following values.
-#'
-#' * `"divide"`: divide and equally distribute the value from the original
-#'   epoch into the new epochs created (only when new epoch `<` original epoch)
-#' * `"same"`: assign the same value from the original epoch to the new epochs
-#'   created (only when new epoch `<` original epoch)
-#' * `"first"`: use the first value from original epochs grouped in the
-#'   new epoch interval (only when new epoch `>` original epoch)
-#' * `"last"`: use the last value from original epochs grouped in the
-#'   new epoch interval (only when new epoch `>` original epoch)
-#'   (only when new epoch `>` original epoch)
-#' * `"sum"`: sum all the values in the new epoch interval
-#'   (only when new epoch `>` original epoch)
-#' * `"mean"`: compute the mean value in the new epoch interval (only when new
-#'   epoch `>`original epoch)
-#' * `"median"`: compute the median value in the new epoch interval (only
-#'   when new epoch `>`original epoch)
-#'
-#' @param timestamp A string indicating the name of the timestamp
-#'   variable (Note: the timestamp variable must be class `POSIXct`).
-#' @param variable a string indicating a specific variable in `data` (optional).
-#'  If not assigned, its required that the data conforms to the proposed data
-#'  structure of the [tidy_data()] function.
-#'
-#'  When using a tidy dataset, the method will be used only for the
-#'  activity and light exposure variables. The variables `orientation`,
-#'  `body_temperature`, and `external_temperature` will be summarized by
-#'  the `mean` method. If there's a `TRUE` value for the `event` variable
-#'  in the time interval assessed, the final value will be `TRUE`. For the
-#'  `state` variable, the first value of the time interval assessed will be used.
-#'
-#' @return A tibble.
-#' @examples
-#' \dontrun{
-#' epoch_change(test_log)}
-#' @note
-#'
-#' To do list:
-#'
-#' * Optimize the matching process
+#' @return A `tibble` object.
 #'
 #' @importFrom magrittr %>%
 #' @importFrom lubridate %within%
-#' @importFrom dplyr first last
-#' @importFrom rlang := .data is_true
-#' @export
+#' @importFrom rlang !! := .data
+#' @noRd
+#'
+#' @examples
+#' \dontrun{
+#' epoch_change(test_log)
+#' }
 
 epoch_change <- function(data,
                          new_epoch,
@@ -176,65 +154,52 @@ epoch_change <- function(data,
                          timestamp = "timestamp",
                          variable = NULL) {
 
-    # Check arguments --------------------
+    # To do list:
+    #
+    # * Optimize the matching process
 
-    if (!(is.data.frame(data))) {
-        stop("data is not a data frame", call. = FALSE)
-    }
+    # Check arguments -----
 
-    check <- c("divide", "same", "first", "last", "sum", "mean", "median")
-    if (!(method %in% check)) {
-        stop("method is not a valid. See documentation.", call. = FALSE)
-    }
+    checkmate::assert_data_frame(data, min.rows = 2)
+    checkmate::assert_integerish(new_epoch)
+
+    choices <- c("divide", "same", "first", "last", "sum", "mean", "median")
+    checkmate::assert_choice(method, choices)
 
     check <- c("divide", "same", "sum", "mean", "median")
+
     if (!(is.null(variable)) && !(is.numeric(variable)) &&
         !(method %in% check)) {
         stop(paste(variable, "is not numeric. The method selected only works",
                    "with numeric variables."), call. = FALSE)
     }
 
-    if (is.null(variable) && !(is_tidy(data))) {
-        stop(paste("data is not tidy"), call. = FALSE)
+    assert_any_na(data[[timestamp]])
+    checkmate::assert_subset(timestamp, names(data))
+
+    if (!is.null(variable)) {
+        checkmate::assert_subset(variable, names(data))
     }
 
-    for (i in c("timestamp", "variable")) {
-        if (i == "variable" && is.null(variable)) {
-            next
-        }
-
-        if (!(get(i) %in% names(data))) {
-            stop(paste(i, "were not found in data"), call. = FALSE)
-        }
-    }
-
-    if (!(new_epoch %% 1 == 0)) {
-        stop(paste("new_epoch must be a integer number"), call. = FALSE)
-    }
-
-    if (length(data[[timestamp]]) < 2) {
-        stop(paste("timestamp variable length is less than 2"), call. = FALSE)
-    }
-
-    if (any(is.na(data[[timestamp]]))) {
-        stop(paste("timestamp variable have NAs"), call. = FALSE)
-    }
-
-    # Select data --------------------
+    # Select data -----
 
     if (!(is.null(variable))) {
-        output <- data %>%
+        out <- data %>%
             dplyr::select(!!as.symbol(timestamp), !!as.symbol(variable))
     } else {
-        output <- data
+        out <- data
     }
 
-    # Set epoch values --------------------
+    # Set values -----
+
+    new_epoch <- as.integer(new_epoch)
+
+    # Set epoch values -----
 
     epoch <- epoch(data)
 
     if (identical(new_epoch, epoch)) {
-        return(output)
+        return(out)
     }
 
     if (new_epoch < epoch && !(method %in% c("divide"))) {
@@ -259,7 +224,7 @@ epoch_change <- function(data,
     new_epoch_count <- ceiling(epoch_count * (epoch / new_epoch))
 
 
-    # Set helper functions --------------------
+    # Set helper functions -----
 
     divide <- function(x) {
         sum(x) / (epoch / new_epoch)
@@ -269,7 +234,7 @@ epoch_change <- function(data,
         sum(x)
     }
 
-    # Change epoch length --------------------
+    # Change epoch length -----
 
     ## Set intervals
 
@@ -282,31 +247,16 @@ epoch_change <- function(data,
         dplyr::mutate(interval = lubridate::interval(start = .data$onset,
                                                      end = .data$offset),
                       n = seq(nrow(intervals))) %>%
-        dplyr::relocate(n)
-
-    ## Set progress bar
-
-    pb <- progress::progress_bar$new(
-        format = "[:bar] :current/:total (:percent) (:eta) (:elapsedfull)",
-        total = nrow(output),
-        clear = FALSE,
-        show_after = 0)
-
-    pb$message(paste("Matching original epochs to new epochs.",
-                     "This may take a while, don't be alarmed."))
-
-    pb$tick(0)
+        dplyr::relocate(.data$n)
 
     ## Match original epochs to new epochs
 
-    output$interval <- NA
+    out$interval <- NA
 
-    for (i in seq_len(nrow(output))) {
+    for (i in seq_len(nrow(out))) {
 
-        output$interval[i] <-
-            which(output[[timestamp]][i] %within% intervals$interval)
-
-        pb$tick()
+        out$interval[i] <-
+            which(out[[timestamp]][i] %within% intervals$interval)
 
     }
 
@@ -316,8 +266,8 @@ epoch_change <- function(data,
 
         subset <- dplyr::tibble(!!as.symbol(timestamp) := intervals$onset,
                                 interval = intervals$n)
-        output <- dplyr::anti_join(subset, output, by = "interval") %>%
-            dplyr::full_join(output, by = c("interval", timestamp)) %>%
+        out <- dplyr::anti_join(subset, out, by = "interval") %>%
+            dplyr::full_join(out, by = c("interval", timestamp)) %>%
             dplyr::arrange(timestamp)
 
     }
@@ -328,25 +278,25 @@ epoch_change <- function(data,
 
     if (!(is.null(variable))) {
 
-        output <- output %>%
-            dplyr::group_by(interval) %>%
+        out <- out %>%
+            dplyr::group_by(.data$interval) %>%
             dplyr::summarise(
                 dplyr::across(!!as.symbol(variable), get(method))) %>%
             dplyr::mutate(!!as.symbol(timestamp) := intervals$offset) %>%
-            dplyr::select(-interval) %>%
+            dplyr::select(-.data$interval) %>%
             dplyr::relocate(!!as.symbol(timestamp))
 
     } else {
 
-        output <- output %>%
-            dplyr::group_by(interval) %>%
+        out <- out %>%
+            dplyr::group_by(.data$interval) %>%
             dplyr::summarise(
                 dplyr::across(c(.data$x_axis:.data$zcm_n,
                                 .data$light:.data$uvb_light), sum),
                 dplyr::across(.data$orientation:.data$external_temperature,
                               mean),
-                dplyr::across(.data$event, is_true),
-                dplyr::across(.data$state, first)) %>%
+                dplyr::across(.data$event, ~ .x == TRUE),
+                dplyr::across(.data$state, dplyr::first)) %>%
             dplyr::mutate(timestamp = intervals$offset,
                           pim_n = .data$pim / new_epoch,
                           tat_n = .data$tat / new_epoch,
@@ -359,8 +309,8 @@ epoch_change <- function(data,
 
     }
 
-    # Return output --------------------
+    # Return output -----
 
-    output
+    out
 
 }
