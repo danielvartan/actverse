@@ -1,5 +1,5 @@
 Package: actstudio
-Title: The R package for actigraphic data
+Title: The R Package for Actigraphic Data
 Version: 0.0.0.9000
 Authors@R: 
     c(person(given = "Daniel",
