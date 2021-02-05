@@ -39,8 +39,8 @@ Authors@R:
 Description: A set of tools for processing, analyzing and visualizing 
     actigraphy data.
 License: MIT + file LICENSE
-URL: https://gipsousp.github.io/actstudio/, https://github.com/gipsousp/actstudio/
-BugReports: https://github.com/gipsousp/actstudio/issues
+URL: https://gipsousp.github.io/actverse/, https://github.com/gipsousp/actverse/
+BugReports: https://github.com/gipsousp/actverse/issues
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
