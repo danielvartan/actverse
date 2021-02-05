@@ -6,7 +6,7 @@
 ^pkgdown$
 ^\.Rproj\.user$
 ^_pkgdown\.yml$
-^actstudio\.Rproj$
+^actverse\.Rproj$
 ^CODE_OF_CONDUCT\.md$
 ^codecov\.yml$
 ^codemeta\.json$

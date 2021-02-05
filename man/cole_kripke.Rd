@@ -21,7 +21,7 @@ The same data with two columns: STAGE and AWAKE.
 \dontrun{
 data <- readr::read_csv2("./inst/extdata/test_log.txt", skip = 25)
 data <- cole_kripke(data)
-data$timestamp = lubridate::dmy_hms(paste(data$DATE, data$TIME))
+data$timestamp <- lubridate::dmy_hms(paste(data$DATE, data$TIME))
 ggplot2::qplot(timestamp, AWAKE, data = data, geom = "area",
                xlab = "Timestamp", ylab = "State")
 }

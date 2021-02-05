@@ -1,9 +1,9 @@
 library(testthat)
-library(actstudio)
+library(actverse)
 
 library(checkmate)
 
-test_check("actstudio")
+test_check("actverse")
 
 # # For development use only (comment the code after use (Ctrl + Shift + C))
 #

@@ -1,11 +1,17 @@
 {
-  "@context": ["https://doi.org/10.5063/schema/codemeta-2.0", "http://schema.org"],
+  "@context": [
+    "https://doi.org/10.5063/schema/codemeta-2.0",
+    "http://schema.org"
+  ],
   "@type": "SoftwareSourceCode",
-  "identifier": "actstudio",
+  "identifier": "actverse",
   "description": "A set of tools for processing, analyzing and visualizing \n    actigraphy data.",
-  "name": "actstudio: The R package for actigraphic data",
+  "name": "actverse: The R Package for Actigraphic Data",
   "codeRepository": "https://github.com/gipsousp/actstudio/",
-  "relatedLink": "https://gipsousp.github.io/actstudio/",
+  "relatedLink": [
+    "https://gipsousp.github.io/actstudio/",
+    "https://gipsousp.github.io/actverse/"
+  ],
   "issueTracker": "https://github.com/gipsousp/actstudio/issues",
   "license": "https://spdx.org/licenses/MIT",
   "version": "0.0.0.9000",
@@ -263,11 +269,17 @@
     }
   ],
   "releaseNotes": "https://github.com/gipsousp/actstudio/blob/master/NEWS.md",
-  "readme": "https://github.com/gipsousp/actstudio/blob/master/README.md",
-  "fileSize": "1931.71KB",
-  "contIntegration": ["https://travis-ci.com/gipsousp/actstudio", "https://codecov.io/gh/gipsousp/actstudio?branch=master"],
+  "readme": "https://github.com/gipsousp/actverse/blob/master/README.md",
+  "fileSize": "3104.846KB",
+  "contIntegration": ["https://travis-ci.com/gipsousp/actverse", "https://codecov.io/gh/gipsousp/actverse?branch=master"],
   "developmentStatus": ["https://www.repostatus.org/#wip", "https://www.tidyverse.org/lifecycle/#experimental"],
-  "keywords": ["actimetry", "actigraphy", "r-package", "sleep", "chronobiology"],
+  "keywords": [
+    "actimetry",
+    "actigraphy",
+    "r-package",
+    "sleep",
+    "chronobiology"
+  ],
   "citation": [
     {
       "@type": "CreativeWork",
@@ -305,7 +317,7 @@
         }
       ],
       "name": "A R package for processing, analyzing and visualizing actigraphy data",
-      "url": "http://gipsousp.github.io/actstudio/",
+      "url": "https://gipsousp.github.io/actstudio/",
       "description": "Lifecycle: experimental"
     }
   ]
