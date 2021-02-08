@@ -4,26 +4,21 @@
 \alias{npcra_test_args}
 \title{Testing the arguments of nonparametric functions}
 \usage{
-npcra_test_args(data, col_activity, timestamp, method)
+npcra_test_args(data, col_name, timestamp, method, fast)
 }
 \arguments{
-\item{data}{Dataframe that contains the date column and the column that
-will be used to identify the period of activity.}
+\item{data}{A \code{data.frame} \code{object}}
 
-\item{col_activity}{String with the name of the column that will be used in the
-calculation. The observations in this column must be in numeric format.}
+\item{col_name}{A string with the name of the column that will be used in the
+calculation.}
 
-\item{timestamp}{String with the name of the column that contains the date
-and time of each observation (POSIX format).}
+\item{timestamp}{A string with the name of the column that contains the
+dataframe dates.}
 
-\item{method}{An integer that represents one of the three common methods for
-calculating and analyzing M10:
+\item{method}{1 = whole period, 2 = average day, 3 = each day}
 
-1 = whole period,
-
-2 = average day,
-
-3 = each day.}
+\item{fast}{True: It makes the M10 quick calculation, prone to errors; False:
+Scans completely and returns the correct M10 value, but more slowly}
 }
 \value{
 If no test stops, TRUE will be returned.
@@ -32,26 +27,20 @@ If no test stops, TRUE will be returned.
 \ifelse{html}{\out{<a href='https://www.tidyverse.org/lifecycle/#experimental'><img src='figures/lifecycle-experimental.svg' alt='Experimental lifecycle'></a>}}{\strong{Experimental}}
 
 Performs the verification of the types of expected values as arguments to the
-npcra functions.
+NPCRA functions.
 }
 \examples{
 \dontrun{
-npcra_test_args(test_log, "pim", "timestamp", 1)}
+npcra_test_args(test_log, "pim", "timestamp", 1, TRUE)
+}
 }
 \seealso{
 Other NPCRA functions: 
-\code{\link{npcra_ism}()},
 \code{\link{npcra_is}()},
-\code{\link{npcra_ivm}()},
 \code{\link{npcra_iv}()},
-\code{\link{npcra_l5_average_day}()},
-\code{\link{npcra_l5_each_day}()},
 \code{\link{npcra_l5_whole_period}()},
 \code{\link{npcra_l5}()},
-\code{\link{npcra_m10_average_day}()},
-\code{\link{npcra_m10_each_day}()},
 \code{\link{npcra_m10_whole_period}()},
-\code{\link{npcra_m10}()},
-\code{\link{npcra_ra}()}
+\code{\link{npcra_m10}()}
 }
 \concept{NPCRA functions}

@@ -4,75 +4,50 @@
 \alias{npcra_l5}
 \title{Non-Parametric Function L5 (Least Active 5  Hours)}
 \usage{
-npcra_l5(data, col_activity = "pim", timestamp = "timestamp", method = 1)
+npcra_l5(
+  data,
+  col_name = "pim",
+  timestamp = "timestamp",
+  method = 1,
+  fast = TRUE
+)
 }
 \arguments{
-\item{data}{Dataframe that contains the date column and the column that
-will be used to identify the least active 5 hours.}
+\item{data}{A \code{data.frame} \code{object}}
 
-\item{col_activity}{String with the name of the column that will be used in the
-calculation. The observations in this column must be in numeric format.}
+\item{col_name}{A string with the name of the column that will be used in the
+calculation.}
 
-\item{timestamp}{String with the name of the column that contains the date
-and time of each observation (POSIX format).}
+\item{timestamp}{A string with the name of the column that contains the
+dataframe dates.}
 
-\item{method}{An integer that represents one of the three common methods for
-calculating and analyzing L5:
+\item{method}{1 = whole period, 2 = average day, 3 = each day}
 
-1 = whole period,
-
-2 = average day,
-
-3 = each day.
-
-If you prefer you can also directly call the functions npcra_l5_whole_period,
-npcra_l5_average_day or npcra_l5_each_day.}
+\item{fast}{True: It makes the L5 quick calculation, prone to errors; False:
+Scans completely and returns the correct L5 value, but more slowly}
 }
 \value{
-A Dataframe with the value of L5 in the first position and the start
-date of the 5-hour window with less activity in the period in the second position.
+a Dataframe with the value of M10 in the first position and the start
+date of the 10 most active window in the period in the second position.
 }
 \description{
 \ifelse{html}{\out{<a href='https://www.tidyverse.org/lifecycle/#experimental'><img src='figures/lifecycle-experimental.svg' alt='Experimental lifecycle'></a>}}{\strong{Experimental}}
 
-L5 is calculated by identifying the 5-hour window with the least activity in
-the given period.
-
-The function calculates the averages of a quantitative variable
-(typically the representative of the activity in the data set) in an interval
-that comprises each observation until the end of a 10-hour window, moving on
-to the next observation with the same approach. Note that the accuracy of the
-L5 is related to the validity of the given data range.
+"L5 represents movement-activity during sleep plus nighttime arousals" -
+WITTING, W. (1990)
 }
 \examples{
 \dontrun{
 npcra_l5(test_log, "pim")
-npcra_l5(test_log, method=3)
 }
-}
-\references{
-WITTING, W. et al. Alterations in the circadian rest-activity rhythm in aging
-and Alzheimer's disease. Biological Psychiatry, v. 27, n. 6, p. 563-572,
-Mar. 1990. doi: 10.1016/0006-3223(90)90523-5.
-
-GONCALVES, Bruno da Silva Brandao et al. A fresh look at the use of
-nonparametric analysis in actimetry. Sleep Medicine Reviews, v. 20,
-p. 84-91, Apr. 2015. doi: 10.1016/j.smrv.2014.06.002.
 }
 \seealso{
 Other NPCRA functions: 
-\code{\link{npcra_ism}()},
 \code{\link{npcra_is}()},
-\code{\link{npcra_ivm}()},
 \code{\link{npcra_iv}()},
-\code{\link{npcra_l5_average_day}()},
-\code{\link{npcra_l5_each_day}()},
 \code{\link{npcra_l5_whole_period}()},
-\code{\link{npcra_m10_average_day}()},
-\code{\link{npcra_m10_each_day}()},
 \code{\link{npcra_m10_whole_period}()},
 \code{\link{npcra_m10}()},
-\code{\link{npcra_ra}()},
 \code{\link{npcra_test_args}()}
 }
 \concept{NPCRA functions}

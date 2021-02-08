@@ -1,5 +1,5 @@
-Package: actstudio
-Title: The R package for actigraphic data
+Package: actverse
+Title: The R Package for Actigraphic Data
 Version: 0.0.0.9000
 Authors@R: 
     c(person(given = "Daniel",
@@ -12,20 +12,21 @@ Authors@R:
              role = c("aut"),
              email = "brfrlan@gmail.com",
              comment = c(ORCID = "0000-0003-1654-0899")),
-      person(given = "Cássio",
-             family = "Serrano",
-             email = "cassio.serrano@usp.br",
-             role = c("aut"),
-             comment = c(ORCID = "0000-0001-7149-1829")),
-      person(given = "Vinícius",
+      person(given = "Vinicius",
              family = "Matias",
              email = "viniciusmatias@usp.br",
              role = c("aut"),
              comment = c(ORCID = "0000-0002-2047-5420")),
-      person(given = "Ana Amélia",
+      person(given = "Cassio",
+             family = "Serrano",
+             email = "cassio.serrano@usp.br",
+             role = c("aut"),
+             comment = c(ORCID = "0000-0001-7149-1829")),
+      person(given = "Ana Amelia",
              family = "Benedito-Silva",
              email = "aamelia@usp.br",
-             role = c("aut", "exp", "sad")),
+             role = c("aut", "exp", "sad"),
+             comment = c(ORCID = "0000-0003-4976-2623")),
       person(given = "Mario",
              family = "Pedrazzoli",
              email = "pedrazzo@usp.br",
@@ -36,31 +37,32 @@ Authors@R:
       person(given = "USP",
              role = c("fnd")))
 Description: A set of tools for processing, analyzing and visualizing 
-    actigraphy/actimetric data.
+    actigraphy data.
 License: MIT + file LICENSE
-URL: https://github.com/gipsousp/actstudio
-BugReports: https://github.com/gipsousp/actstudio/issues
+URL: https://gipsousp.github.io/actverse/, https://github.com/gipsousp/actverse/
+BugReports: https://github.com/gipsousp/actverse/issues
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.1.1
 Depends:
-    R (>= 4.0)
+    R (>= 3.6)
 Imports: 
     dplyr,
     glue,
-    hms,
     lifecycle,
     lubridate,
     magrittr,
-    readr,
     rlang,
-    stringr,
-    tibble,
-    utils
+    stats,
+    stringr
 Suggests: 
-    testthat (>= 2.0.0),
+    covr,
     knitr,
-    rmarkdown
+    rmarkdown,
+    spelling, 
+    testthat (>= 2.0.0),
+    utils
 Config/testthat/edition: 2
 VignetteBuilder: knitr
+Language: en-US
