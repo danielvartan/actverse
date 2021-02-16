@@ -4,51 +4,73 @@
 \alias{npcra_m10}
 \title{Non-Parametric Function M10 (Most Active 10 Hours)}
 \usage{
-npcra_m10(
-  data,
-  col_name = "pim",
-  timestamp = "timestamp",
-  method = 1,
-  fast = TRUE
-)
+npcra_m10(x, timestamp, method = 1)
 }
 \arguments{
-\item{data}{A \code{data.frame} \code{object}}
-
-\item{col_name}{A string with the name of the column that will be used in the
+\item{x}{Numeric vector with the activity data that will be used in the
 calculation.}
 
-\item{timestamp}{A string with the name of the column that contains the
-dataframe dates.}
+\item{timestamp}{String with the name of the column that contains the date
+and time of each observation (POSIX format).}
 
-\item{method}{1 = whole period, 2 = average day, 3 = each day}
+\item{method}{An integer that represents one of the three common methods for
+calculating and analyzing M10:
 
-\item{fast}{True: It makes the M10 quick calculation, prone to errors; False:
-Scans completely and returns the correct M10 value, but more slowly}
+1 = whole period,
+
+2 = average day,
+
+3 = each day.
+
+If you prefer you can also directly call the functions
+npcra_m10_whole_period, npcra_m10_average_day or npcra_m10_each_day.}
 }
 \value{
-A \code{data.frame} object with the value of M10 in the first position and
-the start date of the 10 most active window in the period in the second
-position.
+A tibble with the value of M10 in the first position and the start
+date of the 10 most active window in the period in the second position.
 }
 \description{
 \ifelse{html}{\out{<a href='https://www.tidyverse.org/lifecycle/#experimental'><img src='figures/lifecycle-experimental.svg' alt='Experimental lifecycle'></a>}}{\strong{Experimental}}
 
-"M10 represents activity during the most active period of the day. This
-measure may be influenced by daytime napping" - WITTING, W. (1990)
+M10 is calculated by identifying the 10-hour window with the highest activity
+in the given period.
+
+The function calculates the averages of a quantitative variable
+(typically the representative of the activity in the data set) in an interval
+that comprises each observation until the end of a 10-hour window, moving on
+to the next observation with the same approach. Note that the accuracy of the
+M10 is related to the validity of the given data range.
 }
 \examples{
 \dontrun{
-npcra_m10(test_log, "pim")
+m10(test_log, "pim")
+m10(test_log, method=3)
 }
+
+}
+\references{
+WITTING, W. et al. Alterations in the circadian rest-activity rhythm in aging
+and Alzheimer's disease. Biological Psychiatry, v. 27, n. 6, p. 563-572,
+Mar. 1990. doi: 10.1016/0006-3223(90)90523-5.
+
+GONCALVES, Bruno da Silva Brandao et al. A fresh look at the use of
+nonparametric analysis in actimetry. Sleep Medicine Reviews, v. 20,
+p. 84-91, Apr. 2015. doi: 10.1016/j.smrv.2014.06.002.
 }
 \seealso{
 Other NPCRA functions: 
-\code{\link{npcra_is}()},
-\code{\link{npcra_iv}()},
+\code{\link{ism}()},
+\code{\link{is}()},
+\code{\link{ivm}()},
+\code{\link{iv}()},
+\code{\link{l5_average_day}()},
+\code{\link{l5_each_day}()},
 \code{\link{npcra_l5_whole_period}()},
 \code{\link{npcra_l5}()},
+\code{\link{npcra_m10_average_day}()},
+\code{\link{npcra_m10_each_day}()},
 \code{\link{npcra_m10_whole_period}()},
-\code{\link{npcra_test_args}()}
+\code{\link{npcra_test_args}()},
+\code{\link{ra}()}
 }
 \concept{NPCRA functions}

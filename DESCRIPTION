@@ -49,6 +49,7 @@ Depends:
     R (>= 3.6)
 Imports: 
     dplyr,
+    checkmate,
     glue,
     lifecycle,
     lubridate,

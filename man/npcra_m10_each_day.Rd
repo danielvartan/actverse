@@ -40,18 +40,18 @@ p. 84-91, Apr. 2015. doi: 10.1016/j.smrv.2014.06.002.
 }
 \seealso{
 Other NPCRA functions: 
-\code{\link{npcra_ism}()},
-\code{\link{npcra_is}()},
-\code{\link{npcra_ivm}()},
-\code{\link{npcra_iv}()},
-\code{\link{npcra_l5_average_day}()},
-\code{\link{npcra_l5_each_day}()},
+\code{\link{ism}()},
+\code{\link{is}()},
+\code{\link{ivm}()},
+\code{\link{iv}()},
+\code{\link{l5_average_day}()},
+\code{\link{l5_each_day}()},
 \code{\link{npcra_l5_whole_period}()},
 \code{\link{npcra_l5}()},
 \code{\link{npcra_m10_average_day}()},
 \code{\link{npcra_m10_whole_period}()},
 \code{\link{npcra_m10}()},
-\code{\link{npcra_ra}()},
-\code{\link{npcra_test_args}()}
+\code{\link{npcra_test_args}()},
+\code{\link{ra}()}
 }
 \concept{NPCRA functions}

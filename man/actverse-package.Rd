@@ -14,9 +14,9 @@ A set of tools for processing, analyzing and visualizing
 \seealso{
 Useful links:
 \itemize{
-  \item \url{https://gipsousp.github.io/actstudio/}
-  \item \url{https://github.com/gipsousp/actstudio/}
-  \item Report bugs at \url{https://github.com/gipsousp/actstudio/issues}
+  \item \url{https://gipsousp.github.io/actverse/}
+  \item \url{https://github.com/gipsousp/actverse/}
+  \item Report bugs at \url{https://github.com/gipsousp/actverse/issues}
 }
 
 }
