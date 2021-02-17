@@ -2,32 +2,82 @@
 % Please edit documentation in R/npcra.R
 \name{npcra_l5_whole_period}
 \alias{npcra_l5_whole_period}
-\title{Non-Parametric Function L5 (Least Active 5  Hours) for the full period.}
+\title{Non-Parametric Function L5 (Least Active 5  Hours) for the full period}
 \usage{
-npcra_l5_whole_period(data, col_activity = "pim", timestamp = "timestamp")
+npcra_l5_whole_period(x, timestamp)
 }
 \arguments{
-\item{data}{Dataframe that contains the date column and the column that
-will be used to identify the 5 least active hours.}
+\item{x}{Numeric vector with the activity data that will be used in the
+calculation.}
 
-\item{col_activity}{String with the name of the column that will be used in the
-calculation. The observations in this column must be in numeric format.}
-
-\item{timestamp}{String with the name of the column that contains the date
-and time of each observation (POSIX format).}
+\item{timestamp}{POSIXct/POSIXlt vector that contains the date and time of
+each observation.}
 }
 \value{
-a Dataframe with the value of L5 in the first position and the start
-date of the 5 least active window in the period in the second position.
+A tibble 1 X 2 with the value of L5 in the first column and the
+start date of the 5 least active window in the period in the second position.
 }
 \description{
 \ifelse{html}{\out{<a href='https://www.tidyverse.org/lifecycle/#experimental'><img src='figures/lifecycle-experimental.svg' alt='Experimental lifecycle'></a>}}{\strong{Experimental}}
 
-Calculates and finds the least active window of 5 hours in all records.
+Calculates and finds the least active period of 5 hours in all records.
+}
+\details{
+The L5 is the lowest average activity over a 5-hour period among several
+different periods in a time series. The value of l5 has the ability to
+quantify movement during sleep and possible awakenings (Witting et al, 1990),
+also depending on the validity of the data the validity of the data received
+for the calculation. Lower  L5 results may be related to a less fragmented
+rhythm (Goncalves et al, 2015), however, it is important to analyze the result
+for each day (\code{npcra_l5_each_day()}) and for the average 24-hour profile
+(\code{npcra_l5_average_day()})
+
+The function receives two vectors, one containing the registered activity
+(numerical values) and another vector containing the date of each occurrence
+(POSIXct / POSIXlt), so it is possible to map the activity and dates by the
+indexes of the vectors.
+
+Since the vectors are organized according to the date of observation in
+ascending order (see Note), the function will identify the date of the last
+full 5-hour period in the record.
+
+With this information the verification of all valid activity windows starts,
+that is, from the first date, the average
+of the activity vector is calculated until the difference between the date of
+the current observation and the date of the window is greater that 5 hours,
+when this happens, the average activity will be recorded in that 5-hour
+period and move on to the next observation or, if you arrived on the last date
+with a full 5 hour period, finish the check.
+
+Finally, the highest average activity in 5 hours will be captured and, using
+the index of the vector of averages, the date of the beginning of the period
+of 5 hours with the highest activity will be retrieved.
+}
+\note{
+As normally expected, the date array must be ordered in ascending order.
+This allows the verification of the longest periods to follow a method of
+asymptotic complexity O(2n) = O(n), where n is the amount of data
+(activity / date), so for 10,000 data, a little less than 20,000 interactions
+will be performed, reducing the time to obtain the result for seconds.
 }
 \examples{
-\dontrun{
-npcra_l5_whole_period(test_log)}
+#Using the test_log data from the package
+npcra_l5_whole_period(test_log$pim, test_log$timestamp)
+
+#Running for 10000 random observations
+first_date <- as.POSIXct('2015-01-01')
+last_date <- as.POSIXct('2015-01-15')
+shuffled_timestamp <- sample(seq(first_date, last_date, by = "min"), 10000)
+timestamp <- sort(shuffled_timestamp)
+x <- runif(10000, 0, 10000)
+npcra_l5_whole_period(x, timestamp)
+
+#Ordering dates and activity data to run
+data <- dplyr::as_tibble(x)
+data <- dplyr::mutate(data, timestamp = shuffled_timestamp)
+data <- dplyr::arrange(data, timestamp)
+npcra_l5_whole_period(data$value, data$timestamp)
+
 }
 \references{
 WITTING, W. et al. Alterations in the circadian rest-activity rhythm in aging

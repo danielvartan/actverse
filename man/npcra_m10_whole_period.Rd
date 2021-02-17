@@ -77,7 +77,6 @@ data <- dplyr::mutate(data, timestamp = shuffled_timestamp)
 data <- dplyr::arrange(data, timestamp)
 npcra_m10_whole_period(data$value, data$timestamp)
 
-
 }
 \references{
 WITTING, W. et al. Alterations in the circadian rest-activity rhythm in aging
