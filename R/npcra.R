@@ -143,18 +143,24 @@ npcra_m10 <- function(x, timestamp, method=1) {
 #' #Ordering dates and activity data to run
 #' data <- dplyr::as_tibble(x)
 #' data <- dplyr::mutate(data, timestamp = shuffled_timestamp)
-#' data <- dplyr::arrange(data, timestamp)#'
+#' data <- dplyr::arrange(data, timestamp)
 #' npcra_m10_whole_period(data$value, data$timestamp)
-#'
 #'
 #' @export
 npcra_m10_whole_period <- function(x, timestamp) {
+    checkmate::assert_numeric(x)
+    checkmate::assert_posixct(timestamp)
+
+    if (dplyr::last(timestamp) - dplyr::first(timestamp) < lubridate::hours(10)) {
+        stop("Data does not complete at least one 10-hour period")
+    }
+
     endWindow <- timestamp + lubridate::hours(10)
     index_last_valid_register <- which.min(endWindow < dplyr::last(timestamp))
     window_index <- 1
     value_to_remove <- 0
     sum_in_10_hours <- 0
-    mean_10_hours <- replicate(length(x), 0)
+    mean_10_hours <- replicate(index_last_valid_register, 0)
 
     for (index in seq_len(index_last_valid_register - 1)) {
         window_sum <- 0
@@ -170,7 +176,8 @@ npcra_m10_whole_period <- function(x, timestamp) {
     }
 
     m10_value <- max(mean_10_hours)
-    timestamp_m10 <- timestamp[which(mean_10_hours == m10_value)]
+
+    timestamp_m10 <- timestamp[which.max(mean_10_hours == m10_value)]
 
     m10 <- dplyr::tibble(m10_value, timestamp_m10) %>%
         dplyr::rename(m10 = 'm10_value', start_date = 'timestamp_m10')
@@ -464,36 +471,42 @@ npcra_l5 <- function(data, col_activity = "pim", timestamp="timestamp", method=1
 #' \dontrun{
 #' npcra_l5_whole_period(test_log)}
 #' @export
-npcra_l5_whole_period <- function(data, col_activity = "pim", timestamp="timestamp") {
-    valid_data <- data %>%
-        dplyr::select(timestamp, col_activity) %>%
-        dplyr::rename("timestamp" = timestamp, "x" = col_activity) %>%
-        dplyr::mutate(endWindow = timestamp + lubridate::hours(5)) %>%
-        dplyr::mutate(l5 = 0)
+npcra_l5_whole_period <- function(x, timestamp) {
+    checkmate::assert_numeric(x)
+    checkmate::assert_posixct(timestamp)
 
-    index_last_valid_register <- which.min(valid_data$endWindow < last(valid_data$timestamp))
+    if (dplyr::last(timestamp) - dplyr::first(timestamp) < lubridate::hours(5)) {
+        stop("Data does not complete at least one 5-hour period")
+    }
+
+    endWindow <- timestamp + lubridate::hours(5)
+    index_last_valid_register <- which.min(endWindow < dplyr::last(timestamp))
     window_index <- 1
     value_to_remove <- 0
     sum_in_5_hours <- 0
+    mean_5_hours <- replicate(index_last_valid_register, 0)
 
-    for (index in seq_len(index_last_valid_register-1)) {
+    for (index in seq_len(index_last_valid_register - 1)) {
         window_sum <- 0
-        while (valid_data$timestamp[window_index] < valid_data$endWindow[index]) {
-            window_sum <- window_sum + valid_data$x[window_index]
+
+        while (timestamp[window_index] < endWindow[index]) {
+            window_sum <- window_sum + x[window_index]
             window_index <- window_index + 1
         }
+
         sum_in_5_hours <- sum_in_5_hours - value_to_remove + window_sum
-        value_to_remove <- valid_data$x[index]
-        valid_data$l5[index] <- sum_in_5_hours / (window_index-index)
+        value_to_remove <- x[index]
+        mean_5_hours[index] <- sum_in_5_hours / (window_index-index)
     }
 
-    l5_data <- valid_data %>%
-        dplyr::select(l5, timestamp) %>%
-        dplyr::filter(l5 > 0) %>%
-        dplyr::filter(l5 == min(l5)) %>%
-        dplyr::rename("start_date" = timestamp)
+    l5_value <- min(mean_5_hours)
 
-    l5_data
+    timestamp_m10 <- timestamp[which.max(mean_5_hours == l5_value)]
+
+    l5 <- dplyr::tibble(mean_5_hours, timestamp_l5) %>%
+        dplyr::rename(l5 = 'l5_value', start_date = 'timestamp_l5')
+
+    l5
 }
 
 #' Non-Parametric Function L5 (Least Active 5 Hours) for the avarage day

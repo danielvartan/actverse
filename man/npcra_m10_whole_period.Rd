@@ -89,7 +89,7 @@ nonparametric analysis in actimetry. Sleep Medicine Reviews, v. 20,
 p. 84-91, Apr. 2015. doi: 10.1016/j.smrv.2014.06.002.
 }
 \seealso{
-Other NPCRA functions:
+Other NPCRA functions: 
 \code{\link{ism}()},
 \code{\link{is}()},
 \code{\link{ivm}()},
