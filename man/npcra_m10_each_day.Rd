@@ -4,30 +4,74 @@
 \alias{npcra_m10_each_day}
 \title{Non-Parametric Function M10 (Most Active 10 Hours) for each day}
 \usage{
-npcra_m10_each_day(data, col_activity = "pim", timestamp = "timestamp")
+npcra_m10_each_day(x, timestamp)
 }
 \arguments{
-\item{data}{Dataframe that contains the date column and the column that
-will be used to identify the 10 most active hours.}
+\item{x}{Numeric vector with the activity data that will be used in the
+calculation.}
 
-\item{col_activity}{String with the name of the column that will be used in the
-calculation. The observations in this column must be in numeric format.}
-
-\item{timestamp}{String with the name of the column that contains the date
-and time of each observation (POSIX format).}
+\item{timestamp}{POSIXct/POSIXlt vector that contains the date and time of
+each observation.}
 }
 \value{
-A Dataframe with the value of M10 in the first position and the start
-date of the 10 most active window by day in the second position.
+A tibble of two columns, with the values of M10 in the first column
+and the start dates of the 10 most active period for each day in the second
+position (so, each row is a different day).
 }
 \description{
 \ifelse{html}{\out{<a href='https://www.tidyverse.org/lifecycle/#experimental'><img src='figures/lifecycle-experimental.svg' alt='Experimental lifecycle'></a>}}{\strong{Experimental}}
 
-Calculate the most active window of 10 hours for each different day.
+Calculates and finds the most active period of 10 hours for each different
+day.
+}
+\details{
+The M10 is the highest average activity over a 10-hour period.
+The first uses of the m10 consisted of calculating the 10 most active hours
+based on the hourly means (WITTING et al., 1990). As it does not have an
+explicit definition, it is expected that the values would be calculated
+under the complete period (see \code{npcra_m10_whole_period()}) received
+and that is why that is why many authors perform the analysis analysis
+by two other approaches (GONCALVES et al., 2015): calculation for each
+day and for the 24h mean profile (see \code{npcra_m10_mean_profile()})
+
+m10 for each day calculates the most active 10 hour period for each
+different date (day, month and year). Thus, each date of the data set
+delivered must have a value of m10 as long as there is a complete period
+of 10 hours for that date. The results can quantify the intensity of daily
+activity (the higher the result, the more intense) and variations by date.
+
+The function receives two vectors, one containing the registered activity
+(numerical values) and another vector containing the date of each occurrence
+(POSIXct / POSIXlt), so it is possible to map the activity and dates by the
+indexes of the vectors.
+
+Since the vectors are organized according to the date of observation in
+ascending order (see Note), the function will identify the date of the last
+full 10-hour period in the record.
+
+With this information the verification of all valid activity windows for each
+date starts.
+
+First all different dates are identified and what activity data belongs to
+them. In sequence, the averages of the 10-hour windows of the first day
+are calculated, that is, the averages of all windows that end at 23:59:59
+or earlier. This process is repeated for the next day and ends when the
+last valid date arrives.
+
+At the end of the calculation, the highest average for its respective day
+is captured
+}
+\note{
+As normally expected, the date array must be ordered in ascending order.
+This allows the verification of the longest periods to follow a method of
+asymptotic complexity O(2n) = O(n), where n is the amount of data
+(activity / date), so for 10,000 data, a little less than 20,000 interactions
+will be performed, reducing the time to obtain the result for seconds.
 }
 \examples{
-\dontrun{
-npcra_m10_each_day(test_log)}
+#Using the test_log data from the package
+npcra_m10_each_day(test_log$pim, test_log$timestamp)
+
 }
 \references{
 WITTING, W. et al. Alterations in the circadian rest-activity rhythm in aging
@@ -39,7 +83,7 @@ nonparametric analysis in actimetry. Sleep Medicine Reviews, v. 20,
 p. 84-91, Apr. 2015. doi: 10.1016/j.smrv.2014.06.002.
 }
 \seealso{
-Other NPCRA functions: 
+Other NPCRA functions:
 \code{\link{ism}()},
 \code{\link{is}()},
 \code{\link{ivm}()},
@@ -48,7 +92,7 @@ Other NPCRA functions:
 \code{\link{l5_each_day}()},
 \code{\link{npcra_l5_whole_period}()},
 \code{\link{npcra_l5}()},
-\code{\link{npcra_m10_average_day}()},
+\code{\link{npcra_m10_mean_profile}()},
 \code{\link{npcra_m10_whole_period}()},
 \code{\link{npcra_m10}()},
 \code{\link{npcra_test_args}()},

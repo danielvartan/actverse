@@ -175,17 +175,14 @@ npcra_m10_whole_period <- function(x, timestamp) {
         mean_10_hours[index] <- sum_in_10_hours / (window_index-index)
     }
 
-    m10_value <- max(mean_10_hours)
+    m10 <- max(mean_10_hours)
+    start_date <- timestamp[which.max(mean_10_hours == m10)]
+    out <- dplyr::tibble(m10, start_date)
 
-    timestamp_m10 <- timestamp[which.max(mean_10_hours == m10_value)]
-
-    m10 <- dplyr::tibble(m10_value, timestamp_m10) %>%
-        dplyr::rename(m10 = 'm10_value', start_date = 'timestamp_m10')
-
-    m10
+    out
 }
 
-#' Non-Parametric Function M10 (Most Active 10 Hours) for the avarage day
+#' Non-Parametric Function M10 (Most Active 10 Hours) for the Mean Profile
 #'
 #' @description
 #'
@@ -222,7 +219,10 @@ npcra_m10_whole_period <- function(x, timestamp) {
 #' \dontrun{
 #' npcra_m10_average_day(test_log)}
 #' @export
-npcra_m10_average_day <- function(data, col_activity = "pim", timestamp="timestamp") {
+npcra_m10_mean_profile <- function(x, timestamp) {
+    checkmate::assert_numeric(x)
+    checkmate::assert_posixct(timestamp)
+
     valid_data <- data %>%
         dplyr::select(timestamp, col_activity) %>%
         dplyr::rename("timestamp" = timestamp, "x" = col_activity) %>%
@@ -242,9 +242,12 @@ npcra_m10_average_day <- function(data, col_activity = "pim", timestamp="timesta
     index_in_window = abs(difftime(valid_data$timestamp_same_origin[window_index], valid_data$timestamp_same_origin[index], units = "hour")) < 10
 
 
+    n_times <- 0
     while (index < first_14h_index) {
+        n_times <- n_times + 1
         window_sum <- 0
         while (abs(difftime(valid_data$timestamp_same_origin[window_index], valid_data$timestamp_same_origin[index], units = "hour")) < 10) {
+            n_times <- n_times + 1
             window_sum <- window_sum + valid_data$x[window_index]
             window_index <- window_index + 1
             size_window <- size_window+1
@@ -255,7 +258,7 @@ npcra_m10_average_day <- function(data, col_activity = "pim", timestamp="timesta
         value_to_remove <- valid_data$x[index]
         valid_data$m10[index] <- sum_in_10_hours / (size_window-index)
 
-        index <- index+1
+        index <- index + 1
     }
 
     window_index <-1
@@ -286,24 +289,66 @@ npcra_m10_average_day <- function(data, col_activity = "pim", timestamp="timesta
 }
 
 #' Non-Parametric Function M10 (Most Active 10 Hours) for each day
+#' @family NPCRA functions
 #'
 #' @description
 #'
 #' `r lifecycle::badge("experimental")`
 #'
-#' Calculate the most active window of 10 hours for each different day.
+#' Calculates and finds the most active period of 10 hours for each different
+#' day.
 #'
-#' @param data Dataframe that contains the date column and the column that
-#'   will be used to identify the 10 most active hours.
-#' @param col_activity String with the name of the column that will be used in the
-#'   calculation. The observations in this column must be in numeric format.
-#' @param timestamp String with the name of the column that contains the date
-#'  and time of each observation (POSIX format).
+#' @param x Numeric vector with the activity data that will be used in the
+#' calculation.
+#' @param timestamp POSIXct/POSIXlt vector that contains the date and time of
+#' each observation.
+#' @return A tibble of two columns, with the values of M10 in the first column
+#' and the start dates of the 10 most active period for each day in the second
+#' position (so, each row is a different day).
 #'
-#' @return A Dataframe with the value of M10 in the first position and the start
-#'   date of the 10 most active window by day in the second position.
+#'@details
+#'The M10 is the highest average activity over a 10-hour period.
+#' The first uses of the m10 consisted of calculating the 10 most active hours
+#' based on the hourly means (WITTING et al., 1990). As it does not have an
+#' explicit definition, it is expected that the values would be calculated
+#' under the complete period (see \code{npcra_m10_whole_period()}) received
+#' and that is why that is why many authors perform the analysis analysis
+#' by two other approaches (GONCALVES et al., 2015): calculation for each
+#' day and for the 24h mean profile (see \code{npcra_m10_mean_profile()})
 #'
-#' @family NPCRA functions
+#'m10 for each day calculates the most active 10 hour period for each
+#'different date (day, month and year). Thus, each date of the data set
+#'delivered must have a value of m10 as long as there is a complete period
+#'of 10 hours for that date. The results can quantify the intensity of daily
+#'activity (the higher the result, the more intense) and variations by date.
+#'
+#'The function receives two vectors, one containing the registered activity
+#'(numerical values) and another vector containing the date of each occurrence
+#'(POSIXct / POSIXlt), so it is possible to map the activity and dates by the
+#'indexes of the vectors.
+#'
+#'Since the vectors are organized according to the date of observation in
+#'ascending order (see Note), the function will identify the date of the last
+#'full 10-hour period in the record.
+#'
+#'With this information the verification of all valid activity windows for each
+#'date starts.
+#'
+#'First all different dates are identified and what activity data belongs to
+#'them. In sequence, the averages of the 10-hour windows of the first day
+#'are calculated, that is, the averages of all windows that end at 23:59:59
+#'or earlier. This process is repeated for the next day and ends when the
+#'last valid date arrives.
+#'
+#'At the end of the calculation, the highest average for its respective day
+#'is captured
+#'
+#'@note
+#'As normally expected, the date array must be ordered in ascending order.
+#'This allows the verification of the longest periods to follow a method of
+#'asymptotic complexity O(2n) = O(n), where n is the amount of data
+#'(activity / date), so for 10,000 data, a little less than 20,000 interactions
+#'will be performed, reducing the time to obtain the result for seconds.
 #'
 #' @references
 #' WITTING, W. et al. Alterations in the circadian rest-activity rhythm in aging
@@ -314,53 +359,49 @@ npcra_m10_average_day <- function(data, col_activity = "pim", timestamp="timesta
 #' nonparametric analysis in actimetry. Sleep Medicine Reviews, v. 20,
 #' p. 84-91, Apr. 2015. doi: 10.1016/j.smrv.2014.06.002.
 #'
-#'
 #' @examples
-#' \dontrun{
-#' npcra_m10_each_day(test_log)}
+#' #Using the test_log data from the package
+#' npcra_m10_each_day(test_log$pim, test_log$timestamp)
+#'
 #' @export
-npcra_m10_each_day <- function(data, col_activity = "pim", timestamp="timestamp"){
-    valid_data <- data %>%
-        dplyr::select(timestamp, col_activity) %>%
-        dplyr::rename("timestamp" = timestamp, "x" = col_activity) %>%
-        dplyr::mutate(day = ymd(strftime(timestamp, format="%y%m%d")),
-               endWindow = timestamp+lubridate::hours(10),
-               hourEndWindow = as.numeric(strftime(endWindow, format="%H")),
-               mean_10_hours = 0,)
+npcra_m10_each_day <- function(x, timestamp){
+    dates <- lubridate::date(timestamp)
+    EndWindow <- timestamp + lubridate::hours(10)
+    hour_end_window <- lubridate::hour(EndWindow)
 
-    unique_days <- unique(valid_data$day)
-    index_first_days <- match(unique_days,valid_data$day)
-    index_last_valid_register <- which.min(valid_data$endWindow < last(valid_data$timestamp))
-    quant_days <- length(unique_days)
+    unique_dates <- unique(dates)
+    index_first_days <- match(unique_dates, dates)
+    index_last_valid_register <- which.min(EndWindow < dplyr::last(timestamp))
+    n_dates <- length(unique_dates)
+    mean_10_hours <- replicate(length(x), 0)
 
-    for (index_day in seq(quant_days)){
-        index = index_first_days[index_day]
+    for (index_day in seq(n_dates)){
+        index <- index_first_days[index_day]
         value_to_remove <- 0
         sum_in_10_hours <- 0
         window_index <- index
-        current_day <- lubridate::day(unique_days[index_day])
-        while (index < index_last_valid_register & valid_data$hourEndWindow[index] != 0) {
-            end_window <- valid_data$endWindow[index]
+
+        while (index < index_last_valid_register & hour_end_window[index] != 0) {
+            end_window <- EndWindow[index]
             window_sum <- 0
-            while (valid_data$timestamp[window_index] <= end_window) {
-                window_sum <- window_sum + valid_data$x[window_index]
-                window_index <- window_index+1
+
+            while (timestamp[window_index] <= end_window) {
+                window_sum <- window_sum + x[window_index]
+                window_index <- window_index + 1
             }
+
             sum_in_10_hours <- sum_in_10_hours - value_to_remove + window_sum
-            valid_data$mean_10_hours[index] <- sum_in_10_hours/(window_index-index)
-            value_to_remove <- valid_data$x[index]
-            index<-index+1
+            mean_10_hours[index] <- sum_in_10_hours / (window_index-index)
+            value_to_remove <- x[index]
+            index <- index + 1
         }
     }
 
-    m10 <- tapply(valid_data$mean_10_hours, valid_data$day, max)
-    m10_first_date <- valid_data$timestamp[match(m10,valid_data$mean_10_hours)]
-    m10_each_day <- cbind.data.frame(m10,  m10_first_date)
-    m10_each_day <- m10_each_day %>%
-        rename("start_date"=m10_first_date) %>%
-        as_tibble()
+    m10 <- tapply(mean_10_hours, dates, max)
+    start_date <- timestamp[match(m10, mean_10_hours)]
+    out <- dplyr::tibble(m10, start_date)
 
-    m10_each_day
+    out
 }
 
 #' Non-Parametric Function L5 (Least Active 5  Hours)
