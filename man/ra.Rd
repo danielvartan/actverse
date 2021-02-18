@@ -57,7 +57,6 @@ Other NPCRA functions:
 \code{\link{npcra_m10_each_day}()},
 \code{\link{npcra_m10_mean_profile}()},
 \code{\link{npcra_m10_whole_period}()},
-\code{\link{npcra_m10}()},
-\code{\link{npcra_test_args}()}
+\code{\link{npcra_m10}()}
 }
 \concept{NPCRA functions}

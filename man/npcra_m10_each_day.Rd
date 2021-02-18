@@ -72,6 +72,15 @@ will be performed, reducing the time to obtain the result for seconds.
 #Using the test_log data from the package
 npcra_m10_each_day(test_log$pim, test_log$timestamp)
 
+#Running for 10000 random observations
+first_date <- as.POSIXct('2015-01-01')
+last_date <- as.POSIXct('2015-01-31')
+shuffled_timestamp <- sample(seq(first_date,
+                                 last_date, by = "min"), 10000)
+timestamp <- sort(shuffled_timestamp)
+x <- runif(10000, 0, 10000)
+npcra_m10_each_day(x, timestamp) #returns a tibble 31X2
+
 }
 \references{
 WITTING, W. et al. Alterations in the circadian rest-activity rhythm in aging
@@ -95,7 +104,6 @@ Other NPCRA functions:
 \code{\link{npcra_m10_mean_profile}()},
 \code{\link{npcra_m10_whole_period}()},
 \code{\link{npcra_m10}()},
-\code{\link{npcra_test_args}()},
 \code{\link{ra}()}
 }
 \concept{NPCRA functions}

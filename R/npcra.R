@@ -151,6 +151,10 @@ npcra_m10_whole_period <- function(x, timestamp) {
     checkmate::assert_numeric(x)
     checkmate::assert_posixct(timestamp)
 
+    if (length(timestamp) != length(x)) {
+        stop("'x' and 'timestamp' must have the same length")
+    }
+
     if (dplyr::last(timestamp) - dplyr::first(timestamp) < lubridate::hours(10)) {
         stop("Data does not complete at least one 10-hour period")
     }
@@ -363,8 +367,28 @@ npcra_m10_mean_profile <- function(x, timestamp) {
 #' #Using the test_log data from the package
 #' npcra_m10_each_day(test_log$pim, test_log$timestamp)
 #'
+#' #Running for 10000 random observations
+#' first_date <- as.POSIXct('2015-01-01')
+#' last_date <- as.POSIXct('2015-01-31')
+#' shuffled_timestamp <- sample(seq(first_date,
+#'                                  last_date, by = "min"), 10000)
+#' timestamp <- sort(shuffled_timestamp)
+#' x <- runif(10000, 0, 10000)
+#' npcra_m10_each_day(x, timestamp) #returns a tibble 31X2
+#'
 #' @export
 npcra_m10_each_day <- function(x, timestamp){
+    checkmate::assert_numeric(x)
+    checkmate::assert_posixct(timestamp)
+
+    if (dplyr::last(timestamp) - dplyr::first(timestamp) < lubridate::hours(10)) {
+        stop("Data does not complete at least one 10-hour period")
+    }
+
+    if (length(timestamp) != length(x)) {
+        stop("'x' and 'timestamp' must have the same length")
+    }
+
     dates <- lubridate::date(timestamp)
     EndWindow <- timestamp + lubridate::hours(10)
     hour_end_window <- lubridate::hour(EndWindow)
@@ -1033,74 +1057,6 @@ ivm<- function(x, timestamp, minute_limit=60){
 
     iv_mean <- sum_iv/minute_limit
     iv_mean
-}
-
-#' Testing the arguments of nonparametric functions
-#'
-#' @description
-#'
-#' `r lifecycle::badge("experimental")`
-#'
-#' Performs the verification of the types of expected values as arguments to the
-#' npcra functions.
-#'
-#' @param data Dataframe that contains the date column and the column that
-#'   will be used to identify the period of activity.
-#' @param col_activity String with the name of the column that will be used in the
-#'   calculation. The observations in this column must be in numeric format.
-#' @param timestamp String with the name of the column that contains the date
-#'  and time of each observation (POSIX format).
-#' @param method An integer that represents one of the three common methods for
-#' calculating and analyzing M10:
-#'
-#' 1 = whole period,
-#'
-#' 2 = average day,
-#'
-#' 3 = each day.
-
-#'
-#' @return If no test stops, TRUE will be returned.
-#' @family NPCRA functions
-#'
-#' @examples
-#' \dontrun{
-#' npcra_test_args(test_log, "pim", "timestamp", 1)}
-#' @export
-npcra_test_args <- function(data, col_activity, timestamp, method) {
-    data_col_names <- colnames(data)
-
-    if (!is.data.frame(data)) {
-        stop("Parameter 'data' expects a dataframe but received a ", class(data))
-    }
-    if (!is.element(col_activity, data_col_names)) {
-        stop("Parameter 'col_activity' = ", col_activity, " is not a column of the given dataframe")
-    }
-    if (!is.element(timestamp, data_col_names)) {
-        stop("Parameter 'timestamp' = ", timestamp, " is not a column of the given dataframe")
-    }
-    if (!is.element(method, c(1,2,3))) {
-        stop("Parameter 'method' expects an integer value equal to 1,2 or 3, but received ", method, " (class ", class(method), ")")
-    }
-    if(any(is.na(data[,col_activity]))){
-        stop("Column 'col_activity' = ", col_activity, " has NA values")
-    }
-    if(any(is.na(data[,timestamp]))){
-        stop("Column 'timestamp' = ", timestamp, " has NA values")
-    }
-
-    col_activity_class <- lapply(data[, col_activity], class)
-    col_timestamp_class <- unlist(col_activity_class)
-    if (!is.element("numeric", col_activity_class)) {
-        stop("col_activity must be a column that has only 'numeric' values. col_name is composed of: ", col_activity_class)
-    }
-
-    col_timestamp_class <- lapply(data[, timestamp], class)
-    col_timestamp_class <- unlist(col_timestamp_class)
-    if (!is.element("POSIXct", col_timestamp_class) || !is.element("POSIXt", col_timestamp_class)) {
-        stop("timestamp must be a column that has 'POSIXct' or 'POSIXt' values. timestamp is composed of: ", col_timestamp_class)
-    }
-    TRUE
 }
 
 
