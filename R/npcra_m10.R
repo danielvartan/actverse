@@ -29,7 +29,8 @@
 #' 3 = each day.
 #'
 #' If you prefer you can also directly call the functions
-#' npcra_m10_whole_period, npcra_m10_average_day or npcra_m10_each_day.
+#' \code{npcra_m10_whole_period()}, \code{npcra_m10_average_day()}
+#' or \code{npcra_m10_each_day()}.
 #'
 #' @return A tibble with the value of M10 in the first position and the start
 #'   date of the 10 most active window in the period in the second position.
@@ -87,8 +88,8 @@ npcra_m10 <- function(x, timestamp, method=1) {
 #'different periods in a time series. The value of M10 is influenced by daily
 #'naps (Witting et al, 1990) and the validity of the data received for the
 #'calculation. Higher M10 results may be related to a better quality of life
-#'(Goncalves et al, 2015), however, it is important to analyze the result for each day
-#' (\code{npcra_m10_each_day()}) and for the average 24-hour profile
+#'(Goncalves et al, 2015), however, it is important to analyze the result for
+#' each day (\code{npcra_m10_each_day()}) and for the average 24-hour profile
 #' (\code{npcra_m10_average_day()})
 #'
 #'The function receives two vectors, one containing the registered activity
@@ -130,12 +131,14 @@ npcra_m10 <- function(x, timestamp, method=1) {
 #'
 #' @examples
 #' #Using the test_log data from the package
-#' npcra_m10_whole_period(test_log$pim, test_log$timestamp)
+#' npcra_m10_whole_period(test_log$pim,
+#'                          test_log$timestamp)
 #'
 #' #Running for 10000 random observations
 #' first_date <- as.POSIXct('2015-01-01')
 #' last_date <- as.POSIXct('2015-01-15')
-#' shuffled_timestamp <- sample(seq(first_date, last_date, by = "min"), 10000)
+#' shuffled_timestamp <- sample(seq(first_date,
+#'                       last_date, by = "min"), 10000)
 #' timestamp <- sort(shuffled_timestamp)
 #' x <- runif(10000, 0, 10000)
 #' npcra_m10_whole_period(x, timestamp)
@@ -393,19 +396,22 @@ npcra_m10_each_day <- function(x, timestamp){
     EndWindow <- timestamp + lubridate::hours(10)
     hour_end_window <- lubridate::hour(EndWindow)
 
-    unique_dates <- unique(dates)
-    index_first_days <- match(unique_dates, dates)
+    index_first_days <- match(unique(dates), dates)
     index_last_valid_register <- which.min(EndWindow < dplyr::last(timestamp))
-    n_dates <- length(unique_dates)
-    mean_10_hours <- replicate(length(x), 0)
+    n_dates <- dplyr::n_distinct(dates)
+    m10 <- c()
+    m10_index <- c()
 
     for (index_day in seq(n_dates)){
-        index <- index_first_days[index_day]
+        m10[index_day] <- 0
         value_to_remove <- 0
         sum_in_10_hours <- 0
+        index <- index_first_days[index_day]
         window_index <- index
 
-        while (index < index_last_valid_register & hour_end_window[index] != 0) {
+        while (index < index_last_valid_register &
+               dates[window_index] == dates[index]) {
+
             end_window <- EndWindow[index]
             window_sum <- 0
 
@@ -415,15 +421,18 @@ npcra_m10_each_day <- function(x, timestamp){
             }
 
             sum_in_10_hours <- sum_in_10_hours - value_to_remove + window_sum
-            mean_10_hours[index] <- sum_in_10_hours / (window_index-index)
+
+            if (sum_in_10_hours / (window_index-index) > m10[index_day]) {
+                m10[index_day] <- sum_in_10_hours / (window_index-index)
+                m10_index[index_day] <- index
+            }
+
             value_to_remove <- x[index]
             index <- index + 1
         }
     }
 
-    m10 <- tapply(mean_10_hours, dates, max)
-    start_date <- timestamp[match(m10, mean_10_hours)]
+    start_date <- timestamp[m10_index]
     out <- dplyr::tibble(m10, start_date)
-
     out
 }
