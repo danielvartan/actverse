@@ -7,31 +7,64 @@
 npcra_m10_mean_profile(x, timestamp)
 }
 \arguments{
-\item{timestamp}{String with the name of the column that contains the date
-and time of each observation (POSIX format).}
+\item{x}{Numeric vector with the activity data that will be used in the
+calculation.}
 
-\item{data}{Dataframe that contains the date column and the column that
-will be used to identify the 10 most active hours.}
-
-\item{col_activity}{String with the name of the column that will be used in the
-calculation. The observations in this column must be in numeric format.}
+\item{timestamp}{POSIXct/POSIXlt vector that contains the date and time of
+each observation.}
 }
 \value{
-a Dataframe with the value of M10 in the first position and the start
-time (character format) of the 10 most active window in the period in the
-second position.
+A tibble of two columns, with the value of M10 in the first column
+and the start time of the 10 most active period for the mean profile in
+the second position (to maintain the nomenclature standard,
+this column is called start_date).
 }
 \description{
 \ifelse{html}{\out{<a href='https://www.tidyverse.org/lifecycle/#experimental'><img src='figures/lifecycle-experimental.svg' alt='Experimental lifecycle'></a>}}{\strong{Experimental}}
 
-Calculates the most active window of 10 hours considering the average day of
-the observations, that is, the window of the next 10 hours disregarding the
-difference in days. The composition of all activities is considered
-as a single day: the average day.
+Calculates the most active window of 10 hours following the mean profile,
+that is, disregarding the difference in days.
+
+The composition of all activities is considered as a single day:
+the average day.
+}
+\details{
+The M10 is the highest average activity over a 10-hour period.
+The first uses of the m10 consisted of calculating the 10 most active hours
+based on the hourly means (WITTING et al., 1990). As it does not have an
+explicit definition, it is expected that the values would be calculated
+under the complete period (see \code{npcra_m10_whole_period()}) received
+and that is why that is why many authors perform the analysis
+by two other approaches (GONCALVES et al., 2015): calculation for the 24h
+mean profile and for each day(see \code{npcra_m10_each_day()})
+
+The function receives two vectors, one containing the registered activity
+(numerical values) and another vector containing the date of each occurrence
+(POSIXct / POSIXlt), so it is possible to map the activity and dates by the
+indexes of the vectors.
+
+m10 for the average profile starts by establishing the same date for all
+observations, since it will only be necessary to check by time, and then
+reordering them by the time (therefore, it is not necessary that the
+observations were passed as a parameter in an orderly manner for the
+optimal algorithm).
+
+At the end of the calculation, the highest average for its respective day
+is captured
 }
 \examples{
-\dontrun{
-npcra_m10_average_day(test_log)}
+#Using the test_log data from the package
+npcra_m10_mean_profile(test_log$pim, test_log$timestamp)
+
+#Running for 1000 random observations
+first_date <- as.POSIXct('2015-01-01')
+last_date <- as.POSIXct('2015-01-11')
+shuffled_timestamp <- sample(seq(first_date,
+                                 last_date, by = "min"), 1000)
+timestamp <- sort(shuffled_timestamp)
+x <- runif(1000, 0, 10000)
+npcra_m10_mean_profile(x, timestamp)
+
 }
 \references{
 WITTING, W. et al. Alterations in the circadian rest-activity rhythm in aging
@@ -42,19 +75,3 @@ GONCALVES, Bruno da Silva Brandao et al. A fresh look at the use of
 nonparametric analysis in actimetry. Sleep Medicine Reviews, v. 20,
 p. 84-91, Apr. 2015. doi: 10.1016/j.smrv.2014.06.002.
 }
-\seealso{
-Other NPCRA functions: 
-\code{\link{ism}()},
-\code{\link{is}()},
-\code{\link{ivm}()},
-\code{\link{iv}()},
-\code{\link{l5_average_day}()},
-\code{\link{l5_each_day}()},
-\code{\link{npcra_l5_whole_period}()},
-\code{\link{npcra_l5}()},
-\code{\link{npcra_m10_each_day}()},
-\code{\link{npcra_m10_whole_period}()},
-\code{\link{npcra_m10}()},
-\code{\link{ra}()}
-}
-\concept{NPCRA functions}

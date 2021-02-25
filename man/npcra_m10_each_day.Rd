@@ -30,7 +30,7 @@ The first uses of the m10 consisted of calculating the 10 most active hours
 based on the hourly means (WITTING et al., 1990). As it does not have an
 explicit definition, it is expected that the values would be calculated
 under the complete period (see \code{npcra_m10_whole_period()}) received
-and that is why that is why many authors perform the analysis analysis
+and that is why that is why many authors perform the analysis
 by two other approaches (GONCALVES et al., 2015): calculation for each
 day and for the 24h mean profile (see \code{npcra_m10_mean_profile()})
 
@@ -72,14 +72,14 @@ will be performed, reducing the time to obtain the result for seconds.
 #Using the test_log data from the package
 npcra_m10_each_day(test_log$pim, test_log$timestamp)
 
-#Running for 10000 random observations
+#Running for 1000 random observations
 first_date <- as.POSIXct('2015-01-01')
-last_date <- as.POSIXct('2015-01-31')
+last_date <- as.POSIXct('2015-01-11')
 shuffled_timestamp <- sample(seq(first_date,
-                                 last_date, by = "min"), 10000)
+                                 last_date, by = "min"), 1000)
 timestamp <- sort(shuffled_timestamp)
-x <- runif(10000, 0, 10000)
-npcra_m10_each_day(x, timestamp) #returns a tibble 31X2
+x <- runif(1000, 0, 10000)
+npcra_m10_each_day(x, timestamp) #returns a tibble 10X2
 
 }
 \references{
@@ -101,7 +101,6 @@ Other NPCRA functions:
 \code{\link{l5_each_day}()},
 \code{\link{npcra_l5_whole_period}()},
 \code{\link{npcra_l5}()},
-\code{\link{npcra_m10_mean_profile}()},
 \code{\link{npcra_m10_whole_period}()},
 \code{\link{npcra_m10}()},
 \code{\link{ra}()}

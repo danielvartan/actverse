@@ -42,13 +42,6 @@ that comprises each observation until the end of a 10-hour window, moving on
 to the next observation with the same approach. Note that the accuracy of the
 M10 is related to the validity of the given data range.
 }
-\examples{
-\dontrun{
-m10(test_log, "pim")
-m10(test_log, method=3)
-}
-
-}
 \references{
 WITTING, W. et al. Alterations in the circadian rest-activity rhythm in aging
 and Alzheimer's disease. Biological Psychiatry, v. 27, n. 6, p. 563-572,
@@ -69,7 +62,6 @@ Other NPCRA functions:
 \code{\link{npcra_l5_whole_period}()},
 \code{\link{npcra_l5}()},
 \code{\link{npcra_m10_each_day}()},
-\code{\link{npcra_m10_mean_profile}()},
 \code{\link{npcra_m10_whole_period}()},
 \code{\link{ra}()}
 }

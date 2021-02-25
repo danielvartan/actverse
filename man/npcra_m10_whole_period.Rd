@@ -73,12 +73,6 @@ timestamp <- sort(shuffled_timestamp)
 x <- runif(10000, 0, 10000)
 npcra_m10_whole_period(x, timestamp)
 
-#Ordering dates and activity data to run
-data <- dplyr::as_tibble(x)
-data <- dplyr::mutate(data, timestamp = shuffled_timestamp)
-data <- dplyr::arrange(data, timestamp)
-npcra_m10_whole_period(data$value, data$timestamp)
-
 }
 \references{
 WITTING, W. et al. Alterations in the circadian rest-activity rhythm in aging
@@ -100,7 +94,6 @@ Other NPCRA functions:
 \code{\link{npcra_l5_whole_period}()},
 \code{\link{npcra_l5}()},
 \code{\link{npcra_m10_each_day}()},
-\code{\link{npcra_m10_mean_profile}()},
 \code{\link{npcra_m10}()},
 \code{\link{ra}()}
 }

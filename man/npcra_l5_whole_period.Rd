@@ -98,7 +98,6 @@ Other NPCRA functions:
 \code{\link{l5_each_day}()},
 \code{\link{npcra_l5}()},
 \code{\link{npcra_m10_each_day}()},
-\code{\link{npcra_m10_mean_profile}()},
 \code{\link{npcra_m10_whole_period}()},
 \code{\link{npcra_m10}()},
 \code{\link{ra}()}
