@@ -230,41 +230,43 @@ npcra_m10_mean_profile <- function(x, timestamp) {
     checkmate::assert_numeric(x)
     checkmate::assert_posixct(timestamp)
 
-    valid_data <- data %>%
-        dplyr::select(timestamp, col_activity) %>%
-        dplyr::rename("timestamp" = timestamp, "x" = col_activity) %>%
-        dplyr::mutate(time = data.table::as.ITime(timestamp)) %>%
-        dplyr::mutate(timestamp_same_origin = timestamp) %>%
-        dplyr::mutate(m10 = 0) %>%
-        dplyr::arrange(time)
-    date(valid_data$timestamp_same_origin) <- lubridate::origin
+    m10 <- 0
+    start_date <- lubridate::origin
+    lubridate::date(timestamp) <- lubridate::origin
+    data <- dplyr::tibble(x, timestamp) %>%
+        dplyr::arrange(timestamp)
 
     index<-1
     window_index <- 1
     size_window <- 1
     value_to_remove <- 0
     sum_in_10_hours <- 0
-    first_14h_index <- which.max(hour(valid_data$timestamp_same_origin) == 14)
-    last_valid_index <- dplyr::n_distinct(valid_data)
-    index_in_window = abs(difftime(valid_data$timestamp_same_origin[window_index], valid_data$timestamp_same_origin[index], units = "hour")) < 10
+    first_14h_index <- which.max(lubridate::hour(data$timestamp) >= 14)
+    last_valid_index <- length(x)
 
-
-    n_times <- 0
     while (index < first_14h_index) {
-        n_times <- n_times + 1
         window_sum <- 0
-        while (abs(difftime(valid_data$timestamp_same_origin[window_index], valid_data$timestamp_same_origin[index], units = "hour")) < 10) {
-            n_times <- n_times + 1
-            window_sum <- window_sum + valid_data$x[window_index]
+
+        while (abs(difftime(data$timestamp[window_index],
+                            data$timestamp[index], units = "hour")) < 10) {
+
+            window_sum <- window_sum + data$x[window_index]
             window_index <- window_index + 1
-            size_window <- size_window+1
-            if (window_index == last_valid_index) break
+            size_window <- size_window + 1
 
+            if (window_index == last_valid_index) {
+                break
+            }
         }
-        sum_in_10_hours <- sum_in_10_hours - value_to_remove + window_sum
-        value_to_remove <- valid_data$x[index]
-        valid_data$m10[index] <- sum_in_10_hours / (size_window-index)
 
+        sum_in_10_hours <- sum_in_10_hours - value_to_remove + window_sum
+
+        if (sum_in_10_hours / (window_index-index) > m10) {
+            m10 <- sum_in_10_hours / (window_index-index)
+            start_date <- data$timestamp[index]
+        }
+
+        value_to_remove <- data$x[index]
         index <- index + 1
     }
 
@@ -272,27 +274,27 @@ npcra_m10_mean_profile <- function(x, timestamp) {
 
     while (index <= last_valid_index) {
         window_sum <- 0
-        while (abs(difftime(valid_data$timestamp_same_origin[window_index], valid_data$timestamp_same_origin[index], units = "hour")) > 14) {
-            window_sum <- window_sum + valid_data$x[window_index]
-            window_index <- window_index + 1
-            size_window <- size_window+1
-        }
-        sum_in_10_hours <- sum_in_10_hours - value_to_remove + window_sum
-        value_to_remove <- valid_data$x[index]
-        valid_data$m10[index] <- sum_in_10_hours / (size_window-index)
 
-        index <- index+1
+        while (abs(difftime(data$timestamp[window_index],
+                            data$timestamp[index], units = "hour")) > 14) {
+            window_sum <- window_sum + data$x[window_index]
+            window_index <- window_index + 1
+            size_window <- size_window + 1
+        }
+
+        sum_in_10_hours <- sum_in_10_hours - value_to_remove + window_sum
+
+        if (sum_in_10_hours / (window_index-index) > m10) {
+            m10 <- sum_in_10_hours / (window_index-index)
+            start_date <- data$timestamp[index]
+        }
+
+        value_to_remove <- data$x[index]
+        index <- index + 1
     }
 
-
-    max_m10 <- max(valid_data$m10)
-    m10_data <- valid_data %>%
-        dplyr::select(m10, timestamp_same_origin) %>%
-        dplyr::filter(m10 == max_m10) %>%
-        dplyr::rename("start_date" = timestamp_same_origin) %>%
-        dplyr::mutate(start_date = strftime(start_date, format="%H:%M:%S"))
-
-    m10_data
+        out <- dplyr::tibble(m10, start_date)
+    out
 }
 
 #' Non-Parametric Function M10 (Most Active 10 Hours) for each day
