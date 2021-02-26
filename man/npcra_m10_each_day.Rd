@@ -93,10 +93,10 @@ p. 84-91, Apr. 2015. doi: 10.1016/j.smrv.2014.06.002.
 }
 \seealso{
 Other NPCRA functions: 
-\code{\link{ism}()},
-\code{\link{is}()},
-\code{\link{ivm}()},
-\code{\link{iv}()},
+\code{\link{npcra_ism}()},
+\code{\link{npcra_is}()},
+\code{\link{npcra_ivm}()},
+\code{\link{npcra_iv}()},
 \code{\link{npcra_l5_each_day}()},
 \code{\link{npcra_l5_whole_period}()},
 \code{\link{npcra_l5}()},

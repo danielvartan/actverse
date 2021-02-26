@@ -25,12 +25,27 @@
 #' relative amplitude. For method equals 3 returns a tibble with the values of
 #' RA in the first column and the date in the second column.
 #'
+#' @details
+#'Many different ways of calculating the relative amplitude between M10
+#'and L5 have been used by studies since these variables started to be used
+#'in actigraphy (Goncalves, 2015). This package considers a widely used
+#'calculation that consists of dividing the difference between M10 and L5
+#'by the sum of both, generating an index of 0 to 1 that, the higher,
+#'the greater the difference between periods of activity and rest
+#'(Carvalho-Bos , 2007).
+#'
+#'This calculation commonly considers the average profile as a parameter,
+#'however it is also possible to calculate for the whole period and for
+#'each day (note that the non-parametric functions of this package consider
+#'the whole period as the standard method)
+#'
 #' @family NPCRA functions
 #'
 #' @references
-#' WITTING, W. et al. Alterations in the circadian rest-activity rhythm in aging
-#'and Alzheimer's disease. Biological Psychiatry, v. 27, n. 6, p. 563-572,
-#'Mar. 1990. doi: 10.1016/0006-3223(90)90523-5.
+#' Carvalho-Bos, Sandra et al., Strong Association of
+#' the Rest–Activity Rhythm With Well-Being in Demented Elderly Women, The
+#' American Journal of Geriatric Psychiatry, Volume 15, Issue 2, 2007, Pages
+#' 92-100, ISSN 1064-7481, https://doi.org/10.1097/01.JGP.0000236584.03432.dc.
 #'
 #' GONCALVES, Bruno da Silva Brandao et al. A fresh look at the use of
 #' nonparametric analysis in actimetry. Sleep Medicine Reviews, v. 20,
