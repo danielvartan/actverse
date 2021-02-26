@@ -102,6 +102,6 @@ Other NPCRA functions:
 \code{\link{npcra_l5}()},
 \code{\link{npcra_m10_whole_period}()},
 \code{\link{npcra_m10}()},
-\code{\link{ra}()}
+\code{\link{npcra_ra}()}
 }
 \concept{NPCRA functions}

@@ -70,7 +70,7 @@ npcra_m10_mean_profile(test_log$pim, test_log$timestamp)
 
 #Running for 1000 random observations
 first_date <- as.POSIXct('2015-01-01')
-last_date <- as.POSIXct('2015-01-11')
+last_date <- as.POSIXct('2015-01-06')
 shuffled_timestamp <- sample(seq(first_date,
                                  last_date, by = "min"), 1000)
 timestamp <- sort(shuffled_timestamp)

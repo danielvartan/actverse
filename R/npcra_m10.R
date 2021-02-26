@@ -58,18 +58,18 @@
 #'
 #'#Running for 1000 random observations (mean profile)
 #' first_date <- as.POSIXct('2015-01-01')
-#' last_date <- as.POSIXct('2015-01-16')
+#' last_date <- as.POSIXct('2015-01-11')
 #' shuffled_timestamp <- sample(seq(first_date,
 #'                       last_date, by = "min"), 1000)
 #' timestamp <- sort(shuffled_timestamp)
-#' x <- runif(10000, 0, 10000)
+#' x <- runif(1000, 0, 10000)
 #' npcra_m10(x, timestamp, method = 2) #expects a tibble 1X2
 #'
 #' #Ordering dates and activity data to run (each day)
 #' data <- dplyr::as_tibble(x)
 #' data <- dplyr::mutate(data, timestamp = shuffled_timestamp)
 #' data <- dplyr::arrange(data, timestamp)
-#' npcra_m10(data$value, data$timestamp) #expects a tibble 15X2
+#' npcra_m10(data$value, data$timestamp, method = 3) #expects a tibble 10X2
 #'
 #' @export
 npcra_m10 <- function(x, timestamp, method = 1) {
@@ -287,7 +287,7 @@ npcra_m10_whole_period <- function(x, timestamp) {
 #'
 #' #Running for 1000 random observations
 #' first_date <- as.POSIXct('2015-01-01')
-#' last_date <- as.POSIXct('2015-01-11')
+#' last_date <- as.POSIXct('2015-01-06')
 #' shuffled_timestamp <- sample(seq(first_date,
 #'                                  last_date, by = "min"), 1000)
 #' timestamp <- sort(shuffled_timestamp)
@@ -356,8 +356,8 @@ npcra_m10_mean_profile <- function(x, timestamp) {
 
         sum_in_10_hours <- sum_in_10_hours - value_to_remove + window_sum
 
-        if (sum_in_10_hours / (window_index-index) > m10) {
-            m10 <- sum_in_10_hours / (window_index-index)
+        if (sum_in_10_hours / (size_window-index) > m10) {
+            m10 <- sum_in_10_hours / (size_window-index)
             start_date <- data$timestamp[index]
         }
 

@@ -57,18 +57,18 @@
 #'
 #'#Running for 1000 random observations (mean profile)
 #' first_date <- as.POSIXct('2015-01-01')
-#' last_date <- as.POSIXct('2015-01-16')
+#' last_date <- as.POSIXct('2015-01-11')
 #' shuffled_timestamp <- sample(seq(first_date,
 #'                       last_date, by = "min"), 1000)
 #' timestamp <- sort(shuffled_timestamp)
-#' x <- runif(10000, 0, 10000)
+#' x <- runif(1000, 0, 10000)
 #' npcra_l5(x, timestamp, method = 2) #expects a tibble 1X2
 #'
 #' #Ordering dates and activity data to run (each day)
 #' data <- dplyr::as_tibble(x)
 #' data <- dplyr::mutate(data, timestamp = shuffled_timestamp)
 #' data <- dplyr::arrange(data, timestamp)
-#' npcra_l5(data$value, data$timestamp) #expects a tibble 15X2
+#' npcra_l5(data$value, data$timestamp, method = 3) #expects a tibble 10X2
 #' @export
 npcra_l5 <- function(x, timestamp, method=1) {
     checkmate::assert_numeric(x)
@@ -289,7 +289,7 @@ npcra_l5_whole_period <- function(x, timestamp) {
 #'
 #' #Running for 1000 random observations
 #' first_date <- as.POSIXct('2015-01-01')
-#' last_date <- as.POSIXct('2015-01-11')
+#' last_date <- as.POSIXct('2015-01-06')
 #' shuffled_timestamp <- sample(seq(first_date,
 #'                                  last_date, by = "min"), 1000)
 #' timestamp <- sort(shuffled_timestamp)
@@ -318,7 +318,7 @@ npcra_l5_mean_profile <- function(x, timestamp) {
 
     index <- 1
     window_index <- 1
-    size_window <- 1
+    size_window <- 2
     value_to_remove <- 0
     sum_in_5_hours <- 0
     last_valid_index <- length(x)

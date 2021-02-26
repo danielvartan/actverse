@@ -55,18 +55,18 @@ npcra_l5(test_log$pim, test_log$timestamp) #expects a tibble 1X2
 
 #Running for 1000 random observations (mean profile)
 first_date <- as.POSIXct('2015-01-01')
-last_date <- as.POSIXct('2015-01-16')
+last_date <- as.POSIXct('2015-01-11')
 shuffled_timestamp <- sample(seq(first_date,
                       last_date, by = "min"), 1000)
 timestamp <- sort(shuffled_timestamp)
-x <- runif(10000, 0, 10000)
+x <- runif(1000, 0, 10000)
 npcra_l5(x, timestamp, method = 2) #expects a tibble 1X2
 
 #Ordering dates and activity data to run (each day)
 data <- dplyr::as_tibble(x)
 data <- dplyr::mutate(data, timestamp = shuffled_timestamp)
 data <- dplyr::arrange(data, timestamp)
-npcra_l5(data$value, data$timestamp) #expects a tibble 15X2
+npcra_l5(data$value, data$timestamp, method = 3) #expects a tibble 10X2
 }
 \references{
 WITTING, W. et al. Alterations in the circadian rest-activity rhythm in aging
@@ -88,6 +88,6 @@ Other NPCRA functions:
 \code{\link{npcra_m10_each_day}()},
 \code{\link{npcra_m10_whole_period}()},
 \code{\link{npcra_m10}()},
-\code{\link{ra}()}
+\code{\link{npcra_ra}()}
 }
 \concept{NPCRA functions}
