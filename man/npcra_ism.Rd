@@ -21,10 +21,25 @@ A numeric value.
 \description{
 \ifelse{html}{\out{<a href='https://www.tidyverse.org/lifecycle/#experimental'><img src='figures/lifecycle-experimental.svg' alt='Experimental lifecycle'></a>}}{\strong{Experimental}}
 
-Interdaily Stability identifies the synchronization with the 24h day-night cycle.
-This method calculates the average of ISs up to a minute limit. By default,
-the limit is 60 minutes, so the 60 ISs will be calculated separately and the
+Interdaily Stability identifies the synchronization with the 24h day-night
+cycle.
+
+This method calculates the average of IS's up to a minute limit. By default,
+the limit is 60 minutes, so the 60 IS's will be calculated separately and the
 results will be averaged to be returned.
+}
+\details{
+Interdaily Stability (see \code{npcra_is()}) is a number between 0 and 1
+calculated by dividing the square mean of the first derivative of the
+data by the population variance (Witting, 1990).
+
+From the IS stipulated by Witting, other estimates based on the IS were
+derived, one being the mean IS (ISm). This method simply consists of
+averaging IVs at different time intervals (Goncalves, 2014).
+The function of this package considers a minute limit to calculate the
+average of IS's.
+As an example, the default is 60 minutes, so IVs will be calculated
+with time intervals from 1 to 60 minutes and then average all these values.
 }
 \examples{
 #Using the test_log data from the package

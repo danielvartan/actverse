@@ -22,9 +22,23 @@ A numeric value.
 \ifelse{html}{\out{<a href='https://www.tidyverse.org/lifecycle/#experimental'><img src='figures/lifecycle-experimental.svg' alt='Experimental lifecycle'></a>}}{\strong{Experimental}}
 
 Intradaily Variability identifies the fragmentation of the rest-activity rhythms.
-This method calculates the average of IVs up to a minute limit. By default,
-the limit is 60 minutes, so the 60 IVs will be calculated separately and the
+
+This method calculates the average of IV's up to a minute limit. By default,
+the limit is 60 minutes, so the 60 IV's will be calculated separately and the
 results will be averaged to be returned.
+}
+\details{
+Intraday variability (see \code{npcra_iv()}) is a number between 0 and 1
+calculated by dividing the square mean of the first derivative of the
+data by the population variance (Witting, 1990).
+
+From the IV stipulated by Witting, other estimates based on the IV were
+derived, one being the mean IV (IVm). This method simply consists of
+averaging IVs at different time intervals (Goncalves, 2014).
+The function of this package considers a minute limit to calculate the
+average of IVs.
+As an example, the default is 60 minutes, so IVs will be calculated
+with time intervals from 1 to 60 minutes and then average all these values.
 }
 \examples{
 #Using the test_log data from the package

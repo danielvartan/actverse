@@ -25,13 +25,31 @@ A numeric value.
 \description{
 \ifelse{html}{\out{<a href='https://www.tidyverse.org/lifecycle/#experimental'><img src='figures/lifecycle-experimental.svg' alt='Experimental lifecycle'></a>}}{\strong{Experimental}}
 
-Intradaily Variability identifies the fragmentation of the rest-activity
-rhythms.
+Calculates the Intradaily Variability, which identifies the
+fragmentation of the rest-activity rhythms.
 
 This fragmentation can have different results for the same data according
 to the chosen time interval, that is, a minute by minute calculation brings
 a more sensitive result than a check in hours, where small changes tend
 to have less influence on intraday variability.
+}
+\details{
+Intraday variability is a number between 0 and 1 calculated by dividing
+the square mean of the first derivative of the data by the population
+variance (Witting, 1990).
+
+Usually the activity data used in the calculation are hourly averages of
+the activity, thus avoiding activity fluctuations in the same period of
+time. The calculation for IV by hourly averages is also called IV60
+(Goncalves et al., 2014), this being the standard minute interval for
+the method (60 minutes). It is still possible to vary this interval of
+minutes, which can generate totally different results for the IV that
+can be analyzed to identify some pattern of the data.
+
+Higher values of IV represent a greater fragmentation of the rest–activity
+rhythm, this is because the calculation has a certain sensitivity to
+immediate changes between time intervals, such as naps during the day and
+nighttime awakenings
 }
 \examples{
 #Using the test_log data from the package
@@ -43,7 +61,6 @@ first_date <- as.POSIXct('2015-01-01')
 last_date <- as.POSIXct('2015-01-11')
 shuffled_timestamp <- sample(seq(first_date,
                       last_date, by = "min"), 1000)
-timestamp <- sort(shuffled_timestamp)
 x <- runif(1000, 0, 10000)
 npcra_iv(x, timestamp, minutes_interval = 120) #expects a numeric value
 }

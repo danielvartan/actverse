@@ -4,8 +4,8 @@
 #'
 #' `r lifecycle::badge("experimental")`
 #'
-#' Intradaily Variability identifies the fragmentation of the rest-activity
-#' rhythms.
+#' Calculates the Intradaily Variability, which identifies the
+#' fragmentation of the rest-activity rhythms.
 #'
 #' This fragmentation can have different results for the same data according
 #' to the chosen time interval, that is, a minute by minute calculation brings
@@ -23,6 +23,25 @@
 #'  (so there will be no average in intervals).
 #'
 #' @return A numeric value.
+#'
+#' @details
+#' Intraday variability is a number between 0 and 1 calculated by dividing
+#' the square mean of the first derivative of the data by the population
+#' variance (Witting, 1990).
+#'
+#' Usually the activity data used in the calculation are hourly averages of
+#' the activity, thus avoiding activity fluctuations in the same period of
+#' time. The calculation for IV by hourly averages is also called IV60
+#' (Goncalves et al., 2014), this being the standard minute interval for
+#' the method (60 minutes). It is still possible to vary this interval of
+#' minutes, which can generate totally different results for the IV that
+#' can be analyzed to identify some pattern of the data.
+#'
+#'Higher values of IV represent a greater fragmentation of the rest–activity
+#'rhythm, this is because the calculation has a certain sensitivity to
+#'immediate changes between time intervals, such as naps during the day and
+#'nighttime awakenings
+#'
 #'
 #' @references
 #' WITTING, W. et al. Alterations in the circadian rest-activity rhythm in aging
@@ -89,8 +108,9 @@ npcra_iv <- function(x, timestamp, minutes_interval = 60){
 #' `r lifecycle::badge("experimental")`
 #'
 #' Intradaily Variability identifies the fragmentation of the rest-activity rhythms.
-#' This method calculates the average of IVs up to a minute limit. By default,
-#' the limit is 60 minutes, so the 60 IVs will be calculated separately and the
+#'
+#' This method calculates the average of IV's up to a minute limit. By default,
+#' the limit is 60 minutes, so the 60 IV's will be calculated separately and the
 #'  results will be averaged to be returned.
 #'
 #' @param x Numeric vector with the activity data that will be used in the calculation.
@@ -100,6 +120,19 @@ npcra_iv <- function(x, timestamp, minutes_interval = 60){
 #' take the average, with the first every minute and the last every 60 minutes.
 #'
 #' @return A numeric value.
+#'
+#' @details
+#' Intraday variability (see \code{npcra_iv()}) is a number between 0 and 1
+#' calculated by dividing the square mean of the first derivative of the
+#' data by the population variance (Witting, 1990).
+#'
+#'From the IV stipulated by Witting, other estimates based on the IV were
+#'derived, one being the mean IV (IVm). This method simply consists of
+#' averaging IVs at different time intervals (Goncalves, 2014).
+#' The function of this package considers a minute limit to calculate the
+#' average of IVs.
+#' As an example, the default is 60 minutes, so IVs will be calculated
+#' with time intervals from 1 to 60 minutes and then average all these values.
 #'
 #' @references
 #' WITTING, W. et al. Alterations in the circadian rest-activity rhythm in aging

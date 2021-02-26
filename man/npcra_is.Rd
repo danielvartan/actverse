@@ -23,11 +23,35 @@ A numeric value.
 \description{
 \ifelse{html}{\out{<a href='https://www.tidyverse.org/lifecycle/#experimental'><img src='figures/lifecycle-experimental.svg' alt='Experimental lifecycle'></a>}}{\strong{Experimental}}
 
-Interdaily Stability identifies the synchronization with the 24h day-night cycle.
-This fragmentation can have different results for the same data according
+Interdaily Stability identifies the synchronization with the 24h day-night
+cycle.
+This synchronization can have different results for the same data according
 to the chosen time interval, that is, a minute by minute calculation brings a
-more sensitive result than a check in hours, where small changes tend to have
-less influence on interdaily stability
+more sensitive result than a check in hours, where small changes tend to
+have less influence on interdaily stability
+}
+\details{
+Intraday variability is a number between 0 and 1 that was based on
+the normalization of data for the 24-hour value of the chi-square
+periodogram (Witting, 1990).
+
+The IS considers the average profile and the time interval,
+normally 60 minutes. The result can be obtained by dividing the
+variance of activity data for the average profile by the variance
+of activity data for the time interval (by default, 60 minutes)
+
+Usually the activity data used in the calculation are hourly averages of
+the activity, thus avoiding activity fluctuations in the same period of
+time. The calculation for IS by hourly averages is also called IS60
+(Goncalves et al., 2014), this being the standard minute interval for
+the method (60 minutes). It is still possible to vary this interval of
+minutes, which can generate totally different results for the IS that
+can be analyzed to identify some pattern of the data.
+
+Higher values of IS represent a rest-activity rhythm synchronization
+with the light dark cycle (Goncalves et al., 2015), this is because the
+variation between the mean profile and the hourly variation is
+low, representing synchronization and constancy.
 }
 \examples{
 #Using the test_log data from the package
@@ -47,6 +71,10 @@ npcra_is(x, timestamp, minutes_interval = 120) #expects a numeric value
 WITTING, W. et al. Alterations in the circadian rest-activity rhythm in aging
 and Alzheimer's disease. Biological Psychiatry, v. 27, n. 6, p. 563-572,
 Mar. 1990. doi: 10.1016/0006-3223(90)90523-5.
+
+#' GONCALVES, Bruno da Silva Brandao et al. A fresh look at the use of
+nonparametric analysis in actimetry. Sleep Medicine Reviews, v. 20,
+p. 84-91, Apr. 2015. doi: 10.1016/j.smrv.2014.06.002.
 
 GONCALVES, Bruno S. B. et al. Nonparametric methods in actigraphy: an update.
 Sleep Science, v. 7, n. 3, p. 158-164, 2014. doi: 10.1016/j.slsci.2014.09.013.
