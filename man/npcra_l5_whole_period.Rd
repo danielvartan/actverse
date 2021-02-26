@@ -28,9 +28,9 @@ different periods in a time series. The value of l5 has the ability to
 quantify movement during sleep and possible awakenings (Witting et al, 1990),
 also depending on the validity of the data the validity of the data received
 for the calculation. Lower  L5 results may be related to a less fragmented
-rhythm (Goncalves et al, 2015), however, it is important to analyze the result
-for each day (\code{npcra_l5_each_day()}) and for the average 24-hour profile
-(\code{npcra_l5_average_day()})
+rhythm and few arousals (Goncalves et al, 2015), however, it is important
+to analyze the result for each day (\code{npcra_l5_each_day()})
+and for the average 24-hour profile (\code{npcra_l5_average_day()})
 
 The function receives two vectors, one containing the registered activity
 (numerical values) and another vector containing the date of each occurrence
@@ -49,9 +49,9 @@ when this happens, the average activity will be recorded in that 5-hour
 period and move on to the next observation or, if you arrived on the last date
 with a full 5 hour period, finish the check.
 
-Finally, the highest average activity in 5 hours will be captured and, using
+Finally, the lowest average activity in 5 hours will be captured and, using
 the index of the vector of averages, the date of the beginning of the period
-of 5 hours with the highest activity will be retrieved.
+of 5 hours with the lowest activity will be retrieved.
 }
 \note{
 As normally expected, the date array must be ordered in ascending order.
@@ -62,21 +62,17 @@ will be performed, reducing the time to obtain the result for seconds.
 }
 \examples{
 #Using the test_log data from the package
-npcra_l5_whole_period(test_log$pim, test_log$timestamp)
+npcra_l5_whole_period(test_log$pim,
+                         test_log$timestamp)
 
 #Running for 10000 random observations
 first_date <- as.POSIXct('2015-01-01')
 last_date <- as.POSIXct('2015-01-15')
-shuffled_timestamp <- sample(seq(first_date, last_date, by = "min"), 10000)
+shuffled_timestamp <- sample(seq(first_date,
+                      last_date, by = "min"), 10000)
 timestamp <- sort(shuffled_timestamp)
 x <- runif(10000, 0, 10000)
 npcra_l5_whole_period(x, timestamp)
-
-#Ordering dates and activity data to run
-data <- dplyr::as_tibble(x)
-data <- dplyr::mutate(data, timestamp = shuffled_timestamp)
-data <- dplyr::arrange(data, timestamp)
-npcra_l5_whole_period(data$value, data$timestamp)
 
 }
 \references{
@@ -94,8 +90,7 @@ Other NPCRA functions:
 \code{\link{is}()},
 \code{\link{ivm}()},
 \code{\link{iv}()},
-\code{\link{l5_average_day}()},
-\code{\link{l5_each_day}()},
+\code{\link{npcra_l5_each_day}()},
 \code{\link{npcra_l5}()},
 \code{\link{npcra_m10_each_day}()},
 \code{\link{npcra_m10_whole_period}()},

@@ -1,16 +1,19 @@
-#' Non-Parametric Function RA (Relative Amplitude)
+#' Non-Parametric Function RA (Relative Rhythm Amplitude)
 #'
 #' @description
 #'
 #' `r lifecycle::badge("experimental")`
 #'
 #' Calculate the amplitude of the rest-activity rhythm. the result is based on
-#' the difference between the 10 most active hours (M10) and the 5 least active hours (L5).
+#' the difference between the 10 most active hours (M10) and the 5
+#' least active hours (L5).
 #'
-#' @param x Numeric vector with the activity data that will be used in the calculation.
-#' @param timestamp POSIX vector that contains the date and time of each observation.
+#' @param x Numeric vector with the activity data that will be used in the
+#' calculation.
+#' @param timestamp POSIX vector that contains the date and time of each
+#' observation.
 #' @param method An integer that represents one of the three common methods for
-#' calculating and analyzing RA:
+#' calculating and analyzing M10:
 #'
 #' 1 = whole period,
 #'
@@ -34,35 +37,39 @@
 #' p. 84-91, Apr. 2015. doi: 10.1016/j.smrv.2014.06.002.
 #'
 #' @examples
-#' \dontrun{
-#'ra()}
+#'
+#'
+#'
 #' @export
-ra <- function(x, timestamp, method=1){
+ra <- function(x, timestamp, method = 1){
+    checkmate::assert_numeric(x)
+    checkmate::assert_posixct(timestamp)
+    checkmate::assert_int(method)
+
     if (!is.element(method, c(1,2,3))) {
         stop("Parameter 'method' expects an integer value equal to 1,2 or 3,
              but received ", method, " (class ", class(method), ")")
     }
 
-    m10 <- m10(x, timestamp, method)
-    l5 <- l5(x, timestamp, method)
-    ra <- 0
+    m10 <- npcra_m10(x, timestamp, method)
+    l5 <- npcra_l5(x, timestamp, method)
+    out <- tibble()
 
     if(method==1 | method==2){
         m10 <- m10$m10
         l5 <- l5$l5
         ra <- (m10-l5)/(m10+l5)
-        ra <- ra[1,1]
+        out <- tibble(ra[1,1])
     }
+
     else{
         m10_values <- m10[,1]
-        dates <- m10[,2]
+        dates <- lubridate::date(m10[,2])
         l5_values <- l5[,1]
 
-        ra_values <- (m10_values-l5_values)/(m10_values+l5_values)
-        ra <- dplyr::as_tibble(c(ra_values, dates))
-
-        colnames(ra) <- c("ra", "date")
-        ra$date = lubridate::date(ra$date)
+        ra <- (m10_values-l5_values)/(m10_values+l5_values)
+        out <- dplyr::as_tibble(c(ra_values, dates))
     }
-    ra
+
+    out
 }

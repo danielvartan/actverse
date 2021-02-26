@@ -7,18 +7,10 @@
 #' M10 is calculated by identifying the 10-hour window with the highest activity
 #'  in the given period.
 #'
-#' The function calculates the averages of a quantitative variable
-#' (typically the representative of the activity in the data set) in an interval
-#' that comprises each observation until the end of a 10-hour window, moving on
-#' to the next observation with the same approach. Note that the accuracy of the
-#' M10 is related to the validity of the given data range.
-#'
 #' @param x Numeric vector with the activity data that will be used in the
 #' calculation.
 #' @param timestamp POSIX vector that contains the date and time of each
 #' observation.
-#' @param timestamp String with the name of the column that contains the date
-#'  and time of each observation (POSIX format).
 #' @param method An integer that represents one of the three common methods for
 #' calculating and analyzing M10:
 #'
@@ -30,10 +22,24 @@
 #'
 #' If you prefer you can also directly call the functions
 #' \code{npcra_m10_whole_period()}, \code{npcra_m10_average_day()}
-#' or \code{npcra_m10_each_day()}.
+#' or \code{npcra_m10_each_day()} and see the differences in the calculation
+#' method.
 #'
-#' @return A tibble with the value of M10 in the first position and the start
-#'   date of the 10 most active window in the period in the second position.
+#' @return A tibble with the value of M10 in the first column and the start
+#'   date of the 10 most active window in the period in the second column
+#'
+#' @details
+#' The function calculates the averages of a quantitative variable
+#' (typically the representative of the activity in the data set) in an interval
+#' that comprises each observation until the end of a 10-hour window, moving on
+#' to the next observation with the same approach. Note that the accuracy of the
+#' M10 is related to the validity of the given data range.
+#'
+#' The amount and date of the result will vary according to the method chosen.
+#' Although the first approaches in actigraphy used the M10 for the entire
+#' period (Witting et al., 1990), other approaches were studied later and
+#' analyzes of these studies (Goncalves et al., 2015) show the importance of
+#' checking the results for each day and for the mean profile.
 #'
 #' @references
 #' WITTING, W. et al. Alterations in the circadian rest-activity rhythm in aging
@@ -47,7 +53,6 @@
 #' @family NPCRA functions
 #'
 #' @examples
-#' \dontrun{
 #' #Using the test_log data from the package (whole period)
 #' npcra_m10(test_log$pim, test_log$timestamp) #expects a tibble 1X2
 #'
@@ -70,6 +75,7 @@
 npcra_m10 <- function(x, timestamp, method = 1) {
     checkmate::assert_numeric(x)
     checkmate::assert_posixct(timestamp)
+    checkmate::assert_int(method)
 
     if (!is.element(method, c(1,2,3))) {
         stop("Parameter 'method' expects an integer value equal to 1
@@ -181,30 +187,32 @@ npcra_m10_whole_period <- function(x, timestamp) {
         stop("Data does not complete at least one 10-hour period")
     }
 
-    endWindow <- timestamp + lubridate::hours(10)
-    index_last_valid_register <- which.min(endWindow < dplyr::last(timestamp))
+    end_window <- timestamp + lubridate::hours(10)
+    index_last_valid_register <- which.min(end_window < dplyr::last(timestamp))
     window_index <- 1
     value_to_remove <- 0
     sum_in_10_hours <- 0
-    mean_10_hours <- replicate(index_last_valid_register, 0)
+    m10 <- 0
+    start_date <- lubridate::origin
 
     for (index in seq_len(index_last_valid_register - 1)) {
         window_sum <- 0
 
-        while (timestamp[window_index] < endWindow[index]) {
+        while (timestamp[window_index] < end_window[index]) {
             window_sum <- window_sum + x[window_index]
             window_index <- window_index + 1
         }
 
         sum_in_10_hours <- sum_in_10_hours - value_to_remove + window_sum
         value_to_remove <- x[index]
-        mean_10_hours[index] <- sum_in_10_hours / (window_index-index)
+
+        if (sum_in_10_hours / (window_index-index) > m10) {
+            m10 <- sum_in_10_hours / (window_index-index)
+            start_date <- timestamp[index]
+        }
     }
 
-    m10 <- max(mean_10_hours)
-    start_date <- timestamp[which.max(mean_10_hours == m10)]
     out <- dplyr::tibble(m10, start_date)
-
     out
 }
 #' Non-Parametric Function M10 (Most Active 10 Hours) for the Mean Profile
@@ -216,7 +224,8 @@ npcra_m10_whole_period <- function(x, timestamp) {
 #' Calculates the most active window of 10 hours following the mean profile,
 #' that is, disregarding the difference in days.
 #'
-#' The composition of all activities is considered as a single day:
+#' For this method the
+#' composition of all activities is considered as a single day:
 #' the average day.
 #'
 #' @param x Numeric vector with the activity data that will be used in the
@@ -290,6 +299,15 @@ npcra_m10_mean_profile <- function(x, timestamp) {
     checkmate::assert_numeric(x)
     checkmate::assert_posixct(timestamp)
 
+
+    if (dplyr::last(timestamp) - dplyr::first(timestamp) < lubridate::hours(10)) {
+        stop("Data does not complete at least one 10-hour period")
+    }
+
+    if (length(timestamp) != length(x)) {
+        stop("'x' and 'timestamp' must have the same length")
+    }
+
     m10 <- 0
     start_date <- lubridate::origin
 
@@ -302,8 +320,12 @@ npcra_m10_mean_profile <- function(x, timestamp) {
     size_window <- 1
     value_to_remove <- 0
     sum_in_10_hours <- 0
-    first_14h_index <- which.max(lubridate::hour(data$timestamp) >= 14)
     last_valid_index <- length(x)
+    first_14h_index <- last_valid_index
+
+    if(lubridate::hour(timestamp[last_valid_index]) >= 14) {
+        first_14h_index <- which.max(lubridate::hour(data$timestamp) >= 14)
+    }
 
     while (index <= last_valid_index) {
         window_sum <- 0
@@ -448,7 +470,6 @@ npcra_m10_each_day <- function(x, timestamp){
 
     dates <- lubridate::date(timestamp)
     EndWindow <- timestamp + lubridate::hours(10)
-    hour_end_window <- lubridate::hour(EndWindow)
 
     index_first_days <- match(unique(dates), dates)
     index_last_valid_register <- which.min(EndWindow < dplyr::last(timestamp))

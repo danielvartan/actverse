@@ -2,17 +2,19 @@
 % Please edit documentation in R/npcra_ra.R
 \name{ra}
 \alias{ra}
-\title{Non-Parametric Function RA (Relative Amplitude)}
+\title{Non-Parametric Function RA (Relative Rhythm Amplitude)}
 \usage{
 ra(x, timestamp, method = 1)
 }
 \arguments{
-\item{x}{Numeric vector with the activity data that will be used in the calculation.}
+\item{x}{Numeric vector with the activity data that will be used in the
+calculation.}
 
-\item{timestamp}{POSIX vector that contains the date and time of each observation.}
+\item{timestamp}{POSIX vector that contains the date and time of each
+observation.}
 
 \item{method}{An integer that represents one of the three common methods for
-calculating and analyzing RA:
+calculating and analyzing M10:
 
 1 = whole period,
 
@@ -29,11 +31,13 @@ RA in the first column and the date in the second column.
 \ifelse{html}{\out{<a href='https://www.tidyverse.org/lifecycle/#experimental'><img src='figures/lifecycle-experimental.svg' alt='Experimental lifecycle'></a>}}{\strong{Experimental}}
 
 Calculate the amplitude of the rest-activity rhythm. the result is based on
-the difference between the 10 most active hours (M10) and the 5 least active hours (L5).
+the difference between the 10 most active hours (M10) and the 5
+least active hours (L5).
 }
 \examples{
-\dontrun{
-ra()}
+
+
+
 }
 \references{
 WITTING, W. et al. Alterations in the circadian rest-activity rhythm in aging
@@ -50,8 +54,7 @@ Other NPCRA functions:
 \code{\link{is}()},
 \code{\link{ivm}()},
 \code{\link{iv}()},
-\code{\link{l5_average_day}()},
-\code{\link{l5_each_day}()},
+\code{\link{npcra_l5_each_day}()},
 \code{\link{npcra_l5_whole_period}()},
 \code{\link{npcra_l5}()},
 \code{\link{npcra_m10_each_day}()},
