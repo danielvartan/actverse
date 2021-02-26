@@ -31,13 +31,38 @@
 #' @family NPCRA functions
 #'
 #' @examples
-#' \dontrun{
-#' is()}
+#' #Using the test_log data from the package
+#' npcra_is(test_log$pim, test_log$timestamp)
+#' #[1] 0.4723699
+#'
+#'#'#Running for 1000 random observations
+#' first_date <- as.POSIXct('2015-01-01')
+#' last_date <- as.POSIXct('2015-01-11')
+#' shuffled_timestamp <- sample(seq(first_date,
+#'                       last_date, by = "min"), 1000)
+#' timestamp <- sort(shuffled_timestamp)
+#' x <- runif(1000, 0, 10000)
+#' npcra_is(x, timestamp, minutes_interval = 120) #expects a numeric value
 #' @export
-is <- function(x, timestamp, minutes_interval=60){
+npcra_is <- function(x, timestamp, minutes_interval = 60){
+    checkmate::assert_numeric(x)
+    checkmate::assert_posixct(timestamp)
+    checkmate::assert_int(minutes_interval)
+
+    if (minutes_interval < 0 | minutes_interval > 1440) {
+        stop('The interval should be between 0 and 1440 minutes')
+    }
+
+    if (dplyr::last(timestamp) - dplyr::first(timestamp) <
+        lubridate::minutes(minutes_interval)) {
+        stop("The requested interval is longer
+             than the received data time interval")
+    }
+
     if(minutes_interval == 1 | minutes_interval == 0) {
         average_x_per_interval <- x
     }
+
     else{
         time_interval <- paste(minutes_interval, "min")
         interval <- cut(timestamp, time_interval)
@@ -45,8 +70,9 @@ is <- function(x, timestamp, minutes_interval=60){
     }
 
     hourly_means <- tapply(x, lubridate::hour(timestamp) , mean)
-    is <- stats::var(hourly_means)/stats::var(average_x_per_interval)
-    is
+
+    out <- stats::var(hourly_means) / stats::var(average_x_per_interval)
+    out
 }
 
 #' Non-Parametric Function ISm (Interdaily Stability mean)
@@ -78,17 +104,40 @@ is <- function(x, timestamp, minutes_interval=60){
 #'
 #' @family NPCRA functions
 #'
-#'
 #' @examples
-#' \dontrun{
-#' ism()}
+#' #Using the test_log data from the package
+#' npcra_ism(test_log$pim, test_log$timestamp)
+#' # [1] 0.3461636
+#'
+#' #'#Running for 1000 random observations
+#' first_date <- as.POSIXct('2015-01-01')
+#' last_date <- as.POSIXct('2015-01-11')
+#' shuffled_timestamp <- sample(seq(first_date,
+#'                       last_date, by = "min"), 1000)
+#' timestamp <- sort(shuffled_timestamp)
+#' x <- runif(1000, 0, 10000)
+#' npcra_ism(x, timestamp, minute_limit = 120) #expects a numeric value
 #' @export
-ism <- function(x, timestamp, minute_limit=60){
-    sum_is <- 0
-    for (current_minute in seq_len(minute_limit)) {
-        sum_is <- sum_is + is(x, timestamp, current_minute)
+npcra_ism <- function(x, timestamp, minute_limit=60){
+    checkmate::assert_numeric(x)
+    checkmate::assert_posixct(timestamp)
+    checkmate::assert_int(minute_limit)
+
+    if (minute_limit <= 0 | minute_limit > 1440) {
+        stop('The interval should be between 1 and 1440 minutes')
     }
 
-    is_mean <- sum_is/minute_limit
-    is_mean
+    if (dplyr::last(timestamp) - dplyr::first(timestamp) <
+        lubridate::minutes(minute_limit)) {
+        stop("The requested interval is longer
+             than the received data time interval")
+    }
+
+    sum_is <- 0
+    for (current_minute in seq_len(minute_limit)) {
+        sum_is <- sum_is + npcra_is(x, timestamp, current_minute)
+    }
+
+    out <- sum_is/minute_limit
+    out
 }
