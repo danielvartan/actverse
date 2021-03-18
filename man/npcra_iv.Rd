@@ -23,7 +23,7 @@ The minimum value is 1 minute, where all points will be considered
 A numeric value.
 }
 \description{
-\ifelse{html}{\out{<a href='https://www.tidyverse.org/lifecycle/#experimental'><img src='figures/lifecycle-experimental.svg' alt='Experimental lifecycle'></a>}}{\strong{Experimental}}
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
 
 Calculates the Intradaily Variability, which identifies the
 fragmentation of the rest-activity rhythms.
@@ -56,12 +56,13 @@ nighttime awakenings
 npcra_iv(test_log$pim, test_log$timestamp)
 # [1] 0.7290303
 
-#Running for 1000 random observations
+#Running for 100 random observations
 first_date <- as.POSIXct('2015-01-01')
 last_date <- as.POSIXct('2015-01-11')
 shuffled_timestamp <- sample(seq(first_date,
-                      last_date, by = "min"), 1000)
-x <- runif(1000, 0, 10000)
+                      last_date, by = "sec"), 100)
+timestamp <- sort(shuffled_timestamp)
+x <- runif(100, 0, 10000)
 npcra_iv(x, timestamp, minutes_interval = 120) #expects a numeric value
 }
 \references{

@@ -37,7 +37,7 @@
 #' minutes, which can generate totally different results for the IV that
 #' can be analyzed to identify some pattern of the data.
 #'
-#'Higher values of IV represent a greater fragmentation of the rest–activity
+#' Higher values of IV represent a greater fragmentation of the rest–activity
 #'rhythm, this is because the calculation has a certain sensitivity to
 #'immediate changes between time intervals, such as naps during the day and
 #'nighttime awakenings
@@ -58,13 +58,14 @@
 #' npcra_iv(test_log$pim, test_log$timestamp)
 #' # [1] 0.7290303
 #'
-#' #Running for 1000 random observations
+#' #Running for 100 random observations
 #' first_date <- as.POSIXct('2015-01-01')
 #' last_date <- as.POSIXct('2015-01-11')
 #' shuffled_timestamp <- sample(seq(first_date,
-#'                       last_date, by = "min"), 1000)
-#' x <- runif(1000, 0, 10000)
-#' npcra_iv(x, timestamp, minutes_interval = 120) #expects a numeric value
+#'                       last_date, by = "sec"), 100)
+#' timestamp <- sort(shuffled_timestamp)
+#' x <- runif(100, 0, 10000)
+#' npcra_iv(x, timestamp, minutes_interval = 120) #expects a numeric  value
 #' @export
 npcra_iv <- function(x, timestamp, minutes_interval = 60){
     checkmate::assert_numeric(x)
@@ -82,21 +83,22 @@ npcra_iv <- function(x, timestamp, minutes_interval = 60){
     }
 
     if(minutes_interval == 1) {
-        average_x_per_interval <- x
+        periodic_means <- x
     }
     else{
         time_interval <- paste(minutes_interval, "min")
         interval <- cut(timestamp, time_interval)
-        average_x_per_interval <- tapply(x, interval, mean)
+        periodic_means <- tapply(x, interval, mean)
     }
-    n <- length(average_x_per_interval)
 
-    square_diff <- diff(average_x_per_interval)^2
-    numerator <- n*sum(square_diff)
+    periodic_means <- periodic_means[!is.na(periodic_means)]
+    n <- length(periodic_means)
+    square_diff <- diff(periodic_means)^2
 
-    denonimator <- stats::var(average_x_per_interval)
-    denonimator <- denonimator*(n-1)^2
+    numerator <- n * sum(square_diff)
 
+    denonimator <- stats::var(periodic_means)
+    denonimator <- denonimator * (n - 1)^2
     out <- numerator / denonimator
     out
 }
@@ -122,13 +124,13 @@ npcra_iv <- function(x, timestamp, minutes_interval = 60){
 #' @return A numeric value.
 #'
 #' @details
-#' Intraday variability (see \code{npcra_iv()}) is a number between 0 and 1
+#' Intraday variability (see \code{npcra_iv()}) is a number between 0 and 2
 #' calculated by dividing the square mean of the first derivative of the
 #' data by the population variance (Witting, 1990).
 #'
-#'From the IV stipulated by Witting, other estimates based on the IV were
+#'From the IV stipulated by Witting et al, other estimates based on the IV were
 #'derived, one being the mean IV (IVm). This method simply consists of
-#' averaging IVs at different time intervals (Goncalves, 2014).
+#' averaging IVs at different time intervals (Goncalves et al, 2014).
 #' The function of this package considers a minute limit to calculate the
 #' average of IVs.
 #' As an example, the default is 60 minutes, so IVs will be calculated
@@ -158,10 +160,14 @@ npcra_iv <- function(x, timestamp, minutes_interval = 60){
 #' x <- runif(1000, 0, 10000)
 #' npcra_ivm(x, timestamp, minute_limit = 120) #expects a numeric value
 #' @export
-npcra_ivm<- function(x, timestamp, minute_limit = 60){
+npcra_ivm<- function(x, timestamp, minute_limit = 60, show_messages = TRUE,
+                     summarize = FALSE){
     checkmate::assert_numeric(x)
     checkmate::assert_posixct(timestamp)
     checkmate::assert_int(minute_limit)
+    checkmate::assert_logical(minute_limit)
+    checkmate::assert_logical(show_messages)
+
 
     if (minute_limit <= 0 | minute_limit > 1440) {
         stop('The interval should be between 1 and 1440 minutes')
@@ -173,11 +179,22 @@ npcra_ivm<- function(x, timestamp, minute_limit = 60){
              than the received data time interval")
     }
 
-    sum_iv <- 0
-    for (current_minute in seq_len(minute_limit)) {
-        sum_iv <- sum_iv + npcra_iv(x, timestamp, current_minute)
-    }
+    iv <- c()
+    iv_minute <- c()
 
-    out <- sum_iv / minute_limit
+    for (current_minute in seq_len(minute_limit)) {
+        current_iv <- npcra_iv(x, timestamp, current_minute)
+
+        iv <- c(iv, current_iv)
+        iv_minute <- c(iv_minute, paste("IV", current_minute, sep = ""))
+
+        message("IV", current_minute, ": ", current_iv)
+
+    }
+#    return(dplyr::tibble(iv_minute, iv))
+
+    out <- sum(iv) / minute_limit
+    message("IVm:", out)
+
     out
 }

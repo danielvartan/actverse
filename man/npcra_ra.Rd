@@ -28,7 +28,7 @@ relative amplitude. For method equals 3 returns a tibble with the values of
 RA in the first column and the date in the second column.
 }
 \description{
-\ifelse{html}{\out{<a href='https://www.tidyverse.org/lifecycle/#experimental'><img src='figures/lifecycle-experimental.svg' alt='Experimental lifecycle'></a>}}{\strong{Experimental}}
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
 
 Calculate the amplitude of the rest-activity rhythm. the result is based on
 the difference between the 10 most active hours (M10) and the 5

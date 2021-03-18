@@ -31,7 +31,7 @@ A tibble with the value of M10 in the first column and the start
 date of the 10 most active window in the period in the second column
 }
 \description{
-\ifelse{html}{\out{<a href='https://www.tidyverse.org/lifecycle/#experimental'><img src='figures/lifecycle-experimental.svg' alt='Experimental lifecycle'></a>}}{\strong{Experimental}}
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
 
 L5 is calculated by identifying the 5-hour window with the least activity in
 the given period.
