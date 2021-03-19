@@ -1,5 +1,5 @@
-test_that('npcra_iv()', {
-
+#npcra_iv() tests
+test_that('npcra_iv() | Random data', {
     # Random data
     # It is very likely that there are time intervals with no activity data
     # (since there are only 1000 data for 29 days -> 696 hours), the function
@@ -18,8 +18,9 @@ test_that('npcra_iv()', {
 
     iv <- npcra_iv(x, timestamp)
     expect_true(dplyr::between(iv, left = 0, right = 3))
+})
 
-
+test_that('npcra_iv() | Senoidal data', {
     # Senoidal data
     # Data distributed according to a sinusoid must converge the
     # result to 0.
@@ -36,8 +37,36 @@ test_that('npcra_iv()', {
         sort()
     iv <- npcra_iv(x, timestamp)
     expect_true(dplyr::between(iv, left = 0, right = 1))
-
-
-
-
 })
+
+test_that('npcra_iv() | Insufficient data', {
+    # Pass a time interval greater than the time interval between
+    #the first and the last date data
+    x <- runif(100, min = 0, max = 10000)
+
+    first_date <- as.POSIXct('2015-01-01')
+    last_date <- as.POSIXct('2015-01-01 18:00:00')
+
+    timestamp <- seq(first_date, last_date, by = "min") %>%
+        sample(size = 100) %>%
+        sort()
+
+    expect_error(npcra_iv(x, timestamp, minutes_interval = 1440))
+})
+
+test_that('npcra_iv() | many records', {
+    # Run for 1 million observation with 1-minute time interval
+    x <- runif(10^6, min = 0, max = 10000)
+
+    first_date <- as.POSIXct('2015-01-01')
+    last_date <- as.POSIXct('2015-01-30')
+
+    timestamp <- seq(first_date, last_date, by = "sec") %>%
+        sample(size = 10^6) %>%
+        sort()
+
+    iv <- npcra_iv(x, timestamp, minutes_interval = 1)
+    expect_true(dplyr::between(iv, left = 0, right = 3))
+})
+
+#npcra_ivm() tests

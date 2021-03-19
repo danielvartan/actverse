@@ -49,9 +49,10 @@ the limit is 60 minutes, so the 60 IV's will be calculated separately
 and the results will be averaged to be returned.
 }
 \details{
-Intradayly variability (see \code{npcra_iv()}) is a number that is
+Intradaily variability (see \code{npcra_iv()}) is a number that is
 usually between 0 and 2 calculated by dividing the square mean of the
-first derivative of the data by the population variance (Witting, 1990).
+first derivative of the data by the population variance
+(Witting et al., 1990).
 
 Although real records typically have an IV value less than 2,
 it is possible that this number exceeds 2. IVs greater than 2
@@ -61,7 +62,7 @@ a high variability.
 
 From the IV stipulated by Witting et al, other estimates based on the IV were
 derived, one being the mean IV (IVm). This method simply consists of
-averaging IVs at different time intervals (Goncalves et al, 2014).
+averaging IVs at different time intervals (Goncalves et al., 2014).
 The function of this package considers a minute limit to calculate the
 average of IVs.
 As an example, the default is 60 minutes, so IVs will be calculated
@@ -85,12 +86,15 @@ npcra_ivm(x,
           summarize = FALSE) #Expects a tibble 121 X 2
 }
 \references{
-WITTING, W. et al. Alterations in the circadian rest-activity rhythm in aging
-and Alzheimer's disease. Biological Psychiatry, v. 27, n. 6, p. 563-572,
-Mar. 1990. doi: 10.1016/0006-3223(90)90523-5.
+Witting, W., Kwa, I. H., Eikelenboom, P., Mirmiran, M., & Swaab, D. F.
+(1990). Alterations in the circadian rest-activity rhythm in aging and
+Alzheimer's disease. Biological Psychiatry, 27(6), 563-572.
+\doi{https://doi.org/10.1016/0006-3223(90)90523-5}
 
-GONCALVES, Bruno S. B. et al. Nonparametric methods in actigraphy: an update.
-Sleep Science, v. 7, n. 3, p. 158-164, 2014. doi: 10.1016/j.slsci.2014.09.013.
+Goncalves, B. S. B., Cavalcanti, P. R. A., Tavares, G. R., Campos,
+T. F., & Araujo, J. F. (2014). Nonparametric methods in actigraphy: An
+update. Sleep Science, 7(3), 158-164.
+\doi{https://doi.org/10.1016/j.slsci.2014.09.013}
 }
 \seealso{
 Other NPCRA functions: 

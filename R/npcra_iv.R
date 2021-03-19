@@ -27,7 +27,7 @@
 #' @details
 #' Intradaily variability is a number that is usually between 0 and
 #' 2 calculated by dividing the square mean of the first derivative
-#' of the data by the population variance (Witting, 1990).
+#' of the data by the population variance (Witting et al., 1990).
 #'
 #' Although real records typically have an IV value less than 2,
 #' it is possible that this number exceeds 2. IVs greater than 2
@@ -35,30 +35,30 @@
 #' no way to define a standard for the data and, therefore, will have
 #' a high variability.
 #'
-#' If X represents the activity or other numeric variable passed as parameter 
+#' If X represents the activity or other numeric variable passed as parameter
 #' \code{x}, the IV follows the formula below:
-#' 
+#'
 #' \deqn{IV = SQM_FD / VAR(X)}
 #'
-#'Where SQM_FD is the square mean of the first derivative of the data, 
-#'calculated as below: 
+#'Where SQM_FD is the square mean of the first derivative of the data,
+#'calculated as below:
 #'
 #'\deqn{SQM_FD = \sum_{i=2}^{N} (X_i - X_{i-1})^2 / (N-1)}
 #'
-#'And the population variance VAR(X) is: 
+#'And the population variance VAR(X) is:
 #'
 #'\deqn{VAR(X) = \sum_{i=1}^{N} (\bar{X} - X_i)^2}
 #'
 #'Where:
 #'
-#'\eqn{X_i} is each data point or, more likely, each activity average 
-#'for the time interval passed by the parameter \code{minutes_interval}
+#'\eqn{X_i} is each data point or, more likely, each activity average
+#'for the time interval passed by the parameter \code{minutes_interval};
 #'
-#'N is the amount of data or the number of intervals that can fit in 
-#'the data set
+#'N is the amount of data or the number of intervals that can fit in
+#'the data set;
 #'
-#'\eqn{\bar{X}} is the average of all data or the mean of all average 
-#'activities by time interval
+#'\eqn{\bar{X}} is the average of all data or the mean of all average
+#'activities by time interval.
 #'
 #' Usually the activity data used in the calculation are hourly averages of
 #' the activity, thus avoiding activity fluctuations in the same period of
@@ -73,14 +73,16 @@
 #'immediate changes between time intervals, such as naps during the day and
 #'nighttime awakenings.
 #'
-#'
 #' @references
-#' WITTING, W. et al. Alterations in the circadian rest-activity rhythm in aging
-#'and Alzheimer's disease. Biological Psychiatry, v. 27, n. 6, p. 563-572,
-#'Mar. 1990. doi: 10.1016/0006-3223(90)90523-5.
+#' Witting, W., Kwa, I. H., Eikelenboom, P., Mirmiran, M., & Swaab, D. F.
+#' (1990). Alterations in the circadian rest-activity rhythm in aging and
+#' Alzheimer's disease. Biological Psychiatry, 27(6), 563-572.
+#' \doi{https://doi.org/10.1016/0006-3223(90)90523-5}
 #'
-#' GONÇALVES, Bruno S. B. et al. Nonparametric methods in actigraphy: an update.
-#'  Sleep Science, v. 7, n. 3, p. 158-164, 2014. doi: 10.1016/j.slsci.2014.09.013.
+#' Goncalves, B. S. B., Cavalcanti, P. R. A., Tavares, G. R., Campos,
+#' T. F., & Araujo, J. F. (2014). Nonparametric methods in actigraphy: An
+#' update. Sleep Science, 7(3), 158-164.
+#' \doi{https://doi.org/10.1016/j.slsci.2014.09.013}
 #'
 #' @family NPCRA functions
 #'
@@ -98,36 +100,52 @@
 #' x <- runif(100, 0, 10000)
 #' npcra_iv(x, timestamp, minutes_interval = 120) #expects a numeric  value
 #' @export
-npcra_iv <- function(x, timestamp, minutes_interval = 60){
+npcra_iv <- function(x, timestamp, minutes_interval = 60) {
   checkmate::assert_numeric(x)
   checkmate::assert_posixct(timestamp)
   checkmate::assert_int(minutes_interval)
-  
-  if (minutes_interval < 0 | minutes_interval > 1440) {
-    stop('The interval should be between 0 and 1440 minutes')
+
+  if(length(x) != length(timestamp)) {
+    stop("'x' and 'timestamp' must have the same length",
+         "\nLength of x = ", length(x),
+         "\nLength of timestamp = ", length(timestamp))
   }
-  
-  if (dplyr::last(timestamp) - dplyr::first(timestamp) <
-      lubridate::minutes(minutes_interval)) {
-    stop("The requested interval is longer
-             than the received data time interval")
+
+  if (minutes_interval <= 0 | minutes_interval > 1440) {
+    stop("The interval should be between 1 and 1440 minutes",
+         "\nminutes_interval = ", minutes_interval)
   }
-  
+
+  first_timestamp <- dplyr::first(timestamp)
+  last_timestamp <- dplyr::last(timestamp)
+  real_interval <- difftime(last_timestamp, first_timestamp, units = "min")
+
+  if (real_interval < lubridate::minutes(minutes_interval)) {
+    stop("The requested interval is longer than the ",
+         "received data time interval",
+         "\nFirst timestamp: ", dplyr::first(timestamp),
+         "\nLast timestamp: ", dplyr::last(timestamp),
+         "\nReal interval (minutes) = ", real_interval,
+         "\nminutes_interval = ", minutes_interval)
+  }
+
+
   if(minutes_interval == 1) {
     periodic_means <- x
   }
-  else{
+
+  else {
     time_interval <- paste(minutes_interval, "min")
     interval <- cut(timestamp, time_interval)
     periodic_means <- tapply(x, interval, mean)
   }
-  
+
   periodic_means <- periodic_means[!is.na(periodic_means)]
   n <- length(periodic_means)
   square_diff <- diff(periodic_means)^2
-  
+
   numerator <- n * sum(square_diff)
-  
+
   denonimator <- stats::var(periodic_means)
   denonimator <- denonimator * (n - 1)^2
   out <- numerator / denonimator
@@ -168,9 +186,10 @@ npcra_iv <- function(x, timestamp, minutes_interval = 60){
 #' iv_minute and the second as iv, with the IVm in the first row.
 #'
 #' @details
-#' Intradayly variability (see \code{npcra_iv()}) is a number that is
+#' Intradaily variability (see \code{npcra_iv()}) is a number that is
 #' usually between 0 and 2 calculated by dividing the square mean of the
-#' first derivative of the data by the population variance (Witting, 1990).
+#' first derivative of the data by the population variance
+#' (Witting et al., 1990).
 #'
 #' Although real records typically have an IV value less than 2,
 #' it is possible that this number exceeds 2. IVs greater than 2
@@ -180,19 +199,22 @@ npcra_iv <- function(x, timestamp, minutes_interval = 60){
 #'
 #'From the IV stipulated by Witting et al, other estimates based on the IV were
 #'derived, one being the mean IV (IVm). This method simply consists of
-#' averaging IVs at different time intervals (Goncalves et al, 2014).
+#' averaging IVs at different time intervals (Goncalves et al., 2014).
 #' The function of this package considers a minute limit to calculate the
 #' average of IVs.
 #' As an example, the default is 60 minutes, so IVs will be calculated
 #' with time intervals from 1 to 60 minutes and then average all these values.
 #'
 #' @references
-#' WITTING, W. et al. Alterations in the circadian rest-activity rhythm in aging
-#'and Alzheimer's disease. Biological Psychiatry, v. 27, n. 6, p. 563-572,
-#'Mar. 1990. doi: 10.1016/0006-3223(90)90523-5.
+#' Witting, W., Kwa, I. H., Eikelenboom, P., Mirmiran, M., & Swaab, D. F.
+#' (1990). Alterations in the circadian rest-activity rhythm in aging and
+#' Alzheimer's disease. Biological Psychiatry, 27(6), 563-572.
+#' \doi{https://doi.org/10.1016/0006-3223(90)90523-5}
 #'
-#' GONCALVES, Bruno S. B. et al. Nonparametric methods in actigraphy: an update.
-#'  Sleep Science, v. 7, n. 3, p. 158-164, 2014. doi: 10.1016/j.slsci.2014.09.013.
+#' Goncalves, B. S. B., Cavalcanti, P. R. A., Tavares, G. R., Campos,
+#' T. F., & Araujo, J. F. (2014). Nonparametric methods in actigraphy: An
+#' update. Sleep Science, 7(3), 158-164.
+#' \doi{https://doi.org/10.1016/j.slsci.2014.09.013}
 #'
 #' @family NPCRA functions
 #'
@@ -218,22 +240,28 @@ npcra_ivm<- function(x,
                      minute_limit = 60,
                      show_messages = TRUE,
                      summarize = TRUE) {
-  
+
   checkmate::assert_numeric(x)
   checkmate::assert_posixct(timestamp)
   checkmate::assert_numeric(minute_limit)
   checkmate::assert_logical(summarize)
   checkmate::assert_logical(show_messages)
-  
+
+  if(length(x) != length(timestamp)) {
+    stop("'x' and 'timestamp' must have the same length",
+         "\nLength of x = ", length(x),
+         "\nLength of timestamp = ", length(timestamp))
+  }
+
   if (minute_limit <= 0 | minute_limit > 1440) {
     stop("The interval should be between 1 and 1440 minutes",
          "\nminute_limit = ", minute_limit)
   }
-  
+
   first_timestamp <- dplyr::first(timestamp)
   last_timestamp <- dplyr::last(timestamp)
-  real_interval <- last_timestamp - first_timestamp
-  
+  real_interval <- difftime(last_timestamp, first_timestamp, units = "min")
+
   if (real_interval < lubridate::minutes(minute_limit)) {
     stop("The requested interval is longer than the ",
          "received data time interval",
@@ -242,34 +270,34 @@ npcra_ivm<- function(x,
          "\nReal interval (minutes) = ", real_interval,
          "\nminute_limit = ", minute_limit)
   }
-  
+
   iv <- c()
   iv_minute <- c()
-  
+
   for (current_minute in seq_len(minute_limit)) {
     current_iv <- npcra_iv(x, timestamp, current_minute)
-    
+
     iv <- c(iv, current_iv)
     iv_minute <- c(iv_minute, paste("IV", current_minute, sep = ""))
-    
+
     if (show_messages) {
       message("IV", current_minute, ": ", current_iv)
     }
   }
-  
+
   ivm <- sum(iv) / minute_limit
   message("IVm:", ivm)
-  
+
   if (summarize) {
     out <- ivm
   }
-  
+
   else {
     iv <- c(ivm, iv)
     iv_minute <- c("IVm", iv_minute)
-    
+
     out <- dplyr::tibble(iv_minute, iv)
   }
-  
+
   out
 }

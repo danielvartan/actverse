@@ -36,7 +36,7 @@ to have less influence on intradaily variability.
 \details{
 Intradaily variability is a number that is usually between 0 and
 2 calculated by dividing the square mean of the first derivative
-of the data by the population variance (Witting, 1990).
+of the data by the population variance (Witting et al., 1990).
 
 Although real records typically have an IV value less than 2,
 it is possible that this number exceeds 2. IVs greater than 2
@@ -61,13 +61,13 @@ And the population variance VAR(X) is:
 Where:
 
 \eqn{X_i} is each data point or, more likely, each activity average
-for the time interval passed by the parameter \code{minutes_interval}
+for the time interval passed by the parameter \code{minutes_interval};
 
 N is the amount of data or the number of intervals that can fit in
-the data set
+the data set;
 
 \eqn{\bar{X}} is the average of all data or the mean of all average
-activities by time interval
+activities by time interval.
 
 Usually the activity data used in the calculation are hourly averages of
 the activity, thus avoiding activity fluctuations in the same period of
@@ -97,15 +97,18 @@ x <- runif(100, 0, 10000)
 npcra_iv(x, timestamp, minutes_interval = 120) #expects a numeric  value
 }
 \references{
-WITTING, W. et al. Alterations in the circadian rest-activity rhythm in aging
-and Alzheimer's disease. Biological Psychiatry, v. 27, n. 6, p. 563-572,
-Mar. 1990. doi: 10.1016/0006-3223(90)90523-5.
+Witting, W., Kwa, I. H., Eikelenboom, P., Mirmiran, M., & Swaab, D. F.
+(1990). Alterations in the circadian rest-activity rhythm in aging and
+Alzheimer's disease. Biological Psychiatry, 27(6), 563-572.
+\doi{https://doi.org/10.1016/0006-3223(90)90523-5}
 
-GONÇALVES, Bruno S. B. et al. Nonparametric methods in actigraphy: an update.
-Sleep Science, v. 7, n. 3, p. 158-164, 2014. doi: 10.1016/j.slsci.2014.09.013.
+Goncalves, B. S. B., Cavalcanti, P. R. A., Tavares, G. R., Campos,
+T. F., & Araujo, J. F. (2014). Nonparametric methods in actigraphy: An
+update. Sleep Science, 7(3), 158-164.
+\doi{https://doi.org/10.1016/j.slsci.2014.09.013}
 }
 \seealso{
-Other NPCRA functions:
+Other NPCRA functions: 
 \code{\link{npcra_ivm}()}
 }
 \concept{NPCRA functions}
