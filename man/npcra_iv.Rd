@@ -31,12 +31,43 @@ fragmentation of the rest-activity rhythms.
 This fragmentation can have different results for the same data according
 to the chosen time interval, that is, a minute by minute calculation brings
 a more sensitive result than a check in hours, where small changes tend
-to have less influence on intraday variability.
+to have less influence on intradaily variability.
 }
 \details{
-Intraday variability is a number between 0 and 1 calculated by dividing
-the square mean of the first derivative of the data by the population
-variance (Witting, 1990).
+Intradaily variability is a number that is usually between 0 and
+2 calculated by dividing the square mean of the first derivative
+of the data by the population variance (Witting, 1990).
+
+Although real records typically have an IV value less than 2,
+it is possible that this number exceeds 2. IVs greater than 2
+are quite common in simulations of random values, since there is
+no way to define a standard for the data and, therefore, will have
+a high variability.
+
+If X represents the activity or other numeric variable passed as parameter
+\code{x}, the IV follows the formula below:
+
+\deqn{IV = SQM_FD / VAR(X)}
+
+Where SQM_FD is the square mean of the first derivative of the data,
+calculated as below:
+
+\deqn{SQM_FD = \sum_{i=2}^{N} (X_i - X_{i-1})^2 / (N-1)}
+
+And the population variance VAR(X) is:
+
+\deqn{VAR(X) = \sum_{i=1}^{N} (\bar{X} - X_i)^2}
+
+Where:
+
+\eqn{X_i} is each data point or, more likely, each activity average
+for the time interval passed by the parameter \code{minutes_interval}
+
+N is the amount of data or the number of intervals that can fit in
+the data set
+
+\eqn{\bar{X}} is the average of all data or the mean of all average
+activities by time interval
 
 Usually the activity data used in the calculation are hourly averages of
 the activity, thus avoiding activity fluctuations in the same period of
@@ -46,10 +77,10 @@ the method (60 minutes). It is still possible to vary this interval of
 minutes, which can generate totally different results for the IV that
 can be analyzed to identify some pattern of the data.
 
-Higher values of IV represent a greater fragmentation of the rest–activity
+Higher values of IV represent a greater fragmentation of the rest - activity
 rhythm, this is because the calculation has a certain sensitivity to
 immediate changes between time intervals, such as naps during the day and
-nighttime awakenings
+nighttime awakenings.
 }
 \examples{
 #Using the test_log data from the package
@@ -70,11 +101,11 @@ WITTING, W. et al. Alterations in the circadian rest-activity rhythm in aging
 and Alzheimer's disease. Biological Psychiatry, v. 27, n. 6, p. 563-572,
 Mar. 1990. doi: 10.1016/0006-3223(90)90523-5.
 
-GONCALVES, Bruno S. B. et al. Nonparametric methods in actigraphy: an update.
+GONÇALVES, Bruno S. B. et al. Nonparametric methods in actigraphy: an update.
 Sleep Science, v. 7, n. 3, p. 158-164, 2014. doi: 10.1016/j.slsci.2014.09.013.
 }
 \seealso{
-Other NPCRA functions: 
+Other NPCRA functions:
 \code{\link{npcra_ivm}()}
 }
 \concept{NPCRA functions}
