@@ -4,7 +4,13 @@
 \alias{npcra_ivm}
 \title{Non-Parametric Function IVm (Intradaily Variability mean)}
 \usage{
-npcra_ivm(x, timestamp, minute_limit = 60)
+npcra_ivm(
+  x,
+  timestamp,
+  minute_limit = 60,
+  show_messages = TRUE,
+  summarize = FALSE
+)
 }
 \arguments{
 \item{x}{Numeric vector with the activity data that will be used in the calculation.}
@@ -64,15 +70,6 @@ Sleep Science, v. 7, n. 3, p. 158-164, 2014. doi: 10.1016/j.slsci.2014.09.013.
 }
 \seealso{
 Other NPCRA functions: 
-\code{\link{npcra_ism}()},
-\code{\link{npcra_is}()},
-\code{\link{npcra_iv}()},
-\code{\link{npcra_l5_each_day}()},
-\code{\link{npcra_l5_whole_period}()},
-\code{\link{npcra_l5}()},
-\code{\link{npcra_m10_each_day}()},
-\code{\link{npcra_m10_whole_period}()},
-\code{\link{npcra_m10}()},
-\code{\link{npcra_ra}()}
+\code{\link{npcra_iv}()}
 }
 \concept{NPCRA functions}

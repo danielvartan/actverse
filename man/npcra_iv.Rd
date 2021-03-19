@@ -63,7 +63,7 @@ shuffled_timestamp <- sample(seq(first_date,
                       last_date, by = "sec"), 100)
 timestamp <- sort(shuffled_timestamp)
 x <- runif(100, 0, 10000)
-npcra_iv(x, timestamp, minutes_interval = 120) #expects a numeric value
+npcra_iv(x, timestamp, minutes_interval = 120) #expects a numeric  value
 }
 \references{
 WITTING, W. et al. Alterations in the circadian rest-activity rhythm in aging
@@ -75,15 +75,6 @@ Sleep Science, v. 7, n. 3, p. 158-164, 2014. doi: 10.1016/j.slsci.2014.09.013.
 }
 \seealso{
 Other NPCRA functions: 
-\code{\link{npcra_ism}()},
-\code{\link{npcra_is}()},
-\code{\link{npcra_ivm}()},
-\code{\link{npcra_l5_each_day}()},
-\code{\link{npcra_l5_whole_period}()},
-\code{\link{npcra_l5}()},
-\code{\link{npcra_m10_each_day}()},
-\code{\link{npcra_m10_whole_period}()},
-\code{\link{npcra_m10}()},
-\code{\link{npcra_ra}()}
+\code{\link{npcra_ivm}()}
 }
 \concept{NPCRA functions}
