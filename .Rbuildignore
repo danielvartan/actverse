@@ -1,0 +1,16 @@
+^\.archive$
+^\.github$
+^\.Rproj\.user$
+^_pkgdown\.yml$
+^actverse\.Rproj$
+^CODE_OF_CONDUCT\.md$
+^codecov\.yml$
+^codemeta\.json$
+^data-raw$
+^doc$
+^docs$
+^LICENSE\.md$
+^man-roxygen$
+^Meta$
+^pkgdown$
+^README\.Rmd$

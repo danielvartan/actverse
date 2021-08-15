@@ -1,0 +1,39 @@
+url: https://gipso.github.io/actverse/
+
+template:
+  params:
+    bootswatch: cosmo
+    ganalytics: G-C3VXWVLNN1
+    mathjax: true
+    noindex: true
+
+navbar:
+  structure:
+    left:  [intro, reference, articles, news]
+    right: [github]
+  components:
+    home: ~
+    news: ~
+    intro: ~
+    articles: ~
+
+authors:
+  Daniel Vartanian:
+    href: https://github.com/danielvartan
+  Vinicius Alves Matias:
+    href: https://github.com/matiasvinicius
+  Cassio Almeida Mattos Serrano:
+    href: https://github.com/cassioserrano
+  Ana Amelia Benedito-Silva:
+    href: https://github.com/AnaAmeliaBeneditoSIlva
+  Mario Pedrazzoli:
+    href: https://github.com/pedrazzo
+  Interdisciplinary Sleep Research Group (GIPSO):
+    href: http://each.usp.br/gipso
+  University of Sao Paulo (USP):
+    href: http://usp.br
+
+development:
+  mode: auto
+  destination: doc
+  version_label: warning

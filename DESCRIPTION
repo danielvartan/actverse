@@ -1,0 +1,72 @@
+Package: actverse
+Title: An R Package for Actigraphy Data Analysis
+Version: 0.0.0.9000
+Authors@R: 
+    c(person(given = "Daniel",
+             family = "Vartanian",
+             role = c("aut", "cre", "cph"),
+             email = "danvartan@gmail.com",
+             comment = c(ORCID = "0000-0001-7782-759X")),
+      person(given = "Vinicius",
+             family = "Alves Matias",
+             role = "aut",
+             email = "viniciusmatias@usp.br",
+             comment = c(ORCID = "0000-0002-2047-5420")),
+      person(given = "Cassio",
+             family = "Almeida Mattos Serrano",
+             role = "aut",
+             email = "cassio.serrano@usp.br",
+             comment = c(ORCID = "0000-0001-7149-1829")),
+      person(given = "Ana Amelia",
+             family = "Benedito-Silva",
+             role = c("aut", "sad"),
+             email = "aamelia@usp.br",
+             comment = c(ORCID = "0000-0003-4976-2623")),
+      person(given = "Mario",
+             family = "Pedrazzoli",
+             role = c("aut", "sad"),
+             email = "pedrazzo@usp.br",
+             comment = c(ORCID = "0000-0002-5257-591X")),
+      person(given = "Interdisciplinary Sleep Research Group (GIPSO)",
+             role = "fnd"),
+      person(given = "University of Sao Paulo (USP)",
+             role = "fnd"),
+      person(given = "Bruno",
+             family = "Ramalho Furlan",
+             role = "ctb",
+             email = "brfrlan@gmail.com",
+             comment = c(ORCID = "0000-0003-1654-0899")))
+Description: A complete and consistent toolkit to process, analyze and
+    visualize actigraphy data.
+License: MIT + file LICENSE
+URL: https://gipso.github.io/actverse/, https://github.com/gipso/actverse/
+BugReports: https://github.com/gipso/actverse/issues
+Depends: 
+    R (>= 4.0)
+Imports: 
+    checkmate (>= 2.0.0),
+    cli (>= 3.0.1),
+    dplyr (>= 1.0.7),
+    ggplot2 (>= 3.3.5),
+    hms (>= 1.1.0),
+    lifecycle (>= 1.0.0),
+    lubridate (>= 1.7.10),
+    stats,
+    xts (>= 0.12.1),
+    zoo (>= 1.8-9)
+Suggests: 
+    covr,
+    knitr,
+    mockr,
+    rmarkdown,
+    spelling,
+    testthat (>= 3.0.4),
+    utils
+VignetteBuilder: 
+    knitr
+Config/testthat/edition: 3
+Encoding: UTF-8
+Language: en-US
+LazyData: true
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.1.1
