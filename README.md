@@ -60,16 +60,16 @@ package. You can find the `actverse` citation below.
 ``` r
 citation("actverse")
 #> 
-#> To cite actverse in publications use:
+#> To cite {actverse} in publications use:
 #> 
 #>   Vartanian, D., Matias, V. A., Serrano, C. A. M., Benedito-Silva, A.
-#>   A., Pedrazzoli, M. (2021). actverse: An R Package for actigraphy data
-#>   analysis. Retrieved from https://gipso.github.io/actverse/.
+#>   A., Pedrazzoli, M. (2021). {actverse}: An R Package for actigraphy
+#>   data analysis. Retrieved from https://gipso.github.io/actverse/.
 #> 
 #> A BibTeX entry for LaTeX users is
 #> 
 #>   @Unpublished{,
-#>     title = {actverse: An R Package for actigraphy data analysis},
+#>     title = {{actverse}: An R Package for actigraphy data analysis},
 #>     author = {Daniel Vartanian and Vinicius Alves Matias and Cassio Almeida Mattos Serrano and Ana Amelia Benedito-Silva and Mario Pedrazzoli},
 #>     year = {2021},
 #>     url = {https://gipso.github.io/actverse/},
