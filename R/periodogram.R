@@ -13,12 +13,11 @@
 #' proposed by Sokolove and Bushell (1978) as an adaptation of Enright's
 #' periodogram (1965), adding the peak significance test to the method.
 #'
-#' @param x Numeric vector with the activity data that will be used in the
-#' calculation.
-#' @param timestamp POSIX vector that contains the date and time of each
-#' observation.
+#' @param act An xts object with the numeric vector with the activity data
+#' that will be used in the calculation in the first column and
+#' a POSIX vector that contains the date and time of each observation as index.
 #' @param breaks A string to represent at which interval the timestamp data
-#' will be separated to build the periodogram (sec, min or hour)
+#' will be separated to build the periodogram (seconds, minutes or hours)
 #' @param p_min Minimum period p to calculate the test and add to the
 #' periodogram
 #' @param p_max Maximum period p to calculate the test and add to the
@@ -101,51 +100,67 @@
 #'                  as.POSIXct("2020-01-01 23:00:00"),
 #'                  by = "hour")
 #'
-#' xsp <- chi_square_periodogram(x,
-#'                               timestamp,
+#' act <- xts::as.xts(x, order.by=timestamp)
+#'
+#' xsp <- chi_square_periodogram(act,
 #'                               breaks = "hour",
 #'                               p_max = 12)
-#' xsp$PeriodPeak
+#' xsp$Peak$p
 #' # [1] 4
-#' xsp$Peak
-#' # [1] 0.96
+#' xsp$Peak$normalized_qp
+#' # [1] 0.9583333
 #' length(xsp$Qp)
 #' # [1] 12
 #'
-#' xsp2 <- chi_square_periodogram(x,
-#'                               timestamp,
-#'                               breaks = "2 hours",
-#'                               p_max = 6)
-#' xsp2$Peak
-#' # [1] 0.92
-#' xsp2$PeriodPeak
-#' # [1] 2
+#'
+#' x <- rep(seq(1,60), times = 30)
+#' timestamp <- seq(as.POSIXct("2020-01-01"),
+#'                  as.POSIXct("2020-01-02 05:59:59"),
+#'                  by="min")
+#'
+#' act2 <- xts::as.xts(x, order.by=timestamp)
+#' xsp2 <- chi_square_periodogram(act2,
+#'                               breaks = "minutes",
+#'                               p_max = 1500)
+#' xsp2$Peak$normalized_qp
+#' # [1] 0.999
+#' xsp2$Peak$p
+#' # [1] 60
 #' length(xsp2$Qp)
-#' # [1] 6
+#' # [1] 1500
 #'
 #' @export
-chi_square_periodogram <- function(x,
-                                   timestamp,
-                                   breaks = 'min',
+chi_square_periodogram <- function(act,
+                                   breaks= "minutes",
                                    p_min = 1,
-                                   p_max = 4320,
+                                   p_max = 4600,
                                    step = 1) {
-    interval <- cut(timestamp, breaks)
-    x <- tapply(x, interval, mean)
-    x <- x[!is.na(x)]
 
-    n <- length(x)
+    checkmate::assert_class(act, "xts")
+    checkmate::assert_string(breaks)
+    checkmate::assert_int(p_min)
+    checkmate::assert_int(p_max)
+    checkmate::assert_int(step)
 
-    p <- p_min
-    aps <- c()
-    qps <- c()
-    qps_normalized <- c()
-    peak <- 0
-    p_peak <- 0
-    var_x <- stats::var(x)
+    end_breaks <- xts::endpoints(act, breaks)
+    act <- xts::period.apply(act, end_breaks, mean)
+    n <- length(act[,1])
+
+    if (p_min > n) {
+        stop("p_min is greater than the amount of time series data delimited by breaks")
+    }
+    if (p_max > n) {
+        stop("p_max is greater than the amount of time series data delimited by breaks")
+    }
+
+    ap <- c()
+    qp <- c()
+    normalized_qp <- c()
+    peak <- dplyr::tibble(p = -1, normalized_qp = -1)
+    x <- as.numeric(act[,1])
     p_seq <- seq(p_min, p_max, by = step)
 
-    pb <- utils::txtProgressBar(p, p_max, style = 3)
+    pb <- utils::txtProgressBar(p_min, p_max, style = 3)
     for (p in p_seq) {
         utils::setTxtProgressBar(pb, p)
 
@@ -157,45 +172,45 @@ chi_square_periodogram <- function(x,
                               byrow = TRUE)
         yph <- colMeans(buys_ballot)
         mean_yph <- mean(yph)
+        var_x <- stats::var(x[1:(m*p)])
 
-        ap <- sqrt((1/p)*(sum((yph - mean_yph)**2)))
-        qp <- ((ap**2)*p)/(var_x/m)
-        qp_normalized <- (ap**2)/var_x
+        ap_current <- sqrt((1/p)*(sum((yph - mean_yph)**2)))
+        qp_current <- ((ap_current**2)*p)/(var_x/m)
+        normalized_qp_current <- (ap_current**2)/var_x
 
-        if (qp_normalized > peak) {
-            peak <- qp_normalized
-            p_peak <- p
+        qp <- append(qp, qp_current)
+        normalized_qp <- append(normalized_qp, normalized_qp_current)
+        ap <- append(ap, ap_current)
+
+        if (normalized_qp_current > peak$normalized_qp) {
+            peak$normalized_qp <- normalized_qp_current
+            peak$p <- p
         }
-
-        qps <- c(qps, qp)
-        qps_normalized <- c(qps_normalized, qp_normalized)
-        aps <- c(aps, ap)
     }
     close(pb)
 
     plot_ap <- ggplot2::ggplot() +
-        ggplot2::geom_line(ggplot2::aes(p_seq, aps)) +
+        ggplot2::geom_line(ggplot2::aes(p_seq, ap)) +
         ggplot2::xlab('Period') +
         ggplot2::ylab('Ap')
 
     plot_qp <- ggplot2::ggplot() +
-        ggplot2::geom_line(ggplot2::aes(p_seq, qps)) +
+        ggplot2::geom_line(ggplot2::aes(p_seq, qp)) +
         ggplot2::xlab('Period') +
         ggplot2::ylab('Qp')
 
-    plot_qp_normalized <- ggplot2::ggplot() +
-        ggplot2::geom_line(ggplot2::aes(p_seq, qps_normalized)) +
+    plot_normalized_qp <- ggplot2::ggplot() +
+        ggplot2::geom_line(ggplot2::aes(p_seq, normalized_qp)) +
         ggplot2::xlab('Period') +
-        ggplot2::ylab('Qp Normalized')
+        ggplot2::ylab('Normalized Qp')
 
-    periodogram <- list(QpNormalized = qps_normalized,
-                        Qp = qps,
-                        Ap = aps,
+    periodogram <- list(NormalizedQp = normalized_qp,
+                        Qp = qp,
+                        Ap = ap,
+                        Peak = peak,
                         QpPlot = plot_qp,
-                        QpNormalizedPlot = plot_qp_normalized,
-                        ApPlot = plot_ap,
-                        Peak = round(peak, digits = 2),
-                        PeriodPeak = p_peak)
+                        NormalizedQpPlot = plot_normalized_qp,
+                        ApPlot = plot_ap)
     class(periodogram) <- "Periodogram"
 
     periodogram

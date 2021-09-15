@@ -5,23 +5,20 @@
 \title{Chi Square Periodogram}
 \usage{
 chi_square_periodogram(
-  x,
-  timestamp,
-  breaks = "min",
+  act,
+  breaks = "minutes",
   p_min = 1,
-  p_max = 4320,
+  p_max = 4600,
   step = 1
 )
 }
 \arguments{
-\item{x}{Numeric vector with the activity data that will be used in the
-calculation.}
-
-\item{timestamp}{POSIX vector that contains the date and time of each
-observation.}
+\item{act}{An xts object with the numeric vector with the activity data
+that will be used in the calculation in the first column and
+a POSIX vector that contains the date and time of each observation as index.}
 
 \item{breaks}{A string to represent at which interval the timestamp data
-will be separated to build the periodogram (sec, min or hour)}
+will be separated to build the periodogram (seconds, minutes or hours)}
 
 \item{p_min}{Minimum period p to calculate the test and add to the
 periodogram}
@@ -109,27 +106,34 @@ timestamp <- seq(as.POSIXct("2020-01-01"),
                  as.POSIXct("2020-01-01 23:00:00"),
                  by = "hour")
 
-xsp <- chi_square_periodogram(x,
-                              timestamp,
+act <- xts::as.xts(x, order.by=timestamp)
+
+xsp <- chi_square_periodogram(act,
                               breaks = "hour",
                               p_max = 12)
-xsp$PeriodPeak
+xsp$Peak$p
 # [1] 4
-xsp$Peak
-# [1] 0.96
+xsp$Peak$normalized_qp
+# [1] 0.9583333
 length(xsp$Qp)
 # [1] 12
 
-xsp2 <- chi_square_periodogram(x,
-                              timestamp,
-                              breaks = "2 hours",
-                              p_max = 6)
-xsp2$Peak
-# [1] 0.92
-xsp2$PeriodPeak
-# [1] 2
+
+x <- rep(seq(1,60), times = 30)
+timestamp <- seq(as.POSIXct("2020-01-01"),
+                 as.POSIXct("2020-01-02 05:59:59"),
+                 by="min")
+
+act2 <- xts::as.xts(x, order.by=timestamp)
+xsp2 <- chi_square_periodogram(act2,
+                              breaks = "minutes",
+                              p_max = 1500)
+xsp2$Peak$normalized_qp
+# [1] 0.999
+xsp2$Peak$p
+# [1] 60
 length(xsp2$Qp)
-# [1] 6
+# [1] 1500
 
 }
 \references{
