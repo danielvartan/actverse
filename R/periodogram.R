@@ -19,9 +19,9 @@
 #' @param breaks A string to represent at which interval the timestamp data
 #' will be separated to build the periodogram (seconds, minutes or hours)
 #' @param p_min Minimum period p to calculate the test and add to the
-#' periodogram
+#' periodogram (same unit as breaks)
 #' @param p_max Maximum period p to calculate the test and add to the
-#' periodogram
+#' periodogram (same unit as breaks)
 #' @param step Range of values that will be skipped between calculating one
 #' test and the next
 #'
@@ -153,6 +153,10 @@ chi_square_periodogram <- function(act,
         stop("p_max is greater than the amount of time series data delimited by breaks")
     }
 
+    if (dplyr::n_distinct(diff(zoo::index(act))) != 1) {
+        warning("timestamp is not equidistant, output may diverge")
+    }
+
     ap <- c()
     qp <- c()
     normalized_qp <- c()
@@ -170,6 +174,7 @@ chi_square_periodogram <- function(act,
                               nrow = m,
                               ncol = p,
                               byrow = TRUE)
+
         yph <- colMeans(buys_ballot)
         mean_yph <- mean(yph)
         var_x <- stats::var(x[1:(m*p)])

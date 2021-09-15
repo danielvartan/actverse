@@ -21,10 +21,10 @@ a POSIX vector that contains the date and time of each observation as index.}
 will be separated to build the periodogram (seconds, minutes or hours)}
 
 \item{p_min}{Minimum period p to calculate the test and add to the
-periodogram}
+periodogram (same unit as breaks)}
 
 \item{p_max}{Maximum period p to calculate the test and add to the
-periodogram}
+periodogram (same unit as breaks)}
 
 \item{step}{Range of values that will be skipped between calculating one
 test and the next}
