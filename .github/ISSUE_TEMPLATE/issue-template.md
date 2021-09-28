@@ -1,10 +1,9 @@
 ---
 name: Issue template
-about: rOpenSci issue template
+about: rOpenSci issue template.
 title: ''
 labels: ''
 assignees: ''
-
 ---
 
 <!-- Do not share screen shots of code. Share actual code in text format. -->
