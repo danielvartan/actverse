@@ -8,8 +8,7 @@
 \description{
 \if{html}{\figure{logo.png}{options: align='right' alt='logo' width='120'}}
 
-A complete and consistent toolkit to process, analyze and
-    visualize actigraphy data.
+A complete and consistent toolkit to process, analyze and visualize actigraphy data.
 }
 \seealso{
 Useful links:

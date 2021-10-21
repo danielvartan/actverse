@@ -19,7 +19,7 @@
     "name": "R",
     "url": "https://r-project.org"
   },
-  "runtimePlatform": "R version 4.1.0 (2021-05-18)",
+  "runtimePlatform": "R version 4.1.1 (2021-08-10)",
   "author": [
     {
       "@type": "Person",
@@ -306,8 +306,8 @@
   ],
   "releaseNotes": "https://github.com/gipso/actverse/blob/master/NEWS.md",
   "readme": "https://github.com/gipso/actverse/blob/main/README.md",
-  "fileSize": "0KB",
-  "contIntegration": "https://codecov.io/gh/gipso/actverse",
+  "fileSize": "32.678KB",
+  "contIntegration": ["https://github.com/gipso/actverse/actions", "https://codecov.io/gh/gipso/actverse?branch=main"],
   "developmentStatus": ["https://www.repostatus.org/#wip", "https://www.tidyverse.org/lifecycle/#experimental"],
   "keywords": [
     "r-package",
@@ -346,7 +346,7 @@
           "familyName": "Pedrazzoli"
         }
       ],
-      "name": "actverse: An R Package for actigraphy data analysis",
+      "name": "{actverse}: An R Package for actigraphy data analysis",
       "url": "https://gipso.github.io/actverse/",
       "description": "Lifecycle: experimental"
     }

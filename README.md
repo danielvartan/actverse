@@ -13,7 +13,8 @@ public.](https://www.repostatus.org/badges/latest/wip.svg)](https://www.repostat
 [![Lifecycle:
 experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://www.tidyverse.org/lifecycle/#experimental)
 [![R-CMD-check](https://github.com/gipso/actverse/workflows/R-CMD-check/badge.svg)](https://github.com/gipso/actverse/actions)
-[![codecov](https://codecov.io/gh/gipso/actverse/branch/main/graph/badge.svg?token=2bnHxbdw4M)](https://codecov.io/gh/gipso/actverse)
+[![Codecov test
+coverage](https://codecov.io/gh/gipso/actverse/branch/main/graph/badge.svg)](https://codecov.io/gh/gipso/actverse?branch=main)
 [![License:
 MIT](https://img.shields.io/badge/license-MIT-green)](https://choosealicense.com/licenses/mit/)
 [![Contributor
@@ -47,8 +48,8 @@ R](https://www.coursera.org/specializations/data-science-foundations-r)
 You can install the development version from GitHub with:
 
 ``` r
-# install.packages("pak")
-pak::pkg_install("gipso/actverse")
+# install.packages("remotes")
+remotes::install_github("gipso/actverse")
 ```
 
 ## Citation

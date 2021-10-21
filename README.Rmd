@@ -2,7 +2,7 @@
 output: github_document
 ---
 
-<!-- README.md is generated from README.Rmd. Please edit that file --> 
+<!-- README.md is generated from README.Rmd. Please edit that file -->
 
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
@@ -20,7 +20,7 @@ knitr::opts_chunk$set(
 [![Project Status: WIP – Initial development is in progress, but there has not yet been a stable, usable release suitable for the public.](https://www.repostatus.org/badges/latest/wip.svg)](https://www.repostatus.org/#wip)
 [![Lifecycle: experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://www.tidyverse.org/lifecycle/#experimental)
 [![R-CMD-check](https://github.com/gipso/actverse/workflows/R-CMD-check/badge.svg)](https://github.com/gipso/actverse/actions)
-[![codecov](https://codecov.io/gh/gipso/actverse/branch/main/graph/badge.svg?token=2bnHxbdw4M)](https://codecov.io/gh/gipso/actverse)
+[![Codecov test coverage](https://codecov.io/gh/gipso/actverse/branch/main/graph/badge.svg)](https://codecov.io/gh/gipso/actverse?branch=main)
 [![License: MIT](https://img.shields.io/badge/license-MIT-green)](https://choosealicense.com/licenses/mit/)
 [![Contributor Covenant](https://img.shields.io/badge/Contributor%20Covenant-v2.0%20adopted-ff69b4.svg)](https://gipso.github.io/actverse/CODE_OF_CONDUCT.html)
 <!-- badges: end -->
@@ -42,8 +42,8 @@ In case you don't feel comfortable with R, we strongly recommend checking Hadley
 You can install the development version from GitHub with:
 
 ``` {r, eval = FALSE}
-# install.packages("pak")
-pak::pkg_install("gipso/actverse")
+# install.packages("remotes")
+remotes::install_github("gipso/actverse")
 ```
 
 ## Citation
