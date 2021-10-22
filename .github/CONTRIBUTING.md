@@ -7,7 +7,6 @@ First of all, thanks for considering contributing to `actverse`! 👍 It's peopl
 `actverse` is an open source project, maintained by people who care. We are not directly funded to do so.
 
 [repo]: https://github.com/gipso/actverse
-[develop_branch]: https://github.com/gipso/actverse/tree/develop
 [issues]: https://github.com/gipso/actverse/issues
 [discussions]: https://github.com/gipso/actverse/discussions
 [new_issue]: https://github.com/gipso/actverse/issues/new
@@ -75,10 +74,10 @@ Care to fix bugs or implement new functionality for `actverse`? Awesome! 👏 Ha
 
 ## Development guidelines
 
-We try to follow the [Git flow](https://nvie.com/posts/a-successful-git-branching-model/) for development.
+We try to follow the [GitHub flow](https://guides.github.com/introduction/flow/) for development.
 
-1. Fork [the develop branch][develop_branch] and clone it to your computer. To learn more about this process, see [this guide](https://guides.github.com/activities/forking/).
-2. If you have forked and cloned the project before and it has been a while since you worked on it, [pull changes from the original repo](https://help.github.com/articles/merging-an-upstream-repository-into-your-fork/) to your clone.
+1. Fork [this repo][repo] and clone it to your computer. To learn more about this process, see [this guide](https://guides.github.com/activities/forking/).
+2. If you have forked and cloned the project before and it has been a while since you worked on it, [pull changes from the original repo](https://help.github.com/articles/merging-an-upstream-repository-into-your-fork/) to your clone by using `git pull upstream main`.
 3. Open the RStudio project file (`.Rproj`).
 4. Make your changes:
     * Write your code.
