@@ -3,7 +3,7 @@ citHeader("To cite {actverse} in publications use:")
 citEntry(
   entry       = "Unpublished",
   title       = paste0("{actverse}:", " ",
-                       "An R Package for actigraphy data analysis"),
+                       "an R Package for actigraphy data analysis"),
   author      = personList(as.person("Daniel Vartanian"),
   			                   as.person("Vinicius Alves Matias"),
   			     	             as.person("Cassio Almeida Mattos Serrano"),
@@ -19,8 +19,8 @@ citEntry(
                        "Pedrazzoli, M.", " ",
                        "(2021)",  ". ",
                        "{actverse}:", " ",
-                       "An R Package for actigraphy data analysis", ". ",
-                       "Retrieved from https://gipso.github.io/",
+                       "an R Package for actigraphy data analysis", ". ",
+                       "https://gipso.github.io/",
                        "actverse/", "."),
   note        = "Lifecycle: experimental"
 )

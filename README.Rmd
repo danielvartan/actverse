@@ -35,7 +35,7 @@ knitr::opts_chunk$set(
 
 You only need to have some familiarity with the [R programming language](https://www.r-project.org/) to use the `actverse` main functions.
 
-In case you don't feel comfortable with R, we strongly recommend checking Hadley Wickham and Garrett Grolemund free and online book [R for Data Science](https://r4ds.had.co.nz/) and the Coursera course from the John Hopkins University [Data Science: Foundations using R](https://www.coursera.org/specializations/data-science-foundations-r) (free for audit students).
+In case you don't feel comfortable with R, we strongly recommend checking Hadley Wickham and Garrett Grolemund's free and online book [R for Data Science](https://r4ds.had.co.nz/) and the Coursera course from the John Hopkins University [Data Science: Foundations using R](https://www.coursera.org/specializations/data-science-foundations-r) (free for audit students).
 
 ## Installation
 
