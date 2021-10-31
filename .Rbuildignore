@@ -6,6 +6,7 @@
 ^CODE_OF_CONDUCT\.md$
 ^codecov\.yml$
 ^codemeta\.json$
+^cran-comments\.md$
 ^data-raw$
 ^doc$
 ^docs$

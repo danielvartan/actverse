@@ -6,8 +6,9 @@ labels: ''
 assignees: ''
 ---
 
-> Comments in English and Portuguese are welcome.
-> Comentários em inglês e em português são bem-vindos.
+> Comments in English, Spanish, or Portuguese are welcome.
+> Comentarios en inglés, español o portugués son bienvenidos.
+> Comentários em inglês, espanhol ou português são bem-vindos.
 
 * __Due date__: `yyyy/mm/dd`.
 
