@@ -1,0 +1,61 @@
+# -----------------------------------------------------------
+# CITATION file created with {cffr} R package, v0.1.0
+# See also: https://docs.ropensci.org/cffr/
+# -----------------------------------------------------------
+ 
+cff-version: 1.2.0
+message: 'To cite package "actverse" in publications use:'
+type: software
+license: MIT
+title: 'actverse: An R Package for Actigraphy Data Analysis'
+version: 0.0.0.9000
+abstract: A complete and consistent toolkit to process, analyze and visualize actigraphy
+  data.
+authors:
+- family-names: Vartanian
+  given-names: Daniel
+  email: danvartan@gmail.com
+  orcid: https://orcid.org/0000-0001-7782-759X
+- family-names: Alves Matias
+  given-names: Vinicius
+  email: viniciusmatias@usp.br
+  orcid: https://orcid.org/0000-0002-2047-5420
+- family-names: Almeida Mattos Serrano
+  given-names: Cassio
+  email: cassio.serrano@usp.br
+  orcid: https://orcid.org/0000-0001-7149-1829
+- family-names: Benedito-Silva
+  given-names: Ana Amelia
+  email: aamelia@usp.br
+  orcid: https://orcid.org/0000-0003-4976-2623
+- family-names: Pedrazzoli
+  given-names: Mario
+  email: pedrazzo@usp.br
+  orcid: https://orcid.org/0000-0002-5257-591X
+preferred-citation:
+  type: unpublished
+  title: 'actverse: an R Package for actigraphy data analysis'
+  authors:
+  - family-names: Vartanian
+    given-names: Daniel
+  - family-names: Matias
+    given-names: Vinicius Alves
+  - family-names: Serrano
+    given-names: Cassio Almeida Mattos
+  - family-names: Benedito-Silva
+    given-names: Ana Amelia
+  - family-names: Pedrazzoli
+    given-names: Mario
+  year: '2021'
+  url: https://gipso.github.io/actverse/
+repository: https://bioconductor.org/
+repository-code: https://github.com/gipso/actverse
+url: https://gipso.github.io/actverse/
+contact:
+- family-names: Vartanian
+  given-names: Daniel
+  email: danvartan@gmail.com
+  orcid: https://orcid.org/0000-0001-7782-759X
+identifiers:
+- type: url
+  value: https://github.com/gipso/actverse/

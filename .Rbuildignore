@@ -3,6 +3,7 @@
 ^\.Rproj\.user$
 ^_pkgdown\.yml$
 ^actverse\.Rproj$
+^CITATION\.cff$
 ^CODE_OF_CONDUCT\.md$
 ^codecov\.yml$
 ^codemeta\.json$
