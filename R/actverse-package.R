@@ -5,5 +5,6 @@
 # roxygen namespace tags. Modify with care!
 ## usethis namespace: start
 #' @importFrom dplyr %>%
+#' @importFrom lifecycle deprecate_soft
 ## usethis namespace: end
 NULL
