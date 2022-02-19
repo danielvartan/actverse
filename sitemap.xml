@@ -1,9 +1,33 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://gipso.github.io/actverse//index.html</loc>
+    <loc>https://gipso.github.io/actverse/404.html</loc>
   </url>
   <url>
-    <loc>https://gipso.github.io/actverse//reference/actverse-package.html</loc>
+    <loc>https://gipso.github.io/actverse/CODE_OF_CONDUCT.html</loc>
+  </url>
+  <url>
+    <loc>https://gipso.github.io/actverse/CONTRIBUTING.html</loc>
+  </url>
+  <url>
+    <loc>https://gipso.github.io/actverse/LICENSE-text.html</loc>
+  </url>
+  <url>
+    <loc>https://gipso.github.io/actverse/LICENSE.html</loc>
+  </url>
+  <url>
+    <loc>https://gipso.github.io/actverse/authors.html</loc>
+  </url>
+  <url>
+    <loc>https://gipso.github.io/actverse/index.html</loc>
+  </url>
+  <url>
+    <loc>https://gipso.github.io/actverse/news/index.html</loc>
+  </url>
+  <url>
+    <loc>https://gipso.github.io/actverse/reference/actverse-package.html</loc>
+  </url>
+  <url>
+    <loc>https://gipso.github.io/actverse/reference/index.html</loc>
   </url>
 </urlset>
