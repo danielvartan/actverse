@@ -1,16 +1,11 @@
 {
-  "@context": [
-    "https://doi.org/10.5063/schema/codemeta-2.0",
-    "http://schema.org"
-  ],
+  "@context": "https://doi.org/10.5063/schema/codemeta-2.0",
   "@type": "SoftwareSourceCode",
   "identifier": "actverse",
-  "description": "A complete and consistent toolkit to process, analyze and\n    visualize actigraphy data.",
-  "name": "actverse: An R Package for Actigraphy Data Analysis",
+  "description": "A complete and consistent toolkit to process, analyse and visualize actigraphy data.",
+  "name": "actverse: Actigraphy Data Analysis Tools",
+  "relatedLink": "https://gipso.github.io/actverse/",
   "codeRepository": "https://github.com/gipso/actverse/",
-  "relatedLink": [
-    "https://gipso.github.io/actverse/"
-  ],
   "issueTracker": "https://github.com/gipso/actverse/issues",
   "license": "https://spdx.org/licenses/MIT",
   "version": "0.0.0.9000",
@@ -99,6 +94,7 @@
       "@type": "SoftwareApplication",
       "identifier": "covr",
       "name": "covr",
+      "version": ">= 3.5.1",
       "provider": {
         "@id": "https://cran.r-project.org",
         "@type": "Organization",
@@ -111,6 +107,7 @@
       "@type": "SoftwareApplication",
       "identifier": "knitr",
       "name": "knitr",
+      "version": ">= 1.36",
       "provider": {
         "@id": "https://cran.r-project.org",
         "@type": "Organization",
@@ -123,6 +120,7 @@
       "@type": "SoftwareApplication",
       "identifier": "mockr",
       "name": "mockr",
+      "version": ">= 0.1",
       "provider": {
         "@id": "https://cran.r-project.org",
         "@type": "Organization",
@@ -135,6 +133,7 @@
       "@type": "SoftwareApplication",
       "identifier": "rmarkdown",
       "name": "rmarkdown",
+      "version": ">= 2.11",
       "provider": {
         "@id": "https://cran.r-project.org",
         "@type": "Organization",
@@ -147,6 +146,7 @@
       "@type": "SoftwareApplication",
       "identifier": "spelling",
       "name": "spelling",
+      "version": ">= 2.2",
       "provider": {
         "@id": "https://cran.r-project.org",
         "@type": "Organization",
@@ -171,17 +171,18 @@
     {
       "@type": "SoftwareApplication",
       "identifier": "utils",
-      "name": "utils"
+      "name": "utils",
+      "version": ">= 4.0.0"
     }
   ],
-  "softwareRequirements": [
-    {
+  "softwareRequirements": {
+    "1": {
       "@type": "SoftwareApplication",
       "identifier": "R",
       "name": "R",
       "version": ">= 4.0"
     },
-    {
+    "2": {
       "@type": "SoftwareApplication",
       "identifier": "checkmate",
       "name": "checkmate",
@@ -194,11 +195,11 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=checkmate"
     },
-    {
+    "3": {
       "@type": "SoftwareApplication",
       "identifier": "cli",
       "name": "cli",
-      "version": ">= 3.0.1",
+      "version": ">= 3.1.0",
       "provider": {
         "@id": "https://cran.r-project.org",
         "@type": "Organization",
@@ -207,7 +208,7 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=cli"
     },
-    {
+    "4": {
       "@type": "SoftwareApplication",
       "identifier": "dplyr",
       "name": "dplyr",
@@ -220,7 +221,7 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=dplyr"
     },
-    {
+    "5": {
       "@type": "SoftwareApplication",
       "identifier": "ggplot2",
       "name": "ggplot2",
@@ -233,7 +234,7 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=ggplot2"
     },
-    {
+    "6": {
       "@type": "SoftwareApplication",
       "identifier": "hms",
       "name": "hms",
@@ -246,11 +247,11 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=hms"
     },
-    {
+    "7": {
       "@type": "SoftwareApplication",
       "identifier": "lifecycle",
       "name": "lifecycle",
-      "version": ">= 1.0.0",
+      "version": ">= 1.0.1",
       "provider": {
         "@id": "https://cran.r-project.org",
         "@type": "Organization",
@@ -259,7 +260,7 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=lifecycle"
     },
-    {
+    "8": {
       "@type": "SoftwareApplication",
       "identifier": "lubridate",
       "name": "lubridate",
@@ -272,12 +273,13 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=lubridate"
     },
-    {
+    "9": {
       "@type": "SoftwareApplication",
       "identifier": "stats",
-      "name": "stats"
+      "name": "stats",
+      "version": ">= 4.0.0"
     },
-    {
+    "10": {
       "@type": "SoftwareApplication",
       "identifier": "xts",
       "name": "xts",
@@ -290,7 +292,7 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=xts"
     },
-    {
+    "11": {
       "@type": "SoftwareApplication",
       "identifier": "zoo",
       "name": "zoo",
@@ -302,19 +304,10 @@
         "url": "https://cran.r-project.org"
       },
       "sameAs": "https://CRAN.R-project.org/package=zoo"
-    }
-  ],
-  "releaseNotes": "https://github.com/gipso/actverse/blob/master/NEWS.md",
-  "readme": "https://github.com/gipso/actverse/blob/main/README.md",
-  "fileSize": "31.026KB",
-  "contIntegration": ["https://github.com/gipso/actverse/actions", "https://codecov.io/gh/gipso/actverse?branch=main"],
-  "developmentStatus": ["https://www.repostatus.org/#wip", "https://www.tidyverse.org/lifecycle/#experimental"],
-  "keywords": [
-    "r-package",
-    "sleep",
-    "chronobiology",
-    "actigraphy"
-  ],
+    },
+    "SystemRequirements": null
+  },
+  "fileSize": "18.567KB",
   "citation": [
     {
       "@type": "CreativeWork",
@@ -350,5 +343,10 @@
       "url": "https://gipso.github.io/actverse/",
       "description": "Lifecycle: experimental"
     }
-  ]
+  ],
+  "releaseNotes": "https://github.com/gipso/actverse/blob/master/NEWS.md",
+  "readme": "https://github.com/gipso/actverse/blob/main/README.md",
+  "contIntegration": ["https://github.com/gipso/actverse/actions", "https://codecov.io/gh/gipso/actverse?branch=main"],
+  "developmentStatus": ["https://www.repostatus.org/#wip", "https://www.tidyverse.org/lifecycle/#experimental"],
+  "keywords": ["actigraphy", "r-package", "sleep", "chronobiology", "r", "rstats"]
 }

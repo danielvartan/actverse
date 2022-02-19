@@ -4,11 +4,9 @@
 \name{actverse-package}
 \alias{actverse}
 \alias{actverse-package}
-\title{actverse: An R Package for Actigraphy Data Analysis}
+\title{actverse: Actigraphy Data Analysis Tools}
 \description{
-\if{html}{\figure{logo.png}{options: align='right' alt='logo' width='120'}}
-
-A complete and consistent toolkit to process, analyze and visualize actigraphy data.
+A complete and consistent toolkit to process, analyse and visualize actigraphy data.
 }
 \seealso{
 Useful links:

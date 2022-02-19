@@ -1,12 +1,10 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# actverse <a href='https://gipso.github.io/actverse'><img src='man/figures/logo.png' align="right" height="139" /></a>
+# actverse
 
 <!-- badges: start -->
 
-[![CRAN
-status](https://www.r-pkg.org/badges/version/actverse)](https://CRAN.R-project.org/package=actverse)
 [![Project Status: WIP – Initial development is in progress, but there
 has not yet been a stable, usable release suitable for the
 public.](https://www.repostatus.org/badges/latest/wip.svg)](https://www.repostatus.org/#wip)
@@ -24,7 +22,10 @@ Covenant](https://img.shields.io/badge/Contributor%20Covenant-v2.0%20adopted-ff6
 ## Overview
 
 `actverse` is an R package that provides a complete and consistent
-toolkit to process, analyze and visualize actigraphy data in R.
+toolkit to process, analyze and visualize actigraphy data in R. The aim
+of `actverse` is to facilitate the work of sleep and chronobiology
+scientists with actigraphy data while also helping with research
+reproducibility.
 
 > Please note that this package is currently on the development stage
 > and have not yet been [peer
@@ -64,8 +65,8 @@ citation("actverse")
 #> To cite {actverse} in publications use:
 #> 
 #>   Vartanian, D., Matias, V. A., Serrano, C. A. M., Benedito-Silva, A.
-#>   A., Pedrazzoli, M. (2021). {actverse}: an R Package for actigraphy
-#>   data analysis. https://gipso.github.io/actverse/.
+#>   A., & Pedrazzoli, M. (2021). {actverse}: an R Package for actigraphy
+#>   data analysis. https://gipso.github.io/actverse/
 #> 
 #> A BibTeX entry for LaTeX users is
 #> 
@@ -80,8 +81,8 @@ citation("actverse")
 
 ## Contributing
 
-`actverse` is a community project, everyone is welcome to contribute.
-Take a moment to review our [Guidelines for
+We welcome contributions, including bug reports. Take a moment to review
+our [Guidelines for
 Contributing](https://gipso.github.io/actverse/CONTRIBUTING.html).
 
 Please note that `actverse` is released with a [Contributor Code of

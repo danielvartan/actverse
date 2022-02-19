@@ -36,7 +36,7 @@ Authors@R:
              role = "ctb",
              email = "brfrlan@gmail.com",
              comment = c(ORCID = "0000-0003-1654-0899")))
-Description: A complete and consistent toolkit to process, analyze and
+Description: A complete and consistent toolkit to process, analyse and
     visualize actigraphy data.
 biocViews: Infrastructure, Visualization
 License: MIT + file LICENSE

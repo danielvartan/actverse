@@ -15,12 +15,12 @@ citEntry(
   textVersion = paste0("Vartanian, D.", ", ",
                        "Matias, V. A.", ", ",
                        "Serrano, C. A. M.", ", ",
-                       "Benedito-Silva, A. A.", ", ",
+                       "Benedito-Silva, A. A.", ", & ",
                        "Pedrazzoli, M.", " ",
                        "(2021)",  ". ",
                        "{actverse}:", " ",
                        "an R Package for actigraphy data analysis", ". ",
                        "https://gipso.github.io/",
-                       "actverse/", "."),
+                       "actverse/"),
   note        = "Lifecycle: experimental"
 )
