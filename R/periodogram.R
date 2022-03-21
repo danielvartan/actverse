@@ -1,11 +1,11 @@
-#' Chi Square Periodogram
+#' Compute the chi square periodogram
 #'
 #' @description
 #'
 #' `r lifecycle::badge("experimental")`
 #'
-#' Calculates the measures Ap, Qp and Qp-normalized of the chi-square
-#' periodogram.
+#' `periodogram()` calculates the measures Ap, Qp and Qp-normalized of the
+#' chi-square periodogram for an actigraphy dataset.
 #'
 #' The Chi Square Periodogram is a technique to identify periodic patterns in a
 #' time series, being widely used in chronobiology to identify the sleep-wake
@@ -13,27 +13,12 @@
 #' proposed by Sokolove and Bushell (1978) as an adaptation of Enright's
 #' periodogram (1965), adding the peak significance test to the method.
 #'
-#' @param act An xts object with the numeric vector with the activity data
-#' that will be used in the calculation in the first column and
-#' a POSIX vector that contains the date and time of each observation as index.
-#' @param breaks A string to represent at which interval the timestamp data
-#' will be separated to build the periodogram (seconds, minutes or hours)
-#' @param p_min Minimum period p to calculate the test and add to the
-#' periodogram (same unit as breaks)
-#' @param p_max Maximum period p to calculate the test and add to the
-#' periodogram (same unit as breaks)
-#' @param step Range of values that will be skipped between calculating one
-#' test and the next
-#'
-#' @return A Periodogram object with the values and visualizations of Ap, Qp
-#' and normalized Qp, as well the peak and peak period.
-#'
 #' @details
 #'
-#' Sokolove and Bushell's periodogram assumes that the delivered data is
-#' time equine - there is data for the entire time unit delivered in the breaks
+#' Sokolove and Bushell's periodogram assumes that the delivered data is time
+#' equidistant - there is data for the entire time unit delivered in the breaks
 #' parameter. If this does not occur, the function will disregard these missing
-#' values in the middle of the time series in calculating the periodogram. If
+#' values in the middle of the time series while calculating the periodogram. If
 #' there is more than one data for the breaks unit (for example, when the data
 #' was captured per minute and the user wants to calculate the periodogram per
 #' hour), the average of all values in this interval is considered as the
@@ -64,124 +49,129 @@
 #' a distribution of P-1 degrees of freedom. The formula for calculating the
 #' test is:
 #'
-#' \deqn{Qp = P*m*Ap^2/Var(X)}
+#' \deqn{Qp = P * m * Ap^2 / Var(X)}
 #'
 #' Where:
 #'
-#' P is the period of this test
-#'
-#' m is the total rows of the Buys-Ballot table
-#'
-#' Ap is the standard deviation of the averages from the Buys=Ballot table of
-#' this test
-#'
-#' Var(X) is the variance of the activity data
+#' \eqn{P} = the period of this test.
+#' \eqn{m} = the total rows of the Buys-Ballot table.
+#' \eqn{Ap} = the standard deviation of the averages from the Buys=Ballot table
+#' of this test.
+#' \eqn{Var(X)}= the variance of the activity data.
 #'
 #' It is also common to use a standardized version of the test, which consists
 #' of performing the calculation:
 #'
-#' \deqn{Qp = Ap^2/Var(X)}
+#' \deqn{Qp = Ap^2 / Var(X)}
 #'
 #' Which results in a number between 0 and 1.
+#'
+#' @param data An [`xts`][xts::xts()] object with a numeric vector. If the
+#'   [`xts`][xts::xts()]` have more than 1 vector, the function will use only
+#'   the first one.
+#' @param breaks A string representing at which interval the timestamp data will
+#'   be separated to build the periodogram (seconds, minutes or hours).
+#'   (default: "minutes").
+#' @param p_min An integer number representing the minimum period p to calculate
+#'   the test and add to the periodogram (same unit as breaks). (default: `1`).
+#' @param p_max An integer number representing the maximum period p to calculate
+#'   the test and add to the periodogram (same unit as `breaks`). (default:
+#'   `4600`).
+#' @param step An integer number representing the range of values that will be
+#'   skipped between calculating one test and the next. (default: `1`).
+#'
+#' @return A [`list`][list()] object with the values and plots of Ap,
+#'   Qp and normalized Qp, as well as the peak and peak period.
+#'
+#' @family analysis functions
+#' @export
 #'
 #' @references
 #'
 #' Enright, J. T. (1965). The search for rhythmicity in biological time-series.
-#' Journal of Theoretical Biology, 8(3), 426–468.
-#' \doi{https://doi.org/10.1016/0022-5193(65)90021-4}
+#' _Journal of Theoretical Biology_, _8_(3), 426–468.
+#' \doi{10.1016/0022-5193(65)90021-4}.
 #'
-#' Sokolove, P. G., & Bushell, W. N. (1978). The chi square periodogram: Its
-#' utility for analysis of circadian rhythms. Journal of Theoretical Biology,
-#' 72(1), 131–160. \doi{https://doi.org/10.1016/0022-5193(78)90022-x}
+#' Sokolove, P. G., & Bushell, W. N. (1978). The chi square periodogram: its
+#' utility for analysis of circadian rhythms. _Journal of Theoretical Biology_,
+#' _72_(1), 131–160. \doi{10.1016/0022-5193(78)90022-x}.
+#'
 #'
 #' @examples
-#' x <- rep(seq(1,4), times = 6)
-#' timestamp <- seq(as.POSIXct("2020-01-01"),
-#'                  as.POSIXct("2020-01-01 23:00:00"),
-#'                  by = "hour")
+#' data <- xts::as.xts(x = rep(seq(1, 4), times = 6),
+#'                     order.by = seq(as.POSIXct("2020-01-01"),
+#'                                    as.POSIXct("2020-01-01 23:00:00"),
+#'                                    by = "hours"))
+#' periodogram <- periodogram(data, breaks = "hours", p_max = 12)
 #'
-#' act <- xts::as.xts(x, order.by=timestamp)
+#' periodogram$peak$p
+#' #> [1] 4 # Expected
+#' periodogram$peak$normalized_qp
+#' #> [1] 0.9583333 # Expected
+#' length(periodogram$qp)
+#' #> [1] 12 # Expected
 #'
-#' xsp <- chi_square_periodogram(act,
-#'                               breaks = "hour",
-#'                               p_max = 12)
-#' xsp$Peak$p
-#' # [1] 4
-#' xsp$Peak$normalized_qp
-#' # [1] 0.9583333
-#' length(xsp$Qp)
-#' # [1] 12
+#' ## Using interactive plots
 #'
-#'
-#' x <- rep(seq(1,60), times = 30)
-#' timestamp <- seq(as.POSIXct("2020-01-01"),
-#'                  as.POSIXct("2020-01-02 05:59:59"),
-#'                  by="min")
-#'
-#' act2 <- xts::as.xts(x, order.by=timestamp)
-#' xsp2 <- chi_square_periodogram(act2,
-#'                               breaks = "minutes",
-#'                               p_max = 1500)
-#' xsp2$Peak$normalized_qp
-#' # [1] 0.999
-#' xsp2$Peak$p
-#' # [1] 60
-#' length(xsp2$Qp)
-#' # [1] 1500
-#'
-#' @export
-chi_square_periodogram <- function(act,
-                                   breaks= "minutes",
-                                   p_min = 1,
-                                   p_max = 4600,
-                                   step = 1) {
-
-    checkmate::assert_class(act, "xts")
-    checkmate::assert_string(breaks)
+#' if (interactive() &&
+#'     requireNamespace("plotly", quietly = TRUE)) {
+#'     plotly::ggplotly(periodogram$qp_plot)
+#' }
+periodogram <- function(data,
+                        breaks = "minutes",
+                        p_min = 1,
+                        p_max = 4600,
+                        step = 1) {
+    checkmate::assert_class(data, "xts")
+    checkmate::assert_choice(breaks, c("seconds", "minutes", "hours"))
     checkmate::assert_int(p_min)
     checkmate::assert_int(p_max)
     checkmate::assert_int(step)
 
-    end_breaks <- xts::endpoints(act, breaks)
-    act <- xts::period.apply(act, end_breaks, mean)
-    n <- length(act[,1])
-
-    if (p_min > n) {
-        stop("p_min is greater than the amount of time series data delimited by breaks")
-    }
-    if (p_max > n) {
-        stop("p_max is greater than the amount of time series data delimited by breaks")
+    for (i in c("p_min", "p_max")) {
+        if (get(i) > length(data[, 1])) {
+            cli::cli_abort(paste0(
+                "{.strong {cli::col_blue(i)}} is greater than the amount ",
+                "of time series data delimited by breaks."
+            ))
+        }
     }
 
-    if (dplyr::n_distinct(diff(zoo::index(act))) != 1) {
-        warning("timestamp is not equidistant, output may diverge")
+    if (!(dplyr::n_distinct(diff(zoo::index(data))) == 1)) {
+        cli::cli_alert_warning(paste0(
+            "The time series index (timestamp) is not equidistant. ",
+            "The output may diverge."
+        ))
     }
+
+    end_breaks <- xts::endpoints(data, breaks)
+    data <- xts::period.apply(data, end_breaks, mean)
+    data <- as.numeric(data[, 1])
+    n <- length(data)
 
     ap <- c()
     qp <- c()
     normalized_qp <- c()
     peak <- dplyr::tibble(p = -1, normalized_qp = -1)
-    x <- as.numeric(act[,1])
     p_seq <- seq(p_min, p_max, by = step)
 
-    pb <- utils::txtProgressBar(p_min, p_max, style = 3)
-    for (p in p_seq) {
-        utils::setTxtProgressBar(pb, p)
+    cli::cli_progress_bar(total = p_max, clear = FALSE)
 
+    for (p in p_seq) {
         m <- floor(n / p)
 
-        buys_ballot <- matrix(x[1:(m*p)],
+        buys_ballot <- matrix(data[1:(m * p)],
                               nrow = m,
                               ncol = p,
                               byrow = TRUE)
 
         yph <- colMeans(buys_ballot)
         mean_yph <- mean(yph)
-        var_x <- stats::var(x[1:(m*p)])
+        var_x <- stats::var(data[1:(m * p)])
 
-        ap_current <- sqrt((1/p)*(sum((yph - mean_yph)**2)))
-        qp_current <- ((ap_current**2)*p)/(var_x/m)
-        normalized_qp_current <- (ap_current**2)/var_x
+        ap_current <- sqrt((1 / p) * (sum((yph - mean_yph) ^ 2)))
+        qp_current <- ((ap_current^2) * p) / (var_x / m)
+        normalized_qp_current <- (ap_current ^ 2) / var_x
 
         qp <- append(qp, qp_current)
         normalized_qp <- append(normalized_qp, normalized_qp_current)
@@ -191,8 +181,9 @@ chi_square_periodogram <- function(act,
             peak$normalized_qp <- normalized_qp_current
             peak$p <- p
         }
+
+        cli::cli_progress_update()
     }
-    close(pb)
 
     plot_ap <- ggplot2::ggplot() +
         ggplot2::geom_line(ggplot2::aes(p_seq, ap)) +
@@ -209,14 +200,13 @@ chi_square_periodogram <- function(act,
         ggplot2::xlab('Period') +
         ggplot2::ylab('Normalized Qp')
 
-    periodogram <- list(NormalizedQp = normalized_qp,
-                        Qp = qp,
-                        Ap = ap,
-                        Peak = peak,
-                        QpPlot = plot_qp,
-                        NormalizedQpPlot = plot_normalized_qp,
-                        ApPlot = plot_ap)
-    class(periodogram) <- "Periodogram"
+    out <- list(normalized_qp = normalized_qp,
+                qp = qp,
+                ap = ap,
+                peak = peak,
+                qp_plot = plot_qp,
+                normalized_qp_plot = plot_normalized_qp,
+                ap_plot = plot_ap)
 
-    periodogram
+    out
 }
