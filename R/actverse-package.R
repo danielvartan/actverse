@@ -6,5 +6,7 @@
 ## usethis namespace: start
 #' @importFrom dplyr %>%
 #' @importFrom lifecycle deprecate_soft
+#' @importFrom lubridate duration period interval %within%
+#' @importFrom hms hms
 ## usethis namespace: end
 NULL

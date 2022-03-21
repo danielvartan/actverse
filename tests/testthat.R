@@ -1,5 +1,6 @@
 library(actverse)
 library(checkmate)
+library(dplyr)
 library(testthat)
 
 test_check("actverse")

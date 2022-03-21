@@ -17,6 +17,15 @@ navbar:
     intro: ~
     articles: ~
 
+reference:
+- title: Analysis
+  contents:
+  - periodogram
+
+- title: Utilities
+  contents:
+  - read_acttrust
+
 authors:
   Daniel Vartanian:
     href: https://github.com/danielvartan
