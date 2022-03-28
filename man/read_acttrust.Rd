@@ -7,9 +7,9 @@
 read_acttrust(file = file.choose(), tz = "America/Sao_Paulo")
 }
 \arguments{
-\item{file}{A string with the CSV file path for the ActTrust dataset. If
-not assigned, a dialog window will open allowing the user to browse and
-select a file.}
+\item{file}{A string with the file path for the ActTrust dataset. If not
+assigned, a dialog window will open allowing the user to browse and select
+a file.}
 
 \item{tz}{A string that specifies which time zone to parse the dates/time
 with. The string must be a time zone that is recognized by the user's OS.

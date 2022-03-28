@@ -52,7 +52,7 @@ Imports:
     hms (>= 1.1.1),
     lifecycle (>= 1.0.1),
     lubridate (>= 1.8.0),
-    stats (>= 4.1.1),
+    stats (>= 4.0.0),
     xts (>= 0.12.1),
     zoo (>= 1.8-9)
 Suggests: 
@@ -65,7 +65,7 @@ Suggests:
     spelling (>= 2.2),
     stringr (>= 1.4.0),
     testthat (>= 3.1.2),
-    utils (>= 4.1.1)
+    utils (>= 4.0.0)
 VignetteBuilder: 
     knitr
 Config/testthat/edition: 3

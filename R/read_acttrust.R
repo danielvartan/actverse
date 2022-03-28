@@ -13,9 +13,9 @@
 #' ActTrust is a trademark of
 #' [Condor Instruments](https://www.condorinst.com.br/).
 #'
-#' @param file A string with the CSV file path for the ActTrust dataset. If
-#'   not assigned, a dialog window will open allowing the user to browse and
-#'   select a file.
+#' @param file A string with the file path for the ActTrust dataset. If not
+#'   assigned, a dialog window will open allowing the user to browse and select
+#'   a file.
 #' @param tz A string that specifies which time zone to parse the dates/time
 #'   with. The string must be a time zone that is recognized by the user's OS.
 #'   For more information, see [`?lubridate::ymd_hms`][lubridate::ymd_hms()].
@@ -37,8 +37,7 @@ read_acttrust <- function(file = file.choose(),
     checkmate::assert_choice(tz, OlsonNames())
     require_pkg("readr", "stringr")
 
-    read_acttrust_data(file) %>%
-        tidy_acttrust_data(tz = tz)
+    read_acttrust_data(file) %>% tidy_acttrust_data(tz = tz)
 }
 
 read_acttrust_data <- function(file = file.choose()) {
@@ -109,49 +108,6 @@ tidy_acttrust_data <- function(data,
                       uva_light = `UVA LIGHT`, uvb_light = `UVB LIGHT`,
                       event = EVENT, state = STATE)
 
-    # replacement <- list(
-    #     c("ms", "MS"),
-    #     c("event", "EVENT"),
-    #     c("body_temperature", "TEMPERATURE"),
-    #     c("external_temperature", "EXT TEMPERATURE"),
-    #     c("orientation", "ORIENTATION"),
-    #     c("pim", "PIM"),
-    #     c("pim_n", "PIMn"),
-    #     c("tat", "TAT"),
-    #     c("tat_n", "TATn"),
-    #     c("zcm", "ZCM"),
-    #     c("zcm_n", "ZCMn"),
-    #     c("light", "LIGHT"),
-    #     c("ambient_light", "AMB LIGHT"),
-    #     c("red_light", "RED LIGHT"),
-    #     c("green_light", "GREEN LIGHT"),
-    #     c("blue_light", "BLUE LIGHT"),
-    #     c("ir_light", "IR LIGHT"),
-    #     c("uva_light", "UVA LIGHT"),
-    #     c("uvb_light", "UVB LIGHT"),
-    #     c("state", "STATE")
-    # )
-
-    # if (!(names(out)[1] == "DATE")) {
-    #     replacement[[length(replacement) + 1]] <-
-    #         c("timestamp", "DATE/TIME")
-    # } else {
-    #     replacement[[length(replacement) + 1]] <-
-    #         c("date", "DATE")
-    #     replacement[[length(replacement) + 1]] <-
-    #         c("time", "TIME")
-    # }
-    #
-    # for (i in seq_along(names(out))) {
-    #     for (j in seq_along(replacement)) {
-    #         if (is.na(replacement[[j]][2])) {
-    #             out[replacement[[j]][1]] <- as.character(NA)
-    #         } else if (names(out)[i] == replacement[[j]][2]) {
-    #             names(out)[i] <- replacement[[j]][1]
-    #         }
-    #     }
-    # }
-
     if (!(names(out)[1] == "DATE")) {
         out <- out %>% dplyr::rename(timestamp = `DATE/TIME`)
     } else {
@@ -169,18 +125,6 @@ tidy_acttrust_data <- function(data,
                 function(x) stringr::str_replace(x, ",", "\\."))
             )
     }
-
-    # out <- out %>%
-    #     dplyr::mutate(state = dplyr::case_when(
-    #         state == "0" ~ "Awake",
-    #         state == "1" ~ "Sleeping",
-    #         state == "2" ~ "Resting",
-    #         state == "4" ~ "Offwrist",
-    #         state == "6" ~ "Editable 1",
-    #         state == "7" ~ "Editable 2",
-    #         state == "8" ~ "Editable 3",
-    #         TRUE ~ state)
-    #     )
 
     out %>%
         dplyr::mutate(timestamp = lubridate::dmy_hms(timestamp, tz = tz)) %>%
