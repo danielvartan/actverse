@@ -2,7 +2,7 @@
 % Please edit documentation in R/periodogram.R
 \name{periodogram}
 \alias{periodogram}
-\title{Compute the chi square periodogram}
+\title{Compute the \eqn{chi^{2}}{chi square} periodogram}
 \usage{
 periodogram(data, breaks = "minutes", p_min = 1, p_max = 4600, step = 1)
 }
@@ -12,11 +12,13 @@ periodogram(data, breaks = "minutes", p_min = 1, p_max = 4600, step = 1)
 the first one.}
 
 \item{breaks}{A string representing at which interval the timestamp data will
-be separated to build the periodogram (seconds, minutes or hours).
-(default: "minutes").}
+be separated to build the periodogram. (valid values: \verb{“microseconds”},
+\verb{“milliseconds”}, \verb{“seconds”}, \verb{“minutes”}, \verb{“hours”}, \verb{“days”}, \verb{“weeks”},
+\verb{“months”}, \verb{“quarters”}, and \verb{“years”}) (default: \code{"minutes"}).}
 
 \item{p_min}{An integer number representing the minimum period p to calculate
-the test and add to the periodogram (same unit as breaks). (default: \code{1}).}
+the test and add to the periodogram (same unit as \code{breaks}). (default:
+\code{1}).}
 
 \item{p_max}{An integer number representing the maximum period p to calculate
 the test and add to the periodogram (same unit as \code{breaks}). (default:
@@ -33,23 +35,26 @@ Qp and normalized Qp, as well as the peak and peak period.
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
 
 \code{periodogram()} calculates the measures Ap, Qp and Qp-normalized of the
-chi-square periodogram for an actigraphy dataset.
+\eqn{chi^{2}}{chi square} periodogram for an actigraphy dataset.
 
-The Chi Square Periodogram is a technique to identify periodic patterns in a
-time series, being widely used in chronobiology to identify the sleep-wake
-cycle and its reconciliation with the 24-hour cycle. This periodogram was
-proposed by Sokolove and Bushell (1978) as an adaptation of Enright's
-periodogram (1965), adding the peak significance test to the method.
+The \eqn{chi^{2}}{chi square} Periodogram is a technique to identify periodic
+patterns in a time series, being widely used in chronobiology to identify the
+sleep-wake cycle and its reconciliation with the 24-hour cycle. This
+periodogram was proposed by Sokolove and Bushell (1978) as an adaptation of
+Enright's periodogram (1965), adding the peak significance test to the
+method.
 }
 \details{
-Sokolove and Bushell's periodogram assumes that the delivered data is time
-equidistant - there is data for the entire time unit delivered in the breaks
-parameter. If this does not occur, the function will disregard these missing
-values in the middle of the time series while calculating the periodogram. If
-there is more than one data for the breaks unit (for example, when the data
-was captured per minute and the user wants to calculate the periodogram per
+Sokolove and Bushell's periodogram assumes that the data is time equidistant
+\itemize{
+\item there is data for the entire time unit delivered in the breaks parameter.
+If this does not occur, the function will disregard these missing values in
+the middle of the time series while calculating the periodogram. If there is
+more than one data for the breaks unit (for example, when the data was
+captured per minute and the user wants to calculate the periodogram per
 hour), the average of all values in this interval is considered as the
-activity point of the periodogram.
+data point of the periodogram.
+}
 
 With the formatted data, we calculate the measure Ap for each test period p,
 between the minimum determined by p_min and the maximum p_max, at a step
@@ -79,12 +84,13 @@ test is:
 \deqn{Qp = P * m * Ap^2 / Var(X)}
 
 Where:
-
-\eqn{P} = the period of this test.
-\eqn{m} = the total rows of the Buys-Ballot table.
-\eqn{Ap} = the standard deviation of the averages from the Buys=Ballot table
-of this test.
-\eqn{Var(X)}= the variance of the activity data.
+\itemize{
+\item \eqn{P} = the period of this test.
+\item \eqn{m} = the total rows of the Buys-Ballot table.
+\item \eqn{Ap} = the standard deviation of the averages from the Buys-Ballot
+table of this test.
+\item \eqn{Var(X)}= the variance of the data.
+}
 
 It is also common to use a standardized version of the test, which consists
 of performing the calculation:
@@ -111,7 +117,7 @@ length(periodogram$qp)
 
 if (interactive() &&
     requireNamespace("plotly", quietly = TRUE)) {
-    plotly::ggplotly(periodogram$qp_plot)
+    plotly::ggplotly(periodogram$normalized_qp_plot)
 }
 }
 \references{

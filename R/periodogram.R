@@ -1,28 +1,29 @@
-#' Compute the chi square periodogram
+#' Compute the \eqn{chi^{2}}{chi square} periodogram
 #'
 #' @description
 #'
 #' `r lifecycle::badge("experimental")`
 #'
 #' `periodogram()` calculates the measures Ap, Qp and Qp-normalized of the
-#' chi-square periodogram for an actigraphy dataset.
+#' \eqn{chi^{2}}{chi square} periodogram for an actigraphy dataset.
 #'
-#' The Chi Square Periodogram is a technique to identify periodic patterns in a
-#' time series, being widely used in chronobiology to identify the sleep-wake
-#' cycle and its reconciliation with the 24-hour cycle. This periodogram was
-#' proposed by Sokolove and Bushell (1978) as an adaptation of Enright's
-#' periodogram (1965), adding the peak significance test to the method.
+#' The \eqn{chi^{2}}{chi square} Periodogram is a technique to identify periodic
+#' patterns in a time series, being widely used in chronobiology to identify the
+#' sleep-wake cycle and its reconciliation with the 24-hour cycle. This
+#' periodogram was proposed by Sokolove and Bushell (1978) as an adaptation of
+#' Enright's periodogram (1965), adding the peak significance test to the
+#' method.
 #'
 #' @details
 #'
-#' Sokolove and Bushell's periodogram assumes that the delivered data is time
-#' equidistant - there is data for the entire time unit delivered in the breaks
-#' parameter. If this does not occur, the function will disregard these missing
-#' values in the middle of the time series while calculating the periodogram. If
-#' there is more than one data for the breaks unit (for example, when the data
-#' was captured per minute and the user wants to calculate the periodogram per
+#' Sokolove and Bushell's periodogram assumes that the data is time equidistant
+#' - there is data for the entire time unit delivered in the breaks parameter.
+#' If this does not occur, the function will disregard these missing values in
+#' the middle of the time series while calculating the periodogram. If there is
+#' more than one data for the breaks unit (for example, when the data was
+#' captured per minute and the user wants to calculate the periodogram per
 #' hour), the average of all values in this interval is considered as the
-#' activity point of the periodogram.
+#' data point of the periodogram.
 #'
 #' With the formatted data, we calculate the measure Ap for each test period p,
 #' between the minimum determined by p_min and the maximum p_max, at a step
@@ -53,11 +54,11 @@
 #'
 #' Where:
 #'
-#' \eqn{P} = the period of this test.
-#' \eqn{m} = the total rows of the Buys-Ballot table.
-#' \eqn{Ap} = the standard deviation of the averages from the Buys=Ballot table
-#' of this test.
-#' \eqn{Var(X)}= the variance of the activity data.
+#' * \eqn{P} = the period of this test.
+#' * \eqn{m} = the total rows of the Buys-Ballot table.
+#' * \eqn{Ap} = the standard deviation of the averages from the Buys-Ballot
+#' table of this test.
+#' * \eqn{Var(X)}= the variance of the data.
 #'
 #' It is also common to use a standardized version of the test, which consists
 #' of performing the calculation:
@@ -70,10 +71,12 @@
 #'   [`xts`][xts::xts()]` have more than 1 vector, the function will use only
 #'   the first one.
 #' @param breaks A string representing at which interval the timestamp data will
-#'   be separated to build the periodogram (seconds, minutes or hours).
-#'   (default: "minutes").
+#'   be separated to build the periodogram. (valid values: `“microseconds”`,
+#'   `“milliseconds”`, `“seconds”`, `“minutes”`, `“hours”`, `“days”`, `“weeks”`,
+#'   `“months”`, `“quarters”`, and `“years”`) (default: `"minutes"`).
 #' @param p_min An integer number representing the minimum period p to calculate
-#'   the test and add to the periodogram (same unit as breaks). (default: `1`).
+#'   the test and add to the periodogram (same unit as `breaks`). (default:
+#'   `1`).
 #' @param p_max An integer number representing the maximum period p to calculate
 #'   the test and add to the periodogram (same unit as `breaks`). (default:
 #'   `4600`).
@@ -115,21 +118,55 @@
 #'
 #' if (interactive() &&
 #'     requireNamespace("plotly", quietly = TRUE)) {
-#'     plotly::ggplotly(periodogram$qp_plot)
+#'     plotly::ggplotly(periodogram$normalized_qp_plot)
 #' }
 periodogram <- function(data,
                         breaks = "minutes",
                         p_min = 1,
                         p_max = 4600,
                         step = 1) {
+    choices <- c("microseconds", "milliseconds", "seconds", "minutes",
+                 "hours", "days", "weeks", "months", "quarters", "years")
+
     checkmate::assert_class(data, "xts")
-    checkmate::assert_choice(breaks, c("seconds", "minutes", "hours"))
+    checkmate::assert_choice(breaks, choices)
     checkmate::assert_int(p_min)
     checkmate::assert_int(p_max)
     checkmate::assert_int(step)
+    checkmate::assert_true(p_min <= p_max)
+    checkmate::assert_true((p_min + step) <= p_max)
+
+    if (!(ncol(data) == 1)) {
+        cli::cli_alert_warning(paste0(
+            "The {.strong {cli::col_blue('data')}} value ",
+            "has more than 1 column .",
+            "Only the first column ",
+            "({.strong {cli::col_red(names(data)[1])}}) ",
+            "will be used."
+        ))
+    }
+
+    if (any(is.na(as.numeric(data[, 1])))) {
+        cli::cli_alert_warning(paste0(
+            "The {.strong {cli::col_blue(names(data)[1])}} ",
+            "data column has missing values. ",
+            "The output may diverge. ",
+            "Try to interpolate the missing values before using this function."
+        ))
+    }
+
+    data <- data %>%
+        xts::endpoints(breaks) %>%
+        xts::period.apply(data, ., mean, na.rm = TRUE) %>%
+        `[`(j = 1)
+
+    ## Add a 'if' statement to verify if the epoch is less or equal to the
+    ## breaks.
+    ## Add ability to accept non-integral periods.
+    ## Add interpolation, when need it.
 
     for (i in c("p_min", "p_max")) {
-        if (get(i) > length(data[, 1])) {
+        if (get(i) > length(data)) {
             cli::cli_abort(paste0(
                 "{.strong {cli::col_blue(i)}} is greater than the amount ",
                 "of time series data delimited by breaks."
@@ -139,24 +176,30 @@ periodogram <- function(data,
 
     if (!(dplyr::n_distinct(diff(zoo::index(data))) == 1)) {
         cli::cli_alert_warning(paste0(
-            "The time series index (timestamp) is not equidistant. ",
+            "The time series index is not equidistant. ",
             "The output may diverge."
+        ))
+
+        cli::cli_alert_warning(paste0(
+            "Found {.strong ",
+            "{cli::col_red(dplyr::n_distinct(diff(zoo::index(data))))}} ",
+            "unique time differences between the indexes: ",
+            "{head(unique(diff(zoo::index(data))), 10)} {breaks}",
+            "(showing up to a total of 10 values)."
         ))
     }
 
-    end_breaks <- xts::endpoints(data, breaks)
-    data <- xts::period.apply(data, end_breaks, mean)
-    data <- as.numeric(data[, 1])
+    data <- data %>% as.numeric()
     n <- length(data)
-
-    ap <- c()
-    qp <- c()
-    normalized_qp <- c()
-    peak <- dplyr::tibble(p = -1, normalized_qp = -1)
+    a_p <- c()
+    q_p <- c()
+    normalized_q_p <- c()
+    peak <- dplyr::tibble(p = -1, normalized_q_p = -1)
     p_seq <- seq(p_min, p_max, by = step)
 
-    cli::cli_progress_bar(total = p_max, clear = FALSE)
+    cli::cli_progress_bar(total = max(p_seq), clear = FALSE)
 
+    # Transformar em lapply?
     for (p in p_seq) {
         m <- floor(n / p)
 
@@ -165,48 +208,74 @@ periodogram <- function(data,
                               ncol = p,
                               byrow = TRUE)
 
-        yph <- colMeans(buys_ballot)
-        mean_yph <- mean(yph)
-        var_x <- stats::var(data[1:(m * p)])
+        y_ph <- colMeans(buys_ballot)
+        y_ph_mean <- mean(y_ph, na.rm = TRUE)
+        x_var <- stats::var(data[1:(m * p)], na.rm = TRUE)
 
-        ap_current <- sqrt((1 / p) * (sum((yph - mean_yph) ^ 2)))
-        qp_current <- ((ap_current^2) * p) / (var_x / m)
-        normalized_qp_current <- (ap_current ^ 2) / var_x
+        a_p_current <- sqrt((sum((y_ph - y_ph_mean)^2)) / p)
+        q_p_current <- (p * (a_p_current^2)) / (x_var / m)
+        normalized_q_p_current <- (a_p_current^2) / x_var
 
-        qp <- append(qp, qp_current)
-        normalized_qp <- append(normalized_qp, normalized_qp_current)
-        ap <- append(ap, ap_current)
+        a_p <- append(a_p, a_p_current)
+        q_p <- append(q_p, q_p_current)
+        normalized_q_p <- append(normalized_q_p, normalized_q_p_current)
 
-        if (normalized_qp_current > peak$normalized_qp) {
-            peak$normalized_qp <- normalized_qp_current
+        if (normalized_q_p_current > peak$normalized_q_p) {
+            peak$normalized_q_p <- normalized_q_p_current
             peak$p <- p
         }
 
         cli::cli_progress_update()
     }
 
-    plot_ap <- ggplot2::ggplot() +
-        ggplot2::geom_line(ggplot2::aes(p_seq, ap)) +
-        ggplot2::xlab('Period') +
-        ggplot2::ylab('Ap')
+    xlab <- paste0("Period (", breaks, ")")
 
-    plot_qp <- ggplot2::ggplot() +
-        ggplot2::geom_line(ggplot2::aes(p_seq, qp)) +
-        ggplot2::xlab('Period') +
-        ggplot2::ylab('Qp')
+    list(unit = breaks,
+         normalized_q_p = normalized_q_p,
+         q_p = q_p,
+         a_p = a_p,
+         peak = peak,
+         normalized_q_p_plot = plot_periodogram(p_seq, normalized_q_p, xlab,
+                              "Normalized Qp"),
+         q_p_plot = plot_periodogram(p_seq, q_p, xlab, "Qp"),
+         a_p_plot = plot_periodogram(p_seq, a_p, xlab,
+                                     "Estimated amplitude (Ap)"))
+}
 
-    plot_normalized_qp <- ggplot2::ggplot() +
-        ggplot2::geom_line(ggplot2::aes(p_seq, normalized_qp)) +
-        ggplot2::xlab('Period') +
-        ggplot2::ylab('Normalized Qp')
+## Adicionar estatística e peaks nos breaks
 
-    out <- list(normalized_qp = normalized_qp,
-                qp = qp,
-                ap = ap,
-                peak = peak,
-                qp_plot = plot_qp,
-                normalized_qp_plot = plot_normalized_qp,
-                ap_plot = plot_ap)
+plot_periodogram <- function(x, y, xlab = "x", ylab = "y", print = FALSE) {
+    out <- ggplot2::ggplot() +
+        ggplot2::geom_line(ggplot2::aes(x, y)) +
+        ggplot2::xlab(xlab) +
+        ggplot2::ylab(ylab)
 
-    out
+    if (isTRUE(print)) {
+        print(out)
+    } else {
+        invisible(out)
+    }
+}
+
+build_periodogram <- function(data, p) {
+    checkmate::assert_numeric(data, min.len = 1)
+    checkmate::assert_int(p)
+
+    n <- length(data)
+    m <- floor(n / p)
+
+    buys_ballot <- matrix(data[1:(m * p)],
+                          nrow = m,
+                          ncol = p,
+                          byrow = TRUE)
+
+    y_ph <- colMeans(buys_ballot)
+    y_ph_mean <- mean(y_ph, na.rm = TRUE)
+    x_var <- stats::var(data[1:(m * p)], na.rm = TRUE)
+
+    a_p <- sqrt((sum((y_ph - y_ph_mean)^2)) / p)
+    q_p <- (p * (a_p^2)) / (x_var / m)
+    norm_q_p <- (a_p^2) / x_var
+
+    list(a_p = a_p, q_p = q_p, norm_q_p = norm_q_p)
 }
