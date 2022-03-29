@@ -1,5 +1,24 @@
 # Sort tests by type or use the alphabetical order.
 
+test_that("backtick_() | general test", {
+    expect_equal(backtick_("a"), paste0("`", "a", "`"))
+    expect_equal(backtick_(1), paste0("`", 1, "`"))
+})
+
+test_that("single_quote_() | general test", {
+    expect_equal(single_quote_("a"), paste0("'", "a", "'"))
+    expect_equal(single_quote_(1), paste0("'", 1, "'"))
+})
+
+test_that("double_quote_() | general test", {
+    expect_equal(double_quote_("a"), paste0("\"", "a", "\""))
+    expect_equal(double_quote_(1), paste0("\"", 1, "\""))
+})
+
+test_that("get_names() | general test", {
+    expect_equal(get_names(x, y, z), noquote(c("x", "y", "z")))
+})
+
 test_that("require_pkg() | general test", {
     expect_null(require_pkg("base"))
     expect_error(require_pkg("test"))

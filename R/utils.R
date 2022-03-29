@@ -1,3 +1,15 @@
+backtick_ <- function(x) paste0("`", x, "`")
+single_quote_ <- function(x) paste0("'", x, "'")
+double_quote_ <- function(x) paste0("\"", x, "\"")
+
+get_names <- function(...) {
+    out <- lapply(substitute(list(...))[-1], deparse) %>%
+        vapply(unlist, character(1)) %>%
+        noquote()
+
+    gsub("\\\"","", out)
+}
+
 require_pkg <- function(...) {
     out <- list(...)
 

@@ -36,4 +36,8 @@ ActTrust is a trademark of
 read_acttrust()
 }
 }
+\seealso{
+Other utility functions: 
+\code{\link{find_epoch}()}
+}
 \concept{utility functions}

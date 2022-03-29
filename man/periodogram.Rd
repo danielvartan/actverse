@@ -2,9 +2,17 @@
 % Please edit documentation in R/periodogram.R
 \name{periodogram}
 \alias{periodogram}
-\title{Compute the \eqn{chi^{2}}{chi square} periodogram}
+\title{Compute Solokove & Bushell's \eqn{chi^{2}}{chi square} periodogram}
 \usage{
-periodogram(data, breaks = "minutes", p_min = 1, p_max = 4600, step = 1)
+periodogram(
+  data,
+  breaks = "minutes",
+  p_min = 1000,
+  p_max = 2500,
+  step = 1,
+  alpha = 0.05,
+  print = TRUE
+)
 }
 \arguments{
 \item{data}{An \code{\link[xts:xts]{xts}} object with a numeric vector. If the
@@ -16,16 +24,22 @@ be separated to build the periodogram. (valid values: \verb{“microseconds”},
 \verb{“milliseconds”}, \verb{“seconds”}, \verb{“minutes”}, \verb{“hours”}, \verb{“days”}, \verb{“weeks”},
 \verb{“months”}, \verb{“quarters”}, and \verb{“years”}) (default: \code{"minutes"}).}
 
-\item{p_min}{An integer number representing the minimum period p to calculate
+\item{p_min}{An integer number indicating the minimum period p to calculate
 the test and add to the periodogram (same unit as \code{breaks}). (default:
 \code{1}).}
 
-\item{p_max}{An integer number representing the maximum period p to calculate
+\item{p_max}{An integer number indicating the maximum period p to calculate
 the test and add to the periodogram (same unit as \code{breaks}). (default:
 \code{4600}).}
 
-\item{step}{An integer number representing the range of values that will be
+\item{step}{An integer number indicating the range of values that will be
 skipped between calculating one test and the next. (default: \code{1}).}
+
+\item{alpha}{A number indicating the significant level required for the
+peaks.}
+
+\item{print}{A \code{\link[=logical]{logical}} value indicating if the function
+must print the Qp plot.}
 }
 \value{
 A \code{\link[=list]{list}} object with the values and plots of Ap,
@@ -34,7 +48,7 @@ Qp and normalized Qp, as well as the peak and peak period.
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
 
-\code{periodogram()} calculates the measures Ap, Qp and Qp-normalized of the
+\code{periodogram()} returns the measures Ap, Qp and of the
 \eqn{chi^{2}}{chi square} periodogram for an actigraphy dataset.
 
 The \eqn{chi^{2}}{chi square} Periodogram is a technique to identify periodic
@@ -76,12 +90,12 @@ and the period in which it appears. In this process, peak moments will be
 highlighted among its neighbors, and smaller changes will lose prominence,
 tending to a constant variation from one period to another.
 
-The significance test of the peaks given by Ap leads to a chi-square
-distribution for each p, with the test for a given p being consistent with
-a distribution of P-1 degrees of freedom. The formula for calculating the
-test is:
+The significance test of the peaks given by \eqn{A_{p}}{Ap} leads to a
+\eqn{chi^{2}}{chi square} distribution for each \eqn{p}, with the test for a
+given p being consistent with a distribution of \eqn{P - 1} degrees of
+freedom. The formula for calculating the test is:
 
-\deqn{Qp = P * m * Ap^2 / Var(X)}
+\deqn{Q_{p} = P * m * Ap^{2} / Var(X)}{Qp = P * m * Ap^2 / Var(X)}
 
 Where:
 \itemize{
@@ -91,33 +105,30 @@ Where:
 table of this test.
 \item \eqn{Var(X)}= the variance of the data.
 }
-
-It is also common to use a standardized version of the test, which consists
-of performing the calculation:
-
-\deqn{Qp = Ap^2 / Var(X)}
-
-Which results in a number between 0 and 1.
 }
 \examples{
-data <- xts::as.xts(x = rep(seq(1, 4), times = 6),
+data <- xts::as.xts(x = rep(seq(1, 60), times = 30),
                     order.by = seq(as.POSIXct("2020-01-01"),
-                                   as.POSIXct("2020-01-01 23:00:00"),
-                                   by = "hours"))
-periodogram <- periodogram(data, breaks = "hours", p_max = 12)
+                                   as.POSIXct("2020-01-02 05:59:59"),
+                                   by = "min"))
+periodogram <- periodogram(data, breaks = "minutes", p_min = 1, p_max = 350,
+                           step = 1, alpha = 0.05, print = FALSE)
 
-periodogram$peak$p
-#> [1] 4 # Expected
-periodogram$peak$normalized_qp
-#> [1] 0.9583333 # Expected
-length(periodogram$qp)
-#> [1] 12 # Expected
+head(periodogram$periods)
+periodogram$unit
+periodogram$alpha
+head(periodogram$a_p)
+head(periodogram$q_p)
+head(periodogram$q_p_alpha)
+head(periodogram$q_p_pvalue)
+periodogram$q_p_peaks
+periodogram$q_p_plot
 
 ## Using interactive plots
 
 if (interactive() &&
     requireNamespace("plotly", quietly = TRUE)) {
-    plotly::ggplotly(periodogram$normalized_qp_plot)
+    plotly::ggplotly(periodogram$q_p_plot)
 }
 }
 \references{
