@@ -15,6 +15,16 @@ test_that("double_quote_() | general test", {
     expect_equal(double_quote_(1), paste0("\"", 1, "\""))
 })
 
+test_that("class_collapse() | general test", {
+    expect_equal(class_collapse("test"),
+                 single_quote_(paste0(class("test"), collapse = "/")))
+    expect_equal(class_collapse(1),
+                 single_quote_(paste0(class(1), collapse = "/")))
+    expect_equal(class_collapse(lubridate::dhours()),
+                 single_quote_(paste0(class(lubridate::dhours()),
+                                      collapse = "/")))
+})
+
 test_that("get_names() | general test", {
     expect_equal(get_names(x, y, z), noquote(c("x", "y", "z")))
 })

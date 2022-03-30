@@ -45,7 +45,7 @@
 #' find_epoch(data, 0.8)
 find_epoch <- function(data, threshold = 0.9) {
     checkmate::assert_multi_class(data, c("ts", "zoo", "xts"))
-    checkmate::assert_multi_class(zoo::index(data), c("Date", "POSIXct"))
+    checkmate::assert_multi_class(zoo::index(data), c("Date", "POSIXt"))
     checkmate::assert_number(length(data[, 1]), lower = 2)
     checkmate::assert_number(threshold, lower = 0, upper = 1)
 

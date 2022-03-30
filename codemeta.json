@@ -107,7 +107,7 @@
       "@type": "SoftwareApplication",
       "identifier": "knitr",
       "name": "knitr",
-      "version": ">= 1.36",
+      "version": ">= 1.37",
       "provider": {
         "@id": "https://cran.r-project.org",
         "@type": "Organization",
@@ -131,9 +131,35 @@
     },
     {
       "@type": "SoftwareApplication",
+      "identifier": "plotly",
+      "name": "plotly",
+      "version": ">= 4.10.0",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=plotly"
+    },
+    {
+      "@type": "SoftwareApplication",
+      "identifier": "readr",
+      "name": "readr",
+      "version": ">= 2.1.2",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=readr"
+    },
+    {
+      "@type": "SoftwareApplication",
       "identifier": "rmarkdown",
       "name": "rmarkdown",
-      "version": ">= 2.11",
+      "version": ">= 2.13",
       "provider": {
         "@id": "https://cran.r-project.org",
         "@type": "Organization",
@@ -157,9 +183,22 @@
     },
     {
       "@type": "SoftwareApplication",
+      "identifier": "stringr",
+      "name": "stringr",
+      "version": ">= 1.4.0",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=stringr"
+    },
+    {
+      "@type": "SoftwareApplication",
       "identifier": "testthat",
       "name": "testthat",
-      "version": ">= 3.0.4",
+      "version": ">= 3.1.2",
       "provider": {
         "@id": "https://cran.r-project.org",
         "@type": "Organization",
@@ -199,7 +238,7 @@
       "@type": "SoftwareApplication",
       "identifier": "cli",
       "name": "cli",
-      "version": ">= 3.1.0",
+      "version": ">= 3.2.0",
       "provider": {
         "@id": "https://cran.r-project.org",
         "@type": "Organization",
@@ -212,7 +251,7 @@
       "@type": "SoftwareApplication",
       "identifier": "dplyr",
       "name": "dplyr",
-      "version": ">= 1.0.7",
+      "version": ">= 1.0.8",
       "provider": {
         "@id": "https://cran.r-project.org",
         "@type": "Organization",
@@ -238,7 +277,7 @@
       "@type": "SoftwareApplication",
       "identifier": "hms",
       "name": "hms",
-      "version": ">= 1.1.0",
+      "version": ">= 1.1.1",
       "provider": {
         "@id": "https://cran.r-project.org",
         "@type": "Organization",
@@ -264,7 +303,7 @@
       "@type": "SoftwareApplication",
       "identifier": "lubridate",
       "name": "lubridate",
-      "version": ">= 1.7.10",
+      "version": ">= 1.8.0",
       "provider": {
         "@id": "https://cran.r-project.org",
         "@type": "Organization",
@@ -275,11 +314,50 @@
     },
     "9": {
       "@type": "SoftwareApplication",
+      "identifier": "magrittr",
+      "name": "magrittr",
+      "version": ">= 2.0.3",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=magrittr"
+    },
+    "10": {
+      "@type": "SoftwareApplication",
+      "identifier": "purrr",
+      "name": "purrr",
+      "version": ">= 0.3.4",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=purrr"
+    },
+    "11": {
+      "@type": "SoftwareApplication",
       "identifier": "stats",
       "name": "stats",
       "version": ">= 4.0.0"
     },
-    "10": {
+    "12": {
+      "@type": "SoftwareApplication",
+      "identifier": "viridis",
+      "name": "viridis",
+      "version": ">= 0.6.2",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=viridis"
+    },
+    "13": {
       "@type": "SoftwareApplication",
       "identifier": "xts",
       "name": "xts",
@@ -292,7 +370,7 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=xts"
     },
-    "11": {
+    "14": {
       "@type": "SoftwareApplication",
       "identifier": "zoo",
       "name": "zoo",
@@ -307,11 +385,11 @@
     },
     "SystemRequirements": null
   },
-  "fileSize": "18.567KB",
+  "fileSize": "86.393KB",
   "citation": [
     {
       "@type": "CreativeWork",
-      "datePublished": "2021",
+      "datePublished": "2022",
       "author": [
         {
           "@type": "Person",
@@ -346,7 +424,7 @@
   ],
   "releaseNotes": "https://github.com/gipso/actverse/blob/master/NEWS.md",
   "readme": "https://github.com/gipso/actverse/blob/main/README.md",
-  "contIntegration": ["https://github.com/gipso/actverse/actions", "https://codecov.io/gh/gipso/actverse?branch=main"],
-  "developmentStatus": ["https://www.repostatus.org/#wip", "https://www.tidyverse.org/lifecycle/#experimental"],
+  "contIntegration": ["https://github.com/gipso/actverse/actions", "https://app.codecov.io/gh/gipso/actverse?branch=main"],
+  "developmentStatus": ["https://www.repostatus.org/#wip", "https://lifecycle.r-lib.org/articles/stages.html"],
   "keywords": ["actigraphy", "r-package", "sleep", "chronobiology", "r", "rstats"]
 }

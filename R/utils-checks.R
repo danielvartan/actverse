@@ -1,5 +1,48 @@
 # Sort functions by type or use the alphabetical order.
 
+test_interval <- function(x, lower = - Inf, upper = Inf, any.missing = TRUE,
+                          null.ok = FALSE) {
+    checkmate::assert_flag(any.missing)
+    checkmate::assert_flag(null.ok)
+
+    if (is.null(x) && isTRUE(null.ok)) {
+        TRUE
+    } else if (any(is.na(x)) && isFALSE(any.missing)) {
+        FALSE
+    } else if (lubridate::is.interval(x) &&
+               !all(x >= lower & x <= upper, na.rm = TRUE)) {
+        FALSE
+    } else {
+        lubridate::is.interval(x)
+    }
+}
+
+check_interval <- function(x, lower = - Inf, upper = Inf, any.missing = TRUE,
+                         null.ok = FALSE,
+                         name = deparse(substitute(x))) {
+    checkmate::assert_flag(any.missing)
+    checkmate::assert_flag(null.ok)
+
+    if (is.null(x) && isTRUE(null.ok)) {
+        TRUE
+    } else if (any(is.na(x)) && isFALSE(any.missing)) {
+        paste0(single_quote_(name), " cannot have missing values")
+    } else if (is.null(x) && isFALSE(null.ok)) {
+        paste0(single_quote_(name), " cannot have 'NULL' values")
+    } else if (lubridate::is.interval(x) && !all(x >= lower, na.rm = TRUE)) {
+        paste0("Element ", which(x < lower)[1], " is not >= ", lower)
+    } else if (lubridate::is.interval(x) && !all(x <= upper, na.rm = TRUE)) {
+        paste0("Element ", which(x > upper)[1], " is not <= ", upper)
+    } else  if (!test_posixt(x)) {
+        paste0("Must be of type 'Interval', not ",
+               class_collapse(x))
+    } else {
+        TRUE
+    }
+}
+
+assert_interval <- checkmate::makeAssertionFunction(check_interval)
+
 assert_identical <- function(..., type = "value", any.missing = TRUE,
                              null.ok = FALSE) {
 
@@ -40,3 +83,46 @@ assert_identical <- function(..., type = "value", any.missing = TRUE,
         invisible(TRUE)
     }
 }
+
+test_posixt <- function(x, lower = - Inf, upper = Inf, any.missing = TRUE,
+                        null.ok = FALSE) {
+    checkmate::assert_flag(any.missing)
+    checkmate::assert_flag(null.ok)
+
+    if (is.null(x) && isTRUE(null.ok)) {
+        TRUE
+    } else if (any(is.na(x)) && isFALSE(any.missing)) {
+        FALSE
+    } else if (lubridate::is.POSIXt(x) &&
+               !all(x >= lower & x <= upper, na.rm = TRUE)) {
+        FALSE
+    } else {
+        lubridate::is.POSIXt(x)
+    }
+}
+
+check_posixt <- function(x, lower = - Inf, upper = Inf, any.missing = TRUE,
+                         null.ok = FALSE,
+                         name = deparse(substitute(x))) {
+    checkmate::assert_flag(any.missing)
+    checkmate::assert_flag(null.ok)
+
+    if (is.null(x) && isTRUE(null.ok)) {
+        TRUE
+    } else if (any(is.na(x)) && isFALSE(any.missing)) {
+        paste0(single_quote_(name), " cannot have missing values")
+    } else if (is.null(x) && isFALSE(null.ok)) {
+        paste0(single_quote_(name), " cannot have 'NULL' values")
+    } else if (lubridate::is.POSIXt(x) && !all(x >= lower, na.rm = TRUE)) {
+        paste0("Element ", which(x < lower)[1], " is not >= ", lower)
+    } else if (lubridate::is.POSIXt(x) && !all(x <= upper, na.rm = TRUE)) {
+        paste0("Element ", which(x > upper)[1], " is not <= ", upper)
+    } else  if (!test_posixt(x)) {
+        paste0("Must be of type 'POSIXct' or 'POSIXlt', not ",
+               class_collapse(x))
+    } else {
+        TRUE
+    }
+}
+
+assert_posixt <- checkmate::makeAssertionFunction(check_posixt)
