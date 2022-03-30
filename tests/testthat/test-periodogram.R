@@ -49,19 +49,19 @@ test_that("periodogram() | Error test", {
         xts::as.xts(order.by = index)
 
     expect_error(periodogram(data = 1, breaks = "minutes", p_min = 1,
-                             p_max = 4600, step = 1),
+                             p_max = 4600, p_step = 1),
                  "Assertion on 'data' failed")
     expect_error(periodogram(data = data, breaks = "a", p_min = 1,
-                             p_max = 4600, step = 1),
+                             p_max = 4600, p_step = 1),
                  "Assertion on 'breaks' failed")
     expect_error(periodogram(data = data, breaks = "minutes", p_min = "a",
-                             p_max = 4600, step = 1),
+                             p_max = 4600, p_step = 1),
                  "Assertion on 'p_min' failed")
     expect_error(periodogram(data = data, breaks = "minutes", p_min = 1,
-                             p_max = "a", step = 1),
+                             p_max = "a", p_step = 1),
                  "Assertion on 'p_max' failed")
     expect_error(periodogram(data = data, breaks = "minutes", p_min = 1,
-                             p_max = 4600, step = "a"),
-                 "Assertion on 'step' failed")
+                             p_max = 4600, p_step = "a"),
+                 "Assertion on 'p_step' failed")
 })
 

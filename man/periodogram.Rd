@@ -2,14 +2,14 @@
 % Please edit documentation in R/periodogram.R
 \name{periodogram}
 \alias{periodogram}
-\title{Compute Solokove & Bushell's \eqn{chi^{2}}{chi square} periodogram}
+\title{Compute Sokolove & Bushell's \eqn{chi^{2}}{chi square} periodogram}
 \usage{
 periodogram(
   data,
   breaks = "minutes",
   p_min = 1000,
   p_max = 2500,
-  step = 1,
+  p_step = 1,
   alpha = 0.05,
   print = TRUE
 )
@@ -19,10 +19,10 @@ periodogram(
 \code{\link[xts:xts]{xts}}` have more than 1 vector, the function will use only
 the first one.}
 
-\item{breaks}{A string representing at which interval the timestamp data will
-be separated to build the periodogram. (valid values: \verb{“microseconds”},
-\verb{“milliseconds”}, \verb{“seconds”}, \verb{“minutes”}, \verb{“hours”}, \verb{“days”}, \verb{“weeks”},
-\verb{“months”}, \verb{“quarters”}, and \verb{“years”}) (default: \code{"minutes"}).}
+\item{breaks}{A string indicating at which interval the index must be
+aggregated. (valid values: \verb{“microseconds”}, \verb{“milliseconds”}, \verb{“seconds”},
+\verb{“minutes”}, \verb{“hours”}, \verb{“days”}, \verb{“weeks”}, \verb{“months”}, \verb{“quarters”}, and
+\verb{“years”}) (default: \code{"minutes"}).}
 
 \item{p_min}{An integer number indicating the minimum period p to calculate
 the test and add to the periodogram (same unit as \code{breaks}). (default:
@@ -32,14 +32,14 @@ the test and add to the periodogram (same unit as \code{breaks}). (default:
 the test and add to the periodogram (same unit as \code{breaks}). (default:
 \code{4600}).}
 
-\item{step}{An integer number indicating the range of values that will be
+\item{p_step}{An integer number indicating the range of values that will be
 skipped between calculating one test and the next. (default: \code{1}).}
 
-\item{alpha}{A number indicating the significant level required for the
-peaks.}
+\item{alpha}{A number, from 0 to 1, indicating the significant level required
+for the peaks (default: \code{0.05}).}
 
 \item{print}{A \code{\link[=logical]{logical}} value indicating if the function
-must print the Qp plot.}
+must print the Qp plot (default: \code{TRUE}).}
 }
 \value{
 A \code{\link[=list]{list}} object with the values and plots of Ap,
@@ -51,9 +51,9 @@ Qp and normalized Qp, as well as the peak and peak period.
 \code{periodogram()} returns the measures Ap, Qp and of the
 \eqn{chi^{2}}{chi square} periodogram for an actigraphy dataset.
 
-The \eqn{chi^{2}}{chi square} Periodogram is a technique to identify periodic
+The \eqn{chi^{2}}{chi square} periodogram is a technique to identify periodic
 patterns in a time series, being widely used in chronobiology to identify the
-sleep-wake cycle and its reconciliation with the 24-hour cycle. This
+sleep-wake cycle and its reconciliation with circadian periodicity. This
 periodogram was proposed by Sokolove and Bushell (1978) as an adaptation of
 Enright's periodogram (1965), adding the peak significance test to the
 method.
@@ -92,7 +92,7 @@ tending to a constant variation from one period to another.
 
 The significance test of the peaks given by \eqn{A_{p}}{Ap} leads to a
 \eqn{chi^{2}}{chi square} distribution for each \eqn{p}, with the test for a
-given p being consistent with a distribution of \eqn{P - 1} degrees of
+given \eqn{p} being consistent with a distribution of \eqn{P - 1} degrees of
 freedom. The formula for calculating the test is:
 
 \deqn{Q_{p} = P * m * Ap^{2} / Var(X)}{Qp = P * m * Ap^2 / Var(X)}
@@ -112,7 +112,7 @@ data <- xts::as.xts(x = rep(seq(1, 60), times = 30),
                                    as.POSIXct("2020-01-02 05:59:59"),
                                    by = "min"))
 periodogram <- periodogram(data, breaks = "minutes", p_min = 1, p_max = 350,
-                           step = 1, alpha = 0.05, print = FALSE)
+                           p_step = 1, alpha = 0.05, print = FALSE)
 
 head(periodogram$periods)
 periodogram$unit
@@ -139,5 +139,9 @@ Enright, J. T. (1965). The search for rhythmicity in biological time-series.
 Sokolove, P. G., & Bushell, W. N. (1978). The chi square periodogram: its
 utility for analysis of circadian rhythms. \emph{Journal of Theoretical Biology},
 \emph{72}(1), 131–160. \doi{10.1016/0022-5193(78)90022-x}.
+}
+\seealso{
+Other analysis functions: 
+\code{\link{spectrogram}()}
 }
 \concept{analysis functions}
