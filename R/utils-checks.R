@@ -33,7 +33,7 @@ check_interval <- function(x, lower = - Inf, upper = Inf, any.missing = TRUE,
         paste0("Element ", which(x < lower)[1], " is not >= ", lower)
     } else if (lubridate::is.interval(x) && !all(x <= upper, na.rm = TRUE)) {
         paste0("Element ", which(x > upper)[1], " is not <= ", upper)
-    } else  if (!test_posixt(x)) {
+    } else  if (!lubridate::is.interval(x)) {
         paste0("Must be of type 'Interval', not ",
                class_collapse(x))
     } else {
@@ -117,7 +117,7 @@ check_posixt <- function(x, lower = - Inf, upper = Inf, any.missing = TRUE,
         paste0("Element ", which(x < lower)[1], " is not >= ", lower)
     } else if (lubridate::is.POSIXt(x) && !all(x <= upper, na.rm = TRUE)) {
         paste0("Element ", which(x > upper)[1], " is not <= ", upper)
-    } else  if (!test_posixt(x)) {
+    } else  if (!lubridate::is.POSIXt(x)) {
         paste0("Must be of type 'POSIXct' or 'POSIXlt', not ",
                class_collapse(x))
     } else {
@@ -126,3 +126,64 @@ check_posixt <- function(x, lower = - Inf, upper = Inf, any.missing = TRUE,
 }
 
 assert_posixt <- checkmate::makeAssertionFunction(check_posixt)
+
+
+
+test_xts <- function(x, index_class = NULL, vector_class = NULL,
+                     min.rows = NULL, min.cols = NULL,
+                     null.ok = FALSE) {
+    checkmate::assert_character(index_class, null.ok = TRUE)
+    checkmate::assert_string(vector_class, null.ok = TRUE)
+    checkmate::assert_int(min.rows, lower = 1, null.ok = TRUE)
+    checkmate::assert_int(min.cols, lower = 1, null.ok = TRUE)
+    checkmate::assert_flag(null.ok)
+
+    if (is.null(x) && isTRUE(null.ok)) {
+        TRUE
+    } else if (!xts::is.xts(x)) {
+        FALSE
+    } else if (!is.null(index_class) &&
+               (!any(index_class %in% xts::tclass(x), na.rm = TRUE))) {
+        FALSE
+    } else if (!is.null(vector_class) &&
+               (!any(vector_class %in% xts::tclass(x), na.rm = TRUE))) {
+        FALSE
+    }else if ((!is.null(min.rows) && !any(nrow(x) >= min.rows)) ||
+               (!is.null(min.cols) && !any(ncol(x) >= min.cols))) {
+        FALSE
+    } else {
+        TRUE
+    }
+}
+
+check_xts <- function(x, index_class = NULL, vector_class = NULL,
+                      min.rows = NULL, min.cols = NULL,
+                      null.ok = FALSE,
+                      name = deparse(substitute(x))) {
+    checkmate::assert_character(index_class, null.ok = TRUE)
+    checkmate::assert_string(vector_class, null.ok = TRUE)
+    checkmate::assert_int(min.rows, lower = 1, null.ok = TRUE)
+    checkmate::assert_int(min.cols, lower = 1, null.ok = TRUE)
+    checkmate::assert_flag(null.ok)
+
+    if (is.null(x) && isTRUE(null.ok)) {
+        TRUE
+    } else if ((is.null(x) && isFALSE(null.ok)) || !xts::is.xts(x)) {
+        paste0("Must be of type 'xts', not ", class_collapse(x))
+    } else if (!is.null(index_class) &&
+               (!any(index_class %in% xts::tclass(x), na.rm = TRUE))) {
+        paste0("Must have an index of class ",
+               inline_collapse(index_class, "or"),
+               ", not ", class_collapse(zoo::index(x)))
+    } else if (!is.null(min.rows) && !any(nrow(x) >= min.rows)) {
+        paste0("Must have at least ", min.rows, " rows, but has ", nrow(x),
+               " rows")
+    } else if (!is.null(min.cols) && !any(ncol(x) >= min.cols)) {
+        paste0("Must have at least ", min.cols, " cols, but has ", ncol(x),
+               " cols")
+    } else {
+        TRUE
+    }
+}
+
+assert_xts <- checkmate::makeAssertionFunction(check_xts)

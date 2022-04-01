@@ -4,7 +4,8 @@
 #'
 #' `r lifecycle::badge("experimental")`
 #'
-#' `read_acttrust()` reads and tidy an ActTrust file.
+#' `read_acttrust()` allows you to read and tidy an ActTrust file in a
+#' consistent and easy manner.
 #'
 #' `read_acttrust()` was created just for convenience. If this function doesn't
 #' work for your file, we recommend using the
@@ -18,7 +19,7 @@
 #'   a file.
 #' @param tz A string that specifies which time zone to parse the dates/time
 #'   with. The string must be a time zone that is recognized by the user's OS.
-#'   For more information, see [`?lubridate::ymd_hms`][lubridate::ymd_hms()].
+#'   For more information, see [`?timezone`][?OlsonNames()].
 #'   (default: `"America/Sao_Paulo"`).
 #'
 #' @return An [xts][xts::xts()] object.
@@ -137,5 +138,5 @@ tidy_acttrust_data <- function(data,
             uva_light, uvb_light,
             event, state
         ) %>%
-        xts::xts(x = .[, -1], order.by = .$timestamp)
+        xts::xts(x = .[, -1], order.by = .$timestamp, tzone = tz)
 }

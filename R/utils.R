@@ -6,6 +6,32 @@ class_collapse <- function(x) {
     single_quote_(paste0(class(x), collapse = "/"))
 }
 
+paste_collapse <- function(x, sep = "", last = sep) {
+    checkmate::assert_string(sep)
+    checkmate::assert_string(last)
+
+    if (length(x) == 1) {
+        x
+    } else {
+        paste0(paste(x[-length(x)], collapse = sep), last, x[length(x)])
+    }
+}
+
+inline_collapse <- function(x, last = "and", single_quote = TRUE,
+                            serial_comma = TRUE) {
+    checkmate::assert_string(last)
+    checkmate::assert_flag(single_quote)
+    checkmate::assert_flag(serial_comma)
+
+    if (isTRUE(single_quote)) x <- single_quote_(x)
+
+    if (length(x) <= 2 || isFALSE(serial_comma)) {
+        paste_collapse(x, sep = ", ", last = paste0(" ", last, " "))
+    } else {
+        paste_collapse(x, sep = ", ", last = paste0(", ", last, " "))
+    }
+}
+
 period_ <- function(num, units = "seconds") {
     units_choices <- c("microseconds", "milliseconds", "seconds", "minutes",
                        "hours", "days", "weeks", "months", "quarters", "years")
@@ -21,6 +47,45 @@ period_ <- function(num, units = "seconds") {
         lubridate::period(3, "months")
     } else {
         lubridate::period(num, units)
+    }
+}
+
+string_to_period <- function(string, irregularity = "min") {
+    string_choices <- c("microsecond", "millisecond", "second", "minute",
+                        "hour", "day", "week", "month", "quarter",
+                        "year")
+    string_choices <- append(string_choices, paste0(string_choices, "s"))
+    irregularity_choices <- c("min", "mean", "max")
+
+    checkmate::assert_choice(string, string_choices)
+    checkmate::assert_choice(irregularity, irregularity_choices)
+
+    if (irregularity == "min") {
+        month <- lubridate::ddays(28)
+        quarter <- lubridate::ddays(28) + (lubridate::ddays(30) * 2)
+        year <- lubridate::ddays(365)
+    } else if (irregularity == "mean") {
+        month <- lubridate::dmonths()
+        quarter <- lubridate::dmonths() * 3
+        year <- lubridate::dyears()
+    } else if (irregularity == "max") {
+        month <- lubridate::dmonths(31)
+        quarter <- lubridate::dmonths(31) * 3
+        year <- lubridate::ddays(366)
+    }
+
+    if (grepl("^microsecond*", string)) {
+        lubridate::dmicroseconds() %>% as.numeric()
+    } else if (grepl("^millisecond*", string)) {
+        lubridate::dmilliseconds() %>% as.numeric()
+    } else if (any(grepl("^second*|^minute*|^hour|^week*|^day*", string))) {
+        lubridate::duration(string) %>% as.numeric()
+    } else if (grepl("^month*", string)) {
+        month %>% as.numeric()
+    } else if (grepl("^quarter*", string)) {
+        quarter %>% as.numeric()
+    } else if (grepl("^year*", string)) {
+        year %>% as.numeric()
     }
 }
 
@@ -64,28 +129,5 @@ shush <- function(x, quiet = TRUE) {
         suppressMessages(suppressWarnings(x))
     } else {
         x
-    }
-}
-
-string_to_period <- function(string) {
-    string_choices <- c("microseconds", "milliseconds", "seconds", "minutes",
-                        "hours", "days", "weeks", "months", "quarters", "years")
-
-    checkmate::assert_choice(string, string_choices)
-
-    if (string == "microseconds") {
-        lubridate::dmicroseconds() %>% as.numeric()
-    } else if (string == "milliseconds") {
-        lubridate::dmilliseconds() %>% as.numeric()
-    } else if (string %in% c("seconds", "minutes", "hours", "days")) {
-        lubridate::duration(string) %>% as.numeric()
-    } else if (string == "weeks") {
-        (lubridate::ddays() * 7) %>% as.numeric()
-    } else if (string == "months") {
-        (lubridate::ddays() * 28) %>% as.numeric()
-    } else if (string == "quarters") {
-        (lubridate::ddays() * 30  * (12 / 4)) %>% as.numeric()
-    } else if (string == "years") {
-        (lubridate::ddays() * 365) %>% as.numeric()
     }
 }

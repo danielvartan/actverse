@@ -11,22 +11,23 @@
 #' @details
 #'
 #' In the rare cases that a time series have periodicities with the same
-#' prevalence above the the threshold, `find_epoch()` will return just one of
-#' the values.
+#' prevalence above the the threshold, the `find_epoch()` list element
+#' `best_match` will return just one of the values.
 #'
 #' @param data A [`zoo`][zoo::zoo()] or an [`xts`][xts::xts()] object with
 #'   a [`Date`][as.Date()] or [POSIXt][as.POSIXct()] vector as index.
-#' @param threshold A number, from 0 to 1, indicating the minimum proportion of
-#'   that an epoch must have to be considered valid. `threshold = 1` means
-#'   strict regularity.
+#' @param threshold A number, from 0 to 1, indicating the minimum proportion
+#'   that an epoch must have to be considered valid. `threshold = 1` means that
+#'   the regularity of the time series must be strict (i.e., have just 1
+#'   periodicity).
 #'
 #' @return a [`list`][list()] object with the following elements:
 #'
-#' * `best_match`: A number indicating the epoch/periodicity with greater
-#' prevalence above `threshold` in seconds. If none is find, `best_match` value
-#' will be `as.numeric(NA)`.
+#' * `best_match`: A number indicating the epoch/periodicity above the
+#' `threshold` with greater prevalence in seconds. If none is find, `best_match`
+#' value will be equal as `as.numeric(NA)`.
 #' * `prevalence`: a [`tibble`][dplyr::tibble()] listing the unique
-#' epoch/periodicity found in `data`, along with its proportions.
+#' epoch/periodicity found in `data` along with its proportions.
 #'
 #' @family utility functions
 #' @export
@@ -47,7 +48,7 @@ find_epoch <- function(data, threshold = 0.9) {
     checkmate::assert_multi_class(data, c("ts", "zoo", "xts"))
     checkmate::assert_multi_class(zoo::index(data), c("Date", "POSIXt"))
     checkmate::assert_number(length(data[, 1]), lower = 2)
-    checkmate::assert_number(threshold, lower = 0, upper = 1)
+    checkmate::assert_number(threshold, lower = 0.001, upper = 1)
 
     # R CMD Check variable bindings fix (see: http://bit.ly/3bliuam)
 
@@ -57,9 +58,9 @@ find_epoch <- function(data, threshold = 0.9) {
     if (lubridate::is.difftime(diff)) units(diff) <- "secs"
     diff <- diff %>% as.numeric()
 
-    prevalence <- lapply(unique(diff), find_epoch_prevalence,
-                            diff = diff) %>%
-        Reduce(rbind, .) %>%
+    prevalence <- unique(diff) %>%
+        purrr::map(find_epoch_prevalence, diff = diff) %>%
+        purrr::reduce(dplyr::bind_rows) %>%
         dplyr::arrange(dplyr::desc(proportion))
 
     if (prevalence$proportion[1] >= threshold) {

@@ -17,7 +17,7 @@
 #' @details
 #'
 #' Sokolove and Bushell's periodogram assumes that the data is time equidistant
-#' - there is data for the entire time unit delivered in the breaks parameter.
+#' - there is data for the entire time unit delivered in the `p_unit` parameter.
 #' If this does not occur, the function will disregard these missing values in
 #' the middle of the time series while calculating the periodogram. If there is
 #' more than one data for the breaks unit (for example, when the data was
@@ -63,15 +63,15 @@
 #' @param data An [`xts`][xts::xts()] object with a numeric vector. If the
 #'   [`xts`][xts::xts()]` have more than 1 vector, the function will use only
 #'   the first one.
-#' @param breaks A string indicating at which interval the index must be
+#' @param p_unit A string indicating at which interval the index must be
 #'   aggregated. (valid values: `“microseconds”`, `“milliseconds”`, `“seconds”`,
 #'   `“minutes”`, `“hours”`, `“days”`, `“weeks”`, `“months”`, `“quarters”`, and
 #'   `“years”`) (default: `"minutes"`).
 #' @param p_min An integer number indicating the minimum period p to calculate
-#'   the test and add to the periodogram (same unit as `breaks`). (default:
+#'   the test and add to the periodogram (same unit as `p_unit`). (default:
 #'   `1`).
 #' @param p_max An integer number indicating the maximum period p to calculate
-#'   the test and add to the periodogram (same unit as `breaks`). (default:
+#'   the test and add to the periodogram (same unit as `p_unit`). (default:
 #'   `4600`).
 #' @param p_step An integer number indicating the range of values that will be
 #'   skipped between calculating one test and the next. (default: `1`).
@@ -101,11 +101,11 @@
 #'                     order.by = seq(as.POSIXct("2020-01-01"),
 #'                                    as.POSIXct("2020-01-02 05:59:59"),
 #'                                    by = "min"))
-#' periodogram <- periodogram(data, breaks = "minutes", p_min = 1, p_max = 350,
+#' periodogram <- periodogram(data, p_unit = "minutes", p_min = 1, p_max = 350,
 #'                            p_step = 1, alpha = 0.05, print = FALSE)
 #'
-#' head(periodogram$periods)
-#' periodogram$unit
+#' periodogram$p_unit
+#' head(periodogram$p_seq)
 #' periodogram$alpha
 #' head(periodogram$a_p)
 #' head(periodogram$q_p)
@@ -120,18 +120,19 @@
 #'     requireNamespace("plotly", quietly = TRUE)) {
 #'     plotly::ggplotly(periodogram$q_p_plot)
 #' }
-periodogram <- function(data, breaks = "minutes", p_min = 1000, p_max = 2500,
+periodogram <- function(data, p_unit = "minutes", p_min = 1000, p_max = 2500,
                         p_step = 1, alpha = 0.05, print = TRUE) {
-    break_choices <- c("microseconds", "milliseconds", "seconds", "minutes",
-                       "hours", "days", "weeks", "months", "quarters", "years")
+    p_unit_choices <- c("microseconds", "milliseconds", "seconds", "minutes",
+                        "hours", "days", "weeks", "months", "quarters", "years")
 
-    checkmate::assert_class(data, "xts")
-    checkmate::assert_multi_class(zoo::index(data), "POSIXt")
-    checkmate::assert_choice(breaks, break_choices)
+    assert_xts(data, index_class = c("Date", "POSIXt"), min.rows = 2,
+               min.cols = 1)
+    checkmate::assert_number(length(data[, 1]), lower = 2)
+    checkmate::assert_choice(p_unit, p_unit_choices)
     checkmate::assert_int(p_min, lower = 1)
     checkmate::assert_int(p_max, lower = 1)
     checkmate::assert_int(p_step, lower = 1)
-    checkmate::assert_number(alpha)
+    checkmate::assert_number(alpha, lower = 0.001, upper = 0.999)
     checkmate::assert_flag(print)
     checkmate::assert_true(p_min <= p_max) # Create custom assertion
     checkmate::assert_true((p_min + p_step) <= p_max) # Create custom assertion
@@ -149,13 +150,13 @@ periodogram <- function(data, breaks = "minutes", p_min = 1000, p_max = 2500,
             "See {backtick_('?find_epoch()')} to check your data regularity."
         ))
     } else {
-        if (string_to_period(breaks) < epoch$best_match) {
+        if (string_to_period(p_unit) < epoch$best_match) {
             cli::cli_abort(paste0(
                 "The periodicity present in {.strong {cli::col_blue('data')}} ",
                 "(epoch = {epoch$best_match} seconds) ",
-                "don't allow to break it in {breaks}. ",
+                "don't allow to break it in {p_unit}. ",
                 "Use a more appropriate value in ",
-                "{.strong {cli::col_red('breaks')}} when running this ",
+                "{.strong {cli::col_red('p_unit')}} when running this ",
                 "function."
             ))
         }
@@ -204,15 +205,16 @@ periodogram <- function(data, breaks = "minutes", p_min = 1000, p_max = 2500,
     }
 
     data <- data %>%
-        xts::endpoints(breaks) %>%
+        xts::endpoints(p_unit) %>%
         xts::period.apply(data, ., mean, na.rm = TRUE) %>%
         `[`(j = 1)
 
     for (i in c("p_min", "p_max")) {
         if (get(i) > length(data)) {
             cli::cli_abort(paste0(
-                "{.strong {cli::col_blue(i)}} is greater than the amount ",
-                "of time series data delimited by the breaks."
+                "{.strong {cli::col_red(i)}} is greater than the amount ",
+                "of time series data delimited by ",
+                "{.strong cli::col_blue(p_unit)}."
             ))
         }
     }
@@ -226,16 +228,16 @@ periodogram <- function(data, breaks = "minutes", p_min = 1000, p_max = 2500,
         purrr::map(compute_periodogram, data = data, alpha = alpha,
                    envir = envir) %>%
         purrr::pmap(c) %>%
-        append(., list(
-            unit = breaks,
+        append(list(
+            p_unit = p_unit,
+            p_seq = p_seq,
             alpha = alpha,
-            periods = p_seq,
             q_p_peaks = find_periodogram_peaks(p_seq, .$q_p, .$q_p_alpha,
                                                .$q_p_pvalue),
             q_p_plot = plot_periodogram(p_seq, .$q_p, .$q_p_alpha,
-                                        alpha, paste0("Period (", breaks, ")"))
+                                        alpha, paste0("Period (", p_unit, ")"))
         )) %>%
-        magrittr::extract(c("unit", "alpha", "periods", "a_p", "q_p",
+        magrittr::extract(c("p_unit", "p_seq", "alpha", "a_p", "q_p",
                             "q_p_alpha", "q_p_pvalue", "q_p_peaks", "q_p_plot"))
 
     if (isTRUE(print)) print(out$q_p_plot)
@@ -244,9 +246,9 @@ periodogram <- function(data, breaks = "minutes", p_min = 1000, p_max = 2500,
 }
 
 compute_periodogram <- function(p, data, alpha = 0.05, envir = NULL) {
-    checkmate::assert_int(p)
+    checkmate::assert_int(p, lower = 1)
     checkmate::assert_numeric(data, min.len = 1)
-    checkmate::assert_number(alpha, lower = 0)
+    checkmate::assert_number(alpha, lower = 0.001, upper = 0.999)
     checkmate::assert_environment(envir, null.ok = TRUE)
 
     n <- length(data)
@@ -273,10 +275,10 @@ compute_periodogram <- function(p, data, alpha = 0.05, envir = NULL) {
 
 find_periodogram_peaks <- function(p_seq, q_p, q_p_alpha, q_p_pvalue = NULL,
                                    max_diff = 1) {
-    checkmate::assert_numeric(p_seq)
-    checkmate::assert_numeric(q_p)
-    checkmate::assert_numeric(q_p_alpha)
-    checkmate::assert_numeric(q_p_pvalue, null.ok = TRUE)
+    checkmate::assert_numeric(p_seq, min.len = 1)
+    checkmate::assert_numeric(q_p, min.len = 1)
+    checkmate::assert_numeric(q_p_alpha, min.len = 1)
+    checkmate::assert_numeric(q_p_pvalue, min.len = 1, null.ok = TRUE)
     assert_identical(p_seq, q_p, q_p_alpha, type = "length")
     checkmate::assert_int(max_diff, lower = 1)
 
@@ -292,7 +294,7 @@ find_periodogram_peaks <- function(p_seq, q_p, q_p_alpha, q_p_pvalue = NULL,
         return(out)
     }
 
-    x <- which(q_p >= q_p_alpha)
+    x <- which(q_p >= q_p_alpha & !q_p == 0)
     groups <- list(x[1])
     level <- 1
 
@@ -321,39 +323,46 @@ find_periodogram_peaks <- function(p_seq, q_p, q_p_alpha, q_p_pvalue = NULL,
         dplyr::filter(!is.na(period))
 }
 
-clean_periodogram_peaks <- function(peaks) {
-    checkmate::assert_tibble(peaks, min.rows = 1)
+clean_periodogram_peaks <- function(peaks, prop_q_p_rel = 0.1,
+                                    prop_bump = 0.001) {
+    checkmate::assert_tibble(peaks)
+    checkmate::assert_number(prop_q_p_rel)
+    checkmate::assert_number(prop_bump)
 
     # R CMD Check variable bindings fix (see: http://bit.ly/3bliuam)
 
     . <- q_p_rel <- bump <- NULL
 
+    if (nrow(peaks) == 0) return(peaks)
+
     out <- peaks %>%
-        dplyr::filter(q_p_rel >= 0.1 * max(q_p_rel)) %>%
-        dplyr::arrange(period) %>%
-        dplyr::mutate(
+        dplyr::filter(q_p_rel >= prop_q_p_rel * max(q_p_rel)) %>%
+        dplyr::arrange(period)
+
+    while(any(dplyr::lead(out$period) - out$period <=
+              prop_bump * mean(out$period), na.rm = TRUE) &&
+          any(dplyr::lag(out$period) - out$period <=
+              prop_bump * mean(out$period), na.rm = TRUE)) {
+        out <- out %>% dplyr::mutate(
             bump = dplyr::case_when(
-                dplyr::lead(period) - period <= 0.001 * mean(period) &
+                dplyr::lead(period) - period <= prop_bump * mean(period) &
                     dplyr::lead(q_p_rel) >= q_p_rel ~ TRUE,
-                period - dplyr::lag(period) <= 0.001 * mean(period) &
+                period - dplyr::lag(period) <= prop_bump * mean(period) &
                     dplyr::lag(q_p_rel) >= q_p_rel ~ TRUE,
                 TRUE ~ FALSE
             )) %>%
-        dplyr::filter(!bump == TRUE)
-
-    if (nrow(out) == 0) {
-        peaks$period
-    } else {
-        out$period
+            dplyr::filter(!bump == TRUE)
     }
+
+    out$period
 }
 
 plot_periodogram <- function(p_seq, q_p, q_p_alpha, alpha_level,
                              xlab = "Period", print = FALSE) {
-    checkmate::assert_numeric(p_seq)
-    checkmate::assert_numeric(q_p)
-    checkmate::assert_numeric(q_p_alpha)
-    checkmate::assert_number(alpha_level, lower = 0)
+    checkmate::assert_numeric(p_seq, min.len = 1)
+    checkmate::assert_numeric(q_p, min.len = 1)
+    checkmate::assert_numeric(q_p_alpha, min.len = 1)
+    checkmate::assert_number(alpha_level, lower = 0.001, upper = 0.999)
     checkmate::assert_string(xlab)
     checkmate::assert_flag(print)
 

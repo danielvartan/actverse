@@ -9,16 +9,16 @@
 #' periodicities in a given interval of a time series.
 #'
 #' @param int A string indicating the interval unit (default: `"days"`).
-#' @param n_int An integer number indicating the amount of intervals.
-#' @param epoch_step An integer number indicating the amount of epochs to
+#' @param int_n An integer number indicating the amount of intervals.
+#' @param int_step An integer number indicating the amount of epochs to
 #'   advance at the end of each interval.
 #' @param alpha A number, from 0 to 1, indicating the significant level required
-#'   for the peaks (default: `0.9`). The spectrogram plot only shows the
+#'   for the peaks (default: `0.05`). The spectrogram plot only shows the
 #'   significant peaks. A high `alpha` will produce a more detailed image.
 #' @param print A [`logical`][logical()] value indicating if the function
 #'   must print the spectrogram plot (default: `TRUE`).
 #'
-#' @return a [`list`][list()] object with the following elements:
+#' @return A [`list`][list()] object with the following elements:
 #'
 #' * `periodograms`: A [`list`][list()] object with the periodograms data.
 #' * `spectogram`: a [`ggplot`][ggplot2::ggplot()] object with a heat map plot
@@ -33,15 +33,15 @@
 #'                     order.by = seq(as.POSIXct("2020-01-01"),
 #'                                    as.POSIXct("2020-01-02 05:59:59"),
 #'                                    by = "min"))
-#' spectrogram <- spectrogram(data, breaks = "minutes", p_min = 1, p_max = 120,
-#'                            p_step = 1, int = "hours", n_int = 2,
-#'                            epoch_step = 59, alpha = 0.5, print = FALSE)
+#' spectrogram <- spectrogram(data, p_unit = "minutes", p_min = 1, p_max = 120,
+#'                            p_step = 1, int = "hours", int_n = 2,
+#'                            int_step = 59, alpha = 0.05, print = FALSE)
 #'
 #' head(names(spectrogram$periodograms))
-#' spectrogram$periodograms$int_1$unit
+#' spectrogram$periodograms$int_1$p_unit
+#' head(spectrogram$periodograms$int_1$p_seq)
+#' spectrogram$periodograms$int_1$int
 #' spectrogram$periodograms$int_1$alpha
-#' spectrogram$periodograms$int_1$interval
-#' head(spectrogram$periodograms$int_1$periods)
 #' head(spectrogram$periodograms$int_1$a_p)
 #' head(spectrogram$periodograms$int_1$q_p)
 #' head(spectrogram$periodograms$int_1$q_p_alpha)
@@ -49,7 +49,6 @@
 #' head(spectrogram$periodograms$int_1$q_p_pvalue)
 #' head(spectrogram$periodograms$int_1$q_p_rel)
 #' spectrogram$periodograms$int_1$q_p_peaks
-#'
 #' spectrogram$spectrogram
 #'
 #' ## Using interactive plots
@@ -58,22 +57,24 @@
 #'     requireNamespace("plotly", quietly = TRUE)) {
 #'     plotly::ggplotly(spectrogram$spectrogram)
 #' }
-spectrogram <- function(data, breaks = "minutes", p_min = 1000, p_max = 2500,
-                        p_step = 1, int = "days", n_int = 7,
-                        epoch_step = 720, alpha = 0.8, print = TRUE) {
+spectrogram <- function(data, p_unit = "minutes", p_min = 1000, p_max = 2500,
+                        p_step = 1, int = "days", int_n = 7,
+                        int_step = 720, alpha = 0.05, print = TRUE) {
     break_choices <- c("microseconds", "milliseconds", "seconds", "minutes",
                        "hours", "days", "weeks", "months", "quarters", "years")
 
-    checkmate::assert_class(data, "xts")
-    checkmate::assert_multi_class(zoo::index(data), "POSIXt")
-    checkmate::assert_choice(breaks, break_choices)
+    assert_xts(data, index_class = c("Date", "POSIXt"), min.rows = 2,
+               min.cols = 1)
+    checkmate::assert_class(zoo::index(data), "POSIXt")
+    checkmate::assert_number(length(data[, 1]), lower = 2)
+    checkmate::assert_choice(p_unit, break_choices)
     checkmate::assert_int(p_min, lower = 1)
     checkmate::assert_int(p_max, lower = 1)
     checkmate::assert_int(p_step, lower = 1)
     checkmate::assert_choice(int, break_choices)
-    checkmate::assert_int(n_int, lower = 1)
-    checkmate::assert_int(epoch_step, lower = 1)
-    checkmate::assert_number(alpha, lower = 0.01, upper = 0.99)
+    checkmate::assert_int(int_n, lower = 1)
+    checkmate::assert_int(int_step, lower = 1)
+    checkmate::assert_number(alpha, lower = 0.001, upper = 0.999)
     checkmate::assert_flag(print)
     checkmate::assert_true(p_min <= p_max) # Create custom assertion
     checkmate::assert_true((p_min + p_step) <= p_max) # Create custom assertion
@@ -91,13 +92,13 @@ spectrogram <- function(data, breaks = "minutes", p_min = 1000, p_max = 2500,
             "See {backtick_('?find_epoch()')} to check your data regularity."
         ))
     } else {
-        if (string_to_period(breaks) < epoch$best_match) {
+        if (string_to_period(p_unit) < epoch$best_match) {
             cli::cli_abort(paste0(
                 "The periodicity present in {.strong {cli::col_blue('data')}} ",
                 "(epoch = {epoch$best_match} seconds) ",
-                "don't allow to break it in {breaks}. ",
+                "don't allow to break it in {p_unit}. ",
                 "Use a more appropriate value in ",
-                "{.strong {cli::col_red('breaks')}} when running this ",
+                "{.strong {cli::col_red('p_unit')}} when running this ",
                 "function."
             ))
         }
@@ -145,10 +146,10 @@ spectrogram <- function(data, breaks = "minutes", p_min = 1000, p_max = 2500,
         ))
     }
 
-    if (which(break_choices == int) <= which(break_choices == breaks)) {
+    if (which(break_choices == int) <= which(break_choices == p_unit)) {
         cli::cli_abort(paste0(
             "The {.strong {cli::col_blue('int')}} value must be greater ",
-            "than the {.strong {cli::col_red('breaks')}} value."
+            "than the {.strong {cli::col_red('p_unit')}} value."
         ))
     }
 
@@ -164,93 +165,94 @@ spectrogram <- function(data, breaks = "minutes", p_min = 1000, p_max = 2500,
         ))
     }
 
-    if (data_int <= lubridate::as.interval(period_(n_int, int),
+    if (data_int <= lubridate::as.interval(period_(int_n, int),
                                            zoo::index(data)[1])) {
         cli::cli_abort(paste0(
             "{.strong {cli::col_blue('data')}} has a length of ",
             "{data_int / period_(1, int)} {int}. ",
-            "The {.strong {cli::col_red('n_int')}} value must be below ",
+            "The {.strong {cli::col_red('int_n')}} value must be below ",
             "that."
         ))
     }
 
     int_max_n_epoch <- string_to_period(int) / epoch$best_match
 
-    if (epoch_step >= int_max_n_epoch) {
+    if (int_step >= int_max_n_epoch) {
         cli::cli_abort(paste0(
-            "{.strong {cli::col_red('epoch_step')}} cannot be ",
+            "{.strong {cli::col_red('int_step')}} cannot be ",
             "equal or greater than the total amount of epochs in ",
             "{.strong {cli::col_blue('int')}} ({int_max_n_epoch})."
         ))
     }
 
-    per_main <- shush(periodogram(data, breaks, p_min, p_max, p_step,
-                                  print = FALSE))
+    per_main <- shush(periodogram(data, p_unit, p_min, p_max, p_step,
+                                  alpha = alpha, print = FALSE))
 
     data <- data %>%
-        xts::endpoints(breaks) %>%
+        xts::endpoints(p_unit) %>%
         xts::period.apply(data, ., mean, na.rm = TRUE) %>%
         magrittr::extract(j = 1)
 
     for (i in c("p_min", "p_max")) {
         if (get(i) > length(data)) {
             cli::cli_abort(paste0(
-                "{.strong {cli::col_blue(i)}} is greater than the amount ",
-                "of time series data delimited by the breaks."
+                "{.strong {cli::col_red(i)}} is greater than the amount ",
+                "of time series data delimited by ",
+                "{.strong cli::col_blue(p_unit)}."
             ))
         }
     }
 
-    ints <- find_spectrogram_intervals(data, int, n_int, epoch_step)
+    ints <- find_spectrogram_intervals(data, int, int_n, int_step)
     peaks <- per_main$q_p_peaks
     p_seq <- seq(p_min, p_max, by = p_step)
     envir <- environment()
     cli::cli_progress_bar(total = length(ints), clear = FALSE, .envir = envir)
 
     per_ints <- ints %>%
-        purrr::map(compute_interval_periodogram, data = data, p_seq = p_seq,
-               breaks = breaks, alpha = alpha, envir = envir) %>%
-        magrittr::set_names(paste0( "int_", seq_along(ints)))
+        purrr::map(compute_interval_periodogram, data = data, p_unit = p_unit,
+                   p_seq = p_seq, alpha = alpha, envir = envir) %>%
+        magrittr::set_names(paste0("int_", seq_along(ints)))
 
     out <- list(periodograms = per_ints,
                 spectrogram = plot_spectrogram(
-                    p_seq, per_ints, peaks, paste0("Period (", breaks, ")")))
+                    p_seq, per_ints, peaks, paste0("Period (", p_unit, ")")))
 
     if (isTRUE(print)) print(out$spectrogram)
 
     invisible(out)
 }
 
-find_spectrogram_intervals <- function(data, int = "days", n_int = 7,
-                                       epoch_step = 720) {
+find_spectrogram_intervals <- function(data, int = "days", int_n = 7,
+                                       int_step = 720) {
     break_choices <- c("microseconds", "milliseconds", "seconds", "minutes",
                        "hours", "days", "weeks", "months", "quarters", "years")
 
     checkmate::assert_class(data, "xts")
     checkmate::assert_multi_class(zoo::index(data), "POSIXt")
     checkmate::assert_choice(int, break_choices)
-    checkmate::assert_int(n_int, lower = 1)
-    checkmate::assert_int(epoch_step, lower = 1)
+    checkmate::assert_int(int_n, lower = 1)
+    checkmate::assert_int(int_step, lower = 1)
 
     epoch <- find_epoch(data, 0.9)$best_match
     data_int <- interval(zoo::index(data)[1],
                          zoo::index(data)[length(zoo::index(data))])
 
-    step <- lubridate::dseconds(epoch * epoch_step)
-    out <- lubridate::as.interval(period_(n_int, int),
+    step <- lubridate::dseconds(epoch * int_step)
+    out <- lubridate::as.interval(period_(int_n, int),
                                   lubridate::int_start(data_int))
     check <- lubridate::as.interval(
-        period_(n_int, int),
+        period_(int_n, int),
         lubridate::int_start(dplyr::last(out)) + step) %>%
         lubridate::int_end()
 
     while(check < lubridate::int_end(data_int)) {
         out <- append(out, lubridate::as.interval(
-            period_(n_int, int),
+            period_(int_n, int),
             lubridate::int_start(dplyr::last(out)) + step))
 
         check <- lubridate::as.interval(
-            period_(n_int, int),
+            period_(int_n, int),
             lubridate::int_start(dplyr::last(out)) + step) %>%
             lubridate::int_end()
     }
@@ -258,22 +260,21 @@ find_spectrogram_intervals <- function(data, int = "days", n_int = 7,
     gsub("--", "/", as.character(out))
 }
 
-compute_interval_periodogram <- function(data, int_i, p_seq, breaks,
+compute_interval_periodogram <- function(data, int_i, p_unit, p_seq,
                                          alpha = 0.9, envir = NULL) {
     checkmate::assert_class(data, "xts")
-    checkmate::assert_multi_class(zoo::index(data), "POSIXt")
+    checkmate::assert_class(zoo::index(data), "POSIXt")
     checkmate::assert_character(int_i, min.len = 1)
+    checkmate::assert_string(p_unit)
     checkmate::assert_numeric(p_seq, min.len = 1)
-    checkmate::assert_string(breaks)
-    checkmate::assert_number(alpha, lower = 0.01, upper = 0.99)
+    checkmate::assert_number(alpha, lower = 0.001, upper = 0.999)
     checkmate::assert_environment(envir, null.ok = TRUE)
 
     # R CMD Check variable bindings fix (see: http://bit.ly/3bliuam)
 
     . <- q_p <- q_p_alpha <- q_p_rel <- NULL
 
-    data <- data[int_i]
-    data <- as.numeric(data)
+    data <- data[int_i] %>% as.numeric()
 
     int_i <- lubridate::interval(
         strsplit(int_i, "/")[[1]][1], strsplit(int_i, "/")[[1]][2])
@@ -285,15 +286,15 @@ compute_interval_periodogram <- function(data, int_i, p_seq, breaks,
         dplyr::mutate(q_p_rel = q_p - q_p_alpha,
                       q_p_rel = dplyr::if_else(q_p_rel < 0, 0, q_p_rel)) %>%
         as.list() %>%
-        append(., list(
-            unit = breaks,
+        append(list(
+            p_unit = p_unit,
+            p_seq = p_seq,
+            int = int_i,
             alpha = alpha,
-            interval = int_i,
-            periods = p_seq,
             q_p_peaks = find_periodogram_peaks(p_seq, .$q_p, .$q_p_alpha,
                                                .$q_p_pvalue)
         )) %>%
-        magrittr::extract(c("unit", "alpha", "interval", "periods", "a_p",
+        magrittr::extract(c("p_unit", "p_seq", "int", "alpha", "a_p",
                             "q_p", "q_p_alpha", "q_p_rel", "q_p_pvalue",
                             "q_p_peaks"))
 
@@ -304,8 +305,8 @@ compute_interval_periodogram <- function(data, int_i, p_seq, breaks,
 
 plot_spectrogram <- function(p_seq, per_ints, peaks, xlab = "Period",
                              print = FALSE) {
-    checkmate::assert_numeric(p_seq)
-    checkmate::assert_list(per_ints)
+    checkmate::assert_numeric(p_seq, min.len = 1)
+    checkmate::assert_list(per_ints, min.len = 1)
     checkmate::assert_tibble(peaks)
     checkmate::assert_string(xlab)
     checkmate::assert_flag(print)
