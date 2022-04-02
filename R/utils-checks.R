@@ -1,48 +1,5 @@
 # Sort functions by type or use the alphabetical order.
 
-test_interval <- function(x, lower = - Inf, upper = Inf, any.missing = TRUE,
-                          null.ok = FALSE) {
-    checkmate::assert_flag(any.missing)
-    checkmate::assert_flag(null.ok)
-
-    if (is.null(x) && isTRUE(null.ok)) {
-        TRUE
-    } else if (any(is.na(x)) && isFALSE(any.missing)) {
-        FALSE
-    } else if (lubridate::is.interval(x) &&
-               !all(x >= lower & x <= upper, na.rm = TRUE)) {
-        FALSE
-    } else {
-        lubridate::is.interval(x)
-    }
-}
-
-check_interval <- function(x, lower = - Inf, upper = Inf, any.missing = TRUE,
-                         null.ok = FALSE,
-                         name = deparse(substitute(x))) {
-    checkmate::assert_flag(any.missing)
-    checkmate::assert_flag(null.ok)
-
-    if (is.null(x) && isTRUE(null.ok)) {
-        TRUE
-    } else if (any(is.na(x)) && isFALSE(any.missing)) {
-        paste0(single_quote_(name), " cannot have missing values")
-    } else if (is.null(x) && isFALSE(null.ok)) {
-        paste0(single_quote_(name), " cannot have 'NULL' values")
-    } else if (lubridate::is.interval(x) && !all(x >= lower, na.rm = TRUE)) {
-        paste0("Element ", which(x < lower)[1], " is not >= ", lower)
-    } else if (lubridate::is.interval(x) && !all(x <= upper, na.rm = TRUE)) {
-        paste0("Element ", which(x > upper)[1], " is not <= ", upper)
-    } else  if (!lubridate::is.interval(x)) {
-        paste0("Must be of type 'Interval', not ",
-               class_collapse(x))
-    } else {
-        TRUE
-    }
-}
-
-assert_interval <- checkmate::makeAssertionFunction(check_interval)
-
 assert_identical <- function(..., type = "value", any.missing = TRUE,
                              null.ok = FALSE) {
 
@@ -127,28 +84,65 @@ check_posixt <- function(x, lower = - Inf, upper = Inf, any.missing = TRUE,
 
 assert_posixt <- checkmate::makeAssertionFunction(check_posixt)
 
+test_interval <- function(x, lower = - Inf, upper = Inf, any.missing = TRUE,
+                          null.ok = FALSE) {
+    checkmate::assert_flag(any.missing)
+    checkmate::assert_flag(null.ok)
 
+    if (is.null(x) && isTRUE(null.ok)) {
+        TRUE
+    } else if (any(is.na(x)) && isFALSE(any.missing)) {
+        FALSE
+    } else if (lubridate::is.interval(x) &&
+               !all(x >= lower & x <= upper, na.rm = TRUE)) {
+        FALSE
+    } else {
+        lubridate::is.interval(x)
+    }
+}
 
-test_xts <- function(x, index_class = NULL, vector_class = NULL,
-                     min.rows = NULL, min.cols = NULL,
-                     null.ok = FALSE) {
+check_interval <- function(x, lower = - Inf, upper = Inf, any.missing = TRUE,
+                           null.ok = FALSE,
+                           name = deparse(substitute(x))) {
+    checkmate::assert_flag(any.missing)
+    checkmate::assert_flag(null.ok)
+
+    if (is.null(x) && isTRUE(null.ok)) {
+        TRUE
+    } else if (any(is.na(x)) && isFALSE(any.missing)) {
+        paste0(single_quote_(name), " cannot have missing values")
+    } else if (is.null(x) && isFALSE(null.ok)) {
+        paste0(single_quote_(name), " cannot have 'NULL' values")
+    } else if (lubridate::is.interval(x) && !all(x >= lower, na.rm = TRUE)) {
+        paste0("Element ", which(x < lower)[1], " is not >= ", lower)
+    } else if (lubridate::is.interval(x) && !all(x <= upper, na.rm = TRUE)) {
+        paste0("Element ", which(x > upper)[1], " is not <= ", upper)
+    } else  if (!lubridate::is.interval(x)) {
+        paste0("Must be of type 'Interval', not ",
+               class_collapse(x))
+    } else {
+        TRUE
+    }
+}
+
+assert_interval <- checkmate::makeAssertionFunction(check_interval)
+
+test_tsibble <- function(x, index_class = NULL, min.rows = NULL,
+                         min.cols = NULL, null.ok = FALSE) {
     checkmate::assert_character(index_class, null.ok = TRUE)
-    checkmate::assert_string(vector_class, null.ok = TRUE)
     checkmate::assert_int(min.rows, lower = 1, null.ok = TRUE)
     checkmate::assert_int(min.cols, lower = 1, null.ok = TRUE)
     checkmate::assert_flag(null.ok)
 
     if (is.null(x) && isTRUE(null.ok)) {
         TRUE
-    } else if (!xts::is.xts(x)) {
+    } else if (!tsibble::is_tsibble(x)) {
         FALSE
     } else if (!is.null(index_class) &&
-               (!any(index_class %in% xts::tclass(x), na.rm = TRUE))) {
+               (!any(index_class %in% class(x[[tsibble::index_var(x)]]),
+                     na.rm = TRUE))) {
         FALSE
-    } else if (!is.null(vector_class) &&
-               (!any(vector_class %in% xts::tclass(x), na.rm = TRUE))) {
-        FALSE
-    }else if ((!is.null(min.rows) && !any(nrow(x) >= min.rows)) ||
+    } else if ((!is.null(min.rows) && !any(nrow(x) >= min.rows)) ||
                (!is.null(min.cols) && !any(ncol(x) >= min.cols))) {
         FALSE
     } else {
@@ -156,25 +150,24 @@ test_xts <- function(x, index_class = NULL, vector_class = NULL,
     }
 }
 
-check_xts <- function(x, index_class = NULL, vector_class = NULL,
-                      min.rows = NULL, min.cols = NULL,
-                      null.ok = FALSE,
-                      name = deparse(substitute(x))) {
+check_tsibble <- function(x, index_class = NULL, min.rows = NULL,
+                          min.cols = NULL, null.ok = FALSE,
+                          name = deparse(substitute(x))) {
     checkmate::assert_character(index_class, null.ok = TRUE)
-    checkmate::assert_string(vector_class, null.ok = TRUE)
     checkmate::assert_int(min.rows, lower = 1, null.ok = TRUE)
     checkmate::assert_int(min.cols, lower = 1, null.ok = TRUE)
     checkmate::assert_flag(null.ok)
 
     if (is.null(x) && isTRUE(null.ok)) {
         TRUE
-    } else if ((is.null(x) && isFALSE(null.ok)) || !xts::is.xts(x)) {
-        paste0("Must be of type 'xts', not ", class_collapse(x))
+    } else if ((is.null(x) && isFALSE(null.ok)) || !tsibble::is_tsibble(x)) {
+        paste0("Must be of type 'tbl_ts' (tsibble), not ", class_collapse(x))
     } else if (!is.null(index_class) &&
-               (!any(index_class %in% xts::tclass(x), na.rm = TRUE))) {
+               (!any(index_class %in% class(x[[tsibble::index_var(x)]]),
+                     na.rm = TRUE))) {
         paste0("Must have an index of class ",
                inline_collapse(index_class, "or"),
-               ", not ", class_collapse(zoo::index(x)))
+               ", not ", class_collapse(x[[tsibble::index_var(x)]]))
     } else if (!is.null(min.rows) && !any(nrow(x) >= min.rows)) {
         paste0("Must have at least ", min.rows, " rows, but has ", nrow(x),
                " rows")
@@ -186,4 +179,65 @@ check_xts <- function(x, index_class = NULL, vector_class = NULL,
     }
 }
 
-assert_xts <- checkmate::makeAssertionFunction(check_xts)
+assert_tsibble <- checkmate::makeAssertionFunction(check_tsibble)
+
+test_regularity <- function(x, threshold = 0.99, strict = FALSE,
+                         null.ok = FALSE) {
+    assert_tsibble(x, index_class = c("Date", "POSIXt"), min.rows = 2,
+                   min.cols = 2)
+    checkmate::assert_number(threshold, lower = 0.001, upper = 1)
+    checkmate::assert_flag(strict)
+
+    prevalence <- find_epoch(x, threshold)$prevalence
+
+    if (is.null(x) && isTRUE(null.ok)) {
+        TRUE
+    } else if (isTRUE(strict)) {
+        nrow(prevalence) == 1
+    } else {
+        any(prevalence$proportion >= threshold, na.rm = TRUE)
+    }
+}
+
+check_regularity <- function(x, index_class = NULL, min.rows = NULL,
+                          min.cols = NULL, null.ok = FALSE,
+                          name = deparse(substitute(x))) {
+    checkmate::assert_character(index_class, null.ok = TRUE)
+    checkmate::assert_int(min.rows, lower = 1, null.ok = TRUE)
+    checkmate::assert_int(min.cols, lower = 1, null.ok = TRUE)
+    checkmate::assert_flag(null.ok)
+
+    if (is.null(x) && isTRUE(null.ok)) {
+        TRUE
+    } else if ((is.null(x) && isFALSE(null.ok)) || !tsibble::is_tsibble(x)) {
+        paste0("Must be of type 'tbl_ts' (tsibble), not ", class_collapse(x))
+    } else if (!is.null(index_class) &&
+               (!any(index_class %in% class(x[[tsibble::index_var(x)]]),
+                     na.rm = TRUE))) {
+        paste0("Must have an index of class ",
+               inline_collapse(index_class, "or"),
+               ", not ", class_collapse(x[[tsibble::index_var(x)]]))
+    } else if (!is.null(min.rows) && !any(nrow(x) >= min.rows)) {
+        paste0("Must have at least ", min.rows, " rows, but has ", nrow(x),
+               " rows")
+    } else if (!is.null(min.cols) && !any(ncol(x) >= min.cols)) {
+        paste0("Must have at least ", min.cols, " cols, but has ", ncol(x),
+               " cols")
+    } else {
+        TRUE
+    }
+}
+
+warn_regularity <- function(x, index_class = NULL, min.rows = NULL,
+                            min.cols = NULL, null.ok = FALSE,
+                            name = deparse(substitute(x))) {
+    checkmate::assert_character(index_class, null.ok = TRUE)
+    checkmate::assert_int(min.rows, lower = 1, null.ok = TRUE)
+    checkmate::assert_int(min.cols, lower = 1, null.ok = TRUE)
+    checkmate::assert_flag(null.ok)
+
+    cli::cli_alert_warning(check_regularity(x, index_class, min.rows, min.cols,
+                                            null.ok))
+}
+
+assert_regularity <- checkmate::makeAssertionFunction(check_regularity)

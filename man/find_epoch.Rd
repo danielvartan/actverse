@@ -7,34 +7,34 @@
 find_epoch(data, threshold = 0.9)
 }
 \arguments{
-\item{data}{A \code{\link[zoo:zoo]{zoo}} or an \code{\link[xts:xts]{xts}} object with
-a \code{\link[=as.Date]{Date}} or \link[=as.POSIXct]{POSIXt} vector as index.}
+\item{data}{A \link[tsibble:tsibble]{tsibble} object with a \code{\link[=as.Date]{Date}}
+or \code{\link[=as.POSIXct]{POSIXt}} vector as index.}
 
-\item{threshold}{A number, from 0 to 1, indicating the minimum proportion of
-that an epoch must have to be considered valid. \code{threshold = 1} means
-strict regularity.}
+\item{threshold}{(optional) a number, from \code{0} to \code{1}, indicating the minimum proportion
+that an epoch must have to be considered valid. \code{threshold = 1} means that
+the regularity of the time series must be strict (i.e., have just 1
+periodicity) (default: \code{0.9}).}
 }
 \value{
-a \code{\link[=list]{list}} object with the following elements:
+A \code{\link[=list]{list}} object with the following elements:
 \itemize{
-\item \code{best_match}: A number indicating the epoch/periodicity with greater
-prevalence above \code{threshold} in seconds. If none is find, \code{best_match} value
-will be \code{as.numeric(NA)}.
-\item \code{prevalence}: a \code{\link[dplyr:reexports]{tibble}} listing the unique
-epoch/periodicity found in \code{data}, along with its proportions.
+\item \code{best_match}: A number indicating the epoch/periodicity above the
+\code{threshold} with greater prevalence in seconds. If none is find, \code{best_match}
+value will be equal as \code{as.numeric(NA)}.
+\item \code{prevalence}: a \code{\link[tibble:tibble]{tibble}} listing the unique
+epochs/periodicities found in \code{data}, along with its proportions.
 }
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
 
-\code{find_epoch()} returns the different epochs/periodicities/sample intervals
-present in a time series, along with a best match epoch based on a predefined
-threshold.
+\code{find_epoch()} returns the different epochs/periodicities present in a time
+series, along with a best match epoch based on a predefined threshold.
 }
 \details{
 In the rare cases that a time series have periodicities with the same
-prevalence above the the threshold, \code{find_epoch()} will return just one of
-the values.
+prevalence above the threshold, \code{best_match} will return just one of those
+values.
 }
 \examples{
 index <- c(
@@ -45,12 +45,13 @@ as.POSIXct(seq(5530, 5540, by = 10), origin = as.POSIXct("1970-01-01")),
 as.POSIXct(seq(5545, 5555, by = 5), origin = as.POSIXct("1970-01-01"))
 )
 
-data <- xts::xts(1:100, order.by = index)
+data <- tsibble::tsibble(timestamp = index, x = 1:100)
 
 find_epoch(data, 0.8)
 }
 \seealso{
 Other utility functions: 
+\code{\link{raw_data}()},
 \code{\link{read_acttrust}()}
 }
 \concept{utility functions}

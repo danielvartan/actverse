@@ -2,9 +2,7 @@ backtick_ <- function(x) paste0("`", x, "`")
 single_quote_ <- function(x) paste0("'", x, "'")
 double_quote_ <- function(x) paste0("\"", x, "\"")
 
-class_collapse <- function(x) {
-    single_quote_(paste0(class(x), collapse = "/"))
-}
+class_collapse <- function(x) single_quote_(paste0(class(x), collapse = "/"))
 
 paste_collapse <- function(x, sep = "", last = sep) {
     checkmate::assert_string(sep)
@@ -32,21 +30,23 @@ inline_collapse <- function(x, last = "and", single_quote = TRUE,
     }
 }
 
-period_ <- function(num, units = "seconds") {
-    units_choices <- c("microseconds", "milliseconds", "seconds", "minutes",
-                       "hours", "days", "weeks", "months", "quarters", "years")
+period_ <- function(num, unit = "seconds") {
+    unit_choices <- c("microsecond", "millisecond", "second", "minute",
+                       "hour", "day", "week", "month", "quarter",
+                       "year")
+    unit_choices <- append(unit_choices, paste0(unit_choices, "s"))
 
     checkmate::assert_number(num)
-    checkmate::assert_choice(units, units_choices)
+    checkmate::assert_choice(unit, unit_choices)
 
-    if (units == "microseconds") {
+    if (grepl("^microsecond*", unit)) {
         lubridate::microseconds(num)
-    } else if (units == "milliseconds") {
+    } else if (grepl("^millisecond*", unit)) {
         lubridate::milliseconds(num)
-    } else if (units == "quarters") {
+    } else if (grepl("^quarter*", unit)) {
         lubridate::period(3, "months")
     } else {
-        lubridate::period(num, units)
+        lubridate::period(num, unit)
     }
 }
 
@@ -87,6 +87,25 @@ string_to_period <- function(string, irregularity = "min") {
     } else if (grepl("^year*", string)) {
         year %>% as.numeric()
     }
+}
+
+period_to_string <- function(period) {
+    string_choices <- c("microsecond", "millisecond", "second", "minute",
+                        "hour", "day", "week")
+    checkmate::assert_number(period)
+
+    out <- as.character(NA)
+
+    if (is.na(period)) return(out)
+
+    for (i in c("microseconds", "milliseconds", "seconds", "minutes",
+                "hours", "days", "weeks")) {
+        if (period == string_to_period(i)) {
+            out <- i
+        }
+    }
+
+    out
 }
 
 get_names <- function(...) {

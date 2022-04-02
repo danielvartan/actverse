@@ -2,42 +2,100 @@
 % Please edit documentation in R/read_acttrust.R
 \name{read_acttrust}
 \alias{read_acttrust}
-\title{Read and tidy an ActTrust file}
+\title{Read, tidy, and validate an ActTrust file}
 \usage{
-read_acttrust(file = file.choose(), tz = "America/Sao_Paulo")
+read_acttrust(
+  file = file.choose(),
+  tz = "UTC",
+  regularize = TRUE,
+  interpolate_offwrist = TRUE,
+  interpolate_offwrist_method = "overall_mean",
+  interpolate_gaps = TRUE,
+  interpolate_gaps_method = "locf"
+)
 }
 \arguments{
-\item{file}{A string with the file path for the ActTrust dataset. If not
+\item{file}{A string with the file path for the ActTrust data. If not
 assigned, a dialog window will open allowing the user to browse and select
 a file.}
 
 \item{tz}{A string that specifies which time zone to parse the dates/time
 with. The string must be a time zone that is recognized by the user's OS.
-For more information, see \code{\link[lubridate:ymd_hms]{?lubridate::ymd_hms}}.
-(default: \code{"America/Sao_Paulo"}).}
+For more information, see \code{\link[=OlsonNames]{?timezone}} (default: \code{"UTC"}).}
+
+\item{regularize}{(optional) a \code{\link[=logical]{logical}} value indicating if the
+function must correct irregular intervals. This will only work if a clear
+epoch/periodicity can be found in the data. The function do this by
+averaging the values between the gaps (default: \code{TRUE}).}
+
+\item{interpolate_offwrist}{(optional) a \code{\link[=logical]{logical}} value
+indicating if the function must interpolate the offwrist states (when the
+device is removed).}
+
+\item{interpolate_offwrist_method}{(optional) a string indicating the method
+of interpolation for the offwrist values. Valid values:
+\code{\link[zoo:na.approx]{approx}}, \code{\link[zoo:na.locf]{locf}},
+\code{\link[zoo:na.aggregate]{overall_mean}}, \code{\link[zoo:na.approx]{spline}}. See
+the links to learn more about them.}
+
+\item{interpolate_gaps}{(optional) a \code{\link[=logical]{logical}} value indicating
+if the function must interpolate the gaps found when \code{regularize == TRUE}.}
+
+\item{interpolate_gaps_method}{(optional) a string indicating the method of
+interpolation for the gaps. It follows the same valid values as
+\code{interpolate_offwrist_method}.}
 }
 \value{
-An \link[xts:xts]{xts} object.
+A \link[tsibble:tsibble]{tsibble} object. The data structure can be
+found in \code{\link[=acttrust]{?acttrust}}.
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
 
-\code{read_acttrust()} reads and tidy an ActTrust file.
+\code{read_acttrust()} allows you to read, tidy, and validate an ActTrust file in
+a consistent and easy manner. You can see the output data structure in
+\code{\link[=acttrust]{?acttrust}}.
 
-\code{read_acttrust()} was created just for convenience. If this function doesn't
-work for your file, we recommend using the
-\href{https://readr.tidyverse.org/}{readr} package to load it to R.
+This function was created just for convenience. If it doesn't work for your
+file, we recommend using the \href{https://readr.tidyverse.org/}{readr} package to
+load it to R.
 
 ActTrust is a trademark of
-\href{https://www.condorinst.com.br/}{Condor Instruments}.
+\href{https://www.condorinst.com.br/}{Condor Instruments Ltda}.
+}
+\details{
+The process of \emph{tiding} a dataset is understood as transforming it in input
+data, like described in Loo and Jonge (2018). It's a very similar process of
+tiding data described in the workflow proposed by Wickham and Grolemund
+(n.d.).
+
+The process of \emph{validating} a dataset is understood as detecting invalid
+data, by checking whether data satisfies certain assumptions from domain
+knowledge, to then,  removing or, if possible, fixing them. This process can
+be considered as part of the process of transforming data, described in the
+workflow proposed by Wickham and Grolemund (n.d.).
+
+To learn more about the concept of tidy data, see Wickham (2014) and Wickham
+and Grolemund (n.d.). You can find more about data validation and error
+location in Loo and Jonge (2018).
 }
 \examples{
-\dontrun{
-read_acttrust()
+read_acttrust(raw_data("acttrust.txt"))
 }
+\references{
+Van der Loo, M., & De Jonge, E. (2018).
+\emph{Statistical data cleaning with applications in R}. Hooboken, NJ: John
+Wiley & Sons. \doi{10.1002/9781118897126}.
+
+Wickham, H. (2014). Tidy Data. \emph{Journal of Statistical Software}, \emph{59}(10),
+1-23. \doi{10.18637/jss.v059.i10}.
+
+Wickham, H., & Grolemund, G. (n.d.). \emph{R for data science}. Sebastopol, CA:
+O'Reilly Media. \url{https://r4ds.had.co.nz}
 }
 \seealso{
 Other utility functions: 
-\code{\link{find_epoch}()}
+\code{\link{find_epoch}()},
+\code{\link{raw_data}()}
 }
 \concept{utility functions}
