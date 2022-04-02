@@ -18,12 +18,19 @@ navbar:
     articles: ~
 
 reference:
-- title: Analysis
+- title: Period analysis
   contents:
   - periodogram
+  - spectrogram
+
+- title: Data
+  contents:
+  - acttrust
 
 - title: Utilities
   contents:
+  - find_epoch
+  - raw_data
   - read_acttrust
 
 authors:

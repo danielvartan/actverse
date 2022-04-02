@@ -55,8 +55,8 @@ Imports:
     magrittr (>= 2.0.3),
     purrr (>= 0.3.4),
     stats (>= 4.0.0),
+    tsibble (>= 1.1.1),
     viridis (>= 0.6.2),
-    xts (>= 0.12.1),
     zoo (>= 1.8-9)
 Suggests: 
     covr (>= 3.5.1),
@@ -68,6 +68,7 @@ Suggests:
     spelling (>= 2.2),
     stringr (>= 1.4.0),
     testthat (>= 3.1.2),
+    tibble (>= 3.1.6),
     utils (>= 4.0.0)
 VignetteBuilder: 
     knitr

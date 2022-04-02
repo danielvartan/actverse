@@ -27,10 +27,6 @@ of `actverse` is to facilitate the work of sleep and chronobiology
 scientists with actigraphy data while also helping with research
 reproducibility.
 
-> Please note that this package is currently on the development stage
-> and have not yet been [peer
-> reviewed](https://devguide.ropensci.org/softwarereviewintro.html).
-
 ## Prerequisites
 
 You only need to have some familiarity with the [R programming
@@ -65,7 +61,7 @@ citation("actverse")
 #> To cite {actverse} in publications use:
 #> 
 #>   Vartanian, D., Matias, V. A., Serrano, C. A. M., Benedito-Silva, A.
-#>   A., & Pedrazzoli, M. (2021). {actverse}: an R Package for actigraphy
+#>   A., & Pedrazzoli, M. (2022). {actverse}: an R Package for actigraphy
 #>   data analysis. https://gipso.github.io/actverse/
 #> 
 #> A BibTeX entry for LaTeX users is
@@ -73,7 +69,7 @@ citation("actverse")
 #>   @Unpublished{,
 #>     title = {{actverse}: an R Package for actigraphy data analysis},
 #>     author = {Daniel Vartanian and Vinicius Alves Matias and Cassio Almeida Mattos Serrano and Ana Amelia Benedito-Silva and Mario Pedrazzoli},
-#>     year = {2021},
+#>     year = {2022},
 #>     url = {https://gipso.github.io/actverse/},
 #>     note = {Lifecycle: experimental},
 #>   }

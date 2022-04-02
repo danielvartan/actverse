@@ -28,8 +28,6 @@ knitr::opts_chunk$set(
 
 `actverse` is an R package that provides a complete and consistent toolkit to process, analyze and visualize actigraphy data in R. The aim of `actverse` is to facilitate the work of sleep and chronobiology scientists with actigraphy data while also helping with research reproducibility.
 
-> Please note that this package is currently on the development stage and have not yet been [peer reviewed](https://devguide.ropensci.org/softwarereviewintro.html).
-
 ## Prerequisites
 
 You only need to have some familiarity with the [R programming language](https://www.r-project.org/) to use the `actverse` main functions.
