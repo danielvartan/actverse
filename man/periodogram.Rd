@@ -2,11 +2,12 @@
 % Please edit documentation in R/periodogram.R
 \name{periodogram}
 \alias{periodogram}
-\title{Compute Sokolove & Bushell's \eqn{chi^{2}}{chi square} periodogram}
+\title{Compute Sokolove & Bushell's \eqn{\chi^{2}}{chi square} periodogram}
 \usage{
 periodogram(
   data,
-  breaks = "minutes",
+  col,
+  p_unit = "minutes",
   p_min = 1000,
   p_max = 2500,
   p_step = 1,
@@ -15,111 +16,137 @@ periodogram(
 )
 }
 \arguments{
-\item{data}{An \code{\link[xts:xts]{xts}} object with a numeric vector. If the
-\code{\link[xts:xts]{xts}}` have more than 1 vector, the function will use only
-the first one.}
+\item{data}{A \code{\link[tsibble:tsibble]{tsibble}} object with a
+\code{\link[=as.Date]{Date}} or \code{\link[=as.POSIXct]{POSIXt}} vector as index.}
 
-\item{breaks}{A string indicating at which interval the index must be
-aggregated. (valid values: \verb{“microseconds”}, \verb{“milliseconds”}, \verb{“seconds”},
-\verb{“minutes”}, \verb{“hours”}, \verb{“days”}, \verb{“weeks”}, \verb{“months”}, \verb{“quarters”}, and
-\verb{“years”}) (default: \code{"minutes"}).}
+\item{col}{An string indicating which column of \code{data} to use.}
 
-\item{p_min}{An integer number indicating the minimum period p to calculate
-the test and add to the periodogram (same unit as \code{breaks}). (default:
+\item{p_unit}{(optional) a string indicating at which time unit the index
+must be aggregated (valid values: \verb{“seconds”}, \verb{“minutes”}, \verb{“hours”},
+\verb{“days”}, \verb{“weeks”}, \verb{“months”}, \verb{“quarters”}, and \verb{“years”}) (default:
+\code{"minutes"}).}
+
+\item{p_min}{(optional) an integer number indicating the minimum period
+\eqn{p} to calculate the test and add to the periodogram (same unit as
+\code{p_unit}).
+(default: \code{1000}).}
+
+\item{p_max}{(optional) an integer number indicating the maximum period
+\eqn{p} to calculate the test and add to the periodogram (same unit as
+\code{p_unit}). (default: \code{2500}).}
+
+\item{p_step}{(optional) an integer number indicating the range of values
+that will be skipped between calculating one test and the next. (default:
 \code{1}).}
 
-\item{p_max}{An integer number indicating the maximum period p to calculate
-the test and add to the periodogram (same unit as \code{breaks}). (default:
-\code{4600}).}
+\item{alpha}{(optional) a number, from \code{0} to \code{1}, indicating the significant
+level required for the peaks (default: \code{0.05}).}
 
-\item{p_step}{An integer number indicating the range of values that will be
-skipped between calculating one test and the next. (default: \code{1}).}
-
-\item{alpha}{A number, from 0 to 1, indicating the significant level required
-for the peaks (default: \code{0.05}).}
-
-\item{print}{A \code{\link[=logical]{logical}} value indicating if the function
-must print the Qp plot (default: \code{TRUE}).}
+\item{print}{(optional) a \code{\link[=logical]{logical}} value indicating if the
+function must print the Qp plot (default: \code{TRUE}).}
 }
 \value{
-A \code{\link[=list]{list}} object with the values and plots of Ap,
-Qp and normalized Qp, as well as the peak and peak period.
+A \code{\link[=list]{list}} object with the following elements:
+\itemize{
+\item \code{p_unit}: a string indicating the time unit in which the data was
+aggregated.
+\item \code{p_seq}: a \code{\link[=numeric]{numeric}} object with the the sequence of \code{p}
+periods.
+\item \code{alpha}: a string indicating the significant level used.
+\item \code{a_p}: a \code{\link[=numeric]{numeric}} object with the root mean square amplitude
+(\eqn{A_{p}}{Ap}).
+\item \code{q_p}: a \code{\link[=numeric]{numeric}} object with the \eqn{\chi^{2}}{chi square}
+value of each \code{p} period (\eqn{Q_{p}}{Qp}).
+\item \code{q_p_critical}: a \code{\link[=numeric]{numeric}} object with the
+\eqn{\chi^{2}}{chi square} critical values for each \code{q_p}, based on the
+\code{alpha} parameter.
+\item \code{q_p_pvalue}: a \code{\link[=numeric]{numeric}} object the p-value for each \code{q_p},
+based on the \code{alpha} parameter.
+\item \code{q_p_peaks}: a \code{\link[tibble:tibble]{tibble}} object listing each peak of \code{p}
+period above the critical value along with its \code{q_p}, \code{q_p_critical},
+relative \code{q_p} (\code{q_p_rel  = q_p_critical - q_p}), and \code{q_p_value}.
+\item \code{q_p_plot}: a \code{\link[ggplot2:ggplot]{ggplot}} object with a line chart
+showing \code{q_p} (y1) and \code{q_p_critical} (y2) by \code{p_seq} (x).
+}
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
 
 \code{periodogram()} returns the measures Ap, Qp and of the
-\eqn{chi^{2}}{chi square} periodogram for an actigraphy dataset.
+\eqn{\chi^{2}}{chi square} periodogram for an actigraphy dataset.
 
-The \eqn{chi^{2}}{chi square} periodogram is a technique to identify periodic
-patterns in a time series, being widely used in chronobiology to identify the
-sleep-wake cycle and its reconciliation with circadian periodicity. This
-periodogram was proposed by Sokolove and Bushell (1978) as an adaptation of
-Enright's periodogram (1965), adding the peak significance test to the
-method.
+The \eqn{\chi^{2}}{chi square} periodogram is a technique to identify
+periodic patterns in a time series, being widely used in chronobiology to
+identify the sleep-wake cycle and its reconciliation with circadian
+periodicity. This periodogram was proposed by Sokolove and Bushell (1978) as
+an adaptation of Enright's periodogram (1965), adding the peak significance
+test to the method.
 }
 \details{
-Sokolove and Bushell's periodogram assumes that the data is time equidistant
-\itemize{
-\item there is data for the entire time unit delivered in the breaks parameter.
-If this does not occur, the function will disregard these missing values in
-the middle of the time series while calculating the periodogram. If there is
-more than one data for the breaks unit (for example, when the data was
-captured per minute and the user wants to calculate the periodogram per
-hour), the average of all values in this interval is considered as the
-data point of the periodogram.
-}
+Sokolove and Bushell's periodogram assumes that the data is time equidistant,
+i.e., there is data for the entire time unit delivered in the \code{p_unit}
+parameter. If this does not occur, the function will disregard these missing
+values in the middle of the time series while calculating the periodogram. If
+there's more than one data for the \code{p_unit} (e.g., when the data was captured
+per minute and the user wants to calculate the periodogram per hour), the
+average of all values in this interval is considered as the data point of the
+periodogram.
 
-With the formatted data, we calculate the measure Ap for each test period p,
-between the minimum determined by p_min and the maximum p_max, at a step
-determined by step parameter. The Ap measure of the Enright periodogram is
-the standard deviation of the column means of a Buys-Ballot table. This
-table has p columns and m rows, where m is a number that maximizes the
-amount of values that a time series of N values can have represented in a
-p columns table (thus, m is N/p rounded down). m can be seen as a cycle, and
-the greater the similarity between the cycles and the difference between the
-columns, more intense the standard deviation Ap.
+With the formatted data, we calculate the measure \eqn{A_{p}}{Ap} for each
+test period \eqn{p}, between the minimum determined by \code{p_min} and the
+maximum \code{p_max}, at a step determined by \code{p_step} parameter. The
+\eqn{A_{p}}{Ap} measure of the Enright periodogram is the standard deviation
+of the column means of a Buys-Ballot table. This table has \eqn{p} columns
+and m rows, where \eqn{m} is a number that maximizes the amount of values
+that a time series of \eqn{N} values can have represented in a \eqn{p}
+columns table (thus, \eqn{m} is \eqn{N/p} rounded down). \eqn{m} can be seen
+as a cycle, and the greater the similarity between the cycles and the
+difference between the columns, more intense the standard deviation
+\eqn{A_{p}}{Ap}.
 
-Plotting the Ap values allows you to identify the behavior of the standard
-deviations of the averages of the columns of the tables created for
-different P's, and the higher the standard deviation, the more it will
-tend to a peak. As these values are susceptible to high and instantaneous
-fluctuations, Sokolove and Bushell proposed adding a peak significance test,
-reducing the intensity of peaks by weighting the total variance of the data
-and the period in which it appears. In this process, peak moments will be
-highlighted among its neighbors, and smaller changes will lose prominence,
-tending to a constant variation from one period to another.
+Plotting the \eqn{A_{p}}{Ap} values allows you to identify the behavior of
+the standard deviations of the averages of the columns of the tables created
+for different \eqn{P}'s, and the higher the standard deviation, the more it
+will tend to a peak. As these values are susceptible to high and
+instantaneous fluctuations, Sokolove and Bushell proposed adding a peak
+significance test, reducing the intensity of peaks by weighting the total
+variance of the data and the period in which it appears. In this process,
+peak moments will be highlighted among its neighbors, and smaller changes
+will lose prominence, tending to a constant variation from one period to
+another.
 
 The significance test of the peaks given by \eqn{A_{p}}{Ap} leads to a
-\eqn{chi^{2}}{chi square} distribution for each \eqn{p}, with the test for a
+\eqn{\chi^{2}}{chi square} distribution for each \eqn{p}, with the test for a
 given \eqn{p} being consistent with a distribution of \eqn{P - 1} degrees of
 freedom. The formula for calculating the test is:
 
-\deqn{Q_{p} = P * m * Ap^{2} / Var(X)}{Qp = P * m * Ap^2 / Var(X)}
+\strong{\deqn{Q_{p} = \frac{P \times m \times Ap^{2}}{Var(X)}}{Qp = P * m *
+Ap^2 / Var(X)}}
 
 Where:
 \itemize{
-\item \eqn{P} = the period of this test.
-\item \eqn{m} = the total rows of the Buys-Ballot table.
-\item \eqn{Ap} = the standard deviation of the averages from the Buys-Ballot
-table of this test.
-\item \eqn{Var(X)}= the variance of the data.
+\item \eqn{P} = period of this test.
+\item \eqn{m} = total rows of the Buys-Ballot table.
+\item \eqn{Ap} = standard deviation of the averages from the Buys-Ballot table of
+this test.
+\item \eqn{Var(X)}= variance of the data (\eqn{X}).
 }
 }
 \examples{
-data <- xts::as.xts(x = rep(seq(1, 60), times = 30),
-                    order.by = seq(as.POSIXct("2020-01-01"),
-                                   as.POSIXct("2020-01-02 05:59:59"),
-                                   by = "min"))
-periodogram <- periodogram(data, breaks = "minutes", p_min = 1, p_max = 350,
-                           p_step = 1, alpha = 0.05, print = FALSE)
+data <- tsibble::tsibble(timestamp = seq(as.POSIXct("2020-01-01"),
+                                         as.POSIXct("2020-01-02 05:59:59"),
+                                         by = "min"),
+                                         x = rep(seq(1, 60), times = 30))
+periodogram <- periodogram(data, "x", p_unit = "minutes", p_min = 1,
+                           p_max = 350, p_step = 1, alpha = 0.05,
+                           print = FALSE)
 
-head(periodogram$periods)
-periodogram$unit
+periodogram$p_unit
+head(periodogram$p_seq)
 periodogram$alpha
 head(periodogram$a_p)
 head(periodogram$q_p)
-head(periodogram$q_p_alpha)
+head(periodogram$q_p_critical)
 head(periodogram$q_p_pvalue)
 periodogram$q_p_peaks
 periodogram$q_p_plot
@@ -133,15 +160,15 @@ if (interactive() &&
 }
 \references{
 Enright, J. T. (1965). The search for rhythmicity in biological time-series.
-\emph{Journal of Theoretical Biology}, \emph{8}(3), 426–468.
+\emph{Journal of Theoretical Biology}, \emph{8}(3), 426-468.
 \doi{10.1016/0022-5193(65)90021-4}.
 
 Sokolove, P. G., & Bushell, W. N. (1978). The chi square periodogram: its
 utility for analysis of circadian rhythms. \emph{Journal of Theoretical Biology},
-\emph{72}(1), 131–160. \doi{10.1016/0022-5193(78)90022-x}.
+\emph{72}(1), 131-160. \doi{10.1016/0022-5193(78)90022-x}.
 }
 \seealso{
-Other analysis functions: 
+Other period analysis functions: 
 \code{\link{spectrogram}()}
 }
-\concept{analysis functions}
+\concept{period analysis functions}
