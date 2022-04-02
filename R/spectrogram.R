@@ -4,37 +4,47 @@
 #'
 #' `r lifecycle::badge("experimental")`
 #'
-#' `spectrogram()` compute a series of Sokolove & Bushell's \eqn{chi^{2}}{chi
-#' square} periodograms with the purpose of visualize differences in
-#' periodicities in a given interval of a time series.
+#' `spectrogram()` computes a series of Sokolove & Bushell's (1978)
+#' \eqn{\chi^{2}}{chi square} periodograms with the purpose of visualize
+#' differences in periodicities in a given interval of a time series.
 #'
-#' @param int A string indicating the interval unit (default: `"days"`).
-#' @param int_n An integer number indicating the amount of intervals.
-#' @param int_step An integer number indicating the amount of epochs to
-#'   advance at the end of each interval.
-#' @param alpha A number, from 0 to 1, indicating the significant level required
-#'   for the peaks (default: `0.05`). The spectrogram plot only shows the
-#'   significant peaks. A high `alpha` will produce a more detailed image.
-#' @param print A [`logical`][logical()] value indicating if the function
-#'   must print the spectrogram plot (default: `TRUE`).
+#' See [?periodogram][actverse::periodogram()] to learn more about the
+#' periodogram computation.
+#'
+#' @param int (optional) a string indicating the interval unit (valid values:
+#'   `“seconds”`, `“minutes”`, `“hours”`, `“days”`, `“weeks”`, `“months”`,
+#'   `“quarters”`, and `“years”`) (default: `"days"`).
+#' @param int_n (optional) an integer number indicating the amount of intervals
+#'   (default: `7`).
+#' @param int_step (optional) an integer number indicating the amount of epochs
+#'   to advance at the end of each interval (default: `720`).
+#' @param alpha (optional) a number, from `0` to `1`, indicating the significant
+#'   level required for the peaks. The spectrogram plot only shows the
+#'   significant peaks. A high `alpha` will produce a more detailed image
+#'   (default: `0.05`).
+#' @param print (optional) a [`logical`][logical()] value indicating if the
+#'   function must print the spectrogram plot (default: `TRUE`).
 #'
 #' @return A [`list`][list()] object with the following elements:
 #'
-#' * `periodograms`: A [`list`][list()] object with the periodograms data.
-#' * `spectogram`: a [`ggplot`][ggplot2::ggplot()] object with a heat map plot
-#' of the spectrogram.
+#' * `periodograms`: a [`list`][list()] object with the periodograms data. See
+#' [`?periodogram()`][periodogram()] to learn more about the list elements.
+#' * `spectrogram`: a [`ggplot`][ggplot2::ggplot()] object with a heat map chart
+#' showing one periodogram per line (`q_p`)(y) by the period sequence (`p_seq`)
+#' (x).
 #'
 #' @inheritParams periodogram
-#' @family analysis functions
+#' @template references_c
+#' @family period analysis functions
 #' @export
 #'
 #' @examples
-#' data <- xts::as.xts(x = rep(seq(1, 60), times = 30),
-#'                     order.by = seq(as.POSIXct("2020-01-01"),
-#'                                    as.POSIXct("2020-01-02 05:59:59"),
-#'                                    by = "min"))
-#' spectrogram <- spectrogram(data, p_unit = "minutes", p_min = 1, p_max = 120,
-#'                            p_step = 1, int = "hours", int_n = 2,
+#' data <- tsibble::tsibble(timestamp = seq(as.POSIXct("2020-01-01"),
+#'                                          as.POSIXct("2020-01-02 05:59:59"),
+#'                                          by = "min"),
+#'                                          x = rep(seq(1, 60), times = 30))
+#' spectrogram <- spectrogram(data, "x", p_unit = "minutes", p_min = 1,
+#'                            p_max = 120, p_step = 1, int = "hours", int_n = 2,
 #'                            int_step = 59, alpha = 0.05, print = FALSE)
 #'
 #' head(names(spectrogram$periodograms))
@@ -44,7 +54,7 @@
 #' spectrogram$periodograms$int_1$alpha
 #' head(spectrogram$periodograms$int_1$a_p)
 #' head(spectrogram$periodograms$int_1$q_p)
-#' head(spectrogram$periodograms$int_1$q_p_alpha)
+#' head(spectrogram$periodograms$int_1$q_p_critical)
 #' head(spectrogram$periodograms$int_1$q_p_rel)
 #' head(spectrogram$periodograms$int_1$q_p_pvalue)
 #' head(spectrogram$periodograms$int_1$q_p_rel)
@@ -57,21 +67,23 @@
 #'     requireNamespace("plotly", quietly = TRUE)) {
 #'     plotly::ggplotly(spectrogram$spectrogram)
 #' }
-spectrogram <- function(data, p_unit = "minutes", p_min = 1000, p_max = 2500,
-                        p_step = 1, int = "days", int_n = 7,
+spectrogram <- function(data, col = NULL, p_unit = "minutes", p_min = 1000,
+                        p_max = 2500, p_step = 1, int = "days", int_n = 7,
                         int_step = 720, alpha = 0.05, print = TRUE) {
-    break_choices <- c("microseconds", "milliseconds", "seconds", "minutes",
-                       "hours", "days", "weeks", "months", "quarters", "years")
+    p_unit_choices <- c("second", "minute", "hour", "day", "week", "month",
+                        "quarter", "year")
+    p_unit_choices <- append(p_unit_choices, paste0(p_unit_choices, "s"))
 
-    assert_xts(data, index_class = c("Date", "POSIXt"), min.rows = 2,
-               min.cols = 1)
-    checkmate::assert_class(zoo::index(data), "POSIXt")
-    checkmate::assert_number(length(data[, 1]), lower = 2)
-    checkmate::assert_choice(p_unit, break_choices)
+    assert_tsibble(data, index_class = c("Date", "POSIXt"), min.rows = 2,
+                   min.cols = 2)
+    checkmate::assert_choice(col, names(data))
+    checkmate::assert_numeric(data[[col]], min.len = 2, any.missing = FALSE,
+                              null.ok = TRUE)
+    checkmate::assert_choice(p_unit, p_unit_choices)
     checkmate::assert_int(p_min, lower = 1)
     checkmate::assert_int(p_max, lower = 1)
     checkmate::assert_int(p_step, lower = 1)
-    checkmate::assert_choice(int, break_choices)
+    checkmate::assert_choice(int, p_unit_choices)
     checkmate::assert_int(int_n, lower = 1)
     checkmate::assert_int(int_step, lower = 1)
     checkmate::assert_number(alpha, lower = 0.001, upper = 0.999)
@@ -104,11 +116,11 @@ spectrogram <- function(data, p_unit = "minutes", p_min = 1000, p_max = 2500,
         }
     }
 
-    if (!zoo::is.regular(data, strict = TRUE) &&
-        epoch$prevalence$proportion[1] < 0.99) {
+    if (!test_regularity(data, strict = TRUE) &&
+        !test_regularity(data, 0.99)) {
         cli::cli_alert_warning(paste0(
             "The time series is not strictly regular ",
-            "(see {backtick_('?zoo::is.regular')}). ",
+            "(see {backtick_('?find_epoch')}). ",
             "The output may diverge."
         ))
 
@@ -136,25 +148,25 @@ spectrogram <- function(data, p_unit = "minutes", p_min = 1000, p_max = 2500,
         ))
     }
 
-    if (any(is.na(as.numeric(data[, 1])))) {
-        cli::cli_alert_warning(paste0(
-            "The {.strong {cli::col_red(names(data)[1])}} ",
-            "column from {.strong {cli::col_blue('data')}} ",
-            "has missing values. The output may diverge. ",
-            "Try to interpolate the missing values before using this function ",
-            "(see {backtick_('?zoo::na.approx')})."
-        ))
-    }
+    # if (any(is.na(as.numeric(data[, 1])))) {
+    #     cli::cli_alert_warning(paste0(
+    #         "The {.strong {cli::col_red(names(data)[1])}} ",
+    #         "column from {.strong {cli::col_blue('data')}} ",
+    #         "has missing values. The output may diverge. ",
+    #         "Try to interpolate the missing values before using this function ",
+    #         "(see {backtick_('?zoo::na.approx')})."
+    #     ))
+    # }
 
-    if (which(break_choices == int) <= which(break_choices == p_unit)) {
+    if (which(p_unit_choices == int) <= which(p_unit_choices == p_unit)) {
         cli::cli_abort(paste0(
             "The {.strong {cli::col_blue('int')}} value must be greater ",
             "than the {.strong {cli::col_red('p_unit')}} value."
         ))
     }
 
-    data_int <- interval(zoo::index(data)[1],
-                         zoo::index(data)[length(zoo::index(data))])
+    data_int <- interval(dplyr::first(data[[tsibble::index_var(data)]]),
+                         dplyr::last(data[[tsibble::index_var(data)]]))
 
     if (as.numeric(data_int) < string_to_period(int)) {
         cli::cli_abort(paste0(
@@ -165,8 +177,8 @@ spectrogram <- function(data, p_unit = "minutes", p_min = 1000, p_max = 2500,
         ))
     }
 
-    if (data_int <= lubridate::as.interval(period_(int_n, int),
-                                           zoo::index(data)[1])) {
+    if (data_int <= lubridate::as.interval(
+        period_(int_n, int), dplyr::first(data[[tsibble::index_var(data)]]))) {
         cli::cli_abort(paste0(
             "{.strong {cli::col_blue('data')}} has a length of ",
             "{data_int / period_(1, int)} {int}. ",
@@ -185,16 +197,15 @@ spectrogram <- function(data, p_unit = "minutes", p_min = 1000, p_max = 2500,
         ))
     }
 
-    per_main <- shush(periodogram(data, p_unit, p_min, p_max, p_step,
+    per_main <- shush(periodogram(data, col, p_unit, p_min, p_max, p_step,
                                   alpha = alpha, print = FALSE))
 
     data <- data %>%
-        xts::endpoints(p_unit) %>%
-        xts::period.apply(data, ., mean, na.rm = TRUE) %>%
-        magrittr::extract(j = 1)
+        dplyr::select(tsibble::index2_var(.), col) %>%
+        aggregate_index_mean(p_unit)
 
     for (i in c("p_min", "p_max")) {
-        if (get(i) > length(data)) {
+        if (get(i) > length(data[[col]])) {
             cli::cli_abort(paste0(
                 "{.strong {cli::col_red(i)}} is greater than the amount ",
                 "of time series data delimited by ",
@@ -203,15 +214,16 @@ spectrogram <- function(data, p_unit = "minutes", p_min = 1000, p_max = 2500,
         }
     }
 
-    ints <- find_spectrogram_intervals(data, int, int_n, int_step)
+    ints <- find_spectrogram_intervals(data, col, int, int_n, int_step)
     peaks <- per_main$q_p_peaks
     p_seq <- seq(p_min, p_max, by = p_step)
     envir <- environment()
     cli::cli_progress_bar(total = length(ints), clear = FALSE, .envir = envir)
 
     per_ints <- ints %>%
-        purrr::map(compute_interval_periodogram, data = data, p_unit = p_unit,
-                   p_seq = p_seq, alpha = alpha, envir = envir) %>%
+        purrr::map(compute_interval_periodogram, data = data, col = col,
+                   p_unit = p_unit, p_seq = p_seq, alpha = alpha,
+                   envir = envir) %>%
         magrittr::set_names(paste0("int_", seq_along(ints)))
 
     out <- list(periodograms = per_ints,
@@ -223,20 +235,23 @@ spectrogram <- function(data, p_unit = "minutes", p_min = 1000, p_max = 2500,
     invisible(out)
 }
 
-find_spectrogram_intervals <- function(data, int = "days", int_n = 7,
+find_spectrogram_intervals <- function(data, col, int = "days", int_n = 7,
                                        int_step = 720) {
-    break_choices <- c("microseconds", "milliseconds", "seconds", "minutes",
+    int_choices <- c("microseconds", "milliseconds", "seconds", "minutes",
                        "hours", "days", "weeks", "months", "quarters", "years")
 
-    checkmate::assert_class(data, "xts")
-    checkmate::assert_multi_class(zoo::index(data), "POSIXt")
-    checkmate::assert_choice(int, break_choices)
+    assert_tsibble(data, index_class = c("Date", "POSIXt"), min.rows = 2,
+                   min.cols = 2)
+    checkmate::assert_choice(col, names(data))
+    checkmate::assert_numeric(data[[col]], min.len = 2, any.missing = FALSE,
+                              null.ok = TRUE)
+    checkmate::assert_choice(int, int_choices)
     checkmate::assert_int(int_n, lower = 1)
     checkmate::assert_int(int_step, lower = 1)
 
     epoch <- find_epoch(data, 0.9)$best_match
-    data_int <- interval(zoo::index(data)[1],
-                         zoo::index(data)[length(zoo::index(data))])
+    data_int <- interval(dplyr::first(data[[tsibble::index_var(data)]]),
+                         dplyr::last(data[[tsibble::index_var(data)]]))
 
     step <- lubridate::dseconds(epoch * int_step)
     out <- lubridate::as.interval(period_(int_n, int),
@@ -257,14 +272,17 @@ find_spectrogram_intervals <- function(data, int = "days", int_n = 7,
             lubridate::int_end()
     }
 
-    gsub("--", "/", as.character(out))
+    out
 }
 
-compute_interval_periodogram <- function(data, int_i, p_unit, p_seq,
+compute_interval_periodogram <- function(data, col, int_i, p_unit, p_seq,
                                          alpha = 0.9, envir = NULL) {
-    checkmate::assert_class(data, "xts")
-    checkmate::assert_class(zoo::index(data), "POSIXt")
-    checkmate::assert_character(int_i, min.len = 1)
+    assert_tsibble(data, index_class = c("Date", "POSIXt"), min.rows = 2,
+                   min.cols = 2)
+    checkmate::assert_choice(col, names(data))
+    checkmate::assert_numeric(data[[col]], min.len = 2, any.missing = FALSE,
+                              null.ok = TRUE)
+    assert_interval(int_i, any.missing = FALSE)
     checkmate::assert_string(p_unit)
     checkmate::assert_numeric(p_seq, min.len = 1)
     checkmate::assert_number(alpha, lower = 0.001, upper = 0.999)
@@ -272,18 +290,18 @@ compute_interval_periodogram <- function(data, int_i, p_unit, p_seq,
 
     # R CMD Check variable bindings fix (see: http://bit.ly/3bliuam)
 
-    . <- q_p <- q_p_alpha <- q_p_rel <- NULL
+    . <- q_p <- q_p_critical <- q_p_rel <- NULL
 
-    data <- data[int_i] %>% as.numeric()
-
-    int_i <- lubridate::interval(
-        strsplit(int_i, "/")[[1]][1], strsplit(int_i, "/")[[1]][2])
+    data <- data %>%
+        tsibble::filter_index(as.character(lubridate::int_start(int_i)) ~
+                                  as.character(lubridate::int_end(int_i))) %>%
+        magrittr::extract2(col)
 
     out <- p_seq %>%
         purrr::map(compute_periodogram, data = data, alpha = alpha) %>%
         purrr::pmap(c) %>%
         dplyr::as_tibble() %>%
-        dplyr::mutate(q_p_rel = q_p - q_p_alpha,
+        dplyr::mutate(q_p_rel = q_p - q_p_critical,
                       q_p_rel = dplyr::if_else(q_p_rel < 0, 0, q_p_rel)) %>%
         as.list() %>%
         append(list(
@@ -291,11 +309,11 @@ compute_interval_periodogram <- function(data, int_i, p_unit, p_seq,
             p_seq = p_seq,
             int = int_i,
             alpha = alpha,
-            q_p_peaks = find_periodogram_peaks(p_seq, .$q_p, .$q_p_alpha,
+            q_p_peaks = find_periodogram_peaks(p_seq, .$q_p, .$q_p_critical,
                                                .$q_p_pvalue)
         )) %>%
         magrittr::extract(c("p_unit", "p_seq", "int", "alpha", "a_p",
-                            "q_p", "q_p_alpha", "q_p_rel", "q_p_pvalue",
+                            "q_p", "q_p_critical", "q_p_rel", "q_p_pvalue",
                             "q_p_peaks"))
 
     if (!is.null(envir)) cli::cli_progress_update(.envir = envir)

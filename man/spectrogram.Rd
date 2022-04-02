@@ -6,89 +6,101 @@
 \usage{
 spectrogram(
   data,
-  breaks = "minutes",
+  col = NULL,
+  p_unit = "minutes",
   p_min = 1000,
   p_max = 2500,
   p_step = 1,
   int = "days",
-  n_int = 7,
-  epoch_step = 720,
-  alpha = 0.8,
+  int_n = 7,
+  int_step = 720,
+  alpha = 0.05,
   print = TRUE
 )
 }
 \arguments{
-\item{data}{An \code{\link[xts:xts]{xts}} object with a numeric vector. If the
-\code{\link[xts:xts]{xts}}` have more than 1 vector, the function will use only
-the first one.}
+\item{data}{A \code{\link[tsibble:tsibble]{tsibble}} object with a
+\code{\link[=as.Date]{Date}} or \code{\link[=as.POSIXct]{POSIXt}} vector as index.}
 
-\item{breaks}{A string indicating at which interval the index must be
-aggregated. (valid values: \verb{“microseconds”}, \verb{“milliseconds”}, \verb{“seconds”},
-\verb{“minutes”}, \verb{“hours”}, \verb{“days”}, \verb{“weeks”}, \verb{“months”}, \verb{“quarters”}, and
-\verb{“years”}) (default: \code{"minutes"}).}
+\item{col}{An string indicating which column of \code{data} to use.}
 
-\item{p_min}{An integer number indicating the minimum period p to calculate
-the test and add to the periodogram (same unit as \code{breaks}). (default:
+\item{p_unit}{(optional) a string indicating at which time unit the index
+must be aggregated (valid values: \verb{“seconds”}, \verb{“minutes”}, \verb{“hours”},
+\verb{“days”}, \verb{“weeks”}, \verb{“months”}, \verb{“quarters”}, and \verb{“years”}) (default:
+\code{"minutes"}).}
+
+\item{p_min}{(optional) an integer number indicating the minimum period
+\eqn{p} to calculate the test and add to the periodogram (same unit as
+\code{p_unit}).
+(default: \code{1000}).}
+
+\item{p_max}{(optional) an integer number indicating the maximum period
+\eqn{p} to calculate the test and add to the periodogram (same unit as
+\code{p_unit}). (default: \code{2500}).}
+
+\item{p_step}{(optional) an integer number indicating the range of values
+that will be skipped between calculating one test and the next. (default:
 \code{1}).}
 
-\item{p_max}{An integer number indicating the maximum period p to calculate
-the test and add to the periodogram (same unit as \code{breaks}). (default:
-\code{4600}).}
+\item{int}{(optional) a string indicating the interval unit (valid values:
+\verb{“seconds”}, \verb{“minutes”}, \verb{“hours”}, \verb{“days”}, \verb{“weeks”}, \verb{“months”},
+\verb{“quarters”}, and \verb{“years”}) (default: \code{"days"}).}
 
-\item{p_step}{An integer number indicating the range of values that will be
-skipped between calculating one test and the next. (default: \code{1}).}
+\item{int_n}{(optional) an integer number indicating the amount of intervals
+(default: \code{7}).}
 
-\item{int}{A string indicating the interval unit (default: \code{"days"}).}
+\item{int_step}{(optional) an integer number indicating the amount of epochs
+to advance at the end of each interval (default: \code{720}).}
 
-\item{n_int}{An integer number indicating the amount of intervals.}
+\item{alpha}{(optional) a number, from \code{0} to \code{1}, indicating the significant
+level required for the peaks. The spectrogram plot only shows the
+significant peaks. A high \code{alpha} will produce a more detailed image
+(default: \code{0.05}).}
 
-\item{epoch_step}{An integer number indicating the amount of epochs to
-advance at the end of each interval.}
-
-\item{alpha}{A number, from 0 to 1, indicating the significant level required
-for the peaks (default: \code{0.9}). The spectrogram plot only shows the
-significant peaks. A high \code{alpha} will produce a more detailed image.}
-
-\item{print}{A \code{\link[=logical]{logical}} value indicating if the function
-must print the spectrogram plot (default: \code{TRUE}).}
+\item{print}{(optional) a \code{\link[=logical]{logical}} value indicating if the
+function must print the spectrogram plot (default: \code{TRUE}).}
 }
 \value{
-a \code{\link[=list]{list}} object with the following elements:
+A \code{\link[=list]{list}} object with the following elements:
 \itemize{
-\item \code{periodograms}: A \code{\link[=list]{list}} object with the periodograms data.
-\item \code{spectogram}: a \code{\link[ggplot2:ggplot]{ggplot}} object with a heat map plot
-of the spectrogram.
+\item \code{periodograms}: a \code{\link[=list]{list}} object with the periodograms data. See
+\code{\link[=periodogram]{?periodogram()}} to learn more about the list elements.
+\item \code{spectrogram}: a \code{\link[ggplot2:ggplot]{ggplot}} object with a heat map chart
+showing one periodogram per line (\code{q_p})(y) by the period sequence (\code{p_seq})
+(x).
 }
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
 
-\code{spectrogram()} compute a series of Sokolove & Bushell's \eqn{chi^{2}}{chi
-square} periodograms with the purpose of visualize differences in
-periodicities in a given interval of a time series.
+\code{spectrogram()} computes a series of Sokolove & Bushell's (1978)
+\eqn{\chi^{2}}{chi square} periodograms with the purpose of visualize
+differences in periodicities in a given interval of a time series.
+
+See \link[=periodogram]{?periodogram} to learn more about the
+periodogram computation.
 }
 \examples{
-data <- xts::as.xts(x = rep(seq(1, 60), times = 30),
-                    order.by = seq(as.POSIXct("2020-01-01"),
-                                   as.POSIXct("2020-01-02 05:59:59"),
-                                   by = "min"))
-spectrogram <- spectrogram(data, breaks = "minutes", p_min = 1, p_max = 120,
-                           p_step = 1, int = "hours", n_int = 2,
-                           epoch_step = 59, alpha = 0.5, print = FALSE)
+data <- tsibble::tsibble(timestamp = seq(as.POSIXct("2020-01-01"),
+                                         as.POSIXct("2020-01-02 05:59:59"),
+                                         by = "min"),
+                                         x = rep(seq(1, 60), times = 30))
+spectrogram <- spectrogram(data, "x", p_unit = "minutes", p_min = 1,
+                           p_max = 120, p_step = 1, int = "hours", int_n = 2,
+                           int_step = 59, alpha = 0.05, print = FALSE)
 
 head(names(spectrogram$periodograms))
-spectrogram$periodograms$int_1$unit
+spectrogram$periodograms$int_1$p_unit
+head(spectrogram$periodograms$int_1$p_seq)
+spectrogram$periodograms$int_1$int
 spectrogram$periodograms$int_1$alpha
-spectrogram$periodograms$int_1$interval
-head(spectrogram$periodograms$int_1$periods)
 head(spectrogram$periodograms$int_1$a_p)
 head(spectrogram$periodograms$int_1$q_p)
-head(spectrogram$periodograms$int_1$q_p_alpha)
+head(spectrogram$periodograms$int_1$q_p_critical)
 head(spectrogram$periodograms$int_1$q_p_rel)
 head(spectrogram$periodograms$int_1$q_p_pvalue)
 head(spectrogram$periodograms$int_1$q_p_rel)
 spectrogram$periodograms$int_1$q_p_peaks
-
 spectrogram$spectrogram
 
 ## Using interactive plots
@@ -98,8 +110,17 @@ if (interactive() &&
     plotly::ggplotly(spectrogram$spectrogram)
 }
 }
+\references{
+Enright, J. T. (1965). The search for rhythmicity in biological time-series.
+\emph{Journal of Theoretical Biology}, \emph{8}(3), 426-468.
+\doi{10.1016/0022-5193(65)90021-4}.
+
+Sokolove, P. G., & Bushell, W. N. (1978). The chi square periodogram: its
+utility for analysis of circadian rhythms. \emph{Journal of Theoretical Biology},
+\emph{72}(1), 131-160. \doi{10.1016/0022-5193(78)90022-x}.
+}
 \seealso{
-Other analysis functions: 
+Other period analysis functions: 
 \code{\link{periodogram}()}
 }
-\concept{analysis functions}
+\concept{period analysis functions}
