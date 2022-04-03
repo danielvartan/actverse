@@ -8,10 +8,10 @@ read_acttrust(
   file = file.choose(),
   tz = "UTC",
   regularize = TRUE,
-  interpolate_offwrist = TRUE,
-  interpolate_offwrist_method = "overall_mean",
   interpolate_gaps = TRUE,
-  interpolate_gaps_method = "locf"
+  interpolate_gaps_method = "locf",
+  interpolate_offwrist = TRUE,
+  interpolate_offwrist_method = "overall_mean"
 )
 }
 \arguments{
@@ -24,26 +24,26 @@ with. The string must be a time zone that is recognized by the user's OS.
 For more information, see \code{\link[=OlsonNames]{?timezone}} (default: \code{"UTC"}).}
 
 \item{regularize}{(optional) a \code{\link[=logical]{logical}} value indicating if the
-function must correct irregular intervals. This will only work if a clear
-epoch/periodicity can be found in the data. The function do this by
-averaging the values between the gaps (default: \code{TRUE}).}
+function must correct irregular intervals (\strong{highly recommended}). See
+more about it in the Details section (default: \code{TRUE}).}
+
+\item{interpolate_gaps}{(optional) a \code{\link[=logical]{logical}} value indicating
+if the function must interpolate the gaps found when \code{regularize == TRUE}
+(\strong{highly recommended}) (default: \code{TRUE}).}
+
+\item{interpolate_gaps_method}{(optional) a string indicating the method of
+interpolation for the gaps. It follows the same valid values as
+\code{interpolate_offwrist_method} (default: \code{"locf"}).}
 
 \item{interpolate_offwrist}{(optional) a \code{\link[=logical]{logical}} value
-indicating if the function must interpolate the offwrist states (when the
-device is removed).}
+indicating if the function must interpolate offwrist states (when the
+device is removed) (\strong{highly recommended}) (default: \code{TRUE}).}
 
 \item{interpolate_offwrist_method}{(optional) a string indicating the method
 of interpolation for the offwrist values. Valid values:
 \code{\link[zoo:na.approx]{approx}}, \code{\link[zoo:na.locf]{locf}},
 \code{\link[zoo:na.aggregate]{overall_mean}}, \code{\link[zoo:na.approx]{spline}}. See
-the links to learn more about them.}
-
-\item{interpolate_gaps}{(optional) a \code{\link[=logical]{logical}} value indicating
-if the function must interpolate the gaps found when \code{regularize == TRUE}.}
-
-\item{interpolate_gaps_method}{(optional) a string indicating the method of
-interpolation for the gaps. It follows the same valid values as
-\code{interpolate_offwrist_method}.}
+the links to learn more about them (default: \code{"overall_mean"}).}
 }
 \value{
 A \link[tsibble:tsibble]{tsibble} object. The data structure can be
@@ -64,6 +64,38 @@ ActTrust is a trademark of
 \href{https://www.condorinst.com.br/}{Condor Instruments Ltda}.
 }
 \details{
+\subsection{\code{Regularize} parameter}{
+
+It's common to find some uneven epoch/interval in ActTrust data files. This
+occurs because the actigraph internal clock can go off by some seconds while
+recording, and can become an issue while doing some computations. By using
+\code{regularize == TRUE}, \code{read_acttrust()} find and correct those
+irregularities.
+
+It's important to note that this process will only work if a clear
+epoch/periodicity can be found in the data. Regularization is made by
+aggregating the values between epochs, averaging values for numeric variables
+and assigning the most frequent value (mode) for integer or other type of
+variables.
+
+We highly recommend regularizing your data and interpolating possible gaps
+that can be found. If you not interpolate the gaps, they will be assign
+as \code{NA}.
+}
+
+\subsection{Offwrist and offwrist interpolation}{
+
+Unless \code{interpolate_offwrist == TRUE}, \code{read_acttrust()} will transform any
+offwrist data into missing data (\code{NA}).
+
+Some analysis can go off with missing data (e.g., Sokolove & Bushell's
+\eqn{\chi^{2}}{chi square} periodogram, Non-parametric Circadian Rhythm
+Analysis (NPCRA)). It's always best to interpolate missing values. They will
+still going to be classified as offwrist in the \code{state} variable.
+}
+
+\subsection{Data wrangling}{
+
 The process of \emph{tiding} a dataset is understood as transforming it in input
 data, like described in Loo and Jonge (2018). It's a very similar process of
 tiding data described in the workflow proposed by Wickham and Grolemund
@@ -78,6 +110,7 @@ workflow proposed by Wickham and Grolemund (n.d.).
 To learn more about the concept of tidy data, see Wickham (2014) and Wickham
 and Grolemund (n.d.). You can find more about data validation and error
 location in Loo and Jonge (2018).
+}
 }
 \examples{
 read_acttrust(raw_data("acttrust.txt"))
@@ -95,7 +128,9 @@ O'Reilly Media. \url{https://r4ds.had.co.nz}
 }
 \seealso{
 Other utility functions: 
+\code{\link{aggregate_index}()},
 \code{\link{find_epoch}()},
-\code{\link{raw_data}()}
+\code{\link{raw_data}()},
+\code{\link{write_acttrust}()}
 }
 \concept{utility functions}

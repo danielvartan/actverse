@@ -6,7 +6,7 @@
 \usage{
 spectrogram(
   data,
-  col = NULL,
+  col,
   p_unit = "minutes",
   p_min = 1000,
   p_max = 2500,
@@ -19,8 +19,7 @@ spectrogram(
 )
 }
 \arguments{
-\item{data}{A \code{\link[tsibble:tsibble]{tsibble}} object with a
-\code{\link[=as.Date]{Date}} or \code{\link[=as.POSIXct]{POSIXt}} vector as index.}
+\item{data}{A \code{\link[tsibble:tsibble]{tsibble}} object.}
 
 \item{col}{An string indicating which column of \code{data} to use.}
 
@@ -85,29 +84,29 @@ data <- tsibble::tsibble(timestamp = seq(as.POSIXct("2020-01-01"),
                                          as.POSIXct("2020-01-02 05:59:59"),
                                          by = "min"),
                                          x = rep(seq(1, 60), times = 30))
-spectrogram <- spectrogram(data, "x", p_unit = "minutes", p_min = 1,
-                           p_max = 120, p_step = 1, int = "hours", int_n = 2,
-                           int_step = 59, alpha = 0.05, print = FALSE)
+spec <- spectrogram(data, "x", p_unit = "minutes", p_min = 1,
+                    p_max = 120, p_step = 1, int = "hours", int_n = 2,
+                    int_step = 59, alpha = 0.05, print = FALSE)
 
-head(names(spectrogram$periodograms))
-spectrogram$periodograms$int_1$p_unit
-head(spectrogram$periodograms$int_1$p_seq)
-spectrogram$periodograms$int_1$int
-spectrogram$periodograms$int_1$alpha
-head(spectrogram$periodograms$int_1$a_p)
-head(spectrogram$periodograms$int_1$q_p)
-head(spectrogram$periodograms$int_1$q_p_critical)
-head(spectrogram$periodograms$int_1$q_p_rel)
-head(spectrogram$periodograms$int_1$q_p_pvalue)
-head(spectrogram$periodograms$int_1$q_p_rel)
-spectrogram$periodograms$int_1$q_p_peaks
-spectrogram$spectrogram
+head(names(spec$periodograms))
+spec$periodograms$int_1$p_unit
+head(spec$periodograms$int_1$p_seq)
+spec$periodograms$int_1$int
+spec$periodograms$int_1$alpha
+head(spec$periodograms$int_1$a_p)
+head(spec$periodograms$int_1$q_p)
+head(spec$periodograms$int_1$q_p_critical)
+head(spec$periodograms$int_1$q_p_rel)
+head(spec$periodograms$int_1$q_p_pvalue)
+head(spec$periodograms$int_1$q_p_rel)
+spec$periodograms$int_1$q_p_peaks
+spec$spectrogram
 
 ## Using interactive plots
 
 if (interactive() &&
     requireNamespace("plotly", quietly = TRUE)) {
-    plotly::ggplotly(spectrogram$spectrogram)
+    plotly::ggplotly(spec$spectrogram)
 }
 }
 \references{

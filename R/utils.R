@@ -75,32 +75,31 @@ string_to_period <- function(string, irregularity = "min") {
     }
 
     if (grepl("^microsecond*", string)) {
-        lubridate::dmicroseconds() %>% as.numeric()
+        lubridate::dmicroseconds()
     } else if (grepl("^millisecond*", string)) {
-        lubridate::dmilliseconds() %>% as.numeric()
+        lubridate::dmilliseconds()
     } else if (any(grepl("^second*|^minute*|^hour|^week*|^day*", string))) {
-        lubridate::duration(string) %>% as.numeric()
+        lubridate::duration(string)
     } else if (grepl("^month*", string)) {
-        month %>% as.numeric()
+        month
     } else if (grepl("^quarter*", string)) {
-        quarter %>% as.numeric()
+        quarter
     } else if (grepl("^year*", string)) {
-        year %>% as.numeric()
+        year
     }
 }
 
 period_to_string <- function(period) {
-    string_choices <- c("microsecond", "millisecond", "second", "minute",
-                        "hour", "day", "week")
     checkmate::assert_number(period)
+
+    # Workaround for when 'period' is of class 'Duration'
+    period <- as.numeric(period)
 
     out <- as.character(NA)
 
-    if (is.na(period)) return(out)
-
     for (i in c("microseconds", "milliseconds", "seconds", "minutes",
                 "hours", "days", "weeks")) {
-        if (period == string_to_period(i)) {
+        if (period == as.numeric(string_to_period(i))) {
             out <- i
         }
     }

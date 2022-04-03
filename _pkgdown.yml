@@ -29,9 +29,11 @@ reference:
 
 - title: Utilities
   contents:
+  - aggregate_index
   - find_epoch
   - raw_data
   - read_acttrust
+  - write_acttrust
 
 authors:
   Daniel Vartanian:

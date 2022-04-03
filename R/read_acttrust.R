@@ -17,6 +17,36 @@
 #'
 #' @details
 #'
+#' ## `Regularize` parameter
+#'
+#' It's common to find some uneven epoch/interval in ActTrust data files. This
+#' occurs because the actigraph internal clock can go off by some seconds while
+#' recording, and can become an issue while doing some computations. By using
+#' `regularize == TRUE`, `read_acttrust()` find and correct those
+#' irregularities.
+#'
+#' It's important to note that this process will only work if a clear
+#' epoch/periodicity can be found in the data. Regularization is made by
+#' aggregating the values between epochs, averaging values for numeric variables
+#' and assigning the most frequent value (mode) for integer or other type of
+#' variables.
+#'
+#' We highly recommend regularizing your data and interpolating possible gaps
+#' that can be found. If you not interpolate the gaps, they will be assign
+#' as `NA`.
+#'
+#' ## Offwrist and offwrist interpolation
+#'
+#' Unless `interpolate_offwrist == TRUE`, `read_acttrust()` will transform any
+#' offwrist data into missing data (`NA`).
+#'
+#' Some analysis can go off with missing data (e.g., Sokolove & Bushell's
+#' \eqn{\chi^{2}}{chi square} periodogram, Non-parametric Circadian Rhythm
+#' Analysis (NPCRA)). It's always best to interpolate missing values. They will
+#' still going to be classified as offwrist in the `state` variable.
+#'
+#' ## Data wrangling
+#'
 #' The process of _tiding_ a dataset is understood as transforming it in input
 #' data, like described in Loo and Jonge (2018). It's a very similar process of
 #' tiding data described in the workflow proposed by Wickham and Grolemund
@@ -39,22 +69,22 @@
 #'   with. The string must be a time zone that is recognized by the user's OS.
 #'   For more information, see [`?timezone`][OlsonNames()] (default: `"UTC"`).
 #' @param regularize (optional) a [`logical`][logical()] value indicating if the
-#'   function must correct irregular intervals. This will only work if a clear
-#'   epoch/periodicity can be found in the data. The function do this by
-#'   averaging the values between the gaps (default: `TRUE`).
+#'   function must correct irregular intervals (__highly recommended__). See
+#'   more about it in the Details section (default: `TRUE`).
+#' @param interpolate_gaps (optional) a [`logical`][logical()] value indicating
+#'   if the function must interpolate the gaps found when `regularize == TRUE`
+#'   (__highly recommended__) (default: `TRUE`).
+#' @param interpolate_gaps_method (optional) a string indicating the method of
+#'   interpolation for the gaps. It follows the same valid values as
+#'   `interpolate_offwrist_method` (default: `"locf"`).
 #' @param interpolate_offwrist (optional) a [`logical`][logical()] value
-#'   indicating if the function must interpolate the offwrist states (when the
-#'   device is removed).
+#'   indicating if the function must interpolate offwrist states (when the
+#'   device is removed) (__highly recommended__) (default: `TRUE`).
 #' @param interpolate_offwrist_method (optional) a string indicating the method
 #'   of interpolation for the offwrist values. Valid values:
 #'   [`approx`][zoo::na.approx()], [`locf`][zoo::na.locf()],
 #'   [`overall_mean`][zoo::na.aggregate()], [`spline`][zoo::na.spline()]. See
-#'   the links to learn more about them.
-#' @param interpolate_gaps (optional) a [`logical`][logical()] value indicating
-#'   if the function must interpolate the gaps found when `regularize == TRUE`.
-#' @param interpolate_gaps_method (optional) a string indicating the method of
-#'   interpolation for the gaps. It follows the same valid values as
-#'   `interpolate_offwrist_method`.
+#'   the links to learn more about them (default: `"overall_mean"`).
 #'
 #' @return A [tsibble][tsibble::tsibble()] object. The data structure can be
 #' found in [`?acttrust`][actverse::acttrust].
@@ -67,20 +97,20 @@
 #' read_acttrust(raw_data("acttrust.txt"))
 read_acttrust <- function(file = file.choose(), tz = "UTC",
                           regularize = TRUE,
-                          interpolate_offwrist = TRUE,
-                          interpolate_offwrist_method = "overall_mean",
                           interpolate_gaps = TRUE,
-                          interpolate_gaps_method = "locf") {
+                          interpolate_gaps_method = "locf",
+                          interpolate_offwrist = TRUE,
+                          interpolate_offwrist_method = "overall_mean") {
     method_choices <- c("approx", "locf", "overall_mean", "spline")
 
     checkmate::assert_string(file)
     checkmate::assert_file_exists(file)
     checkmate::assert_choice(tz, OlsonNames())
     checkmate::assert_flag(regularize)
-    checkmate::assert_flag(interpolate_offwrist)
-    checkmate::assert_choice(interpolate_offwrist_method, method_choices)
     checkmate::assert_flag(interpolate_gaps)
     checkmate::assert_choice(interpolate_gaps_method, method_choices)
+    checkmate::assert_flag(interpolate_offwrist)
+    checkmate::assert_choice(interpolate_offwrist_method, method_choices)
     require_pkg("readr", "stringr")
 
     if (any(c(interpolate_offwrist, interpolate_gaps))) {
@@ -89,9 +119,9 @@ read_acttrust <- function(file = file.choose(), tz = "UTC",
 
     read_acttrust_data(file) %>%
         tidy_acttrust_data(tz = tz) %>%
-        validate_acttrust_data(regularize, interpolate_offwrist,
-                               interpolate_offwrist_method, interpolate_gaps,
-                               interpolate_gaps_method)
+        validate_acttrust_data(regularize, interpolate_gaps,
+                               interpolate_gaps_method, interpolate_offwrist,
+                               interpolate_offwrist_method)
 }
 
 read_acttrust_data <- function(file = file.choose()) {
@@ -179,11 +209,11 @@ tidy_acttrust_data <- function(data,
     }
 
     out %>%
-        dplyr::mutate(dplyr::across(-timestamp, as.numeric)) %>%
         dplyr::mutate(timestamp = lubridate::dmy_hms(timestamp, tz = tz) +
-                          lubridate::dmilliseconds(ms),
+                          lubridate::dmilliseconds(as.numeric(ms)),
                       event = as.integer(event),
                       state = as.integer(state)) %>%
+        dplyr::mutate(dplyr::across(-timestamp, as.numeric)) %>%
         dplyr::select(-ms, -pim_n, -tat_n, -zcm_n) %>%
         dplyr::relocate(
             timestamp,
@@ -196,22 +226,22 @@ tidy_acttrust_data <- function(data,
 }
 
 validate_acttrust_data <- function(data, regularize = TRUE,
-                                   interpolate_offwrist = FALSE,
-                                   interpolate_offwrist_method = "overall_mean",
                                    interpolate_gaps = TRUE,
-                                   interpolate_gaps_method = "locf") {
+                                   interpolate_gaps_method = "locf",
+                                   interpolate_offwrist = FALSE,
+                                   interpolate_offwrist_method = "overall_mean") {
     method_choices <- c("approx", "locf", "overall_mean", "spline")
 
     checkmate::assert_tibble(data, min.cols = 1, min.rows = 1)
     checkmate::assert_flag(regularize)
-    checkmate::assert_flag(interpolate_offwrist)
-    checkmate::assert_choice(interpolate_offwrist_method, method_choices)
     checkmate::assert_flag(interpolate_gaps)
     checkmate::assert_choice(interpolate_gaps_method, method_choices)
+    checkmate::assert_flag(interpolate_offwrist)
+    checkmate::assert_choice(interpolate_offwrist_method, method_choices)
 
     # R CMD Check variable bindings fix (see: http://bit.ly/3bliuam)
 
-    . <- timestamp <- .from <- .to <- NULL
+    . <- timestamp <- NULL
 
     # TO DO: use the 'validate' package.
 
@@ -227,53 +257,9 @@ validate_acttrust_data <- function(data, regularize = TRUE,
     }
 
     if (isFALSE(regular) && isTRUE(regularize)) {
-        epoch <- out %>%
-            find_epoch(0.9) %>%
-            magrittr::extract2("best_match")
-        epoch_unit <- period_to_string(epoch)
-
-        if (is.na(epoch) || is.na(epoch_unit)) {
-            cli::cli_alert_warning(paste0(
-                "The data was not regularized because no clear epoch was ",
-                "found. Your {.strong {cli::col_blue('data')}} must have at ",
-                "least {.strong {cli::col_red('90%')}} of regularity. See ",
-                "{backtick_('?find_epoch()')} to check data regularity."
-            ))
-        } else {
-            out <- out %>% aggregate_index_mean(epoch_unit) %>%
-                dplyr::mutate(dplyr::across(
-                    !dplyr::matches("^timestamp$"),
-                    ~ dplyr::if_else(is.nan(.x), na_as(.x), .x)
-                    ))
-            count_gaps <- tsibble::count_gaps(out) %>%
-                dplyr::mutate(paste = paste(.from, .to, sep = "/")) %>%
-                magrittr::extract2("paste")
-
-            if (!length(count_gaps) == 0) {
-                cli::cli_alert_info(paste0(
-                    "Found {.strong {cli::col_red(length(count_gaps))}} ",
-                    "gap{?s} in the time series: ",
-                    "{head(count_gaps, 5)} (showing up to a total of 5 values)."
-                ))
-            }
-
-            out <- out %>% tsibble::fill_gaps() %>%
-                dplyr::mutate(dplyr::across(
-                    dplyr::matches("^orientation$|^event$"),
-                    ~ dplyr::if_else(is.na(.x), 0, .x)))
-
-            if (isTRUE(interpolate_gaps)) {
-                out <- out %>%
-                    dplyr::mutate(dplyr::across(
-                        !dplyr::matches("^timestamp$|^orientation$|^event$"),
-                        ~ interpolate_na(.x, timestamp, interpolate_gaps_method)
-                    )) %>%
-                    dplyr::mutate(dplyr::across(
-                        !dplyr::matches("^timestamp$|^orientation$"),
-                        ~ dplyr::if_else(.x < 0, 0, .x)
-                    ))
-            }
-        }
+        out <- out %>% regularize_acttrust_data(
+            interpolate_gaps = interpolate_gaps,
+            interpolate_gaps_method = interpolate_gaps_method)
     }
 
     out <- out %>%
@@ -294,13 +280,9 @@ validate_acttrust_data <- function(data, regularize = TRUE,
         out <- out %>%
             dplyr::mutate(dplyr::across(
                 !dplyr::matches(
-                    "^timestamp$|^orientation$|^event$"),
+                    "^timestamp$|^orientation$|^event$|^state$"),
                 ~ interpolate_na(.x, timestamp,
                                  interpolate_offwrist_method)
-            )) %>%
-            dplyr::mutate(dplyr::across(
-                !dplyr::matches("^timestamp$|^orientation$"),
-                ~ dplyr::if_else(.x < 0, 0, .x)
             ))
     }
 
@@ -320,7 +302,8 @@ validate_acttrust_data <- function(data, regularize = TRUE,
 }
 
 find_offwrist_intervals <- function(data) {
-    checkmate::assert_tibble(data, min.cols = 1, min.rows = 1)
+    assert_tsibble(data, min.rows = 2, min.cols = 2)
+    assert_index_class(data)
 
     # R CMD Check variable bindings fix (see: http://bit.ly/3bliuam)
 
@@ -348,6 +331,74 @@ find_offwrist_intervals <- function(data) {
                     ~ lubridate::interval(.x, .y)) %>%
             purrr::reduce(c)
     }
+}
+
+regularize_acttrust_data <- function(data, interpolate_gaps = TRUE,
+                                     interpolate_gaps_method = "locf") {
+    method_choices <- c("approx", "locf", "overall_mean", "spline")
+
+    assert_tsibble(data, min.rows = 2, min.cols = 2)
+    assert_index_class(data)
+    checkmate::assert_flag(interpolate_gaps)
+    checkmate::assert_choice(interpolate_gaps_method, method_choices)
+
+    # R CMD Check variable bindings fix (see: http://bit.ly/3bliuam)
+
+    . <- .from <- .to <- NULL
+
+    out <- data
+
+    epoch <- out %>%
+        find_epoch(0.9) %>%
+        magrittr::extract2("best_match")
+
+    epoch_unit <- period_to_string(epoch)
+
+    if (is.na(epoch) || is.na(epoch_unit)) {
+        cli::cli_abort(paste0(
+            "The data was not regularized because no clear epoch was ",
+            "found. Your {.strong {cli::col_blue('data')}} must have at ",
+            "least {.strong {cli::col_red('90%')}} of regularity. See ",
+            "'?find_epoch()' to check data regularity."
+        ))
+    } else {
+        out <- out %>% aggregate_index(epoch_unit) %>%
+            dplyr::mutate(dplyr::across(
+                !dplyr::matches("^timestamp$"),
+                ~ dplyr::if_else(is.nan(.x), na_as(.x), .x)
+            ))
+
+        count_gaps <- tsibble::count_gaps(out) %>%
+            dplyr::mutate(paste = paste(.from, .to, sep = "/")) %>%
+            magrittr::extract2("paste")
+
+        if (!length(count_gaps) == 0) {
+            cli::cli_alert_info(paste0(
+                "Found {.strong {cli::col_red(length(count_gaps))}} ",
+                "gap{?s} in the time series: ",
+                "{head(count_gaps, 5)} (showing up to a total of 5 values)."
+            ))
+        }
+
+        out <- out %>% tsibble::fill_gaps() %>%
+            dplyr::mutate(dplyr::across(
+                dplyr::matches("^orientation$|^event$"),
+                ~ dplyr::if_else(is.na(.x), 0, .x)))
+
+        if (isTRUE(interpolate_gaps)) {
+            out <- out %>%
+                dplyr::mutate(dplyr::across(
+                    !dplyr::matches("^timestamp$|^orientation$|^event$"),
+                    ~ interpolate_na(.x, timestamp, interpolate_gaps_method)
+                )) %>%
+                dplyr::mutate(dplyr::across(
+                    !dplyr::matches("^timestamp$|^orientation$"),
+                    ~ dplyr::if_else(.x < 0, 0, .x)
+                ))
+        }
+    }
+
+    out
 }
 
 # data %>% ggplot2::ggplot(ggplot2::aes(x = timestamp, y = pim)) +

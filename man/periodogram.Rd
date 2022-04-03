@@ -16,8 +16,7 @@ periodogram(
 )
 }
 \arguments{
-\item{data}{A \code{\link[tsibble:tsibble]{tsibble}} object with a
-\code{\link[=as.Date]{Date}} or \code{\link[=as.POSIXct]{POSIXt}} vector as index.}
+\item{data}{A \code{\link[tsibble:tsibble]{tsibble}} object.}
 
 \item{col}{An string indicating which column of \code{data} to use.}
 
@@ -137,25 +136,25 @@ data <- tsibble::tsibble(timestamp = seq(as.POSIXct("2020-01-01"),
                                          as.POSIXct("2020-01-02 05:59:59"),
                                          by = "min"),
                                          x = rep(seq(1, 60), times = 30))
-periodogram <- periodogram(data, "x", p_unit = "minutes", p_min = 1,
-                           p_max = 350, p_step = 1, alpha = 0.05,
-                           print = FALSE)
+per <- periodogram(data, "x", p_unit = "minutes", p_min = 1,
+                   p_max = 350, p_step = 1, alpha = 0.05,
+                   print = FALSE)
 
-periodogram$p_unit
-head(periodogram$p_seq)
-periodogram$alpha
-head(periodogram$a_p)
-head(periodogram$q_p)
-head(periodogram$q_p_critical)
-head(periodogram$q_p_pvalue)
-periodogram$q_p_peaks
-periodogram$q_p_plot
+per$p_unit
+head(per$p_seq)
+per$alpha
+head(per$a_p)
+head(per$q_p)
+head(per$q_p_critical)
+head(per$q_p_pvalue)
+per$q_p_peaks
+per$q_p_plot
 
 ## Using interactive plots
 
 if (interactive() &&
     requireNamespace("plotly", quietly = TRUE)) {
-    plotly::ggplotly(periodogram$q_p_plot)
+    plotly::ggplotly(per$q_p_plot)
 }
 }
 \references{

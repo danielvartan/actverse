@@ -51,7 +51,9 @@ find_epoch(data, 0.8)
 }
 \seealso{
 Other utility functions: 
+\code{\link{aggregate_index}()},
 \code{\link{raw_data}()},
-\code{\link{read_acttrust}()}
+\code{\link{read_acttrust}()},
+\code{\link{write_acttrust}()}
 }
 \concept{utility functions}

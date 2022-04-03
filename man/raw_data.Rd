@@ -35,7 +35,9 @@ raw_data("acttrust.txt")
 }
 \seealso{
 Other utility functions: 
+\code{\link{aggregate_index}()},
 \code{\link{find_epoch}()},
-\code{\link{read_acttrust}()}
+\code{\link{read_acttrust}()},
+\code{\link{write_acttrust}()}
 }
 \concept{utility functions}

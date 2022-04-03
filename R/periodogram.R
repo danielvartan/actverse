@@ -64,8 +64,7 @@
 #' this test.
 #' * \eqn{Var(X)}= variance of the data (\eqn{X}).
 #'
-#' @param data A [`tsibble`][tsibble::tsibble()] object with a
-#'   [`Date`][as.Date()] or [`POSIXt`][as.POSIXct()] vector as index.
+#' @param data A [`tsibble`][tsibble::tsibble()] object.
 #' @param col An string indicating which column of `data` to use.
 #' @param p_unit (optional) a string indicating at which time unit the index
 #'   must be aggregated (valid values: `“seconds”`, `“minutes”`, `“hours”`,
@@ -117,25 +116,25 @@
 #'                                          as.POSIXct("2020-01-02 05:59:59"),
 #'                                          by = "min"),
 #'                                          x = rep(seq(1, 60), times = 30))
-#' periodogram <- periodogram(data, "x", p_unit = "minutes", p_min = 1,
-#'                            p_max = 350, p_step = 1, alpha = 0.05,
-#'                            print = FALSE)
+#' per <- periodogram(data, "x", p_unit = "minutes", p_min = 1,
+#'                    p_max = 350, p_step = 1, alpha = 0.05,
+#'                    print = FALSE)
 #'
-#' periodogram$p_unit
-#' head(periodogram$p_seq)
-#' periodogram$alpha
-#' head(periodogram$a_p)
-#' head(periodogram$q_p)
-#' head(periodogram$q_p_critical)
-#' head(periodogram$q_p_pvalue)
-#' periodogram$q_p_peaks
-#' periodogram$q_p_plot
+#' per$p_unit
+#' head(per$p_seq)
+#' per$alpha
+#' head(per$a_p)
+#' head(per$q_p)
+#' head(per$q_p_critical)
+#' head(per$q_p_pvalue)
+#' per$q_p_peaks
+#' per$q_p_plot
 #'
 #' ## Using interactive plots
 #'
 #' if (interactive() &&
 #'     requireNamespace("plotly", quietly = TRUE)) {
-#'     plotly::ggplotly(periodogram$q_p_plot)
+#'     plotly::ggplotly(per$q_p_plot)
 #' }
 periodogram <- function(data, col, p_unit = "minutes", p_min = 1000,
                         p_max = 2500, p_step = 1, alpha = 0.05, print = TRUE) {
@@ -143,87 +142,37 @@ periodogram <- function(data, col, p_unit = "minutes", p_min = 1000,
                       "quarter", "year")
     p_unit_choices <- append(p_unit_choices, paste0(p_unit_choices, "s"))
 
-    assert_tsibble(data, index_class = c("Date", "POSIXt"), min.rows = 2,
-                   min.cols = 2)
+    assert_tsibble(data, min.rows = 2, min.cols = 2)
+    assert_index_class(data)
+    assert_clear_epoch(data, 0.9)
+    assert_regularity(data, 0.9)
+    warn_regularity(data, 0.99)
     checkmate::assert_choice(col, names(data))
-    checkmate::assert_numeric(data[[col]], min.len = 2, any.missing = FALSE)
+    checkmate::assert_numeric(data[[col]], min.len = 2)
+    warn_any_missing(data[[col]])
     checkmate::assert_choice(p_unit, p_unit_choices)
+    assert_epoch_compatibility(data, p_unit)
     checkmate::assert_int(p_min, lower = 1)
     checkmate::assert_int(p_max, lower = 1)
     checkmate::assert_int(p_step, lower = 1)
+    assert_leq(p_min + p_step, p_max)
     checkmate::assert_number(alpha, lower = 0.001, upper = 0.999)
     checkmate::assert_flag(print)
-    checkmate::assert_true(p_min <= p_max) # Create custom assertion
-    checkmate::assert_true((p_min + p_step) <= p_max) # Create custom assertion
 
     # R CMD Check variable bindings fix (see: http://bit.ly/3bliuam)
 
     . <- NULL
 
-    epoch <- find_epoch(data, 0.9)
-
-    if (is.na(epoch$best_match)) {
-        cli::cli_abort(paste0(
-            "Your {.strong {cli::col_red('data')}} must have at least ",
-            "{.strong {cli::col_red('90%')}} of regularity to run this ",
-            "function. See {backtick_('?find_epoch()')} to check your data ",
-            "regularity."
-        ))
-    } else {
-        if (string_to_period(p_unit) < epoch$best_match) {
-            cli::cli_abort(paste0(
-                "The periodicity present in {.strong {cli::col_blue('data')}} ",
-                "(epoch = {epoch$best_match} seconds) ",
-                "don't allow to break it in {p_unit}. ",
-                "Use a more appropriate value in ",
-                "{.strong {cli::col_red('p_unit')}} when running this ",
-                "function."
-            ))
-        }
-    }
-
-    if (!test_regularity(data, strict = TRUE) &&
-        !test_regularity(data, 0.99)) {
-        cli::cli_alert_warning(paste0(
-            "The time series is not strictly regular ",
-            "(see {backtick_('?find_epoch')}). ",
-            "The output may diverge."
-        ))
-
-        prevalence <- paste0(
-            epoch$prevalence$epoch, " (",
-            round(epoch$prevalence$proportion * 100, 2) , "% of prevalence)"
-            )
-
-        cli::cli_alert_warning(paste0(
-            "Found {.strong ",
-            "{cli::col_red(dplyr::n_distinct(diff(zoo::index(data))))}} ",
-            "unique time differences between the time series indexes: ",
-            "{head(prevalence, 10)} seconds ",
-            "(showing up to a total of 10 values)."
-        ))
-    }
-
-    # if (any(is.na(as.numeric(data[, 1])))) {
-    #     cli::cli_alert_warning(paste0(
-    #         "The {.strong {cli::col_red(names(data)[1])}} ",
-    #         "column from {.strong {cli::col_blue('data')}} ",
-    #         "has missing values. The output may diverge. ",
-    #         "Try to interpolate the missing values before using this function ",
-    #         "(see {backtick_('?zoo::na.approx')})."
-    #     ))
-    # }
-
     data <- data %>%
         dplyr::select(tsibble::index2_var(.), col) %>%
-        aggregate_index_mean(p_unit) %>%
+        aggregate_index(p_unit) %>%
         magrittr::extract2(col)
 
     for (i in c("p_min", "p_max")) {
         if (get(i) > length(data)) {
             cli::cli_abort(paste0(
                 "{.strong {cli::col_red(i)}} is greater than the amount ",
-                "of time series data delimited by ",
+                "of the time series data when aggregate by ",
                 "{.strong cli::col_blue(p_unit)}."
             ))
         }
@@ -247,7 +196,8 @@ periodogram <- function(data, col, p_unit = "minutes", p_min = 1000,
                                         alpha, paste0("Period (", p_unit, ")"))
         )) %>%
         magrittr::extract(c("p_unit", "p_seq", "alpha", "a_p", "q_p",
-                            "q_p_critical", "q_p_pvalue", "q_p_peaks", "q_p_plot"))
+                            "q_p_critical", "q_p_pvalue", "q_p_peaks",
+                            "q_p_plot"))
 
     if (isTRUE(print)) print(out$q_p_plot)
 
@@ -308,15 +258,17 @@ find_periodogram_peaks <- function(p_seq, q_p, q_p_critical, q_p_pvalue = NULL,
     groups <- list(x[1])
     level <- 1
 
-    for (i in seq(2, length(x))) {
-         if (abs(diff(c(x[i - 1], x[i]))) <= max_diff) {
-            groups[[level]] <- append(groups[[level]], x[i])
-        } else {
-            level <- level + 1
-            if (length(groups) < level) {
-                groups[[level]] <- x[i]
-            } else {
+    if (!length(x) == 1) {
+        for (i in seq(2, length(x))) {
+            if (abs(diff(c(x[i - 1], x[i]))) <= max_diff) {
                 groups[[level]] <- append(groups[[level]], x[i])
+            } else {
+                level <- level + 1
+                if (length(groups) < level) {
+                    groups[[level]] <- x[i]
+                } else {
+                    groups[[level]] <- append(groups[[level]], x[i])
+                }
             }
         }
     }

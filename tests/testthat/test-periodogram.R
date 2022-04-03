@@ -31,10 +31,10 @@ test_that("periodogram() | Minutes to hours", {
 })
 
 test_that("periodogram() | Error test", {
-    data <- tsibble::tsibble(timestamp = sample(seq(as.POSIXct('2015-01-01'),
-                                                    as.POSIXct('2015-01-08'),
-                                                    by = "min"), 1000),
-                             x = runif(n = 1000, min = 0, max = 1000))
+    data <- tsibble::tsibble(timestamp = seq(as.POSIXct('2015-01-01'),
+                                             as.POSIXct('2015-01-08'),
+                                             by = "min"),
+                             x = runif(n = 10081, min = 0, max = 1000))
 
     expect_error(periodogram(data = 1, col = "x", p_unit = "minutes", p_min = 1,
                              p_max = 4600, p_step = 1),

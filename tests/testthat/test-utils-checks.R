@@ -38,7 +38,7 @@ test_that("*_posixt() | general test", {
     checkmate::expect_string(check_posixt(c(1, NA), any.missing = FALSE),
                              "'c\\(1, NA\\)' cannot have missing values")
     checkmate::expect_string(check_posixt(NULL, null.ok = FALSE),
-                             "'NULL' cannot have 'NULL' values")
+                             "'NULL' cannot be 'NULL'")
     checkmate::expect_string(check_posixt(lubridate::as_datetime(1),
                                           lower = lubridate::as_datetime(2)),
                              "Element 1 is not <= ")

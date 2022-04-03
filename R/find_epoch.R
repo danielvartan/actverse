@@ -44,8 +44,8 @@
 #'
 #' find_epoch(data, 0.8)
 find_epoch <- function(data, threshold = 0.9) {
-    assert_tsibble(data, index_class = c("Date", "POSIXt"), min.rows = 2,
-                   min.cols = 2)
+    assert_tsibble(data, min.rows = 2, min.cols = 2)
+    assert_index_class(data)
     checkmate::assert_number(threshold, lower = 0.001, upper = 1)
 
     # R CMD Check variable bindings fix (see: http://bit.ly/3bliuam)

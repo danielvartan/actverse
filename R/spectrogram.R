@@ -43,120 +43,60 @@
 #'                                          as.POSIXct("2020-01-02 05:59:59"),
 #'                                          by = "min"),
 #'                                          x = rep(seq(1, 60), times = 30))
-#' spectrogram <- spectrogram(data, "x", p_unit = "minutes", p_min = 1,
-#'                            p_max = 120, p_step = 1, int = "hours", int_n = 2,
-#'                            int_step = 59, alpha = 0.05, print = FALSE)
+#' spec <- spectrogram(data, "x", p_unit = "minutes", p_min = 1,
+#'                     p_max = 120, p_step = 1, int = "hours", int_n = 2,
+#'                     int_step = 59, alpha = 0.05, print = FALSE)
 #'
-#' head(names(spectrogram$periodograms))
-#' spectrogram$periodograms$int_1$p_unit
-#' head(spectrogram$periodograms$int_1$p_seq)
-#' spectrogram$periodograms$int_1$int
-#' spectrogram$periodograms$int_1$alpha
-#' head(spectrogram$periodograms$int_1$a_p)
-#' head(spectrogram$periodograms$int_1$q_p)
-#' head(spectrogram$periodograms$int_1$q_p_critical)
-#' head(spectrogram$periodograms$int_1$q_p_rel)
-#' head(spectrogram$periodograms$int_1$q_p_pvalue)
-#' head(spectrogram$periodograms$int_1$q_p_rel)
-#' spectrogram$periodograms$int_1$q_p_peaks
-#' spectrogram$spectrogram
+#' head(names(spec$periodograms))
+#' spec$periodograms$int_1$p_unit
+#' head(spec$periodograms$int_1$p_seq)
+#' spec$periodograms$int_1$int
+#' spec$periodograms$int_1$alpha
+#' head(spec$periodograms$int_1$a_p)
+#' head(spec$periodograms$int_1$q_p)
+#' head(spec$periodograms$int_1$q_p_critical)
+#' head(spec$periodograms$int_1$q_p_rel)
+#' head(spec$periodograms$int_1$q_p_pvalue)
+#' head(spec$periodograms$int_1$q_p_rel)
+#' spec$periodograms$int_1$q_p_peaks
+#' spec$spectrogram
 #'
 #' ## Using interactive plots
 #'
 #' if (interactive() &&
 #'     requireNamespace("plotly", quietly = TRUE)) {
-#'     plotly::ggplotly(spectrogram$spectrogram)
+#'     plotly::ggplotly(spec$spectrogram)
 #' }
-spectrogram <- function(data, col = NULL, p_unit = "minutes", p_min = 1000,
+spectrogram <- function(data, col, p_unit = "minutes", p_min = 1000,
                         p_max = 2500, p_step = 1, int = "days", int_n = 7,
                         int_step = 720, alpha = 0.05, print = TRUE) {
     p_unit_choices <- c("second", "minute", "hour", "day", "week", "month",
                         "quarter", "year")
     p_unit_choices <- append(p_unit_choices, paste0(p_unit_choices, "s"))
 
-    assert_tsibble(data, index_class = c("Date", "POSIXt"), min.rows = 2,
-                   min.cols = 2)
+    assert_tsibble(data, min.rows = 2, min.cols = 2)
+    assert_index_class(data)
+    assert_clear_epoch(data, 0.9)
+    assert_regularity(data, 0.9)
+    warn_regularity(data, 0.99)
     checkmate::assert_choice(col, names(data))
-    checkmate::assert_numeric(data[[col]], min.len = 2, any.missing = FALSE,
-                              null.ok = TRUE)
+    checkmate::assert_numeric(data[[col]], min.len = 2)
+    warn_any_missing(data[[col]])
     checkmate::assert_choice(p_unit, p_unit_choices)
+    assert_epoch_compatibility(data, p_unit)
     checkmate::assert_int(p_min, lower = 1)
     checkmate::assert_int(p_max, lower = 1)
     checkmate::assert_int(p_step, lower = 1)
+    assert_leq(p_min + p_step, p_max)
     checkmate::assert_choice(int, p_unit_choices)
     checkmate::assert_int(int_n, lower = 1)
     checkmate::assert_int(int_step, lower = 1)
     checkmate::assert_number(alpha, lower = 0.001, upper = 0.999)
     checkmate::assert_flag(print)
-    checkmate::assert_true(p_min <= p_max) # Create custom assertion
-    checkmate::assert_true((p_min + p_step) <= p_max) # Create custom assertion
 
     # R CMD Check variable bindings fix (see: http://bit.ly/3bliuam)
 
     . <- NULL
-
-    epoch <- find_epoch(data, 0.9)
-
-    if (is.na(epoch$best_match)) {
-        cli::cli_abort(paste0(
-            "Your {.strong {cli::col_red('data')}} must have at least ",
-            "90% of regularity to run this function. ",
-            "See {backtick_('?find_epoch()')} to check your data regularity."
-        ))
-    } else {
-        if (string_to_period(p_unit) < epoch$best_match) {
-            cli::cli_abort(paste0(
-                "The periodicity present in {.strong {cli::col_blue('data')}} ",
-                "(epoch = {epoch$best_match} seconds) ",
-                "don't allow to break it in {p_unit}. ",
-                "Use a more appropriate value in ",
-                "{.strong {cli::col_red('p_unit')}} when running this ",
-                "function."
-            ))
-        }
-    }
-
-    if (!test_regularity(data, strict = TRUE) &&
-        !test_regularity(data, 0.99)) {
-        cli::cli_alert_warning(paste0(
-            "The time series is not strictly regular ",
-            "(see {backtick_('?find_epoch')}). ",
-            "The output may diverge."
-        ))
-
-        prevalence <- paste0(
-            epoch$prevalence$epoch, " (",
-            round(epoch$prevalence$proportion * 100, 2) , "% of prevalence)"
-        )
-
-        cli::cli_alert_warning(paste0(
-            "Found {.strong ",
-            "{cli::col_red(dplyr::n_distinct(diff(zoo::index(data))))}} ",
-            "unique time differences between the time series indexes: ",
-            "{head(prevalence, 10)} seconds ",
-            "(showing up to a total of 10 values)."
-        ))
-    }
-
-    if (!ncol(data) == 1) {
-        cli::cli_alert_warning(paste0(
-            "{.strong {cli::col_blue('data')}} ",
-            "has more than 1 column. ",
-            "Only the first column ",
-            "({.strong {cli::col_red(names(data)[1])}}) ",
-            "will be used."
-        ))
-    }
-
-    # if (any(is.na(as.numeric(data[, 1])))) {
-    #     cli::cli_alert_warning(paste0(
-    #         "The {.strong {cli::col_red(names(data)[1])}} ",
-    #         "column from {.strong {cli::col_blue('data')}} ",
-    #         "has missing values. The output may diverge. ",
-    #         "Try to interpolate the missing values before using this function ",
-    #         "(see {backtick_('?zoo::na.approx')})."
-    #     ))
-    # }
 
     if (which(p_unit_choices == int) <= which(p_unit_choices == p_unit)) {
         cli::cli_abort(paste0(
@@ -187,22 +127,12 @@ spectrogram <- function(data, col = NULL, p_unit = "minutes", p_min = 1000,
         ))
     }
 
-    int_max_n_epoch <- string_to_period(int) / epoch$best_match
-
-    if (int_step >= int_max_n_epoch) {
-        cli::cli_abort(paste0(
-            "{.strong {cli::col_red('int_step')}} cannot be ",
-            "equal or greater than the total amount of epochs in ",
-            "{.strong {cli::col_blue('int')}} ({int_max_n_epoch})."
-        ))
-    }
-
     per_main <- shush(periodogram(data, col, p_unit, p_min, p_max, p_step,
                                   alpha = alpha, print = FALSE))
 
     data <- data %>%
         dplyr::select(tsibble::index2_var(.), col) %>%
-        aggregate_index_mean(p_unit)
+        aggregate_index(p_unit)
 
     for (i in c("p_min", "p_max")) {
         if (get(i) > length(data[[col]])) {
@@ -212,6 +142,18 @@ spectrogram <- function(data, col = NULL, p_unit = "minutes", p_min = 1000,
                 "{.strong cli::col_blue(p_unit)}."
             ))
         }
+    }
+
+    epoch <- find_epoch(data, 0.9)
+    int_max_n_epoch <- string_to_period(int) / epoch$best_match
+
+    if (int_step >= int_max_n_epoch) {
+        cli::cli_abort(paste0(
+            "{.strong {cli::col_red('int_step')}} cannot be ",
+            "greater or equal to the total amount of epochs available in ",
+            "{.strong {cli::col_blue('int')}} after data aggregation ",
+            "({int_max_n_epoch})."
+        ))
     }
 
     ints <- find_spectrogram_intervals(data, col, int, int_n, int_step)
@@ -240,8 +182,8 @@ find_spectrogram_intervals <- function(data, col, int = "days", int_n = 7,
     int_choices <- c("microseconds", "milliseconds", "seconds", "minutes",
                        "hours", "days", "weeks", "months", "quarters", "years")
 
-    assert_tsibble(data, index_class = c("Date", "POSIXt"), min.rows = 2,
-                   min.cols = 2)
+    assert_tsibble(data, min.rows = 2, min.cols = 2)
+    assert_index_class(data)
     checkmate::assert_choice(col, names(data))
     checkmate::assert_numeric(data[[col]], min.len = 2, any.missing = FALSE,
                               null.ok = TRUE)
@@ -277,8 +219,8 @@ find_spectrogram_intervals <- function(data, col, int = "days", int_n = 7,
 
 compute_interval_periodogram <- function(data, col, int_i, p_unit, p_seq,
                                          alpha = 0.9, envir = NULL) {
-    assert_tsibble(data, index_class = c("Date", "POSIXt"), min.rows = 2,
-                   min.cols = 2)
+    assert_tsibble(data, min.rows = 2, min.cols = 2)
+    assert_index_class(data)
     checkmate::assert_choice(col, names(data))
     checkmate::assert_numeric(data[[col]], min.len = 2, any.missing = FALSE,
                               null.ok = TRUE)
