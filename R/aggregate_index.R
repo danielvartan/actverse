@@ -21,16 +21,21 @@
 #'
 #' ````
 #' function(x) {
-#'     if (is.numeric(x) && !identical(x, as.integer(x))) {
+#'     if (is.numeric(x) && !identical(x, as.numeric(as.integer(x)))) {
 #'         mean(x, na.rm = TRUE)
+#'         if (is.nan(out)) as.numeric(NA) else out
 #'     } else {
-#'         unique <- unique(x)
-#'         unique[which.max(tabulate(match(x, unique(x))))]
+#'         y <- x[which(!is.na(x))]
+#'         unique <- unique(y)
+#'         unique[which.max(tabulate(match(y, unique)))]
 #'     }
 #' }
 #' ````
 #' This function average values for numeric variables and assigning the most
-#' frequent value (mode) for integer or other type of variables.
+#' frequent value (mode) for integer or other type of variables (\strong{*}).
+#'
+#' \strong{*}: If no mode can be found, the function will return the first value
+#' of `x`.
 #'
 #' @param data A [`tsibble`][tsibble::tsibble()] object.
 #' @param unit A string indicating at which time unit the index must be
@@ -68,8 +73,15 @@ aggregate_index <- function(data, unit, fun = NULL, week_start = 1) {
     checkmate::assert_function(fun, null.ok = TRUE)
     checkmate::assert_choice(week_start, c(1, 7))
 
+    # R CMD Check variable bindings fix (see: http://bit.ly/3bliuam)
+    . <- .InDeX_pLaCeHoLdEr1 <- NULL
+
     index_var <- tsibble::index_var(data)
     index <- data[[index_var]]
+
+    # Workaround to avoid problems with dplyr::select()
+    data <- data %>%
+        dplyr::rename(.InDeX_pLaCeHoLdEr1 = tsibble::index_var(data))
 
     if (is.null(fun)) fun <- aggregate_index_default_function
 
@@ -86,18 +98,20 @@ aggregate_index <- function(data, unit, fun = NULL, week_start = 1) {
     }
 
     data %>%
-        tsibble::index_by(.InDeX_pLaCeHoLdEr = group) %>%
+        tsibble::index_by(.InDeX_pLaCeHoLdEr2 = group) %>%
         dplyr::summarise(dplyr::across(dplyr::everything(), fun)) %>%
-        dplyr::select(-index_var) %>%
-        dplyr::rename_with(~ gsub("^.InDeX_pLaCeHoLdEr$", index_var, .x))
+        dplyr::select(-.InDeX_pLaCeHoLdEr1) %>%
+        dplyr::rename_with(~ gsub("^.InDeX_pLaCeHoLdEr2$", index_var, .x))
 }
 
 aggregate_index_default_function <- function(x) {
-    if (is.numeric(x) && !identical(x, as.integer(x))) {
-        mean(x, na.rm = TRUE)
+    if (is.numeric(x) && !identical(x, as.numeric(shush(as.integer(x))))) {
+        out <- mean(x, na.rm = TRUE)
+        if (is.nan(out)) as.numeric(NA) else out
     } else {
         # Return value that has highest number of occurrences (mode)
-        unique <- unique(x)
-        unique[which.max(tabulate(match(x, unique(x))))]
+        y <- x[which(!is.na(x))]
+        unique <- unique(y)
+        unique[which.max(tabulate(match(y, unique)))]
     }
 }

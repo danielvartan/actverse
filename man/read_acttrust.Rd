@@ -4,15 +4,7 @@
 \alias{read_acttrust}
 \title{Read, tidy, and validate an ActTrust file}
 \usage{
-read_acttrust(
-  file = file.choose(),
-  tz = "UTC",
-  regularize = TRUE,
-  interpolate_gaps = TRUE,
-  interpolate_gaps_method = "locf",
-  interpolate_offwrist = TRUE,
-  interpolate_offwrist_method = "overall_mean"
-)
+read_acttrust(file = file.choose(), tz = "UTC", regularize = TRUE)
 }
 \arguments{
 \item{file}{A string with the file path for the ActTrust data. If not
@@ -26,24 +18,6 @@ For more information, see \code{\link[=OlsonNames]{?timezone}} (default: \code{"
 \item{regularize}{(optional) a \code{\link[=logical]{logical}} value indicating if the
 function must correct irregular intervals (\strong{highly recommended}). See
 more about it in the Details section (default: \code{TRUE}).}
-
-\item{interpolate_gaps}{(optional) a \code{\link[=logical]{logical}} value indicating
-if the function must interpolate the gaps found when \code{regularize == TRUE}
-(\strong{highly recommended}) (default: \code{TRUE}).}
-
-\item{interpolate_gaps_method}{(optional) a string indicating the method of
-interpolation for the gaps. It follows the same valid values as
-\code{interpolate_offwrist_method} (default: \code{"locf"}).}
-
-\item{interpolate_offwrist}{(optional) a \code{\link[=logical]{logical}} value
-indicating if the function must interpolate offwrist states (when the
-device is removed) (\strong{highly recommended}) (default: \code{TRUE}).}
-
-\item{interpolate_offwrist_method}{(optional) a string indicating the method
-of interpolation for the offwrist values. Valid values:
-\code{\link[zoo:na.approx]{approx}}, \code{\link[zoo:na.locf]{locf}},
-\code{\link[zoo:na.aggregate]{overall_mean}}, \code{\link[zoo:na.approx]{spline}}. See
-the links to learn more about them (default: \code{"overall_mean"}).}
 }
 \value{
 A \link[tsibble:tsibble]{tsibble} object. The data structure can be
@@ -64,6 +38,12 @@ ActTrust is a trademark of
 \href{https://www.condorinst.com.br/}{Condor Instruments Ltda}.
 }
 \details{
+\subsection{Requirements}{
+
+\code{read_acttrust()} requires the \code{\link[readr:readr-package]{readr}} and
+\code{\link[readr:readr-package]{zoo}} packages.
+}
+
 \subsection{\code{Regularize} parameter}{
 
 It's common to find some uneven epoch/interval in ActTrust data files. This
@@ -78,20 +58,15 @@ aggregating the values between epochs, averaging values for numeric variables
 and assigning the most frequent value (mode) for integer or other type of
 variables.
 
-We highly recommend regularizing your data and interpolating possible gaps
-that can be found. If you not interpolate the gaps, they will be assign
-as \code{NA}.
+Any gap found in the time series will be assign as \code{NA}, with a \code{state}
+value of \code{9}.
 }
 
-\subsection{Offwrist and offwrist interpolation}{
+\subsection{Offwrist data}{
 
 Unless \code{interpolate_offwrist == TRUE}, \code{read_acttrust()} will transform any
-offwrist data into missing data (\code{NA}).
-
-Some analysis can go off with missing data (e.g., Sokolove & Bushell's
-\eqn{\chi^{2}}{chi square} periodogram, Non-parametric Circadian Rhythm
-Analysis (NPCRA)). It's always best to interpolate missing values. They will
-still going to be classified as offwrist in the \code{state} variable.
+offwrist data into missing data (\code{NA}). They will still going to be
+classified as offwrist in the \code{state} variable.
 }
 
 \subsection{Data wrangling}{

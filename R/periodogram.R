@@ -160,7 +160,6 @@ periodogram <- function(data, col, p_unit = "minutes", p_min = 1000,
     checkmate::assert_flag(print)
 
     # R CMD Check variable bindings fix (see: http://bit.ly/3bliuam)
-
     . <- NULL
 
     data <- data %>%
@@ -218,7 +217,7 @@ compute_periodogram <- function(p, data, alpha = 0.05, envir = NULL) {
                           ncol = p,
                           byrow = TRUE)
 
-    y_ph <- colMeans(buys_ballot)
+    y_ph <- colMeans(buys_ballot, na.rm = TRUE)
     y_ph_mean <- mean(y_ph, na.rm = TRUE)
     x_var <- stats::var(data[1:(m * p)], na.rm = TRUE)
 

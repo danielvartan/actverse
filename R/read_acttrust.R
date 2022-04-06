@@ -17,6 +17,11 @@
 #'
 #' @details
 #'
+#' ## Requirements
+#'
+#' `read_acttrust()` requires the [`readr`][readr::readr-package] and
+#' [`zoo`][readr::readr-package] packages.
+#'
 #' ## `Regularize` parameter
 #'
 #' It's common to find some uneven epoch/interval in ActTrust data files. This
@@ -31,19 +36,14 @@
 #' and assigning the most frequent value (mode) for integer or other type of
 #' variables.
 #'
-#' We highly recommend regularizing your data and interpolating possible gaps
-#' that can be found. If you not interpolate the gaps, they will be assign
-#' as `NA`.
+#' Any gap found in the time series will be assign as `NA`, with a `state`
+#' value of `9`.
 #'
-#' ## Offwrist and offwrist interpolation
+#' ## Offwrist data
 #'
 #' Unless `interpolate_offwrist == TRUE`, `read_acttrust()` will transform any
-#' offwrist data into missing data (`NA`).
-#'
-#' Some analysis can go off with missing data (e.g., Sokolove & Bushell's
-#' \eqn{\chi^{2}}{chi square} periodogram, Non-parametric Circadian Rhythm
-#' Analysis (NPCRA)). It's always best to interpolate missing values. They will
-#' still going to be classified as offwrist in the `state` variable.
+#' offwrist data into missing data (`NA`). They will still going to be
+#' classified as offwrist in the `state` variable.
 #'
 #' ## Data wrangling
 #'
@@ -71,20 +71,6 @@
 #' @param regularize (optional) a [`logical`][logical()] value indicating if the
 #'   function must correct irregular intervals (__highly recommended__). See
 #'   more about it in the Details section (default: `TRUE`).
-#' @param interpolate_gaps (optional) a [`logical`][logical()] value indicating
-#'   if the function must interpolate the gaps found when `regularize == TRUE`
-#'   (__highly recommended__) (default: `TRUE`).
-#' @param interpolate_gaps_method (optional) a string indicating the method of
-#'   interpolation for the gaps. It follows the same valid values as
-#'   `interpolate_offwrist_method` (default: `"locf"`).
-#' @param interpolate_offwrist (optional) a [`logical`][logical()] value
-#'   indicating if the function must interpolate offwrist states (when the
-#'   device is removed) (__highly recommended__) (default: `TRUE`).
-#' @param interpolate_offwrist_method (optional) a string indicating the method
-#'   of interpolation for the offwrist values. Valid values:
-#'   [`approx`][zoo::na.approx()], [`locf`][zoo::na.locf()],
-#'   [`overall_mean`][zoo::na.aggregate()], [`spline`][zoo::na.spline()]. See
-#'   the links to learn more about them (default: `"overall_mean"`).
 #'
 #' @return A [tsibble][tsibble::tsibble()] object. The data structure can be
 #' found in [`?acttrust`][actverse::acttrust].
@@ -95,42 +81,25 @@
 #'
 #' @examples
 #' read_acttrust(raw_data("acttrust.txt"))
-read_acttrust <- function(file = file.choose(), tz = "UTC",
-                          regularize = TRUE,
-                          interpolate_gaps = TRUE,
-                          interpolate_gaps_method = "locf",
-                          interpolate_offwrist = TRUE,
-                          interpolate_offwrist_method = "overall_mean") {
-    method_choices <- c("approx", "locf", "overall_mean", "spline")
-
+read_acttrust <- function(file = file.choose(), tz = "UTC", regularize = TRUE) {
     checkmate::assert_string(file)
     checkmate::assert_file_exists(file)
     checkmate::assert_choice(tz, OlsonNames())
     checkmate::assert_flag(regularize)
-    checkmate::assert_flag(interpolate_gaps)
-    checkmate::assert_choice(interpolate_gaps_method, method_choices)
-    checkmate::assert_flag(interpolate_offwrist)
-    checkmate::assert_choice(interpolate_offwrist_method, method_choices)
-    require_pkg("readr", "stringr")
-
-    if (any(c(interpolate_offwrist, interpolate_gaps))) {
-        require_pkg("zoo")
-    }
+    require_pkg("readr")
 
     read_acttrust_data(file) %>%
         tidy_acttrust_data(tz = tz) %>%
-        validate_acttrust_data(regularize, interpolate_gaps,
-                               interpolate_gaps_method, interpolate_offwrist,
-                               interpolate_offwrist_method)
+        validate_acttrust_data(regularize)
 }
 
 read_acttrust_data <- function(file = file.choose()) {
     checkmate::assert_string(file)
     checkmate::assert_file_exists(file)
-    require_pkg("readr", "stringr")
+    require_pkg("readr")
 
-    if (stringr::str_detect(readLines(file, n = 1),
-                            "Condor Instruments Report")) {
+    if (grepl("Condor Instruments Report",
+              readLines(file, n = 1))) {
         skip <- 25
         n <- 26
     } else {
@@ -138,7 +107,7 @@ read_acttrust_data <- function(file = file.choose()) {
         n <- 1
     }
 
-    if (stringr::str_detect(readLines(file, n = n)[n], ";")) {
+    if (grepl(";", readLines(file, n = n)[n])) {
         delim <- ";"
     } else {
         delim <- "\t"
@@ -152,11 +121,9 @@ read_acttrust_data <- function(file = file.choose()) {
                           trim_ws = TRUE)
 }
 
-tidy_acttrust_data <- function(data,
-                               tz = "America/Sao_Paulo") {
+tidy_acttrust_data <- function(data, tz = "America/Sao_Paulo") {
     checkmate::assert_tibble(data, min.cols = 1, min.rows = 1)
     checkmate::assert_choice(tz, OlsonNames())
-    require_pkg("stringr", "utils")
 
     # R CMD Check variable bindings fix (see: http://bit.ly/3bliuam)
 
@@ -177,7 +144,7 @@ tidy_acttrust_data <- function(data,
 
     out <- data %>%
         dplyr::mutate(dplyr::across(.fns = as.character)) %>%
-        dplyr::mutate(dplyr::across(.fns = stringr::str_trim)) %>%
+        dplyr::mutate(dplyr::across(.fns = trimws)) %>%
         dplyr::rename(ms = MS,
                       pim = PIM, pim_n = PIMn, tat = TAT, tat_n = TATn,
                       zcm = ZCM, zcm_n = ZCMn,
@@ -199,13 +166,12 @@ tidy_acttrust_data <- function(data,
             dplyr::select(-date, -time)
     }
 
-    if (isTRUE(any(utils::head(stringr::str_detect(out$wrist_temperature, ","),
-                               100)))) {
+    if (isTRUE(any(grepl(",", out$wrist_temperature)[1:100], na.rm = TRUE))) {
         out <- out %>%
             dplyr::mutate(dplyr::across(
                 dplyr::vars(-timestamp, -date, -time),
-                function(x) stringr::str_replace(x, ",", "\\."))
-            )
+                ~ gsub(",", "\\.", x)
+                ))
     }
 
     out %>%
@@ -225,19 +191,10 @@ tidy_acttrust_data <- function(data,
         )
 }
 
-validate_acttrust_data <- function(data, regularize = TRUE,
-                                   interpolate_gaps = TRUE,
-                                   interpolate_gaps_method = "locf",
-                                   interpolate_offwrist = FALSE,
-                                   interpolate_offwrist_method = "overall_mean") {
-    method_choices <- c("approx", "locf", "overall_mean", "spline")
+validate_acttrust_data <- function(data, regularize = TRUE) {
 
     checkmate::assert_tibble(data, min.cols = 1, min.rows = 1)
     checkmate::assert_flag(regularize)
-    checkmate::assert_flag(interpolate_gaps)
-    checkmate::assert_choice(interpolate_gaps_method, method_choices)
-    checkmate::assert_flag(interpolate_offwrist)
-    checkmate::assert_choice(interpolate_offwrist_method, method_choices)
 
     # R CMD Check variable bindings fix (see: http://bit.ly/3bliuam)
 
@@ -257,9 +214,7 @@ validate_acttrust_data <- function(data, regularize = TRUE,
     }
 
     if (isFALSE(regular) && isTRUE(regularize)) {
-        out <- out %>% regularize_acttrust_data(
-            interpolate_gaps = interpolate_gaps,
-            interpolate_gaps_method = interpolate_gaps_method)
+        out <- out %>% regularize_acttrust_data()
     }
 
     out <- out %>%
@@ -272,18 +227,9 @@ validate_acttrust_data <- function(data, regularize = TRUE,
     if (!any(is.na(offwrist_ints))) {
         cli::cli_alert_info(paste0(
             "Found {.strong {cli::col_red(length(offwrist_ints))}} ",
-            "offwrist{?s} blocks in the time series."
+            "offwrist{?s} blocks in the time series. ",
+            "All values were set as `NA`."
         ))
-    }
-
-    if (!any(is.na(offwrist_ints)) && isTRUE(interpolate_offwrist)) {
-        out <- out %>%
-            dplyr::mutate(dplyr::across(
-                !dplyr::matches(
-                    "^timestamp$|^orientation$|^event$|^state$"),
-                ~ interpolate_na(.x, timestamp,
-                                 interpolate_offwrist_method)
-            ))
     }
 
     out %>%
@@ -333,22 +279,15 @@ find_offwrist_intervals <- function(data) {
     }
 }
 
-regularize_acttrust_data <- function(data, interpolate_gaps = TRUE,
-                                     interpolate_gaps_method = "locf") {
-    method_choices <- c("approx", "locf", "overall_mean", "spline")
-
+regularize_acttrust_data <- function(data) {
     assert_tsibble(data, min.rows = 2, min.cols = 2)
     assert_index_class(data)
-    checkmate::assert_flag(interpolate_gaps)
-    checkmate::assert_choice(interpolate_gaps_method, method_choices)
 
     # R CMD Check variable bindings fix (see: http://bit.ly/3bliuam)
 
-    . <- .from <- .to <- NULL
+    . <- .from <- .to <- state <- NULL
 
-    out <- data
-
-    epoch <- out %>%
+    epoch <- data %>%
         find_epoch(0.9) %>%
         magrittr::extract2("best_match")
 
@@ -362,7 +301,7 @@ regularize_acttrust_data <- function(data, interpolate_gaps = TRUE,
             "'?find_epoch()' to check data regularity."
         ))
     } else {
-        out <- out %>% aggregate_index(epoch_unit) %>%
+        out <- data %>% aggregate_index(epoch_unit) %>%
             dplyr::mutate(dplyr::across(
                 !dplyr::matches("^timestamp$"),
                 ~ dplyr::if_else(is.nan(.x), na_as(.x), .x)
@@ -376,29 +315,38 @@ regularize_acttrust_data <- function(data, interpolate_gaps = TRUE,
             cli::cli_alert_info(paste0(
                 "Found {.strong {cli::col_red(length(count_gaps))}} ",
                 "gap{?s} in the time series: ",
-                "{head(count_gaps, 5)} (showing up to a total of 5 values)."
+                "{count_gaps[1:5]} (showing up to a total of 5 values)."
             ))
         }
 
-        out <- out %>% tsibble::fill_gaps() %>%
+        out %>% tsibble::fill_gaps() %>%
             dplyr::mutate(dplyr::across(
                 dplyr::matches("^orientation$|^event$"),
-                ~ dplyr::if_else(is.na(.x), 0, .x)))
-
-        if (isTRUE(interpolate_gaps)) {
-            out <- out %>%
-                dplyr::mutate(dplyr::across(
-                    !dplyr::matches("^timestamp$|^orientation$|^event$"),
-                    ~ interpolate_na(.x, timestamp, interpolate_gaps_method)
-                )) %>%
-                dplyr::mutate(dplyr::across(
-                    !dplyr::matches("^timestamp$|^orientation$"),
-                    ~ dplyr::if_else(.x < 0, 0, .x)
-                ))
-        }
+                ~ dplyr::if_else(is.na(.x), 0, .x))) %>%
+            dplyr::mutate(state = dplyr::if_else(is.na(state), 9, state))
     }
+}
 
-    out
+read_acttrust_gipso <- function(file = file.choose(),
+                                tz = "America/Sao_Paulo") {
+    checkmate::assert_string(file)
+    checkmate::assert_file_exists(file)
+    checkmate::assert_choice(tz, OlsonNames())
+
+    read_acttrust(file = file, tz = tz, regularize = TRUE) %>%
+        dplyr::mutate(dplyr::across(
+            !dplyr::matches(
+                "^timestamp$|^orientation$|^event$|^state$"),
+            ~ dplyr::if_else(state == 9, na_locf(.x, fill_na_tips = TRUE), .x)
+        )) %>%
+        dplyr::mutate(dplyr::across(
+            !dplyr::matches("^timestamp$|^orientation$|^event$"),
+            ~ na_weekly_mean(.x, timestamp, week_start = 1)
+        )) %>%
+        dplyr::mutate(dplyr::across(
+            !dplyr::matches("^timestamp$|^orientation$"),
+            ~ dplyr::if_else(.x < 0, 0, .x)
+        ))
 }
 
 # data %>% ggplot2::ggplot(ggplot2::aes(x = timestamp, y = pim)) +

@@ -95,7 +95,6 @@ spectrogram <- function(data, col, p_unit = "minutes", p_min = 1000,
     checkmate::assert_flag(print)
 
     # R CMD Check variable bindings fix (see: http://bit.ly/3bliuam)
-
     . <- NULL
 
     if (which(p_unit_choices == int) <= which(p_unit_choices == p_unit)) {
@@ -185,8 +184,7 @@ find_spectrogram_intervals <- function(data, col, int = "days", int_n = 7,
     assert_tsibble(data, min.rows = 2, min.cols = 2)
     assert_index_class(data)
     checkmate::assert_choice(col, names(data))
-    checkmate::assert_numeric(data[[col]], min.len = 2, any.missing = FALSE,
-                              null.ok = TRUE)
+    checkmate::assert_numeric(data[[col]], min.len = 2, null.ok = TRUE)
     checkmate::assert_choice(int, int_choices)
     checkmate::assert_int(int_n, lower = 1)
     checkmate::assert_int(int_step, lower = 1)
@@ -222,8 +220,7 @@ compute_interval_periodogram <- function(data, col, int_i, p_unit, p_seq,
     assert_tsibble(data, min.rows = 2, min.cols = 2)
     assert_index_class(data)
     checkmate::assert_choice(col, names(data))
-    checkmate::assert_numeric(data[[col]], min.len = 2, any.missing = FALSE,
-                              null.ok = TRUE)
+    checkmate::assert_numeric(data[[col]], min.len = 2, null.ok = TRUE)
     assert_interval(int_i, any.missing = FALSE)
     checkmate::assert_string(p_unit)
     checkmate::assert_numeric(p_seq, min.len = 1)

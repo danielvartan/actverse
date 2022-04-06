@@ -4,7 +4,7 @@
 \alias{write_acttrust}
 \title{Adapt and write a time series to a readable ActTrust file}
 \usage{
-write_acttrust(data, file, delim = ";", zero_offwrist = FALSE, header = NULL)
+write_acttrust(data, file, delim = ";", header = NULL)
 }
 \arguments{
 \item{data}{A \code{\link[tsibble:tsibble]{tsibble}} object with a \code{POSIXct} or
@@ -14,10 +14,6 @@ write_acttrust(data, file, delim = ";", zero_offwrist = FALSE, header = NULL)
 
 \item{delim}{(optional) a string indicating the delimiter that must be used
 to separate values. Valid delimiters: \code{";"} and \code{"\\t"} (default: \code{";"}).}
-
-\item{zero_offwrist}{(optional) a \code{\link[=logical]{logical}} value indicating if
-all values classified as offwrist (device removal) must be assigned with
-\code{0} (default: \code{FALSE}).}
 
 \item{header}{(optional) a string indicating the file path to a file (usually
 the raw data file) with the ActTrust header. This is not mandatory,
@@ -39,17 +35,25 @@ ActTrust is a trademark of
 \href{https://www.condorinst.com.br/}{Condor Instruments Ltda}.
 }
 \details{
+\subsection{Requirements}{
+
+\code{read_acttrust()} requires the \code{\link[readr:readr-package]{readr}} package.
+}
+
+\subsection{\code{NA} values}{
+
 \code{write_acttrust()} will transform any \code{NA} value to \code{0}. This is because
 the ActTrust software only interpret numeric values.
 }
+}
 \examples{
-\dontrun {
-file <- tempfile()
-header <- raw_data("acttrust.txt")
+if (interactive()) {
+    file <- tempfile()
+    header <- raw_data("acttrust.txt")
 
-write_acttrust(acttrust, file, header = header)
+    write_acttrust(acttrust, file, header = header)
 
-readLines(file, n = 30)
+    readLines(file, n = 30)
 }
 }
 \seealso{

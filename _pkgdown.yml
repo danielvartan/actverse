@@ -18,10 +18,19 @@ navbar:
     articles: ~
 
 reference:
+- title: Read/Write
+  contents:
+  - read_acttrust
+  - write_acttrust
+
 - title: Period analysis
   contents:
   - periodogram
   - spectrogram
+
+- title: Interpolation
+  contents:
+  - na_approx
 
 - title: Data
   contents:
@@ -32,8 +41,6 @@ reference:
   - aggregate_index
   - find_epoch
   - raw_data
-  - read_acttrust
-  - write_acttrust
 
 authors:
   Daniel Vartanian:

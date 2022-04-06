@@ -115,6 +115,8 @@ get_names <- function(...) {
     gsub("\\\"","", out)
 }
 
+rm_na <- function(x) x[which(!is.na(x))]
+
 require_pkg <- function(...) {
     out <- list(...)
 

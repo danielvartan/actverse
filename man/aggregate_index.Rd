@@ -39,17 +39,22 @@ you need more control while doing this operation, check the
 
 If \code{fun == NULL}, \code{aggregate_index()} will use the following function to
 transform each measured variable:\preformatted{function(x) \{
-    if (is.numeric(x) && !identical(x, as.integer(x))) \{
+    if (is.numeric(x) && !identical(x, as.numeric(as.integer(x)))) \{
         mean(x, na.rm = TRUE)
+        if (is.nan(out)) as.numeric(NA) else out
     \} else \{
-        unique <- unique(x)
-        unique[which.max(tabulate(match(x, unique(x))))]
+        y <- x[which(!is.na(x))]
+        unique <- unique(y)
+        unique[which.max(tabulate(match(y, unique)))]
     \}
 \}
 }
 
 This function average values for numeric variables and assigning the most
-frequent value (mode) for integer or other type of variables.
+frequent value (mode) for integer or other type of variables (\strong{*}).
+
+\strong{*}: If no mode can be found, the function will return the first value
+of \code{x}.
 }
 }
 \examples{

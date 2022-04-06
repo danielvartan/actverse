@@ -15,6 +15,12 @@
 #'
 #' @details
 #'
+#' ## Requirements
+#'
+#' `read_acttrust()` requires the [`readr`][readr::readr-package] package.
+#'
+#'  ## `NA` values
+#'
 #' `write_acttrust()` will transform any `NA` value to `0`. This is because
 #' the ActTrust software only interpret numeric values.
 #'
@@ -23,9 +29,6 @@
 #' @param file A string with a file path to write to.
 #' @param delim (optional) a string indicating the delimiter that must be used
 #'   to separate values. Valid delimiters: `";"` and `"\t"` (default: `";"`).
-#' @param zero_offwrist (optional) a [`logical`][logical()] value indicating if
-#'   all values classified as offwrist (device removal) must be assigned with
-#'   `0` (default: `FALSE`).
 #' @param header (optional) a string indicating the file path to a file (usually
 #'   the raw data file) with the ActTrust header. This is not mandatory,
 #'   the ActTrust software can read files without it (default: `NULL`).
@@ -36,16 +39,15 @@
 #' @export
 #'
 #' @examples
-#' \dontrun {
-#' file <- tempfile()
-#' header <- raw_data("acttrust.txt")
+#' if (interactive()) {
+#'     file <- tempfile()
+#'     header <- raw_data("acttrust.txt")
 #'
-#' write_acttrust(acttrust, file, header = header)
+#'     write_acttrust(acttrust, file, header = header)
 #'
-#' readLines(file, n = 30)
+#'     readLines(file, n = 30)
 #' }
-write_acttrust <- function(data, file, delim = ";", zero_offwrist = FALSE,
-                           header = NULL) {
+write_acttrust <- function(data, file, delim = ";", header = NULL) {
     assert_tsibble(data, min.rows = 2, min.cols = 2)
     assert_index_class(data, c("POSIXt"))
     assert_clear_epoch(data, 0.9)
@@ -54,7 +56,6 @@ write_acttrust <- function(data, file, delim = ";", zero_offwrist = FALSE,
     require_pkg("readr")
 
     # R CMD Check variable bindings fix (see: http://bit.ly/3bliuam)
-
     . <- acttrust <- NULL
     timestamp <- date <- time <- ms <- NULL
     pim <- pim_n <- tat <- tat_n <- zcm <- zcm_n <- NULL
@@ -95,14 +96,6 @@ write_acttrust <- function(data, file, delim = ";", zero_offwrist = FALSE,
             `BLUE LIGHT` = blue_light, `IR LIGHT` = ir_light,
             `UVA LIGHT` = uva_light, `UVB LIGHT` = uvb_light,
             STATE = state)
-
-    if (isTRUE(zero_offwrist)) {
-        out <- out %>%
-            dplyr::mutate(dplyr::across(
-                !dplyr::matches("^DATE/TIME$|^MS$|^STATE$"),
-                ~ dplyr::if_else(STATE == 4, 0, .x)
-            ))
-    }
 
     if (!is.null(header)) {
         checkmate::assert_file_exists(header)
