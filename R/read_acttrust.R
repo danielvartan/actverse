@@ -98,6 +98,8 @@ read_acttrust_data <- function(file = file.choose()) {
     checkmate::assert_file_exists(file)
     require_pkg("readr")
 
+    cli::cli_progress_step("Reading data")
+
     if (grepl("Condor Instruments Report",
               readLines(file, n = 1))) {
         skip <- 25
@@ -141,6 +143,8 @@ tidy_acttrust_data <- function(data, tz = "America/Sao_Paulo") {
     LIGHT <- `AMB LIGHT` <- `RED LIGHT` <- `GREEN LIGHT` <- NULL
     `BLUE LIGHT` <- `IR LIGHT` <- `UVA LIGHT` <- `UVB LIGHT` <- NULL
     EVENT <- STATE <- NULL
+
+    cli::cli_progress_step("Tidying data")
 
     out <- data %>%
         dplyr::mutate(dplyr::across(.fns = as.character)) %>%
@@ -202,6 +206,8 @@ validate_acttrust_data <- function(data, regularize = TRUE) {
 
     # TO DO: use the 'validate' package.
 
+    cli::cli_progress_step("Validating data")
+
     out <- data
     regular <- out %>%
         tsibble::tsibble(index = timestamp, regular = FALSE) %>%
@@ -228,7 +234,7 @@ validate_acttrust_data <- function(data, regularize = TRUE) {
         cli::cli_alert_info(paste0(
             "Found {.strong {cli::col_red(length(offwrist_ints))}} ",
             "offwrist{?s} blocks in the time series. ",
-            "All values were set as `NA`."
+            "All values were set as {.strong NA}."
         ))
     }
 
@@ -315,7 +321,7 @@ regularize_acttrust_data <- function(data) {
             cli::cli_alert_info(paste0(
                 "Found {.strong {cli::col_red(length(count_gaps))}} ",
                 "gap{?s} in the time series: ",
-                "{count_gaps[1:5]} (showing up to a total of 5 values)."
+                "{head_(count_gaps, 5)} (showing up to a total of 5 values)."
             ))
         }
 
@@ -333,8 +339,11 @@ read_acttrust_gipso <- function(file = file.choose(),
     checkmate::assert_file_exists(file)
     checkmate::assert_choice(tz, OlsonNames())
 
-    read_acttrust(file = file, tz = tz, regularize = TRUE) %>%
-        dplyr::mutate(dplyr::across(
+    out <- read_acttrust(file = file, tz = tz, regularize = TRUE)
+
+    cli::cli_progress_step("Interpolating data")
+
+    out %>% dplyr::mutate(dplyr::across(
             !dplyr::matches(
                 "^timestamp$|^orientation$|^event$|^state$"),
             ~ dplyr::if_else(state == 9, na_locf(.x, fill_na_tips = TRUE), .x)
@@ -348,6 +357,3 @@ read_acttrust_gipso <- function(file = file.choose(),
             ~ dplyr::if_else(.x < 0, 0, .x)
         ))
 }
-
-# data %>% ggplot2::ggplot(ggplot2::aes(x = timestamp, y = pim)) +
-#     ggplot2::geom_line()

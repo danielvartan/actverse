@@ -13,6 +13,12 @@
 #'
 #' @details
 #'
+#' There are few articles that deals about interpolation in actigraphy. Tono et
+#' al. (2022) recommends not using interpolation (i.e., maintain `NA` values)
+#' whenever is possible. The same authors also recommends using the weekly mean
+#' method of interpolation when the parameters cannot be computed in the
+#' presence of `NA`.
+#'
 #' ## `fill_na_tips` argument
 #'
 #' Some interpolation methods can result in outputs with remaining `NA` values.
@@ -118,8 +124,8 @@
 #'
 #' ## `na_weekly_mean()`: Weekly mean
 #'
-#' This method replaces `NA` values with the weekly mean of `x`. For
-#' datasets with less or only one week of data the result will be the same as
+#' This method replaces `NA` values with the weekly mean of `x`. For datasets
+#' with only one week in the `index` the result will be the same as
 #' `na_overall_mean()`.
 #'
 #' * Visual example:
@@ -128,7 +134,7 @@
 #' na_plot(x, index, na_weekly_mean(x, index, week_start = 1))
 #' ````
 #'
-#' ## `na_zero()`: Replace all `NA` with `0`s
+#' ## `na_zero()`: Replace `NA` with `0`s
 #'
 #' This method replaces `NA` values with `0`s.
 #'
@@ -147,13 +153,16 @@
 #'   the week starts (`1` for Monday and `7` for `Sunday`) (default: `1`).
 #' @param intp (optional) a [`numeric`][numeric()] object, of the same length
 #'   of `x`, with the output of the `NA` interpolation of `x`.
+#' @param print (optional) a [`logical`][logical()] value indicating if the
+#'   function must print the plot (default: `TRUE`).
 #'
 #' @return
 #'
-#' * `na_*`: a [`numeric`][numeric()] object with the same length of `x`.
-#' * `na_plot()`: an invisible `NULL`. This function doesn't aim to return
-#' values.
+#' * `na_*`: a [`numeric`][numeric()] object of the same length of `x`.
+#' * `na_plot()`: a [`ggplot`][ggplot2::ggplot()] object with a point and line
+#' chart showing the original versus the interpolated data.
 #'
+#' @template references_d
 #' @family interpolation functions
 #' @export
 #'
@@ -238,7 +247,7 @@
 #' #> [14] 5.000000 # Expected
 #' na_plot(x, index, na_weekly_mean(x, index, fill_na_tips = TRUE))
 #'
-#' ## 'na_zero()': Replace all 'NA's with `0`s
+#' ## 'na_zero()': Replace 'NA' with '0's
 #'
 #' na_zero(x)
 #' #> [1]  0  1  5 10  0  5 10  1  0 10  1  5  0  0 # Expected
@@ -378,7 +387,7 @@ na_zero <- function(x) {
 
 #' @rdname na_approx
 #' @export
-na_plot <- function(x, index, intp = NULL) {
+na_plot <- function(x, index, intp = NULL, print = TRUE) {
     method_choices <- c("approx", "locf", "overall_mean", "overall_mode",
                         "spline", "weekly_mean", "zero")
 
@@ -387,6 +396,7 @@ na_plot <- function(x, index, intp = NULL) {
                               null.ok = TRUE)
     assert_identical(x, index, type = "length")
     if (!is.null(intp)) assert_identical(x, index, intp, type = "length")
+    checkmate::assert_flag(print)
 
     if (!is.null(intp)) {
         intp_points <- dplyr::if_else(!is.na(x), as.numeric(NA), intp)
@@ -405,8 +415,6 @@ na_plot <- function(x, index, intp = NULL) {
             ggplot2::labs(x = "Index") +
             ggplot2::theme(axis.title.y = ggplot2::element_blank(),
                            legend.position = "top")
-
-        shush(print(p))
     } else {
         p <- ggplot2::ggplot(mapping = ggplot2::aes(x = index)) +
             ggplot2::geom_point(ggplot2::aes(
@@ -417,11 +425,11 @@ na_plot <- function(x, index, intp = NULL) {
             ggplot2::labs(x = "index") +
             ggplot2::theme(axis.title.y = ggplot2::element_blank(),
                            legend.position = "top")
-
-        shush(print(p))
     }
 
-    invisible(NULL)
+    if (isTRUE(print)) shush(print(p))
+
+    invisible(p)
 }
 
 na_tip_correction <- function(x, intp, fill_na_tips = TRUE) {
@@ -488,6 +496,6 @@ na_example_data <- function() {
                 as.numeric(NA), pim
             )) %>%
         dplyr::rename(x = pim, index = timestamp) %>%
-        dplyr::select(x, index) %>%
+        dplyr::select(index, x) %>%
         as.list()
 }

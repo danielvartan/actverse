@@ -37,15 +37,16 @@ prevalence above the threshold, \code{best_match} will return just one of those
 values.
 }
 \examples{
-index <- c(
-as.POSIXct(seq(60, 5400, by = 60), origin = as.POSIXct("1970-01-01")),
-as.POSIXct(seq(5430, 5490, by = 30), origin = as.POSIXct("1970-01-01")),
-as.POSIXct(seq(5505, 5520, by = 15), origin = as.POSIXct("1970-01-01")),
-as.POSIXct(seq(5530, 5540, by = 10), origin = as.POSIXct("1970-01-01")),
-as.POSIXct(seq(5545, 5555, by = 5), origin = as.POSIXct("1970-01-01"))
-)
-
-data <- tsibble::tsibble(timestamp = index, x = 1:100)
+data <- tsibble::tsibble(
+    timestamp = c(
+        as.POSIXct(seq(60, 5400, by = 60), origin = lubridate::origin),
+        as.POSIXct(seq(5430, 5490, by = 30), origin = lubridate::origin),
+        as.POSIXct(seq(5505, 5520, by = 15), origin = lubridate::origin),
+        as.POSIXct(seq(5530, 5540, by = 10), origin = lubridate::origin),
+        as.POSIXct(seq(5545, 5555, by = 5), origin = lubridate::origin)
+        ),
+    x = seq_along(timestamp)
+    )
 
 find_epoch(data, 0.8)
 }

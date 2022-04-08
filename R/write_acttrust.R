@@ -66,6 +66,8 @@ write_acttrust <- function(data, file, delim = ";", header = NULL) {
 
     epoch <- find_epoch(data)$best_match
 
+    cli::cli_progress_step("Adapting data")
+
     out <- data %>%
         tsibble::as_tibble() %>%
         dplyr::mutate(
@@ -100,14 +102,20 @@ write_acttrust <- function(data, file, delim = ";", header = NULL) {
     if (!is.null(header)) {
         checkmate::assert_file_exists(header)
 
+        cli::cli_progress_step("Adding header")
+
         if (grepl("Condor Instruments Report",
                   readLines(header, n = 1))) {
             readLines(header, n = 25) %>% writeLines(file)
+
+            cli::cli_progress_step("Writing data")
 
             out %>% readr::write_delim(
                 file, delim = delim, na = "0", append = TRUE, col_names = TRUE)
         }
     } else {
+        cli::cli_progress_step("Writing data")
+
         out %>% readr::write_delim(file, delim = delim, na = "0")
     }
 

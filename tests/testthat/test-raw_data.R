@@ -5,5 +5,8 @@ test_that("raw_data() | general test", {
 })
 
 test_that("raw_data() | error test", {
+    # checkmate::assert_character(file, any.missing = FALSE, null.ok = TRUE)
     expect_error(raw_data(file = 1), "Assertion on 'file' failed")
+    expect_error(raw_data(file = as.character(NA)),
+                 "Assertion on 'file' failed")
 })

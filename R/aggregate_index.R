@@ -11,7 +11,7 @@
 #'
 #' `aggregate_index()` was created to easily regularize time series objects. If
 #' you need more control while doing this operation, check the
-#' [index_by()][tsibble::index_by()] function provided by the
+#' [`index_by()`][tsibble::index_by()] function provided by the
 #' [`tsibble`](https://tsibble.tidyverts.org/) package.
 #'
 #' ## Default function
@@ -21,9 +21,10 @@
 #'
 #' ````
 #' function(x) {
-#'     if (is.numeric(x) && !identical(x, as.numeric(as.integer(x)))) {
+#'     checkmate::assert_atomic_vector(x)
+#'
+#'     if (is.numeric(x) && !all(nchar(x) == 1, na.rm = TRUE)) {
 #'         mean(x, na.rm = TRUE)
-#'         if (is.nan(out)) as.numeric(NA) else out
 #'     } else {
 #'         y <- x[which(!is.na(x))]
 #'         unique <- unique(y)
@@ -32,7 +33,8 @@
 #' }
 #' ````
 #' This function average values for numeric variables and assigning the most
-#' frequent value (mode) for integer or other type of variables (\strong{*}).
+#' frequent value (mode) for single integer or other type of variables
+#' (\strong{*}).
 #'
 #' \strong{*}: If no mode can be found, the function will return the first value
 #' of `x`.
@@ -67,7 +69,7 @@ aggregate_index <- function(data, unit, fun = NULL, week_start = 1) {
     unit_choices <- append(unit_choices, paste0(unit_choices, "s"))
 
     assert_tsibble(data, min.rows = 2, min.cols = 2)
-    assert_index_class(data)
+    assert_index_class(data, c("Date", "POSIXt"))
     assert_epoch_compatibility(data, unit)
     checkmate::assert_choice(unit, unit_choices)
     checkmate::assert_function(fun, null.ok = TRUE)
@@ -85,14 +87,16 @@ aggregate_index <- function(data, unit, fun = NULL, week_start = 1) {
 
     if (is.null(fun)) fun <- aggregate_index_default_function
 
-    if (grepl("^day*|^year*", unit)) {
-        group <- lubridate::floor_date(index, unit) %>% as.Date()
+    if (grepl("^day*", unit)) {
+        group <- lubridate::floor_date(index, "days") %>% as.Date()
     } else if (grepl("^week*", unit)) {
         group <- tsibble::yearweek(index, week_start = week_start)
     } else if (grepl("^month*", unit)) {
         group <- tsibble::yearmonth(index)
     } else if (grepl("^quarter*", unit)) {
         group <- tsibble::yearquarter(index)
+    } else if (grepl("^year*", unit)) {
+        group <- lubridate::year(index)
     } else {
         group <- lubridate::floor_date(index, unit)
     }
@@ -105,9 +109,10 @@ aggregate_index <- function(data, unit, fun = NULL, week_start = 1) {
 }
 
 aggregate_index_default_function <- function(x) {
-    if (is.numeric(x) && !identical(x, as.numeric(shush(as.integer(x))))) {
-        out <- mean(x, na.rm = TRUE)
-        if (is.nan(out)) as.numeric(NA) else out
+    checkmate::assert_atomic_vector(x)
+
+    if (is.numeric(x) && !all(nchar(x) == 1, na.rm = TRUE)) {
+        mean(x, na.rm = TRUE)
     } else {
         # Return value that has highest number of occurrences (mode)
         y <- x[which(!is.na(x))]

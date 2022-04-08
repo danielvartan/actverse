@@ -32,20 +32,21 @@
 #' @export
 #'
 #' @examples
-#' index <- c(
-#' as.POSIXct(seq(60, 5400, by = 60), origin = as.POSIXct("1970-01-01")),
-#' as.POSIXct(seq(5430, 5490, by = 30), origin = as.POSIXct("1970-01-01")),
-#' as.POSIXct(seq(5505, 5520, by = 15), origin = as.POSIXct("1970-01-01")),
-#' as.POSIXct(seq(5530, 5540, by = 10), origin = as.POSIXct("1970-01-01")),
-#' as.POSIXct(seq(5545, 5555, by = 5), origin = as.POSIXct("1970-01-01"))
-#' )
-#'
-#' data <- tsibble::tsibble(timestamp = index, x = 1:100)
+#' data <- tsibble::tsibble(
+#'     timestamp = c(
+#'         as.POSIXct(seq(60, 5400, by = 60), origin = lubridate::origin),
+#'         as.POSIXct(seq(5430, 5490, by = 30), origin = lubridate::origin),
+#'         as.POSIXct(seq(5505, 5520, by = 15), origin = lubridate::origin),
+#'         as.POSIXct(seq(5530, 5540, by = 10), origin = lubridate::origin),
+#'         as.POSIXct(seq(5545, 5555, by = 5), origin = lubridate::origin)
+#'         ),
+#'     x = seq_along(timestamp)
+#'     )
 #'
 #' find_epoch(data, 0.8)
 find_epoch <- function(data, threshold = 0.9) {
     assert_tsibble(data, min.rows = 2, min.cols = 2)
-    assert_index_class(data)
+    assert_index_class(data, c("Date", "POSIXt"))
     checkmate::assert_number(threshold, lower = 0.001, upper = 1)
 
     # R CMD Check variable bindings fix (see: http://bit.ly/3bliuam)

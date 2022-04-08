@@ -33,15 +33,16 @@ applying a specific function to its measured variables.
 \details{
 \code{aggregate_index()} was created to easily regularize time series objects. If
 you need more control while doing this operation, check the
-\link[tsibble:index-by]{index_by()} function provided by the
+\code{\link[tsibble:index-by]{index_by()}} function provided by the
 \href{https://tsibble.tidyverts.org/}{\code{tsibble}} package.
 \subsection{Default function}{
 
 If \code{fun == NULL}, \code{aggregate_index()} will use the following function to
 transform each measured variable:\preformatted{function(x) \{
-    if (is.numeric(x) && !identical(x, as.numeric(as.integer(x)))) \{
+    checkmate::assert_atomic_vector(x)
+
+    if (is.numeric(x) && !all(nchar(x) == 1, na.rm = TRUE)) \{
         mean(x, na.rm = TRUE)
-        if (is.nan(out)) as.numeric(NA) else out
     \} else \{
         y <- x[which(!is.na(x))]
         unique <- unique(y)
@@ -51,7 +52,8 @@ transform each measured variable:\preformatted{function(x) \{
 }
 
 This function average values for numeric variables and assigning the most
-frequent value (mode) for integer or other type of variables (\strong{*}).
+frequent value (mode) for single integer or other type of variables
+(\strong{*}).
 
 \strong{*}: If no mode can be found, the function will return the first value
 of \code{x}.

@@ -107,7 +107,7 @@ spectrogram <- function(data, col, p_unit = "minutes", p_min = 1000,
     data_int <- interval(dplyr::first(data[[tsibble::index_var(data)]]),
                          dplyr::last(data[[tsibble::index_var(data)]]))
 
-    if (as.numeric(data_int) < string_to_period(int)) {
+    if (as.numeric(data_int) < as.numeric(string_to_period(int))) {
         cli::cli_abort(paste0(
             "{.strong {cli::col_blue('data')}} has a length of ",
             "{lubridate::duration(as.numeric(data_int))}. ",
@@ -144,7 +144,7 @@ spectrogram <- function(data, col, p_unit = "minutes", p_min = 1000,
     }
 
     epoch <- find_epoch(data, 0.9)
-    int_max_n_epoch <- string_to_period(int) / epoch$best_match
+    int_max_n_epoch <- as.numeric(string_to_period(int)) / epoch$best_match
 
     if (int_step >= int_max_n_epoch) {
         cli::cli_abort(paste0(

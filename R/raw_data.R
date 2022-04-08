@@ -29,7 +29,7 @@
 #'
 #' raw_data("acttrust.txt")
 raw_data <- function(file = NULL) {
-    checkmate::assert_character(file, min.len = 1, null.ok = TRUE)
+    checkmate::assert_character(file, any.missing = FALSE, null.ok = TRUE)
 
     if (is.null(file)) {
         list.files(system.file("extdata", package = "actverse"))

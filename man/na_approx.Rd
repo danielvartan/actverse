@@ -28,7 +28,7 @@ na_weekly_mean(x, index, fill_na_tips = TRUE, week_start = 1)
 
 na_zero(x)
 
-na_plot(x, index, intp = NULL)
+na_plot(x, index, intp = NULL, print = TRUE)
 }
 \arguments{
 \item{x}{A \code{\link[=numeric]{numeric}} object.}
@@ -45,12 +45,15 @@ the week starts (\code{1} for Monday and \code{7} for \code{Sunday}) (default: \
 
 \item{intp}{(optional) a \code{\link[=numeric]{numeric}} object, of the same length
 of \code{x}, with the output of the \code{NA} interpolation of \code{x}.}
+
+\item{print}{(optional) a \code{\link[=logical]{logical}} value indicating if the
+function must print the plot (default: \code{TRUE}).}
 }
 \value{
 \itemize{
-\item \verb{na_*}: a \code{\link[=numeric]{numeric}} object with the same length of \code{x}.
-\item \code{na_plot()}: an invisible \code{NULL}. This function doesn't aim to return
-values.
+\item \verb{na_*}: a \code{\link[=numeric]{numeric}} object of the same length of \code{x}.
+\item \code{na_plot()}: a \code{\link[ggplot2:ggplot]{ggplot}} object with a point and line
+chart showing the original versus the interpolated data.
 }
 }
 \description{
@@ -64,6 +67,11 @@ See the Methods section to learn more about each one.
 to visualize and find the best interpolation technique for your data.
 }
 \details{
+There are few articles that deals about interpolation in actigraphy. Tono et
+al. (2022) recommends not using interpolation (i.e., maintain \code{NA} values)
+whenever is possible. The same authors also recommends using the weekly mean
+method of interpolation when the parameters cannot be computed in the
+presence of \code{NA}.
 \subsection{\code{fill_na_tips} argument}{
 
 Some interpolation methods can result in outputs with remaining \code{NA} values.
@@ -160,8 +168,8 @@ Learn more about the spline method in the \href{https://en.wikipedia.org/wiki/Sp
 
 \subsection{\code{na_weekly_mean()}: Weekly mean}{
 
-This method replaces \code{NA} values with the weekly mean of \code{x}. For
-datasets with less or only one week of data the result will be the same as
+This method replaces \code{NA} values with the weekly mean of \code{x}. For datasets
+with only one week in the \code{index} the result will be the same as
 \code{na_overall_mean()}.
 \itemize{
 \item Visual example:
@@ -169,7 +177,7 @@ datasets with less or only one week of data the result will be the same as
 }
 }
 
-\subsection{\code{na_zero()}: Replace all \code{NA} with \code{0}s}{
+\subsection{\code{na_zero()}: Replace \code{NA} with \code{0}s}{
 
 This method replaces \code{NA} values with \code{0}s.
 \itemize{
@@ -260,10 +268,15 @@ na_weekly_mean(x, index, fill_na_tips = TRUE)
 #> [14] 5.000000 # Expected
 na_plot(x, index, na_weekly_mean(x, index, fill_na_tips = TRUE))
 
-## 'na_zero()': Replace all 'NA's with `0`s
+## 'na_zero()': Replace 'NA' with '0's
 
 na_zero(x)
 #> [1]  0  1  5 10  0  5 10  1  0 10  1  5  0  0 # Expected
 na_plot(x, index, na_zero(x))
+}
+\references{
+Tonon, A. C. et al. (2022). Handling missing data in rest-activity
+time series measured by actimetry. \emph{Chronobiology International}.
+\doi{10.1080/07420528.2022.2051714}.
 }
 \concept{interpolation functions}

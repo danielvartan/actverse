@@ -1,4 +1,4 @@
-# Sort functions by type or use the alphabetical order.
+# Sort by type or by alphabetical order.
 
 test_any_missing <- function(x) any(is.na(x))
 
@@ -32,6 +32,9 @@ test_leq <- function(x, y) {
 
 check_leq <- function(x, y, name_x = deparse(substitute(x)),
                       name_y = deparse(substitute(y))) {
+    checkmate::assert_number(x)
+    checkmate::assert_number(y)
+
     if (!x <= y) {
         paste0(single_quote_(name_x), " must be less or equal to ",
                single_quote_(name_y))
@@ -197,6 +200,8 @@ check_tsibble <- function(x, min.rows = NULL, min.cols = NULL, null.ok = FALSE,
 
     if (is.null(x) && isTRUE(null.ok)) {
         TRUE
+    } else if (is.null(x) && isFALSE(null.ok)) {
+        paste0(single_quote_(name), " cannot be 'NULL'")
     } else if (!tsibble::is_tsibble(x)) {
         paste0("Must be of type 'tbl_ts' (tsibble), not ", class_collapse(x))
     } else if (!is.null(min.rows) && !any(nrow(x) >= min.rows)) {
@@ -215,16 +220,11 @@ check_tsibble <- function(x, min.rows = NULL, min.cols = NULL, null.ok = FALSE,
 assert_tsibble <- checkmate::makeAssertionFunction(check_tsibble)
 
 test_index_class <- function(x, classes = c("Date", "POSIXt", "yearweek",
-                                             "yearmonth", "yearquarter"),
-                             null.ok = FALSE) {
-    assert_tsibble(x, null.ok = null.ok)
+                                             "yearmonth", "yearquarter")) {
+    assert_tsibble(x)
     checkmate::assert_character(classes)
-    checkmate::assert_flag(null.ok)
 
-    if (is.null(x) && isTRUE(null.ok)) {
-        TRUE
-    } else if (!any(classes %in% class(x[[tsibble::index_var(x)]]),
-                    na.rm = TRUE)) {
+    if (!any(classes %in% class(x[[tsibble::index_var(x)]]), na.rm = TRUE)) {
         FALSE
     } else {
         TRUE
@@ -233,16 +233,11 @@ test_index_class <- function(x, classes = c("Date", "POSIXt", "yearweek",
 
 check_index_class <- function(x, classes = c("Date", "POSIXt", "yearweek",
                                              "yearmonth", "yearquarter"),
-                              null.ok = FALSE,
                               name = deparse(substitute(x))) {
-    assert_tsibble(x, null.ok = null.ok)
+    assert_tsibble(x)
     checkmate::assert_character(classes)
-    checkmate::assert_flag(null.ok)
 
-    if (is.null(x) && isTRUE(null.ok)) {
-        TRUE
-    } else if (!any(classes %in% class(x[[tsibble::index_var(x)]]),
-                    na.rm = TRUE)) {
+    if (!any(classes %in% class(x[[tsibble::index_var(x)]]), na.rm = TRUE)) {
         paste0("Must have an index of class ",
                inline_collapse(classes, "or"),
                ", not ", class_collapse(x[[tsibble::index_var(x)]])
@@ -254,39 +249,33 @@ check_index_class <- function(x, classes = c("Date", "POSIXt", "yearweek",
 
 assert_index_class <- checkmate::makeAssertionFunction(check_index_class)
 
-test_regularity <- function(x, threshold = 0.99, strict = FALSE,
-                            null.ok = FALSE) {
+test_regularity <- function(x, threshold = 0.99, strict = FALSE) {
     assert_tsibble(x, min.rows = 2, min.cols = 2)
     assert_index_class(x)
     checkmate::assert_number(threshold, lower = 0.001, upper = 1)
     checkmate::assert_flag(strict)
-    checkmate::assert_flag(null.ok)
 
     prevalence <- find_epoch(x, threshold)$prevalence
 
-    if (is.null(x) && isTRUE(null.ok)) {
-        TRUE
-    } else if (isTRUE(strict)) {
-        nrow(prevalence) == 1
+    if (isTRUE(strict) && !nrow(prevalence) == 1) {
+        FALSE
+    } else if (!any(prevalence$proportion >= threshold, na.rm = TRUE)) {
+        FALSE
     } else {
-        any(prevalence$proportion >= threshold, na.rm = TRUE)
+        TRUE
     }
 }
 
 check_regularity <- function(x, threshold = 0.99, strict = FALSE,
-                             null.ok = FALSE,
                              name = deparse(substitute(x))) {
     assert_tsibble(x, min.rows = 2, min.cols = 2)
     assert_index_class(x)
     checkmate::assert_number(threshold, lower = 0.001, upper = 1)
     checkmate::assert_flag(strict)
-    checkmate::assert_flag(null.ok)
 
     prevalence <- find_epoch(x, threshold)$prevalence
 
-    if (is.null(x) && isTRUE(null.ok)) {
-        TRUE
-    } else if (isTRUE(strict) && !nrow(prevalence) == 1) {
+    if (isTRUE(strict) && !nrow(prevalence) == 1) {
         paste0(single_quote_(name), " must be strictly regular. ",
                "See '?find_epoch' to learn more"
                )
@@ -303,19 +292,15 @@ check_regularity <- function(x, threshold = 0.99, strict = FALSE,
 assert_regularity <- checkmate::makeAssertionFunction(check_regularity)
 
 warn_regularity <- function(x, threshold = 0.99, strict = FALSE,
-                            null.ok = FALSE,
                             name = deparse(substitute(x))) {
     assert_tsibble(x, min.rows = 2, min.cols = 2)
     assert_index_class(x)
     checkmate::assert_number(threshold, lower = 0.001, upper = 1)
     checkmate::assert_flag(strict)
-    checkmate::assert_flag(null.ok)
 
     prevalence <- find_epoch(x, threshold)$prevalence
 
-    if (is.null(x) && isTRUE(null.ok)) {
-        TRUE
-    } else if (isTRUE(strict) && !nrow(prevalence) == 1) {
+    if (isTRUE(strict) && !nrow(prevalence) == 1) {
         cli::cli_alert_warning(paste0(
             "{.strong {cli::col_red(name)}} is not strictly regular. ",
             "The output may diverge. ",
@@ -333,33 +318,29 @@ warn_regularity <- function(x, threshold = 0.99, strict = FALSE,
     }
 }
 
-test_clear_epoch <- function(x, threshold = 0.9, null.ok = FALSE) {
+test_clear_epoch <- function(x, threshold = 0.9) {
     assert_tsibble(x, min.rows = 2, min.cols = 2)
     assert_index_class(x)
     checkmate::assert_number(threshold, lower = 0.001, upper = 1)
-    checkmate::assert_flag(null.ok)
 
     prevalence <- find_epoch(x, threshold)$prevalence
 
-    if (is.null(x) && isTRUE(null.ok)) {
-        TRUE
+    if (!any(prevalence$proportion >= threshold, na.rm = TRUE)) {
+        FALSE
     } else {
-        any(prevalence$proportion >= threshold, na.rm = TRUE)
+        TRUE
     }
 }
 
-check_clear_epoch <- function(x, threshold = 0.9, null.ok = FALSE,
+check_clear_epoch <- function(x, threshold = 0.9,
                              name = deparse(substitute(x))) {
     assert_tsibble(x, min.rows = 2, min.cols = 2)
     assert_index_class(x)
     checkmate::assert_number(threshold, lower = 0.001, upper = 1)
-    checkmate::assert_flag(null.ok)
 
     prevalence <- find_epoch(x, threshold)$prevalence
 
-    if (is.null(x) && isTRUE(null.ok)) {
-        TRUE
-    } else if (!any(prevalence$proportion >= threshold, na.rm = TRUE)) {
+    if (!any(prevalence$proportion >= threshold, na.rm = TRUE)) {
         paste0(single_quote_(name), " does not present a clear ",
                "epoch/periodicity. ",
                "See '?find_epoch' to learn more"
@@ -371,8 +352,7 @@ check_clear_epoch <- function(x, threshold = 0.9, null.ok = FALSE,
 
 assert_clear_epoch <- checkmate::makeAssertionFunction(check_clear_epoch)
 
-test_epoch_compatibility <- function(x, unit, threshold = 0.9,
-                                     null.ok = FALSE) {
+test_epoch_compatibility <- function(x, unit) {
     unit_choices <- c("microsecond", "millisecond", "second", "minute",
                       "hour", "day", "week", "month", "quarter",
                       "year")
@@ -380,21 +360,24 @@ test_epoch_compatibility <- function(x, unit, threshold = 0.9,
 
     assert_tsibble(x, min.rows = 2, min.cols = 2)
     assert_index_class(x)
+    assert_clear_epoch(x, 0.7)
     checkmate::assert_choice(unit, unit_choices)
-    checkmate::assert_number(threshold, lower = 0.001, upper = 1)
-    assert_clear_epoch(x, threshold)
-    checkmate::assert_flag(null.ok)
 
-    epoch <- find_epoch(x, threshold)$best_match
+    # R CMD Check variable bindings fix (see: http://bit.ly/3bliuam)
+    . <- proportion <- NULL
 
-    if (is.null(x) && isTRUE(null.ok)) {
-        TRUE
+    epochs <- find_epoch(x)$prevalence %>%
+        dplyr::filter(proportion >= 0.7) %>%
+        magrittr::extract2("epoch")
+
+    if (!all(as.numeric(string_to_period(unit)) >= epochs, na.rm = TRUE)) {
+        FALSE
     } else {
-        as.numeric(string_to_period(unit)) >= epoch
+        TRUE
     }
 }
 
-check_epoch_compatibility <- function(x, unit, threshold = 0.9, null.ok = FALSE,
+check_epoch_compatibility <- function(x, unit,
                               name = deparse(substitute(x))) {
     unit_choices <- c("microsecond", "millisecond", "second", "minute",
                       "hour", "day", "week", "month", "quarter",
@@ -403,19 +386,23 @@ check_epoch_compatibility <- function(x, unit, threshold = 0.9, null.ok = FALSE,
 
     assert_tsibble(x, min.rows = 2, min.cols = 2)
     assert_index_class(x)
-    assert_clear_epoch(x)
+    assert_clear_epoch(x, 0.7)
     checkmate::assert_choice(unit, unit_choices)
-    checkmate::assert_flag(null.ok)
 
-    epoch <- find_epoch(x, threshold)$best_match
+    # R CMD Check variable bindings fix (see: http://bit.ly/3bliuam)
+    . <- proportion <- NULL
+
+    epochs <- find_epoch(x)$prevalence %>%
+        dplyr::filter(proportion >= 0.7) %>%
+        magrittr::extract2("epoch")
+
     if (!grepl("s$", unit)) unit <- paste0(unit, "s")
 
-    if (is.null(x) && isTRUE(null.ok)) {
-        TRUE
-    } else if (!as.numeric(string_to_period(unit)) >= epoch) {
+    if (!all(as.numeric(string_to_period(unit)) >= epochs,
+                    na.rm = TRUE)) {
         paste0("The epoch/periodicity present in ", single_quote_(name),
-               " (", epoch, " seconds) ",
-               "don't allow to aggregate it in ", unit
+               "don't allow to aggregate it in ", unit, ". ",
+               "See '?find_epoch' to learn more"
         )
     } else {
         TRUE

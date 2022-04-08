@@ -1,3 +1,5 @@
+# Sort by type or use the alphabetical order.
+
 backtick_ <- function(x) paste0("`", x, "`")
 single_quote_ <- function(x) paste0("'", x, "'")
 double_quote_ <- function(x) paste0("\"", x, "\"")
@@ -27,6 +29,21 @@ inline_collapse <- function(x, last = "and", single_quote = TRUE,
         paste_collapse(x, sep = ", ", last = paste0(" ", last, " "))
     } else {
         paste_collapse(x, sep = ", ", last = paste0(", ", last, " "))
+    }
+}
+
+head_ <- function(x, n = 6) {
+    checkmate::assert_int(n, lower = 1)
+
+    if (is.list(x) && !is.data.frame(x)) {
+        if (length(x) < n) n <- length(x)
+        x[seq_len(n)]
+    } else if (is.data.frame(x)) {
+        if (nrow(x) < n) n <- nrow(x)
+        x[seq_len(n), ]
+    } else {
+        if (length(x) < n) n <- length(x)
+        x[seq_len(n)]
     }
 }
 
@@ -66,11 +83,11 @@ string_to_period <- function(string, irregularity = "min") {
         year <- lubridate::ddays(365)
     } else if (irregularity == "mean") {
         month <- lubridate::dmonths()
-        quarter <- lubridate::dmonths() * 3
+        quarter <- lubridate::dmonths(3)
         year <- lubridate::dyears()
     } else if (irregularity == "max") {
-        month <- lubridate::dmonths(31)
-        quarter <- lubridate::dmonths(31) * 3
+        month <- lubridate::ddays(31)
+        quarter <- lubridate::ddays(31) * 3
         year <- lubridate::ddays(366)
     }
 
@@ -99,9 +116,7 @@ period_to_string <- function(period) {
 
     for (i in c("microseconds", "milliseconds", "seconds", "minutes",
                 "hours", "days", "weeks")) {
-        if (period == as.numeric(string_to_period(i))) {
-            out <- i
-        }
+        if (period == as.numeric(string_to_period(i))) out <- i
     }
 
     out
@@ -114,8 +129,6 @@ get_names <- function(...) {
 
     gsub("\\\"","", out)
 }
-
-rm_na <- function(x) x[which(!is.na(x))]
 
 require_pkg <- function(...) {
     out <- list(...)
@@ -143,6 +156,8 @@ require_pkg <- function(...) {
         ))
     }
 }
+
+rm_na <- function(x) x[which(!is.na(x))]
 
 shush <- function(x, quiet = TRUE) {
     if (isTRUE(quiet)) {

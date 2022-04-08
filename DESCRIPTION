@@ -56,8 +56,7 @@ Imports:
     purrr (>= 0.3.4),
     stats (>= 4.0.0),
     tsibble (>= 1.1.1),
-    viridis (>= 0.6.2),
-    zoo (>= 1.8-9)
+    viridis (>= 0.6.2)
 Suggests: 
     covr (>= 3.5.1),
     knitr (>= 1.37),
@@ -68,7 +67,8 @@ Suggests:
     spelling (>= 2.2),
     testthat (>= 3.1.2),
     tibble (>= 3.1.6),
-    utils (>= 4.0.0)
+    utils (>= 4.0.0),
+    zoo (>= 1.8-9)
 VignetteBuilder: 
     knitr
 Config/testthat/edition: 3
