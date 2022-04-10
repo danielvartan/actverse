@@ -107,19 +107,23 @@ string_to_period <- function(string, irregularity = "min") {
 }
 
 period_to_string <- function(period) {
-    checkmate::assert_number(period)
+    checkmate::assert_number(period, na.ok = TRUE)
 
-    # Workaround for when 'period' is of class 'Duration'
-    period <- as.numeric(period)
+    if (is.na(period)) {
+        as.character(NA)
+    } else {
+        # Workaround for when 'period' is of class 'Duration'
+        period <- as.numeric(period)
 
-    out <- as.character(NA)
+        out <- as.character(NA)
 
-    for (i in c("microseconds", "milliseconds", "seconds", "minutes",
-                "hours", "days", "weeks")) {
-        if (period == as.numeric(string_to_period(i))) out <- i
+        for (i in c("microseconds", "milliseconds", "seconds", "minutes",
+                    "hours", "days", "weeks")) {
+            if (period == as.numeric(string_to_period(i))) out <- i
+        }
+
+        out
     }
-
-    out
 }
 
 get_names <- function(...) {

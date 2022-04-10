@@ -212,6 +212,19 @@
       "identifier": "utils",
       "name": "utils",
       "version": ">= 4.0.0"
+    },
+    {
+      "@type": "SoftwareApplication",
+      "identifier": "zoo",
+      "name": "zoo",
+      "version": ">= 1.8-9",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=zoo"
     }
   ],
   "softwareRequirements": {
@@ -370,22 +383,9 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=viridis"
     },
-    "14": {
-      "@type": "SoftwareApplication",
-      "identifier": "zoo",
-      "name": "zoo",
-      "version": ">= 1.8-9",
-      "provider": {
-        "@id": "https://cran.r-project.org",
-        "@type": "Organization",
-        "name": "Comprehensive R Archive Network (CRAN)",
-        "url": "https://cran.r-project.org"
-      },
-      "sameAs": "https://CRAN.R-project.org/package=zoo"
-    },
     "SystemRequirements": null
   },
-  "fileSize": "330.867KB",
+  "fileSize": "440.29KB",
   "citation": [
     {
       "@type": "CreativeWork",

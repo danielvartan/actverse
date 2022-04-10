@@ -123,7 +123,7 @@ read_acttrust_data <- function(file = file.choose()) {
                           trim_ws = TRUE)
 }
 
-tidy_acttrust_data <- function(data, tz = "America/Sao_Paulo") {
+tidy_acttrust_data <- function(data, tz = "UTC") {
     checkmate::assert_tibble(data, min.cols = 1, min.rows = 1)
     checkmate::assert_choice(tz, OlsonNames())
 
@@ -165,16 +165,15 @@ tidy_acttrust_data <- function(data, tz = "America/Sao_Paulo") {
         out <- out %>% dplyr::rename(timestamp = `DATE/TIME`)
     } else {
         out <- out %>%
-            dplyr::rename(date = DATE, time = TIME) %>%
-            dplyr::mutate(timestamp = (paste(date, time))) %>%
-            dplyr::select(-date, -time)
+            dplyr::mutate(timestamp = (paste(DATE, TIME))) %>%
+            dplyr::select(-DATE, - TIME)
     }
 
     if (isTRUE(any(grepl(",", out$wrist_temperature)[1:100], na.rm = TRUE))) {
         out <- out %>%
             dplyr::mutate(dplyr::across(
-                dplyr::vars(-timestamp, -date, -time),
-                ~ gsub(",", "\\.", x)
+                !dplyr::matches("^timestamp$"),
+                ~ gsub(",", "\\.", .x)
                 ))
     }
 
@@ -196,7 +195,6 @@ tidy_acttrust_data <- function(data, tz = "America/Sao_Paulo") {
 }
 
 validate_acttrust_data <- function(data, regularize = TRUE) {
-
     checkmate::assert_tibble(data, min.cols = 1, min.rows = 1)
     checkmate::assert_flag(regularize)
 
@@ -253,41 +251,9 @@ validate_acttrust_data <- function(data, regularize = TRUE) {
             ))
 }
 
-find_offwrist_intervals <- function(data) {
-    assert_tsibble(data, min.rows = 2, min.cols = 2)
-    assert_index_class(data)
-
-    # R CMD Check variable bindings fix (see: http://bit.ly/3bliuam)
-
-    . <- timestamp <- state <- offwrist_start <- offwrist_end <- NULL
-
-    out <- data %>%
-        dplyr::mutate(
-            offwrist_start = state == 4 & !dplyr::lag(state) == 4,
-            offwrist_end = state == 4 & !dplyr::lead(state) == 4,
-            offwrist_start = dplyr::if_else(
-                timestamp == dplyr::first(timestamp) & state == 4, TRUE,
-                offwrist_start),
-            offwrist_end = dplyr::if_else(
-                timestamp == dplyr::last(timestamp) & state == 4, TRUE,
-                offwrist_end)
-            ) %>%
-        dplyr::select(timestamp, offwrist_start, offwrist_end) %>%
-        dplyr::filter(offwrist_start == TRUE | offwrist_end == TRUE)
-
-    if (nrow(out) == 0) {
-        lubridate::as.interval(NA)
-    } else {
-        purrr::map2(out$timestamp[out$offwrist_start == TRUE],
-                    out$timestamp[out$offwrist_end == TRUE],
-                    ~ lubridate::interval(.x, .y)) %>%
-            purrr::reduce(c)
-    }
-}
-
 regularize_acttrust_data <- function(data) {
     assert_tsibble(data, min.rows = 2, min.cols = 2)
-    assert_index_class(data)
+    assert_index_class(data, c("Date", "POSIXt"))
 
     # R CMD Check variable bindings fix (see: http://bit.ly/3bliuam)
 
@@ -300,12 +266,14 @@ regularize_acttrust_data <- function(data) {
     epoch_unit <- period_to_string(epoch)
 
     if (is.na(epoch) || is.na(epoch_unit)) {
-        cli::cli_abort(paste0(
+        cli::cli_alert_warning(paste0(
             "The data was not regularized because no clear epoch was ",
             "found. Your {.strong {cli::col_blue('data')}} must have at ",
             "least {.strong {cli::col_red('90%')}} of regularity. See ",
             "'?find_epoch()' to check data regularity."
         ))
+
+        data
     } else {
         out <- data %>% aggregate_index(epoch_unit) %>%
             dplyr::mutate(dplyr::across(
@@ -330,6 +298,39 @@ regularize_acttrust_data <- function(data) {
                 dplyr::matches("^orientation$|^event$"),
                 ~ dplyr::if_else(is.na(.x), 0, .x))) %>%
             dplyr::mutate(state = dplyr::if_else(is.na(state), 9, state))
+    }
+}
+
+find_offwrist_intervals <- function(data) {
+    assert_tsibble(data, min.rows = 2, min.cols = 2)
+    assert_index_class(data, c("Date", "POSIXt"))
+    checkmate::assert_subset(c("timestamp", "state"), names(data))
+
+    # R CMD Check variable bindings fix (see: http://bit.ly/3bliuam)
+
+    . <- timestamp <- state <- offwrist_start <- offwrist_end <- NULL
+
+    out <- data %>%
+        dplyr::mutate(
+            offwrist_start = state == 4 & !dplyr::lag(state) == 4,
+            offwrist_end = state == 4 & !dplyr::lead(state) == 4,
+            offwrist_start = dplyr::if_else(
+                timestamp == dplyr::first(timestamp) & state == 4, TRUE,
+                offwrist_start),
+            offwrist_end = dplyr::if_else(
+                timestamp == dplyr::last(timestamp) & state == 4, TRUE,
+                offwrist_end)
+        ) %>%
+        dplyr::select(timestamp, offwrist_start, offwrist_end) %>%
+        dplyr::filter(offwrist_start == TRUE | offwrist_end == TRUE)
+
+    if (nrow(out) == 0) {
+        lubridate::as.interval(NA)
+    } else {
+        purrr::map2(out$timestamp[out$offwrist_start == TRUE],
+                    out$timestamp[out$offwrist_end == TRUE],
+                    ~ lubridate::interval(.x, .y)) %>%
+            purrr::reduce(c)
     }
 }
 

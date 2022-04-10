@@ -345,6 +345,7 @@ na_spline <- function(x, index) {
 na_weekly_mean <- function(x, index, fill_na_tips = TRUE, week_start = 1) {
     checkmate::assert_numeric(x, min.len = 1, all.missing = FALSE)
     assert_identical(x, index, type = "length")
+    checkmate::assert_flag(fill_na_tips)
     checkmate::assert_choice(week_start, c(1, 7))
 
     # R CMD Check variable bindings fix (see: http://bit.ly/3bliuam)

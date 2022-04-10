@@ -51,12 +51,14 @@ write_acttrust <- function(data, file, delim = ";", header = NULL) {
     assert_tsibble(data, min.rows = 2, min.cols = 2)
     assert_index_class(data, c("POSIXt"))
     assert_clear_epoch(data, 0.9)
-    checkmate::assert_subset(names(data), names(acttrust))
+    checkmate::assert_string(file)
     checkmate::assert_choice(delim, c(";", "\t"))
+    checkmate::assert_string(header, null.ok = TRUE)
     require_pkg("readr")
 
     # R CMD Check variable bindings fix (see: http://bit.ly/3bliuam)
-    . <- acttrust <- NULL
+    acttrust <- acttrust
+    . <- NULL
     timestamp <- date <- time <- ms <- NULL
     pim <- pim_n <- tat <- tat_n <- zcm <- zcm_n <- NULL
     orientation <- wrist_temperature <- external_temperature <- NULL
@@ -65,11 +67,30 @@ write_acttrust <- function(data, file, delim = ";", header = NULL) {
     event <- state <- NULL
 
     epoch <- find_epoch(data)$best_match
+    cols <- paste0("^timestamp$|^", tsibble::index2_var(data), "$") %>%
+        grep(names(acttrust), value = TRUE, invert = TRUE)
+
+    if (!any(cols %in% names(data))) {
+        cli::cli_abort(paste0(
+            "{.strong {cli::col_red('data')}} must have at least one column ",
+            "with the following names: {cols}. ",
+            "See the function documentation  to learn more."
+        ))
+    }
+
+    if (!identical(names(data), names(acttrust))) {
+        for (i in names(acttrust)[!(names(acttrust) %in% names(data))]) {
+            data <- data %>%
+                dplyr::mutate(.PlAcEHoLDeR = as.numeric(NA)) %>%
+                dplyr::rename_with(~ gsub("^.PlAcEHoLDeR$", i, .x))
+        }
+    }
 
     cli::cli_progress_step("Adapting data")
 
     out <- data %>%
         tsibble::as_tibble() %>%
+        dplyr::rename(timestamp = tsibble::index2_var(data)) %>%
         dplyr::mutate(
             dplyr::across(-timestamp, as.numeric),
             dplyr::across(-timestamp,
