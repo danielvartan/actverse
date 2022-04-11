@@ -342,8 +342,7 @@ check_clear_epoch <- function(x, threshold = 0.9,
 
     if (!any(prevalence$proportion >= threshold, na.rm = TRUE)) {
         paste0(single_quote_(name), " does not present a clear ",
-               "epoch/periodicity. ",
-               "See '?find_epoch' to learn more"
+               "epoch/periodicity. See '?find_epoch' to learn more"
         )
     } else {
         TRUE

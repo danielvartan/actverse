@@ -80,10 +80,13 @@ See \link[=periodogram]{?periodogram} to learn more about the
 periodogram computation.
 }
 \examples{
-data <- tsibble::tsibble(timestamp = seq(as.POSIXct("2020-01-01"),
-                                         as.POSIXct("2020-01-02 05:59:59"),
-                                         by = "min"),
-                                         x = rep(seq(1, 60), times = 30))
+data <- dplyr::tibble(
+    index = seq(as.POSIXct("2020-01-01"),
+                as.POSIXct("2020-01-02 05:59:59"),
+                by = "min"),
+    x = rep(seq(1, 60), times = 30))
+data <- tsibble::tsibble(data, index = index)
+
 spec <- spectrogram(data, "x", p_unit = "minutes", p_min = 1,
                     p_max = 120, p_step = 1, int = "hours", int_n = 2,
                     int_step = 59, alpha = 0.05, print = FALSE)

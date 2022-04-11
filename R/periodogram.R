@@ -112,10 +112,13 @@
 #' @export
 #'
 #' @examples
-#' data <- tsibble::tsibble(timestamp = seq(as.POSIXct("2020-01-01"),
-#'                                          as.POSIXct("2020-01-02 05:59:59"),
-#'                                          by = "min"),
-#'                                          x = rep(seq(1, 60), times = 30))
+#' data <- dplyr::tibble(
+#'     index = seq(as.POSIXct("2020-01-01"),
+#'                 as.POSIXct("2020-01-02 05:59:59"),
+#'                 by = "min"),
+#'     x = rep(seq(1, 60), times = 30))
+#' data <- tsibble::tsibble(data, index = index)
+#'
 #' per <- periodogram(data, "x", p_unit = "minutes", p_min = 1,
 #'                    p_max = 350, p_step = 1, alpha = 0.05,
 #'                    print = FALSE)
@@ -145,11 +148,8 @@ periodogram <- function(data, col, p_unit = "minutes", p_min = 1000,
     assert_tsibble(data, min.rows = 2, min.cols = 2)
     assert_index_class(data)
     assert_clear_epoch(data, 0.9)
-    assert_regularity(data, 0.9)
-    warn_regularity(data, 0.99)
     checkmate::assert_choice(col, names(data))
-    checkmate::assert_numeric(data[[col]], min.len = 2)
-    warn_any_missing(data[[col]])
+    checkmate::assert_numeric(data[[col]])
     checkmate::assert_choice(p_unit, p_unit_choices)
     assert_epoch_compatibility(data, p_unit)
     checkmate::assert_int(p_min, lower = 1)
@@ -159,11 +159,14 @@ periodogram <- function(data, col, p_unit = "minutes", p_min = 1000,
     checkmate::assert_number(alpha, lower = 0.001, upper = 0.999)
     checkmate::assert_flag(print)
 
+    warn_regularity(data, 0.99)
+    warn_any_missing(data[[col]])
+
     # R CMD Check variable bindings fix (see: http://bit.ly/3bliuam)
     . <- NULL
 
     data <- data %>%
-        dplyr::select(tsibble::index2_var(.), col) %>%
+        dplyr::select(dplyr::all_of(c(tsibble::index2_var(.), col))) %>%
         aggregate_index(p_unit) %>%
         magrittr::extract2(col)
 
@@ -198,7 +201,7 @@ periodogram <- function(data, col, p_unit = "minutes", p_min = 1000,
                             "q_p_critical", "q_p_pvalue", "q_p_peaks",
                             "q_p_plot"))
 
-    if (isTRUE(print)) print(out$q_p_plot)
+    if (isTRUE(print)) shush(print(out$q_p_plot))
 
     invisible(out)
 }
@@ -241,6 +244,10 @@ find_periodogram_peaks <- function(p_seq, q_p, q_p_critical, q_p_pvalue = NULL,
     assert_identical(p_seq, q_p, q_p_critical, type = "length")
     checkmate::assert_int(max_diff, lower = 1)
 
+    if (!is.null(q_p_pvalue)) {
+        assert_identical(p_seq, q_p, q_p_critical, q_p_pvalue, type = "length")
+    }
+
     # R CMD Check variable bindings fix (see: http://bit.ly/3bliuam)
 
     . <- q_p_rel <- NULL
@@ -263,11 +270,7 @@ find_periodogram_peaks <- function(p_seq, q_p, q_p_critical, q_p_pvalue = NULL,
                 groups[[level]] <- append(groups[[level]], x[i])
             } else {
                 level <- level + 1
-                if (length(groups) < level) {
-                    groups[[level]] <- x[i]
-                } else {
-                    groups[[level]] <- append(groups[[level]], x[i])
-                }
+                groups[[level]] <- x[i]
             }
         }
     }
@@ -287,8 +290,8 @@ find_periodogram_peaks <- function(p_seq, q_p, q_p_critical, q_p_pvalue = NULL,
 clean_periodogram_peaks <- function(peaks, prop_q_p_rel = 0.1,
                                     prop_bump = 0.001) {
     checkmate::assert_tibble(peaks)
-    checkmate::assert_number(prop_q_p_rel)
-    checkmate::assert_number(prop_bump)
+    checkmate::assert_number(prop_q_p_rel, lower = 0.001, upper = 0.999)
+    checkmate::assert_number(prop_bump, lower = 0.001, upper = 0.999)
 
     # R CMD Check variable bindings fix (see: http://bit.ly/3bliuam)
 
@@ -297,7 +300,8 @@ clean_periodogram_peaks <- function(peaks, prop_q_p_rel = 0.1,
     if (nrow(peaks) == 0) return(peaks)
 
     out <- peaks %>%
-        dplyr::filter(q_p_rel >= prop_q_p_rel * max(q_p_rel)) %>%
+        dplyr::filter(q_p_rel >= prop_q_p_rel * max(q_p_rel),
+                      q_p_rel >= 100) %>%
         dplyr::arrange(period)
 
     while(any(dplyr::lead(out$period) - out$period <=
@@ -343,15 +347,13 @@ plot_periodogram <- function(p_seq, q_p, q_p_critical, alpha_level,
 
     peaks <- find_periodogram_peaks(p_seq, q_p, q_p_critical)
 
-    if (!nrow(peaks) == 0) {
+    if (!length(clean_periodogram_peaks(peaks)) == 0) {
         out <- out + ggplot2::scale_x_continuous(
             sec.axis = ggplot2::sec_axis(
                 ~.x, breaks = clean_periodogram_peaks(peaks)))
     }
 
-    if (isTRUE(print)) {
-        print(out)
-    } else {
-        invisible(out)
-    }
+    if (isTRUE(print)) shush(print(out))
+
+    invisible(out)
 }

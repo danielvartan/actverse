@@ -39,10 +39,13 @@
 #' @export
 #'
 #' @examples
-#' data <- tsibble::tsibble(timestamp = seq(as.POSIXct("2020-01-01"),
-#'                                          as.POSIXct("2020-01-02 05:59:59"),
-#'                                          by = "min"),
-#'                                          x = rep(seq(1, 60), times = 30))
+#' data <- dplyr::tibble(
+#'     index = seq(as.POSIXct("2020-01-01"),
+#'                 as.POSIXct("2020-01-02 05:59:59"),
+#'                 by = "min"),
+#'     x = rep(seq(1, 60), times = 30))
+#' data <- tsibble::tsibble(data, index = index)
+#'
 #' spec <- spectrogram(data, "x", p_unit = "minutes", p_min = 1,
 #'                     p_max = 120, p_step = 1, int = "hours", int_n = 2,
 #'                     int_step = 59, alpha = 0.05, print = FALSE)
@@ -75,13 +78,10 @@ spectrogram <- function(data, col, p_unit = "minutes", p_min = 1000,
     p_unit_choices <- append(p_unit_choices, paste0(p_unit_choices, "s"))
 
     assert_tsibble(data, min.rows = 2, min.cols = 2)
-    assert_index_class(data)
+    assert_index_class(data, c("Date", "POSIXt"))
     assert_clear_epoch(data, 0.9)
-    assert_regularity(data, 0.9)
-    warn_regularity(data, 0.99)
     checkmate::assert_choice(col, names(data))
     checkmate::assert_numeric(data[[col]], min.len = 2)
-    warn_any_missing(data[[col]])
     checkmate::assert_choice(p_unit, p_unit_choices)
     assert_epoch_compatibility(data, p_unit)
     checkmate::assert_int(p_min, lower = 1)
@@ -93,6 +93,9 @@ spectrogram <- function(data, col, p_unit = "minutes", p_min = 1000,
     checkmate::assert_int(int_step, lower = 1)
     checkmate::assert_number(alpha, lower = 0.001, upper = 0.999)
     checkmate::assert_flag(print)
+
+    warn_regularity(data, 0.99)
+    warn_any_missing(data[[col]])
 
     # R CMD Check variable bindings fix (see: http://bit.ly/3bliuam)
     . <- NULL
@@ -111,7 +114,7 @@ spectrogram <- function(data, col, p_unit = "minutes", p_min = 1000,
         cli::cli_abort(paste0(
             "{.strong {cli::col_blue('data')}} has a length of ",
             "{lubridate::duration(as.numeric(data_int))}. ",
-            "The {.strong {cli::col_red('int')}} value must be greater ",
+            "The {.strong {cli::col_red('int')}} value must be lower ",
             "than that."
         ))
     }
@@ -155,7 +158,7 @@ spectrogram <- function(data, col, p_unit = "minutes", p_min = 1000,
         ))
     }
 
-    ints <- find_spectrogram_intervals(data, col, int, int_n, int_step)
+    ints <- find_spectrogram_intervals(data, int, int_n, int_step)
     peaks <- per_main$q_p_peaks
     p_seq <- seq(p_min, p_max, by = p_step)
     envir <- environment()
@@ -176,15 +179,13 @@ spectrogram <- function(data, col, p_unit = "minutes", p_min = 1000,
     invisible(out)
 }
 
-find_spectrogram_intervals <- function(data, col, int = "days", int_n = 7,
+find_spectrogram_intervals <- function(data, int = "days", int_n = 7,
                                        int_step = 720) {
     int_choices <- c("microseconds", "milliseconds", "seconds", "minutes",
                        "hours", "days", "weeks", "months", "quarters", "years")
 
     assert_tsibble(data, min.rows = 2, min.cols = 2)
-    assert_index_class(data)
-    checkmate::assert_choice(col, names(data))
-    checkmate::assert_numeric(data[[col]], min.len = 2, null.ok = TRUE)
+    assert_index_class(data, c("Date", "POSIXt"))
     checkmate::assert_choice(int, int_choices)
     checkmate::assert_int(int_n, lower = 1)
     checkmate::assert_int(int_step, lower = 1)
@@ -290,9 +291,7 @@ plot_spectrogram <- function(p_seq, per_ints, peaks, xlab = "Period",
                 ~.x, breaks = clean_periodogram_peaks(peaks)))
     }
 
-    if (isTRUE(print)) {
-        print(out)
-    } else {
-        invisible(out)
-    }
+    if (isTRUE(print)) shush(print(out))
+
+    invisible(out)
 }

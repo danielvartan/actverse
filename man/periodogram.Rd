@@ -132,10 +132,13 @@ this test.
 }
 }
 \examples{
-data <- tsibble::tsibble(timestamp = seq(as.POSIXct("2020-01-01"),
-                                         as.POSIXct("2020-01-02 05:59:59"),
-                                         by = "min"),
-                                         x = rep(seq(1, 60), times = 30))
+data <- dplyr::tibble(
+    index = seq(as.POSIXct("2020-01-01"),
+                as.POSIXct("2020-01-02 05:59:59"),
+                by = "min"),
+    x = rep(seq(1, 60), times = 30))
+data <- tsibble::tsibble(data, index = index)
+
 per <- periodogram(data, "x", p_unit = "minutes", p_min = 1,
                    p_max = 350, p_step = 1, alpha = 0.05,
                    print = FALSE)
