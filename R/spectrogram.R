@@ -136,16 +136,6 @@ spectrogram <- function(data, col, p_unit = "minutes", p_min = 1000,
         dplyr::select(tsibble::index2_var(.), col) %>%
         aggregate_index(p_unit)
 
-    for (i in c("p_min", "p_max")) {
-        if (get(i) > length(data[[col]])) {
-            cli::cli_abort(paste0(
-                "{.strong {cli::col_red(i)}} is greater than the amount ",
-                "of time series data delimited by ",
-                "{.strong cli::col_blue(p_unit)}."
-            ))
-        }
-    }
-
     epoch <- find_epoch(data, 0.9)
     int_max_n_epoch <- as.numeric(string_to_period(int)) / epoch$best_match
 
@@ -202,7 +192,7 @@ find_spectrogram_intervals <- function(data, int = "days", int_n = 7,
         lubridate::int_start(dplyr::last(out)) + step) %>%
         lubridate::int_end()
 
-    while(check < lubridate::int_end(data_int)) {
+    while (check < lubridate::int_end(data_int)) {
         out <- append(out, lubridate::as.interval(
             period_(int_n, int),
             lubridate::int_start(dplyr::last(out)) + step))
@@ -219,9 +209,9 @@ find_spectrogram_intervals <- function(data, int = "days", int_n = 7,
 compute_interval_periodogram <- function(data, col, int_i, p_unit, p_seq,
                                          alpha = 0.9, envir = NULL) {
     assert_tsibble(data, min.rows = 2, min.cols = 2)
-    assert_index_class(data)
+    assert_index_class(data, c("Date", "POSIXt"))
     checkmate::assert_choice(col, names(data))
-    checkmate::assert_numeric(data[[col]], min.len = 2, null.ok = TRUE)
+    checkmate::assert_numeric(data[[col]])
     assert_interval(int_i, any.missing = FALSE)
     checkmate::assert_string(p_unit)
     checkmate::assert_numeric(p_seq, min.len = 1)

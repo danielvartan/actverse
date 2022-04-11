@@ -47,7 +47,7 @@ build_acttrust <- function(write_csv = FALSE, write_rda = FALSE) {
     checkmate::assert_flag(write_csv)
 
     acttrust <- actverse::raw_data("acttrust.txt") %>%
-        actverse::read_acttrust(tz = "America/Sao_Paulo")
+        actverse::read_acttrust(tz = "America/Sao_Paulo", regularize = TRUE)
 
     if (isTRUE(write_rda)) {
         usethis::use_data(acttrust, overwrite = TRUE)

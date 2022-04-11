@@ -8,8 +8,9 @@ test_that("spectrogram() | general test", {
         tsibble::tsibble(index = index)
 
     object <- spectrogram(
-        data, "x", p_unit = "hours", p_min = 1, p_max = 100, p_step = 1,
-        int = "days", int_n = 7, int_step = 5, alpha = 0.05, print = TRUE) %>%
+        data = data, col = "x", p_unit = "hours", p_min = 1, p_max = 100,
+        p_step = 1, int = "days", int_n = 7, int_step = 5, alpha = 0.05,
+        print = TRUE) %>%
         shush()
 
     checkmate::expect_list(object, len = 2)
@@ -214,16 +215,6 @@ test_that("spectrogram() | error test", {
         p_step = 1, int = "days", int_n = 1000, int_step = 720, alpha = 0.05,
         print = FALSE))
 
-    # for (i in c("p_min", "p_max")) {
-    expect_error(spectrogram(
-        data = data_1, col = "x", p_unit = "minutes", p_min = 50000,
-        p_max = 50002, p_step = 1, int = "days", int_n = 7, int_step = 720,
-        alpha = 0.05, print = FALSE))
-    expect_error(spectrogram(
-        data = data_1, col = "x", p_unit = "minutes", p_min = 1,
-        p_max = 50000, p_step = 1, int = "days", int_n = 7, int_step = 720,
-        alpha = 0.05, print = FALSE))
-
     # if (int_step >= int_max_n_epoch) {
     expect_error(spectrogram(
         data = data_1, col = "x", p_unit = "hours", p_min = 1, p_max = 100,
@@ -260,7 +251,21 @@ test_that("spectrogram() | warning/message test", {
 })
 
 test_that("find_spectrogram_intervals() | general test", {
+    data <- dplyr::tibble(
+        index = seq(lubridate::as_datetime("2020-01-01 00:00:00"),
+                    lubridate::as_datetime("2020-01-30 23:59:00"),
+                    by = "min"),
+        x = rep(seq(1, 3600), times = 12)
+    ) %>%
+        tsibble::tsibble(index = index)
 
+    object <- find_spectrogram_intervals(
+        data = data, int = "days", int_n = 7, int_step = 720) %>%
+        shush()
+
+    expect_equal(dplyr::last(object),
+                 lubridate::interval("2020-01-23 12:00:00",
+                                     "2020-01-30 12:00:00"))
 })
 
 test_that("find_spectrogram_intervals() | error test", {
@@ -321,37 +326,157 @@ test_that("find_spectrogram_intervals() | error test", {
 })
 
 test_that("compute_interval_periodogram() | general test", {
+    data <- dplyr::tibble(
+        index = seq(lubridate::as_datetime("2020-01-01 00:00:00"),
+                    lubridate::as_datetime("2020-01-30 23:59:00"),
+                    by = "min"),
+        x = rep(seq(1, 3600), times = 12)
+    ) %>%
+        tsibble::tsibble(index = index)
 
+    envir <- environment()
+    cli::cli_progress_bar(total = 1, clear = FALSE, .envir = envir)
+
+    object <- compute_interval_periodogram(
+        data = data, col = "x",
+        int_i = lubridate::interval("2020-01-01 00:00:00",
+                                    "2020-01-03 00:00:00"),
+        p_unit = "minutes", p_seq = seq(1000, 2500), alpha = 0.05,
+        envir = envir)
+
+    checkmate::expect_list(object, len = 10)
+    checkmate::expect_string(object$p_unit)
+    checkmate::expect_numeric(object$p_seq, len = 1501)
+    expect_equal(object$int, lubridate::interval("2020-01-01 00:00:00",
+                                                 "2020-01-03 00:00:00"))
+    checkmate::expect_number(object$alpha)
+    checkmate::expect_numeric(object$a_p, len = 1501)
+    checkmate::expect_numeric(object$q_p, len = 1501)
+    checkmate::expect_numeric(object$q_p_critical, len = 1501)
+    checkmate::expect_numeric(object$q_p_rel, len = 1501)
+    checkmate::expect_numeric(object$q_p_pvalue, len = 1501)
+    checkmate::expect_tibble(object$q_p_peaks)
 })
 
 test_that("compute_interval_periodogram() | error test", {
+    data_1 <- dplyr::tibble(
+        index = seq(lubridate::as_datetime("2020-01-01 00:00:00"),
+                    lubridate::as_datetime("2020-01-10 00:00:00"),
+                    by = "min"),
+        x = seq_along(index)
+    ) %>%
+        tsibble::tsibble(index = index)
+
+    data_2 <- dplyr::tibble(index = 1:100, x = seq_along(index)) %>%
+        tsibble::tsibble(index = index)
+
+    data_3 <- dplyr::tibble(
+        index = seq(as.POSIXct("2015-01-01"), as.POSIXct("2015-01-08"),
+                    by = "min"),
+        x = ""
+    ) %>%
+        tsibble::tsibble(index = index)
+
     # assert_tsibble(data, min.rows = 2, min.cols = 2)
+    expect_error(compute_interval_periodogram(
+        data = 1, col = "x",
+        int_i = lubridate::as.interval(1, as.Date("2020-01-01")),
+        p_unit = "minutes", p_seq = seq(1000, 2500), alpha = 0.05,
+        envir = environment()),
+        "Assertion on 'data' failed")
+    expect_error(compute_interval_periodogram(
+        data = data_1[1, ], col = "x",
+        int_i = lubridate::as.interval(1, as.Date("2020-01-01")),
+        p_unit = "minutes", p_seq = seq(1000, 2500), alpha = 0.05,
+        envir = environment()),
+        "Assertion on 'data' failed")
+    expect_error(compute_interval_periodogram(
+        data = data_1[, 1], col = "x",
+        int_i = lubridate::as.interval(1, as.Date("2020-01-01")),
+        p_unit = "minutes", p_seq = seq(1000, 2500), alpha = 0.05,
+        envir = environment()),
+        "Assertion on 'data' failed")
 
-
-    # assert_index_class(data)
-
+    # assert_index_class(data, c("Date", "POSIXt"))
+    expect_error(compute_interval_periodogram(
+        data = data_2, col = "x",
+        int_i = lubridate::as.interval(1, as.Date("2020-01-01")),
+        p_unit = "minutes", p_seq = seq(1000, 2500), alpha = 0.05,
+        envir = environment()),
+        "Assertion on 'data' failed")
 
     # checkmate::assert_choice(col, names(data))
+    expect_error(compute_interval_periodogram(
+        data = data_1, col = "a",
+        int_i = lubridate::as.interval(1, as.Date("2020-01-01")),
+        p_unit = "minutes", p_seq = seq(1000, 2500), alpha = 0.05,
+        envir = environment()),
+        "Assertion on 'col' failed")
 
-
-    # checkmate::assert_numeric(data[[col]], min.len = 2, null.ok = TRUE)
-
+    # checkmate::assert_numeric(data[[col]])
+    expect_error(compute_interval_periodogram(
+        data = data_3, col = "x",
+        int_i = lubridate::as.interval(1, as.Date("2020-01-01")),
+        p_unit = "minutes", p_seq = seq(1000, 2500), alpha = 0.05,
+        envir = environment()),
+        "Assertion on 'data\\[\\[col\\]\\]' failed")
 
     # assert_interval(int_i, any.missing = FALSE)
-
+    expect_error(compute_interval_periodogram(
+        data = data_1, col = "x",
+        int_i = 1,
+        p_unit = "minutes", p_seq = seq(1000, 2500), alpha = 0.05,
+        envir = environment()),
+        "Assertion on 'int_i' failed")
+    expect_error(compute_interval_periodogram(
+        data = data_1, col = "x",
+        int_i = lubridate::as.interval(NA),
+        p_unit = "minutes", p_seq = seq(1000, 2500), alpha = 0.05,
+        envir = environment()),
+        "Assertion on 'int_i' failed")
 
     # checkmate::assert_string(p_unit)
-
+    expect_error(compute_interval_periodogram(
+        data = data_1, col = "x",
+        int_i = lubridate::as.interval(1, as.Date("2020-01-01")),
+        p_unit = 1, p_seq = seq(1000, 2500), alpha = 0.05,
+        envir = environment()),
+        "Assertion on 'p_unit' failed")
 
     # checkmate::assert_numeric(p_seq, min.len = 1)
-
+    expect_error(compute_interval_periodogram(
+        data = data_1, col = "x",
+        int_i = lubridate::as.interval(1, as.Date("2020-01-01")),
+        p_unit = "minutes", p_seq = "a", alpha = 0.05, envir = environment()),
+        "Assertion on 'p_seq' failed")
+    expect_error(compute_interval_periodogram(
+        data = data_1, col = "x",
+        int_i = lubridate::as.interval(1, as.Date("2020-01-01")),
+        p_unit = "minutes", p_seq = numeric(), alpha = 0.05,
+        envir = environment()),
+        "Assertion on 'p_seq' failed")
 
     # checkmate::assert_number(alpha, lower = 0.001, upper = 0.999)
-
+    expect_error(compute_interval_periodogram(
+        data = data_1, col = "x",
+        int_i = lubridate::as.interval(1, as.Date("2020-01-01")),
+        p_unit = "minutes", p_seq = seq(1000, 2500), alpha = -1,
+        envir = environment()),
+        "Assertion on 'alpha' failed")
+    expect_error(compute_interval_periodogram(
+        data = data_1, col = "x",
+        int_i = lubridate::as.interval(1, as.Date("2020-01-01")),
+        p_unit = "minutes", p_seq = seq(1000, 2500), alpha = 2,
+        envir = environment()),
+        "Assertion on 'alpha' failed")
 
     # checkmate::assert_environment(envir, null.ok = TRUE)
-
-
+    expect_error(compute_interval_periodogram(
+        data = data_1, col = "x",
+        int_i = lubridate::as.interval(1, as.Date("2020-01-01")),
+        p_unit = "minutes", p_seq = seq(1000, 2500), alpha = 0.05,
+        envir = 1),
+        "Assertion on 'envir' failed")
 })
 
 test_that("plot_spectrogram() | general test", {
@@ -381,18 +506,40 @@ test_that("plot_spectrogram() | general test", {
 
 test_that("plot_spectrogram() | error test", {
     # checkmate::assert_numeric(p_seq, min.len = 1)
-
+    expect_error(plot_spectrogram(
+        p_seq = "a", per_ints = list(a = 1), peaks = dplyr::tibble(),
+        xlab = "", print = TRUE),
+        "Assertion on 'p_seq' failed")
+    expect_error(plot_spectrogram(
+        p_seq = numeric(), per_ints = list(a = 1), peaks = dplyr::tibble(),
+        xlab = "", print = TRUE),
+        "Assertion on 'p_seq' failed")
 
     # checkmate::assert_list(per_ints, min.len = 1)
-
+    expect_error(plot_spectrogram(
+        p_seq = 1, per_ints = 1, peaks = dplyr::tibble(),
+        xlab = "", print = TRUE),
+        "Assertion on 'per_ints' failed")
+    expect_error(plot_spectrogram(
+        p_seq = 1, per_ints = list(), peaks = dplyr::tibble(),
+        xlab = "", print = TRUE),
+        "Assertion on 'per_ints' failed")
 
     # checkmate::assert_tibble(peaks)
-
+    expect_error(plot_spectrogram(
+        p_seq = 1, per_ints = list(a = 1), peaks = 1,
+        xlab = "", print = TRUE),
+        "Assertion on 'peaks' failed")
 
     # checkmate::assert_string(xlab)
-
+    expect_error(plot_spectrogram(
+        p_seq = 1, per_ints = list(a = 1), peaks = dplyr::tibble(),
+        xlab = 1, print = TRUE),
+        "Assertion on 'xlab' failed")
 
     # checkmate::assert_flag(print)
-
-
+    expect_error(plot_spectrogram(
+        p_seq = 1, per_ints = list(a = 1), peaks = dplyr::tibble(),
+        xlab = "", print = 1),
+        "Assertion on 'print' failed")
 })
