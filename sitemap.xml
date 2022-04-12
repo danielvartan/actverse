@@ -25,9 +25,36 @@
     <loc>https://gipso.github.io/actverse/news/index.html</loc>
   </url>
   <url>
+    <loc>https://gipso.github.io/actverse/reference/acttrust.html</loc>
+  </url>
+  <url>
     <loc>https://gipso.github.io/actverse/reference/actverse-package.html</loc>
   </url>
   <url>
+    <loc>https://gipso.github.io/actverse/reference/aggregate_index.html</loc>
+  </url>
+  <url>
+    <loc>https://gipso.github.io/actverse/reference/find_epoch.html</loc>
+  </url>
+  <url>
     <loc>https://gipso.github.io/actverse/reference/index.html</loc>
+  </url>
+  <url>
+    <loc>https://gipso.github.io/actverse/reference/na_approx.html</loc>
+  </url>
+  <url>
+    <loc>https://gipso.github.io/actverse/reference/periodogram.html</loc>
+  </url>
+  <url>
+    <loc>https://gipso.github.io/actverse/reference/raw_data.html</loc>
+  </url>
+  <url>
+    <loc>https://gipso.github.io/actverse/reference/read_acttrust.html</loc>
+  </url>
+  <url>
+    <loc>https://gipso.github.io/actverse/reference/spectrogram.html</loc>
+  </url>
+  <url>
+    <loc>https://gipso.github.io/actverse/reference/write_acttrust.html</loc>
   </url>
 </urlset>
