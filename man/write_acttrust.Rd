@@ -2,20 +2,22 @@
 % Please edit documentation in R/write_acttrust.R
 \name{write_acttrust}
 \alias{write_acttrust}
-\title{Adapt and write a time series to a readable ActTrust file}
+\title{Adapt and write a \code{tsibble} to a readable ActTrust file}
 \usage{
 write_acttrust(data, file, delim = ";", header = NULL)
 }
 \arguments{
-\item{data}{A \code{\link[tsibble:tsibble]{tsibble}} object with a \code{POSIXct} or
-\code{POSIXt} index. The ActTrust software only deals with this type of index.}
+\item{data}{A \code{\link[tsibble:tsibble]{tsibble}} object with a
+\code{\link[=as.POSIXct]{POSIXt}} index. The ActTrust software only deals with this
+type of index.}
 
 \item{file}{A string with a file path to write to.}
 
 \item{delim}{(optional) a string indicating the delimiter that must be used
-to separate values. Valid delimiters: \code{";"} and \code{"\\t"} (default: \code{";"}).}
+to separate values. Valid delimiters are: \code{";"} and \code{"\\t"} (default:
+\code{";"}).}
 
-\item{header}{(optional) a string indicating the file path to a file (usually
+\item{header}{(optional) a string indicating the path to a file (usually
 the raw data file) with the ActTrust header. This is not mandatory,
 the ActTrust software can read files without it (default: \code{NULL}).}
 }
@@ -37,24 +39,26 @@ ActTrust is a trademark of
 \details{
 \subsection{Requirements}{
 
-\code{read_acttrust()} requires the \code{\link[readr:readr-package]{readr}} package.
+\code{write_acttrust()} requires the \code{\link[readr:readr-package]{readr}} package. If
+you don't already have it installed, you can install it with:\preformatted{install.packages("readr")
+}
 }
 
 \subsection{\code{NA} values}{
 
 \code{write_acttrust()} will transform any \code{NA} value to \code{0}. This is because
-the ActTrust software only interpret numeric values.
+the ActTrust software only deals with numeric values.
 }
 }
 \examples{
-if (interactive()) {
-    file <- tempfile()
-    header <- raw_data("acttrust.txt")
+acttrust
 
-    write_acttrust(acttrust, file, header = header)
+file <- tempfile()
+header <- raw_data("acttrust.txt")
 
-    readLines(file, n = 30)
-}
+write_acttrust(acttrust, file, header = header)
+
+readLines(file, n = 30)
 }
 \seealso{
 Other utility functions: 

@@ -8,15 +8,12 @@ raw_data(file = NULL)
 }
 \arguments{
 \item{file}{(optional) a \code{\link[=character]{character}} object indicating the raw
-data file name(s). If \code{NULL}, all raw data file names will be printed
+data file name(s). If \code{NULL}, all raw data file names will be returned
 (default: \code{NULL}).}
 }
 \value{
-\itemize{
-\item If \code{file == NULL}, a \code{\link[=character]{character}} object with all file names
-available.
-\item Else, a string with the file name path.
-}
+If \code{file == NULL}, a \code{\link[=character]{character}} object with all file
+names available. Else, a string with the file name path.
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#maturing}{\figure{lifecycle-maturing.svg}{options: alt='[Maturing]'}}}{\strong{[Maturing]}}

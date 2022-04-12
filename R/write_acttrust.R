@@ -1,4 +1,4 @@
-#' Adapt and write a time series to a readable ActTrust file
+#' Adapt and write a `tsibble` to a readable ActTrust file
 #'
 #' @description
 #'
@@ -17,19 +17,26 @@
 #'
 #' ## Requirements
 #'
-#' `read_acttrust()` requires the [`readr`][readr::readr-package] package.
+#' `write_acttrust()` requires the [`readr`][readr::readr-package] package. If
+#' you don't already have it installed, you can install it with:
+#'
+#' ```
+#' install.packages("readr")
+#' ````
 #'
 #'  ## `NA` values
 #'
 #' `write_acttrust()` will transform any `NA` value to `0`. This is because
-#' the ActTrust software only interpret numeric values.
+#' the ActTrust software only deals with numeric values.
 #'
-#' @param data A [`tsibble`][tsibble::tsibble()] object with a `POSIXct` or
-#'   `POSIXt` index. The ActTrust software only deals with this type of index.
+#' @param data A [`tsibble`][tsibble::tsibble()] object with a
+#'   [`POSIXt`][as.POSIXct()] index. The ActTrust software only deals with this
+#'   type of index.
 #' @param file A string with a file path to write to.
 #' @param delim (optional) a string indicating the delimiter that must be used
-#'   to separate values. Valid delimiters: `";"` and `"\t"` (default: `";"`).
-#' @param header (optional) a string indicating the file path to a file (usually
+#'   to separate values. Valid delimiters are: `";"` and `"\t"` (default:
+#'   `";"`).
+#' @param header (optional) a string indicating the path to a file (usually
 #'   the raw data file) with the ActTrust header. This is not mandatory,
 #'   the ActTrust software can read files without it (default: `NULL`).
 #'
@@ -39,14 +46,14 @@
 #' @export
 #'
 #' @examples
-#' if (interactive()) {
-#'     file <- tempfile()
-#'     header <- raw_data("acttrust.txt")
+#' acttrust
 #'
-#'     write_acttrust(acttrust, file, header = header)
+#' file <- tempfile()
+#' header <- raw_data("acttrust.txt")
 #'
-#'     readLines(file, n = 30)
-#' }
+#' write_acttrust(acttrust, file, header = header)
+#'
+#' readLines(file, n = 30)
 write_acttrust <- function(data, file, delim = ";", header = NULL) {
     assert_tsibble(data, min.rows = 2, min.cols = 2)
     assert_index_class(data, c("POSIXt"))

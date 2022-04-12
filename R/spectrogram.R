@@ -6,29 +6,30 @@
 #'
 #' `spectrogram()` computes a series of Sokolove & Bushell's (1978)
 #' \eqn{\chi^{2}}{chi square} periodograms with the purpose of visualize
-#' differences in periodicities in a given interval of a time series.
+#' differences in periodicities in a given interval of a
+#' [`tsibble`][tsibble::tsibble()] object.
 #'
-#' See [?periodogram][actverse::periodogram()] to learn more about the
-#' periodogram computation.
+#' See [?periodogram][periodogram()] to learn more about the periodogram
+#' computation.
 #'
-#' @param int (optional) a string indicating the interval unit (valid values:
+#' @param int (optional) a string indicating the interval unit.Valid values are:
 #'   `“seconds”`, `“minutes”`, `“hours”`, `“days”`, `“weeks”`, `“months”`,
 #'   `“quarters”`, and `“years”`) (default: `"days"`).
-#' @param int_n (optional) an integer number indicating the amount of intervals
-#'   (default: `7`).
+#' @param int_n (optional) an integer number indicating the size of the
+#'   intervals, with the same unit as `int` (default: `7`).
 #' @param int_step (optional) an integer number indicating the amount of epochs
 #'   to advance at the end of each interval (default: `720`).
 #' @param alpha (optional) a number, from `0` to `1`, indicating the significant
 #'   level required for the peaks. The spectrogram plot only shows the
-#'   significant peaks. A high `alpha` will produce a more detailed image
-#'   (default: `0.05`).
+#'   significant peaks (default: `0.05`).
 #' @param print (optional) a [`logical`][logical()] value indicating if the
 #'   function must print the spectrogram plot (default: `TRUE`).
 #'
 #' @return A [`list`][list()] object with the following elements:
 #'
-#' * `periodograms`: a [`list`][list()] object with the periodograms data. See
-#' [`?periodogram()`][periodogram()] to learn more about the list elements.
+#' * `periodograms`: a [`list`][list()] object with the periodogram data for
+#' each interval. See [`?periodogram()`][periodogram()] to learn more about the
+#' list elements.
 #' * `spectrogram`: a [`ggplot`][ggplot2::ggplot()] object with a heat map chart
 #' showing one periodogram per line (`q_p`)(y) by the period sequence (`p_seq`)
 #' (x).
@@ -48,21 +49,7 @@
 #'
 #' spec <- spectrogram(data, "x", p_unit = "minutes", p_min = 1,
 #'                     p_max = 120, p_step = 1, int = "hours", int_n = 2,
-#'                     int_step = 59, alpha = 0.05, print = FALSE)
-#'
-#' head(names(spec$periodograms))
-#' spec$periodograms$int_1$p_unit
-#' head(spec$periodograms$int_1$p_seq)
-#' spec$periodograms$int_1$int
-#' spec$periodograms$int_1$alpha
-#' head(spec$periodograms$int_1$a_p)
-#' head(spec$periodograms$int_1$q_p)
-#' head(spec$periodograms$int_1$q_p_critical)
-#' head(spec$periodograms$int_1$q_p_rel)
-#' head(spec$periodograms$int_1$q_p_pvalue)
-#' head(spec$periodograms$int_1$q_p_rel)
-#' spec$periodograms$int_1$q_p_peaks
-#' spec$spectrogram
+#'                     int_step = 59, alpha = 0.05, print = TRUE)
 #'
 #' ## Using interactive plots
 #'

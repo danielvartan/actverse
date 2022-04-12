@@ -2,7 +2,7 @@
 % Please edit documentation in R/aggregate_index.R
 \name{aggregate_index}
 \alias{aggregate_index}
-\title{Aggregate the index of a time series}
+\title{Aggregate the index of a \code{tsibble}}
 \usage{
 aggregate_index(data, unit, fun = NULL, week_start = 1)
 }
@@ -10,16 +10,17 @@ aggregate_index(data, unit, fun = NULL, week_start = 1)
 \item{data}{A \code{\link[tsibble:tsibble]{tsibble}} object.}
 
 \item{unit}{A string indicating at which time unit the index must be
-aggregated (valid values: \verb{“seconds”}, \verb{“minutes”}, \verb{“hours”}, \verb{“days”},
-\verb{“weeks”}, \verb{“months”}, \verb{“quarters”}, and \verb{“years”}) (default: \code{"minutes"}).}
+aggregated. Valid values are: \verb{“seconds”}, \verb{“minutes”}, \verb{“hours”},
+\verb{“days”}, \verb{“weeks”}, \verb{“months”}, \verb{“quarters”}, and \verb{“years”}) (default:
+\code{"minutes"}).}
 
 \item{fun}{(optional) The \code{function} to be applied to each measure variable
 of \code{data}. If \code{NULL}, \code{aggregate_index()} will apply its default function
 (see the Details section to learn more) (default: \code{NULL}).}
 
 \item{week_start}{(optional) an integer number indicating the day on which
-week starts (\code{1} for Monday and \code{7} for \code{Sunday}). This is only used when
-\verb{unit == "weeks} (default: \code{1}).}
+the week starts (\code{1} for Monday and \code{7} for \code{Sunday}). This is only used
+when \verb{unit == "weeks} (default: \code{1}).}
 }
 \value{
 A \code{\link[tsibble:tsibble]{tsibble}} object.
@@ -27,14 +28,15 @@ A \code{\link[tsibble:tsibble]{tsibble}} object.
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
 
-\code{aggregate_index()} allows you to aggregate the index of a time series by
-applying a specific function to its measured variables.
+\code{aggregate_index()} allows you to aggregate the index of a
+\code{\link[tsibble:tsibble]{tsibble}} object by applying a specific function to its
+measured variables.
 }
 \details{
-\code{aggregate_index()} was created to easily regularize time series objects. If
-you need more control while doing this operation, check the
-\code{\link[tsibble:index-by]{index_by()}} function provided by the
-\href{https://tsibble.tidyverts.org/}{\code{tsibble}} package.
+\code{aggregate_index()} was created to easily regularize
+\code{\link[tsibble:tsibble]{tsibble}} objects. If you need more control while doing
+this operation, check the \code{\link[tsibble:index-by]{index_by()}} function
+provided by the \href{https://tsibble.tidyverts.org/}{\code{tsibble}} package.
 \subsection{Default function}{
 
 If \code{fun == NULL}, \code{aggregate_index()} will use the following function to
@@ -52,20 +54,23 @@ transform each measured variable:\preformatted{function(x) \{
 }
 
 This function average values for numeric variables and assigning the most
-frequent value (mode) for single integer or other type of variables
-(\strong{*}).
-
-\strong{*}: If no mode can be found, the function will return the first value
-of \code{x}.
+frequent value (mode) for single integer or other type of variables. If no
+mode can be found, the function will return the first value of \code{x}.
 }
 }
 \examples{
 acttrust
+
 aggregate_index(acttrust, unit = "hour")
+
 aggregate_index(acttrust, unit = "day")
+
 aggregate_index(acttrust, unit = "week")
+
 aggregate_index(acttrust, unit = "month")
+
 aggregate_index(acttrust, unit = "quarter")
+
 aggregate_index(acttrust, unit = "year")
 }
 \seealso{

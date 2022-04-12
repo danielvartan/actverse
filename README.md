@@ -27,6 +27,13 @@ of `actverse` is to facilitate the work of sleep and chronobiology
 scientists with actigraphy data while also helping with research
 reproducibility.
 
+`actverse` adheres to the [tidyverse
+principles](https://tidyverse.tidyverse.org/articles/manifesto.html) and
+integrates with the [tidyverse ecosystem](https://www.tidyverse.org/).
+That’s why we choose to work with the
+[`tsibble`](https://tsibble.tidyverts.org/index.html) standard for time
+series, that also follow the same principles.
+
 ## Prerequisites
 
 You only need to have some familiarity with the [R programming

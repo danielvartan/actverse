@@ -33,8 +33,8 @@ na_plot(x, index, intp = NULL, print = TRUE)
 \arguments{
 \item{x}{A \code{\link[=numeric]{numeric}} object.}
 
-\item{index}{An R object, of the same length of \code{x}, with the index of the
-time series.}
+\item{index}{An R object with the same length of \code{x} representing the index
+of a time series.}
 
 \item{fill_na_tips}{(optional) a \code{\link[=logical]{logical}} value indicating if
 the function must fill remaining \code{NA} values with the closest non-missing
@@ -43,40 +43,41 @@ data point. Learn more about it in the Details section (default: \code{TRUE}).}
 \item{week_start}{(optional) an integer number indicating the day on which
 the week starts (\code{1} for Monday and \code{7} for \code{Sunday}) (default: \code{1}).}
 
-\item{intp}{(optional) a \code{\link[=numeric]{numeric}} object, of the same length
-of \code{x}, with the output of the \code{NA} interpolation of \code{x}.}
+\item{intp}{(optional) a \code{\link[=numeric]{numeric}} object with the same length
+of \code{x} and with the output of the \code{NA} interpolation of \code{x} (default:
+\code{NULL}).}
 
 \item{print}{(optional) a \code{\link[=logical]{logical}} value indicating if the
 function must print the plot (default: \code{TRUE}).}
 }
 \value{
 \itemize{
-\item \verb{na_*}: a \code{\link[=numeric]{numeric}} object of the same length of \code{x}.
-\item \code{na_plot()}: a \code{\link[ggplot2:ggplot]{ggplot}} object with a point and line
-chart showing the original versus the interpolated data.
+\item For \verb{na_*}: a \code{\link[=numeric]{numeric}} object with the same length of \code{x}.
+\item For \code{na_plot()}: a \code{\link[ggplot2:ggplot]{ggplot}} object with a point and
+line chart showing the original data versus the interpolated data.
 }
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
 
-\code{actverse} provides several functions to interpolate your time series data in
-an easy manner. These functions can be found with the prefix \code{na_} + method.
-See the Methods section to learn more about each one.
+\code{actverse} provides several functions to interpolate your data in an easy
+manner. These functions can be found with the prefix \code{na_}. See the
+Methods section to learn more about each one.
 
 \code{na_plot()} creates a plot showing the shape of the interpolation. It helps
 to visualize and find the best interpolation technique for your data.
 }
 \details{
-There are few articles that deals about interpolation in actigraphy. Tonon et
+There are few articles that deals with interpolation in actigraphy. Tonon et
 al. (2022) recommends not using interpolation (i.e., maintain \code{NA} values)
 whenever is possible. The same authors also recommends using the weekly mean
 method of interpolation when the parameters cannot be computed in the
-presence of \code{NA}.
+presence of \code{NA} values.
 \subsection{\code{fill_na_tips} argument}{
 
 Some interpolation methods can result in outputs with remaining \code{NA} values.
-That's the case, for example, with the linear interpolation (\code{na_approx()})
-method.
+That's the case, for example, with the linear interpolation method
+(\code{na_approx()}).
 \itemize{
 \item Example:
 }\if{html}{\out{<div class="sourceCode r">}}\preformatted{x <- c(NA, 1, 5, 10, NA, 5, 10, 1, NA, 10, 1, 5, NA, NA)
@@ -144,8 +145,8 @@ This method replaces \code{NA} values with the most frequent value (mode) of
 \code{x}.
 
 If no mode can be found, the function will return \code{x} without any
-interpolation. The function will show a warning message to inform the user if
-that happen.
+interpolation. \code{na_overall_mode()} will show a warning message to inform the
+user if that happen.
 \itemize{
 \item Visual example:
 \cr\figure{na-overall-mode-example-1.png}
@@ -200,6 +201,7 @@ na_plot(x, index)
 na_approx(x, index, fill_na_tips = FALSE)
 #> [1]   NA  1.0  5.0 10.0  7.5  5.0 10.0  1.0  5.5 10.0
 #> [11] 1.0  5.0  NA   NA # Expected
+na_plot(x, index, na_approx(x, index, fill_na_tips = FALSE))
 
 na_approx(x, index, fill_na_tips = TRUE)
 #> [1]   1.0  1.0  5.0 10.0  7.5  5.0 10.0  1.0  5.5 10.0

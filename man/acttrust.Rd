@@ -5,11 +5,11 @@
 \alias{acttrust}
 \title{An ActTrust actigraphy record}
 \format{
-A [\verb{tsibble][tsibble::tsibble()] with }r ncol(acttrust)\verb{columns and}r nrow(acttrust)` rows:
+A \code{\link[tsibble:tsibble]{tsibble}} with 17 columns and 1,441 rows:
 
 \describe{
 \item{timestamp}{
-Date and time of the events.
+Date and time of the recorded events.
 \cr \cr
 R class: \code{\link[=as.POSIXct]{POSIXct}}.}
 
@@ -39,7 +39,7 @@ Wrist temperature in degrees \code{Celsius}.
 R class: \code{\link[=numeric]{numeric}}.}
 
 \item{external_temperature}{
-External temperature in degrees \code{Celsius}.
+External temperature in degrees \code{Celsius} (unreliable data).
 \cr \cr
 R class: \code{\link[=numeric]{numeric}}.}
 
@@ -94,8 +94,8 @@ R class: \code{\link[=numeric]{numeric}}.}
 \item{state}{
 An integer number indicating the subject state: \code{0} for awake, \code{1} for
 sleeping, \code{2} for resting, \code{4} for offwrist (device removal), \code{6} for
-editable state 1, \code{7} editable state 2, and \code{8} for editable state 3. These
-states can be assigned by a specialist or by a validated inference
+editable state 1, \code{7} for editable state 2, and \code{8} for editable state 3.
+These states can be assigned by a specialist or by a validated inference
 algorithm.
 \cr \cr
 R class: \code{\link[=numeric]{numeric}}.}
@@ -114,21 +114,21 @@ A small sample (1 day length) of an
 \href{https://www.condorinst.com.br/acttrust-actigrafo/}{ActTrust}
 actigraphy record.
 
-ActTrust is a trademark of
-\href{https://www.condorinst.com.br/}{Condor Instruments Ltda}.
-
-\strong{Note}: We are always looking for actigraphy data samples. If you have a
+\strong{Note}: We're always looking for actigraphy data samples. If you have a
 personal actigraphy record made with a device that is not listed in the
 \code{actverse} package and is ok with sharing it, please contact the package
 authors.
+
+ActTrust is a trademark of
+\href{https://www.condorinst.com.br/}{Condor Instruments Ltda}.
 }
 \details{
-This data was created by one of the \code{actverse} package author and is free for
-all kinds of use. You can download the full dataset at
+This dataset was created by one of the \code{actverse} package authors and is free
+for all kinds of use. You can download the full dataset at
 \url{https://zenodo.org/record/4898822}.
 \subsection{Data wrangling}{
 
-This dataset was tidied and validated with the default settings of
+This data was tidied and validated with the default settings of
 \code{\link[=read_acttrust]{read_acttrust()}}.
 
 The process of \emph{tiding} a dataset is understood as transforming it in input
@@ -149,17 +149,15 @@ location in Loo and Jonge (2018).
 
 \subsection{Variable naming}{
 
-The \code{actverse} package stick to the \href{https://www.tidyverse.org/}{tidyverse}
-principles. Our code and naming schemes follow the guidelines
-of the \href{https://style.tidyverse.org/}{tidyverse style guide}.
+The \code{actverse} package stick to the \href{https://tidyverse.tidyverse.org/articles/manifesto.html}{tidyverse principles}. Our
+code and naming schemes follow the guidelines of the \href{https://style.tidyverse.org/}{tidyverse style guide}.
 }
 
 \subsection{Variable classes}{
 
 R has a \href{https://cran.r-project.org/view=TimeSeries}{vast number} of time
 series standards. We choose to work with \code{\link[tsibble:tsibble]{tsibble}}
-because we think is the best standard that follows the
-\href{https://www.tidyverse.org/}{tidyverse} principles.
+because we think is the best standard that follows the \href{https://tidyverse.tidyverse.org/articles/manifesto.html}{tidyverse principles}.
 
 To make sure that the resulting data from \code{actverse} could be easily
 transformed to other standards, we decided to maintain all variable classes
@@ -184,19 +182,19 @@ The raw data for this dataset can be found with
 \item Gender: Male.
 \item Height: \code{180} cm.
 \item Weight: \code{85} kg.
-\item BMI: \verb{~26,23}5 (overweight).
+\item BMI: \code{~26.235} (overweight).
 }
 }
 
 \subsection{Record}{
 \itemize{
-\item Body part: Left wrist (non-dominant wrist)
+\item Body part: Left wrist (non-dominant wrist).
 \item Start: \verb{2021-04-24 04:14:25}.
 \item End: \verb{2021-05-31 03:39:06}.
 \item Days: \code{37}
-\item Epoch (sample interval): \code{60} seconds
-\item Mode: PIM/TAT/ZCM
-\item TAT Threshold: \code{1024}
+\item Epoch (sample interval): \code{60} seconds.
+\item Mode: PIM, TAT, and ZCM.
+\item TAT Threshold: \code{1024}.
 \item Location: Sao Paulo, SP, Brazil.
 \item UTC: \code{-3}.
 \item DST: \code{FALSE}.
@@ -226,10 +224,10 @@ The raw data for this dataset can be found with
 \subsection{Scoring review}{
 \itemize{
 \item Offwrist periods were indicated from sudden drops in wrist temperature.
-\item Micro sleep states (isolated states lasting less than \verb{~5 minutes}) were
+\item Micro sleep states (isolated states lasting less than \verb{5 minutes}) were
 removed.
-\item Minor adjustments were made on the sleep onset and sleep offset, taking in
-consideration the event button and sleep diary records.
+\item Minor adjustments were made on the sleep onset and sleep offset, taking
+into consideration the event button and sleep diary records.
 }
 }
 

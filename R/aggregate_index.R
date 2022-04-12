@@ -1,18 +1,19 @@
-#' Aggregate the index of a time series
+#' Aggregate the index of a `tsibble`
 #'
 #' @description
 #'
 #' `r lifecycle::badge("experimental")`
 #'
-#' `aggregate_index()` allows you to aggregate the index of a time series by
-#' applying a specific function to its measured variables.
+#' `aggregate_index()` allows you to aggregate the index of a
+#' [`tsibble`][tsibble::tsibble()] object by applying a specific function to its
+#' measured variables.
 #'
 #' @details
 #'
-#' `aggregate_index()` was created to easily regularize time series objects. If
-#' you need more control while doing this operation, check the
-#' [`index_by()`][tsibble::index_by()] function provided by the
-#' [`tsibble`](https://tsibble.tidyverts.org/) package.
+#' `aggregate_index()` was created to easily regularize
+#' [`tsibble`][tsibble::tsibble()] objects. If you need more control while doing
+#' this operation, check the [`index_by()`][tsibble::index_by()] function
+#' provided by the [`tsibble`](https://tsibble.tidyverts.org/) package.
 #'
 #' ## Default function
 #'
@@ -33,22 +34,20 @@
 #' }
 #' ````
 #' This function average values for numeric variables and assigning the most
-#' frequent value (mode) for single integer or other type of variables
-#' (\strong{*}).
-#'
-#' \strong{*}: If no mode can be found, the function will return the first value
-#' of `x`.
+#' frequent value (mode) for single integer or other type of variables. If no
+#' mode can be found, the function will return the first value of `x`.
 #'
 #' @param data A [`tsibble`][tsibble::tsibble()] object.
 #' @param unit A string indicating at which time unit the index must be
-#'   aggregated (valid values: `“seconds”`, `“minutes”`, `“hours”`, `“days”`,
-#'   `“weeks”`, `“months”`, `“quarters”`, and `“years”`) (default: `"minutes"`).
+#'   aggregated. Valid values are: `“seconds”`, `“minutes”`, `“hours”`,
+#'   `“days”`, `“weeks”`, `“months”`, `“quarters”`, and `“years”`) (default:
+#'   `"minutes"`).
 #' @param fun (optional) The `function` to be applied to each measure variable
 #'   of `data`. If `NULL`, `aggregate_index()` will apply its default function
 #'   (see the Details section to learn more) (default: `NULL`).
 #' @param week_start (optional) an integer number indicating the day on which
-#'   week starts (`1` for Monday and `7` for `Sunday`). This is only used when
-#'   `unit == "weeks` (default: `1`).
+#'   the week starts (`1` for Monday and `7` for `Sunday`). This is only used
+#'   when `unit == "weeks` (default: `1`).
 #'
 #' @return A [`tsibble`][tsibble::tsibble()] object.
 #'
@@ -57,11 +56,17 @@
 #'
 #' @examples
 #' acttrust
+#'
 #' aggregate_index(acttrust, unit = "hour")
+#'
 #' aggregate_index(acttrust, unit = "day")
+#'
 #' aggregate_index(acttrust, unit = "week")
+#'
 #' aggregate_index(acttrust, unit = "month")
+#'
 #' aggregate_index(acttrust, unit = "quarter")
+#'
 #' aggregate_index(acttrust, unit = "year")
 aggregate_index <- function(data, unit, fun = NULL, week_start = 1) {
     unit_choices <- c("second", "minute", "hour", "day", "week", "month",

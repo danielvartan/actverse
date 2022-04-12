@@ -2,7 +2,7 @@
 % Please edit documentation in R/find_epoch.R
 \name{find_epoch}
 \alias{find_epoch}
-\title{Find the epochs/periodicities of a time series}
+\title{Find the epochs/periodicities of a \code{tsibble}}
 \usage{
 find_epoch(data, threshold = 0.9)
 }
@@ -22,23 +22,24 @@ A \code{\link[=list]{list}} object with the following elements:
 \code{threshold} with greater prevalence in seconds. If none is find, \code{best_match}
 value will be equal as \code{as.numeric(NA)}.
 \item \code{prevalence}: a \code{\link[tibble:tibble]{tibble}} listing the unique
-epochs/periodicities found in \code{data}, along with its proportions.
+epochs/periodicities found in \code{data} along with its proportions.
 }
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
 
-\code{find_epoch()} returns the different epochs/periodicities present in a time
-series, along with a best match epoch based on a predefined threshold.
+\code{find_epoch()} returns the different epochs/periodicities present in a
+\code{\link[tsibble:tsibble]{tsibble}} object along with a best match epoch based
+on a predefined threshold.
 }
 \details{
-In the rare cases that a time series have periodicities with the same
-prevalence above the threshold, \code{best_match} will return just one of those
-values.
+In the rare cases that a \code{\link[tsibble:tsibble]{tsibble}} object have
+periodicities with the same prevalence above the threshold, \code{best_match} will
+return just one of those values.
 }
 \examples{
-data <- tsibble::tsibble(
-    timestamp = c(
+data <- dplyr::tibble(
+    index = c(
         as.POSIXct(seq(60, 5400, by = 60), origin = lubridate::origin),
         as.POSIXct(seq(5430, 5490, by = 30), origin = lubridate::origin),
         as.POSIXct(seq(5505, 5520, by = 15), origin = lubridate::origin),
@@ -47,6 +48,7 @@ data <- tsibble::tsibble(
         ),
     x = seq_along(timestamp)
     )
+data <- tsibble::tsibble(data, index = index)
 
 find_epoch(data, 0.8)
 }

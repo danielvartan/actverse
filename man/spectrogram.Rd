@@ -24,37 +24,35 @@ spectrogram(
 \item{col}{An string indicating which column of \code{data} to use.}
 
 \item{p_unit}{(optional) a string indicating at which time unit the index
-must be aggregated (valid values: \verb{“seconds”}, \verb{“minutes”}, \verb{“hours”},
+must be aggregated.Valid values are: \verb{“seconds”}, \verb{“minutes”}, \verb{“hours”},
 \verb{“days”}, \verb{“weeks”}, \verb{“months”}, \verb{“quarters”}, and \verb{“years”}) (default:
 \code{"minutes"}).}
 
 \item{p_min}{(optional) an integer number indicating the minimum period
-\eqn{p} to calculate the test and add to the periodogram (same unit as
-\code{p_unit}).
-(default: \code{1000}).}
+\eqn{p}, with the same unit as \code{p_unit}, to compute the test (default:
+\code{1000}).}
 
 \item{p_max}{(optional) an integer number indicating the maximum period
-\eqn{p} to calculate the test and add to the periodogram (same unit as
-\code{p_unit}). (default: \code{2500}).}
+\eqn{p}, with the same unit as \code{p_unit}, to compute the test (default:
+\code{2500}).}
 
 \item{p_step}{(optional) an integer number indicating the range of values
-that will be skipped between calculating one test and the next. (default:
+that will be skipped between computing one test and the next. (default:
 \code{1}).}
 
-\item{int}{(optional) a string indicating the interval unit (valid values:
+\item{int}{(optional) a string indicating the interval unit.Valid values are:
 \verb{“seconds”}, \verb{“minutes”}, \verb{“hours”}, \verb{“days”}, \verb{“weeks”}, \verb{“months”},
 \verb{“quarters”}, and \verb{“years”}) (default: \code{"days"}).}
 
-\item{int_n}{(optional) an integer number indicating the amount of intervals
-(default: \code{7}).}
+\item{int_n}{(optional) an integer number indicating the size of the
+intervals, with the same unit as \code{int} (default: \code{7}).}
 
 \item{int_step}{(optional) an integer number indicating the amount of epochs
 to advance at the end of each interval (default: \code{720}).}
 
 \item{alpha}{(optional) a number, from \code{0} to \code{1}, indicating the significant
 level required for the peaks. The spectrogram plot only shows the
-significant peaks. A high \code{alpha} will produce a more detailed image
-(default: \code{0.05}).}
+significant peaks (default: \code{0.05}).}
 
 \item{print}{(optional) a \code{\link[=logical]{logical}} value indicating if the
 function must print the spectrogram plot (default: \code{TRUE}).}
@@ -62,8 +60,9 @@ function must print the spectrogram plot (default: \code{TRUE}).}
 \value{
 A \code{\link[=list]{list}} object with the following elements:
 \itemize{
-\item \code{periodograms}: a \code{\link[=list]{list}} object with the periodograms data. See
-\code{\link[=periodogram]{?periodogram()}} to learn more about the list elements.
+\item \code{periodograms}: a \code{\link[=list]{list}} object with the periodogram data for
+each interval. See \code{\link[=periodogram]{?periodogram()}} to learn more about the
+list elements.
 \item \code{spectrogram}: a \code{\link[ggplot2:ggplot]{ggplot}} object with a heat map chart
 showing one periodogram per line (\code{q_p})(y) by the period sequence (\code{p_seq})
 (x).
@@ -74,10 +73,11 @@ showing one periodogram per line (\code{q_p})(y) by the period sequence (\code{p
 
 \code{spectrogram()} computes a series of Sokolove & Bushell's (1978)
 \eqn{\chi^{2}}{chi square} periodograms with the purpose of visualize
-differences in periodicities in a given interval of a time series.
+differences in periodicities in a given interval of a
+\code{\link[tsibble:tsibble]{tsibble}} object.
 
-See \link[=periodogram]{?periodogram} to learn more about the
-periodogram computation.
+See \link[=periodogram]{?periodogram} to learn more about the periodogram
+computation.
 }
 \examples{
 data <- dplyr::tibble(
@@ -89,21 +89,7 @@ data <- tsibble::tsibble(data, index = index)
 
 spec <- spectrogram(data, "x", p_unit = "minutes", p_min = 1,
                     p_max = 120, p_step = 1, int = "hours", int_n = 2,
-                    int_step = 59, alpha = 0.05, print = FALSE)
-
-head(names(spec$periodograms))
-spec$periodograms$int_1$p_unit
-head(spec$periodograms$int_1$p_seq)
-spec$periodograms$int_1$int
-spec$periodograms$int_1$alpha
-head(spec$periodograms$int_1$a_p)
-head(spec$periodograms$int_1$q_p)
-head(spec$periodograms$int_1$q_p_critical)
-head(spec$periodograms$int_1$q_p_rel)
-head(spec$periodograms$int_1$q_p_pvalue)
-head(spec$periodograms$int_1$q_p_rel)
-spec$periodograms$int_1$q_p_peaks
-spec$spectrogram
+                    int_step = 59, alpha = 0.05, print = TRUE)
 
 ## Using interactive plots
 

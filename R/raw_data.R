@@ -8,14 +8,11 @@
 #' purposes. `raw_data()` makes it easy to access their paths.
 #'
 #' @param file (optional) a [`character`][character()] object indicating the raw
-#'   data file name(s). If `NULL`, all raw data file names will be printed
+#'   data file name(s). If `NULL`, all raw data file names will be returned
 #'   (default: `NULL`).
 #'
-#' @return
-#'
-#' * If `file == NULL`, a [`character`][character()] object with all file names
-#' available.
-#' * Else, a string with the file name path.
+#' @return If `file == NULL`, a [`character`][character()] object with all file
+#'   names available. Else, a string with the file name path.
 #'
 #' @family utility functions
 #' @export

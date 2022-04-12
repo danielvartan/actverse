@@ -13,7 +13,7 @@ a file.}
 
 \item{tz}{A string that specifies which time zone to parse the dates/time
 with. The string must be a time zone that is recognized by the user's OS.
-For more information, see \code{\link[=OlsonNames]{?timezone}} (default: \code{"UTC"}).}
+For more information see \code{\link[=OlsonNames]{?timezone}} (default: \code{"UTC"}).}
 
 \item{regularize}{(optional) a \code{\link[=logical]{logical}} value indicating if the
 function must correct irregular intervals (\strong{highly recommended}). See
@@ -30,33 +30,30 @@ found in \code{\link[=acttrust]{?acttrust}}.
 a consistent and easy manner. You can see the output data structure in
 \code{\link[=acttrust]{?acttrust}}.
 
-This function was created just for convenience. If it doesn't work for your
-file, we recommend using the \href{https://readr.tidyverse.org/}{readr} package to
-load it to R.
-
 ActTrust is a trademark of
 \href{https://www.condorinst.com.br/}{Condor Instruments Ltda}.
 }
 \details{
 \subsection{Requirements}{
 
-\code{read_acttrust()} requires the \code{\link[readr:readr-package]{readr}} and
-\code{\link[readr:readr-package]{zoo}} packages.
+\code{read_acttrust()} requires the \code{\link[readr:readr-package]{readr}} package. If
+you don't already have it installed, you can install it with:\preformatted{install.packages("readr")
+}
 }
 
 \subsection{\code{Regularize} parameter}{
 
-It's common to find some uneven epoch/interval in ActTrust data files. This
+It's common to find some uneven epochs/intervals in ActTrust data files. This
 occurs because the actigraph internal clock can go off by some seconds while
-recording, and can become an issue while doing some computations. By using
+recording and can become an issue while doing some computations. By using
 \code{regularize == TRUE}, \code{read_acttrust()} find and correct those
 irregularities.
 
 It's important to note that this process will only work if a clear
 epoch/periodicity can be found in the data. Regularization is made by
 aggregating the values between epochs, averaging values for numeric variables
-and assigning the most frequent value (mode) for integer or other type of
-variables.
+and assigning the most frequent value (mode) for single integer or other type
+of variables.
 
 Any gap found in the time series will be assign as \code{NA}, with a \code{state}
 value of \code{9}.
@@ -64,8 +61,8 @@ value of \code{9}.
 
 \subsection{Offwrist data}{
 
-Unless \code{interpolate_offwrist == TRUE}, \code{read_acttrust()} will transform any
-offwrist data into missing data (\code{NA}). They will still going to be
+\code{read_acttrust()} will transform any offwrist data (data with
+\code{state == 4}) into missing data (\code{NA}). They will still going to be
 classified as offwrist in the \code{state} variable.
 }
 

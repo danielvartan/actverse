@@ -4,26 +4,26 @@
 #'
 #' `r lifecycle::badge("experimental")`
 #'
-#' `actverse` provides several functions to interpolate your time series data in
-#' an easy manner. These functions can be found with the prefix `na_` + method.
-#' See the Methods section to learn more about each one.
+#' `actverse` provides several functions to interpolate your data in an easy
+#' manner. These functions can be found with the prefix `na_`. See the
+#' Methods section to learn more about each one.
 #'
 #' `na_plot()` creates a plot showing the shape of the interpolation. It helps
 #' to visualize and find the best interpolation technique for your data.
 #'
 #' @details
 #'
-#' There are few articles that deals about interpolation in actigraphy. Tonon et
+#' There are few articles that deals with interpolation in actigraphy. Tonon et
 #' al. (2022) recommends not using interpolation (i.e., maintain `NA` values)
 #' whenever is possible. The same authors also recommends using the weekly mean
 #' method of interpolation when the parameters cannot be computed in the
-#' presence of `NA`.
+#' presence of `NA` values.
 #'
 #' ## `fill_na_tips` argument
 #'
 #' Some interpolation methods can result in outputs with remaining `NA` values.
-#' That's the case, for example, with the linear interpolation (`na_approx()`)
-#' method.
+#' That's the case, for example, with the linear interpolation method
+#' (`na_approx()`).
 #'
 #' * Example:
 #'
@@ -97,8 +97,8 @@
 #' `x`.
 #'
 #' If no mode can be found, the function will return `x` without any
-#' interpolation. The function will show a warning message to inform the user if
-#' that happen.
+#' interpolation. `na_overall_mode()` will show a warning message to inform the
+#' user if that happen.
 #'
 #' * Visual example:
 #' \cr
@@ -144,23 +144,24 @@
 #' na_plot(x, index, na_zero(x))
 #'
 #' @param x A [`numeric`][numeric()] object.
-#' @param index An R object, of the same length of `x`, with the index of the
-#'   time series.
+#' @param index An R object with the same length of `x` representing the index
+#'   of a time series.
 #' @param fill_na_tips (optional) a [`logical`][logical()] value indicating if
 #'   the function must fill remaining `NA` values with the closest non-missing
 #'   data point. Learn more about it in the Details section (default: `TRUE`).
 #' @param week_start (optional) an integer number indicating the day on which
 #'   the week starts (`1` for Monday and `7` for `Sunday`) (default: `1`).
-#' @param intp (optional) a [`numeric`][numeric()] object, of the same length
-#'   of `x`, with the output of the `NA` interpolation of `x`.
+#' @param intp (optional) a [`numeric`][numeric()] object with the same length
+#'   of `x` and with the output of the `NA` interpolation of `x` (default:
+#'   `NULL`).
 #' @param print (optional) a [`logical`][logical()] value indicating if the
 #'   function must print the plot (default: `TRUE`).
 #'
 #' @return
 #'
-#' * `na_*`: a [`numeric`][numeric()] object of the same length of `x`.
-#' * `na_plot()`: a [`ggplot`][ggplot2::ggplot()] object with a point and line
-#' chart showing the original versus the interpolated data.
+#' * For `na_*`: a [`numeric`][numeric()] object with the same length of `x`.
+#' * For `na_plot()`: a [`ggplot`][ggplot2::ggplot()] object with a point and
+#' line chart showing the original data versus the interpolated data.
 #'
 #' @template references_d
 #' @family interpolation functions
@@ -179,6 +180,7 @@
 #' na_approx(x, index, fill_na_tips = FALSE)
 #' #> [1]   NA  1.0  5.0 10.0  7.5  5.0 10.0  1.0  5.5 10.0
 #' #> [11] 1.0  5.0  NA   NA # Expected
+#' na_plot(x, index, na_approx(x, index, fill_na_tips = FALSE))
 #'
 #' na_approx(x, index, fill_na_tips = TRUE)
 #' #> [1]   1.0  1.0  5.0 10.0  7.5  5.0 10.0  1.0  5.5 10.0
