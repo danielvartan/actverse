@@ -5,7 +5,7 @@ template:
     bootswatch: cosmo
     ganalytics: G-3FSQE6ZG2N
     mathjax: true
-    noindex: true
+    noindex: false
 
 navbar:
   structure:
@@ -16,6 +16,31 @@ navbar:
     news: ~
     intro: ~
     articles: ~
+
+reference:
+- title: Read/Write
+  contents:
+  - read_acttrust
+  - write_acttrust
+
+- title: Period analysis
+  contents:
+  - periodogram
+  - spectrogram
+
+- title: Interpolation
+  contents:
+  - na_approx
+
+- title: Data
+  contents:
+  - acttrust
+
+- title: Utilities
+  contents:
+  - aggregate_index
+  - find_epoch
+  - raw_data
 
 authors:
   Daniel Vartanian:
@@ -32,6 +57,8 @@ authors:
     href: http://each.usp.br/gipso
   University of Sao Paulo (USP):
     href: http://usp.br
+  Bruno Ramalho Furlan:
+    href: https://github.com/brfurlan
 
 development:
   mode: auto

@@ -1,5 +1,5 @@
 # -----------------------------------------------------------
-# CITATION file created with {cffr} R package, v0.2.1
+# CITATION file created with {cffr} R package, v0.2.2
 # See also: https://docs.ropensci.org/cffr/
 # -----------------------------------------------------------
  
@@ -52,7 +52,7 @@ preferred-citation:
     given-names: Mario
     email: pedrazzo@usp.br
     orcid: https://orcid.org/0000-0002-5257-591X
-  year: '2021'
+  year: '2022'
   url: https://gipso.github.io/actverse/
   notes: 'Lifecycle: experimental'
 repository: https://bioconductor.org/
@@ -105,7 +105,7 @@ references:
     email: csardi.gabor@gmail.com
   year: '2022'
   url: https://CRAN.R-project.org/package=cli
-  version: '>= 3.1.0'
+  version: '>= 3.2.0'
 - type: software
   title: dplyr
   abstract: 'dplyr: A Grammar of Data Manipulation'
@@ -125,7 +125,7 @@ references:
     orcid: https://orcid.org/0000-0002-1416-3412
   year: '2022'
   url: https://CRAN.R-project.org/package=dplyr
-  version: '>= 1.0.7'
+  version: '>= 1.0.8'
 - type: software
   title: ggplot2
   abstract: 'ggplot2: Create Elegant Data Visualisations Using the Grammar of Graphics'
@@ -171,7 +171,7 @@ references:
     email: krlmlr+r@mailbox.org
   year: '2022'
   url: https://CRAN.R-project.org/package=hms
-  version: '>= 1.1.0'
+  version: '>= 1.1.1'
 - type: software
   title: lifecycle
   abstract: 'lifecycle: Manage the Life Cycle of your Package Functions'
@@ -201,7 +201,35 @@ references:
     given-names: Hadley
   year: '2022'
   url: https://CRAN.R-project.org/package=lubridate
-  version: '>= 1.7.10'
+  version: '>= 1.8.0'
+- type: software
+  title: magrittr
+  abstract: 'magrittr: A Forward-Pipe Operator for R'
+  notes: Imports
+  authors:
+  - family-names: Bache
+    given-names: Stefan Milton
+    email: stefan@stefanbache.dk
+  - family-names: Wickham
+    given-names: Hadley
+    email: hadley@rstudio.com
+  year: '2022'
+  url: https://CRAN.R-project.org/package=magrittr
+  version: '>= 2.0.3'
+- type: software
+  title: purrr
+  abstract: 'purrr: Functional Programming Tools'
+  notes: Imports
+  authors:
+  - family-names: Henry
+    given-names: Lionel
+    email: lionel@rstudio.com
+  - family-names: Wickham
+    given-names: Hadley
+    email: hadley@rstudio.com
+  year: '2022'
+  url: https://CRAN.R-project.org/package=purrr
+  version: '>= 0.3.4'
 - type: software
   title: stats
   abstract: 'R: A Language and Environment for Statistical Computing'
@@ -216,37 +244,37 @@ references:
     name: R Foundation for Statistical Computing
   version: '>= 4.0.0'
 - type: software
-  title: xts
-  abstract: 'xts: eXtensible Time Series'
+  title: tsibble
+  abstract: 'tsibble: Tidy Temporal Data Frames and Tools'
   notes: Imports
   authors:
-  - family-names: Ryan
-    given-names: Jeffrey A.
-  - family-names: Ulrich
-    given-names: Joshua M.
-    email: josh.m.ulrich@gmail.com
+  - family-names: Wang
+    given-names: Earo
+    email: earo.wang@gmail.com
+    orcid: https://orcid.org/0000-0001-6448-5260
+  - family-names: Cook
+    given-names: Di
+    orcid: https://orcid.org/0000-0002-3813-7155
+  - family-names: Hyndman
+    given-names: Rob
+    orcid: https://orcid.org/0000-0002-2140-5352
+  - family-names: O'Hara-Wild
+    given-names: Mitchell
+    orcid: https://orcid.org/0000-0001-6729-7695
   year: '2022'
-  url: https://CRAN.R-project.org/package=xts
-  version: '>= 0.12.1'
+  url: https://CRAN.R-project.org/package=tsibble
+  version: '>= 1.1.1'
 - type: software
-  title: zoo
-  abstract: 'zoo: S3 Infrastructure for Regular and Irregular Time Series (Z''s Ordered
-    Observations)'
+  title: viridis
+  abstract: 'viridis: Colorblind-Friendly Color Maps for R'
   notes: Imports
   authors:
-  - family-names: Zeileis
-    given-names: Achim
-    email: Achim.Zeileis@R-project.org
-    orcid: https://orcid.org/0000-0003-0918-3766
-  - family-names: Grothendieck
-    given-names: Gabor
-    email: ggrothendieck@gmail.com
-  - family-names: Ryan
-    given-names: Jeffrey A.
-    email: jeff.a.ryan@gmail.com
+  - family-names: Garnier
+    given-names: Simon
+    email: garnier@njit.edu
   year: '2022'
-  url: https://CRAN.R-project.org/package=zoo
-  version: '>= 1.8-9'
+  url: https://CRAN.R-project.org/package=viridis
+  version: '>= 0.6.2'
 - type: software
   title: covr
   abstract: 'covr: Test Coverage for Packages'
@@ -269,7 +297,7 @@ references:
     orcid: https://orcid.org/0000-0003-0645-5666
   year: '2022'
   url: https://CRAN.R-project.org/package=knitr
-  version: '>= 1.36'
+  version: '>= 1.37'
 - type: software
   title: mockr
   abstract: 'mockr: Mocking in R'
@@ -281,6 +309,54 @@ references:
   year: '2022'
   url: https://CRAN.R-project.org/package=mockr
   version: '>= 0.1'
+- type: software
+  title: plotly
+  abstract: 'plotly: Create Interactive Web Graphics via ''plotly.js'''
+  notes: Suggests
+  authors:
+  - family-names: Sievert
+    given-names: Carson
+    email: cpsievert1@gmail.com
+    orcid: https://orcid.org/0000-0002-4958-2844
+  - family-names: Parmer
+    given-names: Chris
+    email: chris@plot.ly
+  - family-names: Hocking
+    given-names: Toby
+    email: tdhock5@gmail.com
+  - family-names: Chamberlain
+    given-names: Scott
+    email: myrmecocystus@gmail.com
+  - family-names: Ram
+    given-names: Karthik
+    email: karthik.ram@gmail.com
+  - family-names: Corvellec
+    given-names: Marianne
+    email: marianne.corvellec@igdore.org
+    orcid: https://orcid.org/0000-0002-1994-3581
+  - family-names: Despouy
+    given-names: Pedro
+    email: pedro@plot.ly
+  year: '2022'
+  url: https://CRAN.R-project.org/package=plotly
+  version: '>= 4.10.0'
+- type: software
+  title: readr
+  abstract: 'readr: Read Rectangular Text Data'
+  notes: Suggests
+  authors:
+  - family-names: Wickham
+    given-names: Hadley
+    email: hadley@rstudio.com
+  - family-names: Hester
+    given-names: Jim
+  - family-names: Bryan
+    given-names: Jennifer
+    email: jenny@rstudio.com
+    orcid: https://orcid.org/0000-0002-6983-2759
+  year: '2022'
+  url: https://CRAN.R-project.org/package=readr
+  version: '>= 2.1.2'
 - type: software
   title: rmarkdown
   abstract: 'rmarkdown: Dynamic Documents for R'
@@ -320,7 +396,7 @@ references:
     orcid: https://orcid.org/0000-0003-3925-190X
   year: '2022'
   url: https://CRAN.R-project.org/package=rmarkdown
-  version: '>= 2.11'
+  version: '>= 2.13'
 - type: software
   title: spelling
   abstract: 'spelling: Tools for Spell Checking in R'
@@ -346,7 +422,21 @@ references:
     email: hadley@rstudio.com
   year: '2022'
   url: https://CRAN.R-project.org/package=testthat
-  version: '>= 3.0.4'
+  version: '>= 3.1.2'
+- type: software
+  title: tibble
+  abstract: 'tibble: Simple Data Frames'
+  notes: Suggests
+  authors:
+  - family-names: Müller
+    given-names: Kirill
+    email: krlmlr+r@mailbox.org
+  - family-names: Wickham
+    given-names: Hadley
+    email: hadley@rstudio.com
+  year: '2022'
+  url: https://CRAN.R-project.org/package=tibble
+  version: '>= 3.1.6'
 - type: software
   title: utils
   abstract: 'R: A Language and Environment for Statistical Computing'
@@ -360,6 +450,25 @@ references:
   institution:
     name: R Foundation for Statistical Computing
   version: '>= 4.0.0'
+- type: software
+  title: zoo
+  abstract: 'zoo: S3 Infrastructure for Regular and Irregular Time Series (Z''s Ordered
+    Observations)'
+  notes: Suggests
+  authors:
+  - family-names: Zeileis
+    given-names: Achim
+    email: Achim.Zeileis@R-project.org
+    orcid: https://orcid.org/0000-0003-0918-3766
+  - family-names: Grothendieck
+    given-names: Gabor
+    email: ggrothendieck@gmail.com
+  - family-names: Ryan
+    given-names: Jeffrey A.
+    email: jeff.a.ryan@gmail.com
+  year: '2022'
+  url: https://CRAN.R-project.org/package=zoo
+  version: '>= 1.8-9'
 identifiers:
 - type: url
   value: https://github.com/gipso/actverse/

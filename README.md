@@ -9,10 +9,10 @@
 has not yet been a stable, usable release suitable for the
 public.](https://www.repostatus.org/badges/latest/wip.svg)](https://www.repostatus.org/#wip)
 [![Lifecycle:
-experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://www.tidyverse.org/lifecycle/#experimental)
+experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html)
 [![R-CMD-check](https://github.com/gipso/actverse/workflows/R-CMD-check/badge.svg)](https://github.com/gipso/actverse/actions)
 [![Codecov test
-coverage](https://codecov.io/gh/gipso/actverse/branch/main/graph/badge.svg)](https://codecov.io/gh/gipso/actverse?branch=main)
+coverage](https://codecov.io/gh/gipso/actverse/branch/main/graph/badge.svg)](https://app.codecov.io/gh/gipso/actverse?branch=main)
 [![License:
 MIT](https://img.shields.io/badge/license-MIT-green)](https://choosealicense.com/licenses/mit/)
 [![Contributor
@@ -27,9 +27,12 @@ of `actverse` is to facilitate the work of sleep and chronobiology
 scientists with actigraphy data while also helping with research
 reproducibility.
 
-> Please note that this package is currently on the development stage
-> and have not yet been [peer
-> reviewed](https://devguide.ropensci.org/softwarereviewintro.html).
+`actverse` adheres to the [tidyverse
+principles](https://tidyverse.tidyverse.org/articles/manifesto.html) and
+integrates with the [tidyverse ecosystem](https://www.tidyverse.org/).
+That’s why we choose to work with the
+[`tsibble`](https://tsibble.tidyverts.org/index.html) standard for time
+series, that also follow the same principles.
 
 ## Prerequisites
 
@@ -65,7 +68,7 @@ citation("actverse")
 #> To cite {actverse} in publications use:
 #> 
 #>   Vartanian, D., Matias, V. A., Serrano, C. A. M., Benedito-Silva, A.
-#>   A., & Pedrazzoli, M. (2021). {actverse}: an R Package for actigraphy
+#>   A., & Pedrazzoli, M. (2022). {actverse}: an R Package for actigraphy
 #>   data analysis. https://gipso.github.io/actverse/
 #> 
 #> A BibTeX entry for LaTeX users is
@@ -73,7 +76,7 @@ citation("actverse")
 #>   @Unpublished{,
 #>     title = {{actverse}: an R Package for actigraphy data analysis},
 #>     author = {Daniel Vartanian and Vinicius Alves Matias and Cassio Almeida Mattos Serrano and Ana Amelia Benedito-Silva and Mario Pedrazzoli},
-#>     year = {2021},
+#>     year = {2022},
 #>     url = {https://gipso.github.io/actverse/},
 #>     note = {Lifecycle: experimental},
 #>   }
