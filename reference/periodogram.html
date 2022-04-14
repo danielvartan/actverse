@@ -3,11 +3,10 @@
 periodogram() returns the Sokolove &amp;amp; Bushell's \(\chi^{2}\)
 periodogram plot and measures for a tsibble object.
 The \(\chi^{2}\) periodogram is a technique to identify
-periodic patterns in a time series, being widely used in chronobiology to
-identify the presence/absence of circadian periodicities in rest-activity
-data. This periodogram was proposed by Sokolove and Bushell (1978) as an
-adaptation of Enright's periodogram (1965), adding the peak significance test
-to the method."><!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
+periodic patterns in a time series, being used in chronobiology to identify
+the presence/absence of circadian periodicities in rest-activity data. It was
+proposed by Sokolove and Bushell (1978) as an adaptation of Enright's
+periodogram (1965), adding the peak significance test to the procedure."><!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]--><!-- Global site tag (gtag.js) - Google Analytics --><script async src="https://www.googletagmanager.com/gtag/js?id=G-3FSQE6ZG2N"></script><script>
@@ -64,11 +63,10 @@ to the method."><!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/l
 <p><code>periodogram()</code> returns the Sokolove &amp; Bushell's \(\chi^{2}\)
 periodogram plot and measures for a <code><a href="https://tsibble.tidyverts.org/reference/tsibble.html" class="external-link">tsibble</a></code> object.</p>
 <p>The \(\chi^{2}\) periodogram is a technique to identify
-periodic patterns in a time series, being widely used in chronobiology to
-identify the presence/absence of circadian periodicities in rest-activity
-data. This periodogram was proposed by Sokolove and Bushell (1978) as an
-adaptation of Enright's periodogram (1965), adding the peak significance test
-to the method.</p>
+periodic patterns in a time series, being used in chronobiology to identify
+the presence/absence of circadian periodicities in rest-activity data. It was
+proposed by Sokolove and Bushell (1978) as an adaptation of Enright's
+periodogram (1965), adding the peak significance test to the procedure.</p>
     </div>
 
     <div id="ref-usage">
@@ -89,50 +87,53 @@ to the method.</p>
     <dl><dt>data</dt>
 <dd><p>A <code><a href="https://tsibble.tidyverts.org/reference/tsibble.html" class="external-link">tsibble</a></code> object.</p></dd>
 <dt>col</dt>
-<dd><p>An string indicating which column of <code>data</code> to use.</p></dd>
+<dd><p>A string indicating which column of <code>data</code> to use.</p></dd>
 <dt>p_unit</dt>
 <dd><p>(optional) a string indicating at which time unit the index
-must be aggregated.Valid values are: <code>“seconds”</code>, <code>“minutes”</code>, <code>“hours”</code>,
-<code>“days”</code>, <code>“weeks”</code>, <code>“months”</code>, <code>“quarters”</code>, and <code>“years”</code>) (default:
-<code>"minutes"</code>).</p></dd>
+must be aggregated. By aggregating the index, this will change the time
+series interval and, consequently, its <code>p</code> periods. Valid values are:
+<code>“seconds”</code>, <code>“minutes”</code>, <code>“hours”</code>, <code>“days”</code>, <code>“weeks”</code>, <code>“months”</code>,
+<code>“quarters”</code>, and <code>“years”</code>) (default: <code>"minutes"</code>).</p></dd>
 <dt>p_min</dt>
 <dd><p>(optional) an integer number indicating the minimum period
-\(p\), with the same unit as <code>p_unit</code>, to compute the test (default:
+(\(p\)), with the same unit as <code>p_unit</code>, to compute the test (e.g., if
+<code>p_unit = "minutes"</code>, <code>p_min = 1</code> means a period of 1 minute) (default:
 <code>1000</code>).</p></dd>
 <dt>p_max</dt>
 <dd><p>(optional) an integer number indicating the maximum period
-\(p\), with the same unit as <code>p_unit</code>, to compute the test (default:
+(\(p\)(), with the same unit as <code>p_unit</code>, to compute the test (default:
 <code>2500</code>).</p></dd>
 <dt>p_step</dt>
 <dd><p>(optional) an integer number indicating the range of values
-that will be skipped between computing one test and the next. (default:
-<code>1</code>).</p></dd>
+that will be skipped between computing one test and the next (e.g., when
+<code>p_min == 1</code>, <code>p_max == 7</code>, and <code>p_step == 2</code>, the test periods will be
+<code>1</code>, <code>3</code>, <code>5</code>, and <code>7</code>) (default: <code>1</code>).</p></dd>
 <dt>alpha</dt>
 <dd><p>(optional) a number, from <code>0</code> to <code>1</code>, indicating the significant
 level required for the peaks (default: <code>0.05</code>).</p></dd>
 <dt>print</dt>
 <dd><p>(optional) a <code><a href="https://rdrr.io/r/base/logical.html" class="external-link">logical</a></code> value indicating if the
-function must print the Qp plot (default: <code>TRUE</code>).</p></dd>
+function must print the \(Q_{p}\) plot (default: <code>TRUE</code>).</p></dd>
 </dl></div>
     <div id="value">
     <h2>Value</h2>
     <p>A <code><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></code> object with the following elements:</p><ul><li><p><code>p_unit</code>: a string indicating the time unit in which the data was
 aggregated.</p></li>
-<li><p><code>p_seq</code>: a <code><a href="https://rdrr.io/r/base/numeric.html" class="external-link">numeric</a></code> object with the the sequence of <code>p</code>
-periods.</p></li>
+<li><p><code>p_seq</code>: a <code><a href="https://rdrr.io/r/base/numeric.html" class="external-link">numeric</a></code> object with the the sequence of the
+tested periods.</p></li>
 <li><p><code>alpha</code>: a string indicating the significant level used.</p></li>
 <li><p><code>a_p</code>: a <code><a href="https://rdrr.io/r/base/numeric.html" class="external-link">numeric</a></code> object with the root mean square amplitude
-(\(A_{p}\)) for each <code>p</code> period.</p></li>
+(\(A_{p}\)) for each period.</p></li>
 <li><p><code>q_p</code>: a <code><a href="https://rdrr.io/r/base/numeric.html" class="external-link">numeric</a></code> object with the peak significant test
-(\(Q_{p}\)) for each <code>p</code> period .</p></li>
+(\(Q_{p}\)) for each period .</p></li>
 <li><p><code>q_p_critical</code>: a <code><a href="https://rdrr.io/r/base/numeric.html" class="external-link">numeric</a></code> object with the
 \(\chi^{2}\) critical values for each <code>q_p</code>, based on the
 <code>alpha</code> parameter.</p></li>
 <li><p><code>q_p_pvalue</code>: a <code><a href="https://rdrr.io/r/base/numeric.html" class="external-link">numeric</a></code> object with the p-value for each
 <code>q_p</code>, based on the <code>alpha</code> parameter.</p></li>
-<li><p><code>q_p_peaks</code>: a <code><a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble</a></code> object listing each peak of <code>p</code>
-period above the critical value along with its <code>q_p</code>, <code>q_p_critical</code>,
-relative <code>q_p</code> (<code>q_p_rel  = q_p_critical - q_p</code>), and <code>q_p_pvalue</code>.</p></li>
+<li><p><code>q_p_peaks</code>: a <code><a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble</a></code> object listing each period that
+peaked above the critical value along with its <code>q_p</code>, <code>q_p_critical</code>,
+relative <code>q_p</code> (<code>q_p_rel = q_p_critical - q_p</code>), and <code>q_p_pvalue</code>.</p></li>
 <li><p><code>q_p_plot</code>: a <code><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></code> object with a line chart
 showing <code>q_p</code> (y1) and <code>q_p_critical</code> (y2) by <code>p_seq</code> (x).</p></li>
 </ul></div>
@@ -140,24 +141,38 @@ showing <code>q_p</code> (y1) and <code>q_p_critical</code> (y2) by <code>p_seq<
     <h2>Details</h2>
     
 <div class="section">
-<h3 id="irregular-intervals-and-missing-values">Irregular intervals and missing values<a class="anchor" aria-label="anchor" href="#irregular-intervals-and-missing-values"></a></h3>
+<h3 id="irregular-intervals">Irregular intervals<a class="anchor" aria-label="anchor" href="#irregular-intervals"></a></h3>
 
 
-<p>Sokolove and Bushell's periodogram assumes that the data is time equidistant,
-i.e., there must be data for the entire time unit delivered in the <code>p_unit</code>
-parameter. If this does not occur, the function will disregard these missing
-values in the middle of the time series while calculating the periodogram.
-This may creates errors in the output.</p>
+<p>Sokolove and Bushell's periodogram assumes that the time series is regular,
+i.e., that it has regular intervals/epochs. <code>periodogram()</code> will still work
+with slightly irregular time series, but only if the latter have at least a
+90% prevalence of the same periodicity. Warning messages will be issued
+telling the user if any data irregularities were found.</p>
 </div>
 
 <div class="section">
 <h3 id="data-aggregation">Data aggregation<a class="anchor" aria-label="anchor" href="#data-aggregation"></a></h3>
 
 
-<p>If there's more than one data for the <code>p_unit</code> (e.g., when the data was captured
-per minute and the user wants to calculate the periodogram per hour),
-<code>periodogram()</code>will aggregate the values by averaging them or by using the
-most frequent value (mode).</p>
+<p>If there's more than one data for each <code>p_unit</code> (e.g., when the data was
+recorded per minute and the user wants to compute the periodogram per hour),
+<code>periodogram()</code> will aggregate the values by averaging them or by assigning
+the most frequent value (mode) (for non-numeric or single integer variables).</p>
+</div>
+
+<div class="section">
+<h3 id="missing-values">Missing values<a class="anchor" aria-label="anchor" href="#missing-values"></a></h3>
+
+
+<p><code>periodogram()</code> will work even with missing values. As is the case for
+any analysis with missing data, the results may diverge, you may want to
+interpolate these data points.</p>
+<p>There are few articles that deals with interpolation in actigraphy. Tonon et
+al. (2022) recommends not using interpolation (i.e., maintain <code>NA</code> values)
+whenever is possible. The same authors also recommends using the weekly mean
+method of interpolation when the parameters cannot be computed in the
+presence of <code>NA</code> values.</p>
 </div>
 
     </div>
@@ -166,7 +181,7 @@ most frequent value (mode).</p>
     
 
 
-<p>Enright (1965) and Sokolove &amp; Bushell (1978) guidelines for
+<p>Enright (1965) and Sokolove &amp; Bushell (1978) guidelines for the
 \(\chi^{2}\) periodogram computation are as follows.</p><div class="section">
 <h3 id="notes">Notes<a class="anchor" aria-label="anchor" href="#notes"></a></h3>
 
@@ -177,24 +192,24 @@ you can see this documentation on the package
 </ul></div>
 
 <div class="section">
-<h3 id="the-statistic-adopted-to-express-the-importance-of-a-given-period">The statistic adopted to express the "importance" of a given period<a class="anchor" aria-label="anchor" href="#the-statistic-adopted-to-express-the-importance-of-a-given-period"></a></h3>
+<h3 id="-a-p-the-statistic-adopted-to-express-the-importance-of-a">\(A_{p}\): the statistic adopted to express the "importance" of a<a class="anchor" aria-label="anchor" href="#-a-p-the-statistic-adopted-to-express-the-importance-of-a"></a></h3>
 
 
-<p>(\(A_{p}\))</p>
+<p>period</p>
 <p><code>periodogram()</code> compute the \(A_{p}\) stat for each test period
 \(p\), between the minimum determined by <code>p_min</code> argument and the maximum
 <code>p_max</code> argument, at a step determined by <code>p_step</code> argument (e.g., when
 <code>p_min == 1</code>, <code>p_max == 5</code>, and <code>p_step == 1</code>, the test periods will be
 <code>1</code>, <code>2</code>, <code>3</code>, <code>4</code> and <code>5</code>).</p>
 <p>The \(A_{p}\) measure of the Enright's periodogram is the standard
-deviation of the column means of a Buys-Ballot table, or, as Enright puts,
+deviation of the column means of a Buys-Ballot table, or, as Enright puts it,
 "the root mean square <strong>amplitude</strong>". This Buys-Ballot table has \(P\)
 columns and \(m\) rows, where \(m\) is a number that maximizes the amount
 of values that a time series of \(N\) values can have represented in a
 \(P\) columns table (thus, \(m\) is \(N / p\) rounded down). \(m\)
 can be seen as a cycle, and the greater the similarity between the cycles and
 the difference between the columns, more intense will be the standard
-deviation (\(A_{p}\)).</p><ul><li><p>Buys-Ballot table for an integral period \(p\)</p></li>
+deviation (\(A_{p}\)).</p><ul><li><p>Buys-Ballot table for an integral period \(p\):</p></li>
 </ul><div class="sourceCode"><pre><code>                               P (count)
           |------------------------------------------------|     -
                                                                  |
@@ -207,9 +222,10 @@ Totals        U_P,1        U_P,2         ...          U_P,P
 Averages      Y_P,1        Y_P,2         ...          Y_P,P
 </code></pre></div>
 
-<p>As the figure above shows, \(P\) is the number of columns in the array
-(matrix/table). When \(p\) is an integer, \(p = P\). That way,
-\(A_{p}\) can be computed as:</p>
+<p>As the table above shows, \(P\) is the number of columns in the array
+(matrix/table), while \(m\) is the number of rows. When \(p\) (test
+period) is an integer, \(p = P\). That way, \(A_{p}\) can be computed
+as:</p>
 <p><strong>$$A_{p} = \sqrt{\frac{\sum^{P}_{h = 1} (Y_{p, h} -
 \overline{Y}_{p})^{2}}{P}}$$</strong></p>
 <p>In which:</p>
@@ -217,19 +233,18 @@ Averages      Y_P,1        Y_P,2         ...          Y_P,P
 </div>
 
 <div class="section">
-<h3 id="sokolove-amp-bushell-peak-significance-test-q-p-">Sokolove &amp; Bushell peak significance test (\(Q_{p}\))<a class="anchor" aria-label="anchor" href="#sokolove-amp-bushell-peak-significance-test-q-p-"></a></h3>
+<h3 id="-q-p-sokolove-amp-bushell-s-peak-significance-test">\(Q_{p}\): Sokolove &amp; Bushell's peak significance test<a class="anchor" aria-label="anchor" href="#-q-p-sokolove-amp-bushell-s-peak-significance-test"></a></h3>
 
 
-<p>Plotting the \(A_{p}\) values allows you to identify the behavior of
-the standard deviations of the averages of the columns of the tables created
-for different \(p\)'s. The higher the standard deviation the more it
-will tend to a peak. As these values are susceptible to high and
-instantaneous fluctuations, Sokolove &amp; Bushell proposed adding a peak
-significance test, reducing the intensity of peaks by weighting the total
-variance of the data and the period in which it appears. In this process,
-peak moments will be highlighted among its neighbors, and smaller changes
-will lose prominence, tending to a constant variation from one period to
-another.</p>
+<p>Plotting the \(A_{p}\) values allows you to identify the expression of
+the standard deviations for different \(p\)'s. The higher the standard
+deviation the more it will tend to a peak. As these values are susceptible to
+high and instantaneous fluctuations, Sokolove &amp; Bushell proposed adding a
+peak significance test, reducing the intensity of peaks by weighting the
+total variance of the data and the period in which it appears. In this
+process, peak moments will be highlighted among its neighbors, and smaller
+changes will lose prominence, tending to a constant variation from one period
+to another.</p>
 <p>The significance test of the peaks given by \(A_{p}\) leads to a
 \(\chi^{2}\) distribution for each \(p\), with the test for a
 given \(p\) being consistent with a distribution of \(P - 1\) degrees of
@@ -240,7 +255,7 @@ freedom.</p>
 <p><strong>$$\sigma^{2}_{\overline{X}} = \frac{\sigma^{2}_{X}}{m}$$</strong></p>
 <p>Where:</p><ul><li><p>\(P\) = number of columns of the test Buys-Ballot table.</p></li>
 <li><p>\(m\) = number of rows of the test Buys-Ballot table.</p></li>
-<li><p>\(A_{p}\) = standard deviation of the averages from the test
+<li><p>\(A_{p}\) = standard deviation of the column averages from the test
 Buys-Ballot table.</p></li>
 <li><p>\(\sigma^{2}_{\overline{X}}\)= variance of the test data
 (\(X\)).</p></li>
@@ -256,6 +271,10 @@ doi: <a href="https://doi.org/10.1016/0022-5193(65)90021-4" class="external-link
 <p>Sokolove, P. G., &amp; Bushell, W. N. (1978). The chi square periodogram: its
 utility for analysis of circadian rhythms. <em>Journal of Theoretical Biology</em>,
 <em>72</em>(1), 131-160. doi: <a href="https://doi.org/10.1016/0022-5193(78)90022-x" class="external-link">10.1016/0022-5193(78)90022-x</a>
+.</p>
+<p>Tonon, A. C. et al. (2022). Handling missing data in rest-activity
+time series measured by actimetry. <em>Chronobiology International</em>.
+doi: <a href="https://doi.org/10.1080/07420528.2022.2051714" class="external-link">10.1080/07420528.2022.2051714</a>
 .</p>
     </div>
     <div id="see-also">
