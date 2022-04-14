@@ -8,32 +8,43 @@
 #' periodogram plot and measures for a [`tsibble`][tsibble::tsibble()] object.
 #'
 #' The \eqn{\chi^{2}}{chi square} periodogram is a technique to identify
-#' periodic patterns in a time series, being widely used in chronobiology to
-#' identify the presence/absence of circadian periodicities in rest-activity
-#' data. This periodogram was proposed by Sokolove and Bushell (1978) as an
-#' adaptation of Enright's periodogram (1965), adding the peak significance test
-#' to the method.
+#' periodic patterns in a time series, being used in chronobiology to identify
+#' the presence/absence of circadian periodicities in rest-activity data. It was
+#' proposed by Sokolove and Bushell (1978) as an adaptation of Enright's
+#' periodogram (1965), adding the peak significance test to the procedure.
 #'
 #' @details
 #'
-#' ## Irregular intervals and missing values
+#' ## Irregular intervals
 #'
-#' Sokolove and Bushell's periodogram assumes that the data is time equidistant,
-#' i.e., there must be data for the entire time unit delivered in the `p_unit`
-#' parameter. If this does not occur, the function will disregard these missing
-#' values in the middle of the time series while calculating the periodogram.
-#' This may creates errors in the output.
+#' Sokolove and Bushell's periodogram assumes that the time series is regular,
+#' i.e., that it has regular intervals/epochs. `periodogram()` will still work
+#' with slightly irregular time series, but only if the latter have at least a
+#' 90% prevalence of the same periodicity. Warning messages will be issued
+#' telling the user if any data irregularities were found.
 #'
 #' ## Data aggregation
 #'
-#' If there's more than one data for the `p_unit` (e.g., when the data was captured
-#' per minute and the user wants to calculate the periodogram per hour),
-#' `periodogram()`will aggregate the values by averaging them or by using the
-#' most frequent value (mode).
+#' If there's more than one data for each `p_unit` (e.g., when the data was
+#' recorded per minute and the user wants to compute the periodogram per hour),
+#' `periodogram()` will aggregate the values by averaging them or by assigning
+#' the most frequent value (mode) (for non-numeric or single integer variables).
+#'
+#' ## Missing values
+#'
+#' `periodogram()` will work even with missing values. As is the case for
+#' any analysis with missing data, the results may diverge, you may want to
+#' interpolate these data points.
+#'
+#' There are few articles that deals with interpolation in actigraphy. Tonon et
+#' al. (2022) recommends not using interpolation (i.e., maintain `NA` values)
+#' whenever is possible. The same authors also recommends using the weekly mean
+#' method of interpolation when the parameters cannot be computed in the
+#' presence of `NA` values.
 #'
 #' @section Guidelines:
 #'
-#' Enright (1965) and Sokolove & Bushell (1978) guidelines for
+#' Enright (1965) and Sokolove & Bushell (1978) guidelines for the
 #' \eqn{\chi^{2}}{chi square} periodogram computation are as follows.
 #'
 #' ## Notes
@@ -43,8 +54,8 @@
 #' you can see this documentation on the package
 #' [website](https://gipso.github.io/actverse/reference/).
 #'
-#' ## The statistic adopted to express the "importance" of a given period
-#' (\eqn{A_{p}}{Ap})
+#' ## \eqn{A_{p}}{Ap}: the statistic adopted to express the "importance" of a
+#' period
 #'
 #' `periodogram()` compute the \eqn{A_{p}}{Ap} stat for each test period
 #' \eqn{p}, between the minimum determined by `p_min` argument and the maximum
@@ -53,7 +64,7 @@
 #' `1`, `2`, `3`, `4` and `5`).
 #'
 #' The \eqn{A_{p}}{Ap} measure of the Enright's periodogram is the standard
-#' deviation of the column means of a Buys-Ballot table, or, as Enright puts,
+#' deviation of the column means of a Buys-Ballot table, or, as Enright puts it,
 #' "the root mean square __amplitude__". This Buys-Ballot table has \eqn{P}
 #' columns and \eqn{m} rows, where \eqn{m} is a number that maximizes the amount
 #' of values that a time series of \eqn{N} values can have represented in a
@@ -62,7 +73,7 @@
 #' the difference between the columns, more intense will be the standard
 #' deviation (\eqn{A_{p}}{Ap}).
 #'
-#' * Buys-Ballot table for an integral period \eqn{p}
+#' * Buys-Ballot table for an integral period \eqn{p}:
 #'
 #' ```
 #'                                P (count)
@@ -77,9 +88,10 @@
 #' Averages      Y_P,1        Y_P,2         ...          Y_P,P
 #' ````
 #'
-#' As the figure above shows, \eqn{P} is the number of columns in the array
-#' (matrix/table). When \eqn{p} is an integer, \eqn{p = P}. That way,
-#' \eqn{A_{p}}{Ap} can be computed as:
+#' As the table above shows, \eqn{P} is the number of columns in the array
+#' (matrix/table), while \eqn{m} is the number of rows. When \eqn{p} (test
+#' period) is an integer, \eqn{p = P}. That way, \eqn{A_{p}}{Ap} can be computed
+#' as:
 #'
 #' __\deqn{A_{p} = \sqrt{\frac{\sum^{P}_{h = 1} (Y_{p, h} -
 #' \overline{Y}_{p})^{2}}{P}}}{Ap = ((sum^{P}_{h = 1} (Y_p,h - MeanY_p)^{2}) /
@@ -90,18 +102,17 @@
 #' __\deqn{\overline{Y}_{p} = \frac{\sum^{P}_{h = 1} Y_{p, h}}{P}}{MeanY_p =
 #' (sum^{P}_{h = 1} Y_p,h) / P}__
 #'
-#' ## Sokolove & Bushell peak significance test (\eqn{Q_{p}}{Qp})
+#' ## \eqn{Q_{p}}{Qp}: Sokolove & Bushell's peak significance test
 #'
-#' Plotting the \eqn{A_{p}}{Ap} values allows you to identify the behavior of
-#' the standard deviations of the averages of the columns of the tables created
-#' for different \eqn{p}'s. The higher the standard deviation the more it
-#' will tend to a peak. As these values are susceptible to high and
-#' instantaneous fluctuations, Sokolove & Bushell proposed adding a peak
-#' significance test, reducing the intensity of peaks by weighting the total
-#' variance of the data and the period in which it appears. In this process,
-#' peak moments will be highlighted among its neighbors, and smaller changes
-#' will lose prominence, tending to a constant variation from one period to
-#' another.
+#' Plotting the \eqn{A_{p}}{Ap} values allows you to identify the expression of
+#' the standard deviations for different \eqn{p}'s. The higher the standard
+#' deviation the more it will tend to a peak. As these values are susceptible to
+#' high and instantaneous fluctuations, Sokolove & Bushell proposed adding a
+#' peak significance test, reducing the intensity of peaks by weighting the
+#' total variance of the data and the period in which it appears. In this
+#' process, peak moments will be highlighted among its neighbors, and smaller
+#' changes will lose prominence, tending to a constant variation from one period
+#' to another.
 #'
 #' The significance test of the peaks given by \eqn{A_{p}}{Ap} leads to a
 #' \eqn{\chi^{2}}{chi square} distribution for each \eqn{p}, with the test for a
@@ -122,50 +133,53 @@
 #'
 #' * \eqn{P} = number of columns of the test Buys-Ballot table.
 #' * \eqn{m} = number of rows of the test Buys-Ballot table.
-#' * \eqn{A_{p}}{Ap} = standard deviation of the averages from the test
+#' * \eqn{A_{p}}{Ap} = standard deviation of the column averages from the test
 #' Buys-Ballot table.
 #' * \eqn{\sigma^{2}_{\overline{X}}}{Var(X_line)}= variance of the test data
 #' (\eqn{X}).
 #'
 #' @param data A [`tsibble`][tsibble::tsibble()] object.
-#' @param col An string indicating which column of `data` to use.
+#' @param col A string indicating which column of `data` to use.
 #' @param p_unit (optional) a string indicating at which time unit the index
-#'   must be aggregated.Valid values are: `“seconds”`, `“minutes”`, `“hours”`,
-#'   `“days”`, `“weeks”`, `“months”`, `“quarters”`, and `“years”`) (default:
-#'   `"minutes"`).
+#'   must be aggregated. By aggregating the index, this will change the time
+#'   series interval and, consequently, its `p` periods. Valid values are:
+#'   `“seconds”`, `“minutes”`, `“hours”`, `“days”`, `“weeks”`, `“months”`,
+#'   `“quarters”`, and `“years”`) (default: `"minutes"`).
 #' @param p_min (optional) an integer number indicating the minimum period
-#'   \eqn{p}, with the same unit as `p_unit`, to compute the test (default:
+#'   (\eqn{p}), with the same unit as `p_unit`, to compute the test (e.g., if
+#'   `p_unit = "minutes"`, `p_min = 1` means a period of 1 minute) (default:
 #'   `1000`).
 #' @param p_max (optional) an integer number indicating the maximum period
-#'   \eqn{p}, with the same unit as `p_unit`, to compute the test (default:
+#'  (\eqn{p}(), with the same unit as `p_unit`, to compute the test (default:
 #'   `2500`).
 #' @param p_step (optional) an integer number indicating the range of values
-#'   that will be skipped between computing one test and the next. (default:
-#'   `1`).
+#'   that will be skipped between computing one test and the next (e.g., when
+#' `p_min == 1`, `p_max == 7`, and `p_step == 2`, the test periods will be
+#' `1`, `3`, `5`, and `7`) (default: `1`).
 #' @param alpha (optional) a number, from `0` to `1`, indicating the significant
 #'   level required for the peaks (default: `0.05`).
 #' @param print (optional) a [`logical`][logical()] value indicating if the
-#'   function must print the Qp plot (default: `TRUE`).
+#'   function must print the \eqn{Q_{p}}{Qp} plot (default: `TRUE`).
 #'
 #' @return A [`list`][list()] object with the following elements:
 #'
 #' * `p_unit`: a string indicating the time unit in which the data was
 #' aggregated.
-#' * `p_seq`: a [`numeric`][numeric()] object with the the sequence of `p`
-#' periods.
+#' * `p_seq`: a [`numeric`][numeric()] object with the the sequence of the
+#' tested periods.
 #' * `alpha`: a string indicating the significant level used.
 #' * `a_p`: a [`numeric`][numeric()] object with the root mean square amplitude
-#' (\eqn{A_{p}}{Ap}) for each `p` period.
+#' (\eqn{A_{p}}{Ap}) for each period.
 #' * `q_p`: a [`numeric`][numeric()] object with the peak significant test
-#' (\eqn{Q_{p}}{Qp}) for each `p` period .
+#' (\eqn{Q_{p}}{Qp}) for each period .
 #' * `q_p_critical`: a [`numeric`][numeric()] object with the
 #' \eqn{\chi^{2}}{chi square} critical values for each `q_p`, based on the
 #' `alpha` parameter.
 #' * `q_p_pvalue`: a [`numeric`][numeric()] object with the p-value for each
 #' `q_p`, based on the `alpha` parameter.
-#' * `q_p_peaks`: a [`tibble`][tibble::tibble()] object listing each peak of `p`
-#' period above the critical value along with its `q_p`, `q_p_critical`,
-#' relative `q_p` (`q_p_rel  = q_p_critical - q_p`), and `q_p_pvalue`.
+#' * `q_p_peaks`: a [`tibble`][tibble::tibble()] object listing each period that
+#' peaked above the critical value along with its `q_p`, `q_p_critical`,
+#' relative `q_p` (`q_p_rel = q_p_critical - q_p`), and `q_p_pvalue`.
 #' * `q_p_plot`: a [`ggplot`][ggplot2::ggplot()] object with a line chart
 #' showing `q_p` (y1) and `q_p_critical` (y2) by `p_seq` (x).
 #'

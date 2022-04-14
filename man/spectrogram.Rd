@@ -21,24 +21,27 @@ spectrogram(
 \arguments{
 \item{data}{A \code{\link[tsibble:tsibble]{tsibble}} object.}
 
-\item{col}{An string indicating which column of \code{data} to use.}
+\item{col}{A string indicating which column of \code{data} to use.}
 
 \item{p_unit}{(optional) a string indicating at which time unit the index
-must be aggregated.Valid values are: \verb{“seconds”}, \verb{“minutes”}, \verb{“hours”},
-\verb{“days”}, \verb{“weeks”}, \verb{“months”}, \verb{“quarters”}, and \verb{“years”}) (default:
-\code{"minutes"}).}
+must be aggregated. By aggregating the index, this will change the time
+series interval and, consequently, its \code{p} periods. Valid values are:
+\verb{“seconds”}, \verb{“minutes”}, \verb{“hours”}, \verb{“days”}, \verb{“weeks”}, \verb{“months”},
+\verb{“quarters”}, and \verb{“years”}) (default: \code{"minutes"}).}
 
 \item{p_min}{(optional) an integer number indicating the minimum period
-\eqn{p}, with the same unit as \code{p_unit}, to compute the test (default:
+(\eqn{p}), with the same unit as \code{p_unit}, to compute the test (e.g., if
+\code{p_unit = "minutes"}, \code{p_min = 1} means a period of 1 minute) (default:
 \code{1000}).}
 
 \item{p_max}{(optional) an integer number indicating the maximum period
-\eqn{p}, with the same unit as \code{p_unit}, to compute the test (default:
+(\eqn{p}(), with the same unit as \code{p_unit}, to compute the test (default:
 \code{2500}).}
 
 \item{p_step}{(optional) an integer number indicating the range of values
-that will be skipped between computing one test and the next. (default:
-\code{1}).}
+that will be skipped between computing one test and the next (e.g., when
+\code{p_min == 1}, \code{p_max == 7}, and \code{p_step == 2}, the test periods will be
+\code{1}, \code{3}, \code{5}, and \code{7}) (default: \code{1}).}
 
 \item{int}{(optional) a string indicating the interval unit.Valid values are:
 \verb{“seconds”}, \verb{“minutes”}, \verb{“hours”}, \verb{“days”}, \verb{“weeks”}, \verb{“months”},
@@ -99,10 +102,6 @@ if (interactive() &&
 }
 }
 \references{
-Enright, J. T. (1965). The search for rhythmicity in biological time-series.
-\emph{Journal of Theoretical Biology}, \emph{8}(3), 426-468.
-\doi{10.1016/0022-5193(65)90021-4}.
-
 Sokolove, P. G., & Bushell, W. N. (1978). The chi square periodogram: its
 utility for analysis of circadian rhythms. \emph{Journal of Theoretical Biology},
 \emph{72}(1), 131-160. \doi{10.1016/0022-5193(78)90022-x}.

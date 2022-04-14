@@ -7,3 +7,7 @@
 #' Sokolove, P. G., & Bushell, W. N. (1978). The chi square periodogram: its
 #' utility for analysis of circadian rhythms. _Journal of Theoretical Biology_,
 #' _72_(1), 131-160. \doi{10.1016/0022-5193(78)90022-x}.
+#'
+#' Tonon, A. C. et al. (2022). Handling missing data in rest-activity
+#' time series measured by actimetry. _Chronobiology International_.
+#' \doi{10.1080/07420528.2022.2051714}.

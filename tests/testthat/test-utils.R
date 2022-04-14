@@ -170,7 +170,8 @@ test_that("require_pkg() | general test", {
     mock <- function(.parent = parent.frame(), .env = topenv(.parent)) {
         mockr::with_mock(
             require_namespace = function(...) TRUE,
-            require_pkg("test"))
+            {require_pkg("test")}
+            )
     }
 
     # mock()

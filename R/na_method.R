@@ -13,6 +13,8 @@
 #'
 #' @details
 #'
+#' ## Interpolation in actigraphy
+#'
 #' There are few articles that deals with interpolation in actigraphy. Tonon et
 #' al. (2022) recommends not using interpolation (i.e., maintain `NA` values)
 #' whenever is possible. The same authors also recommends using the weekly mean

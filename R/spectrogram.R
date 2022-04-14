@@ -35,7 +35,7 @@
 #' (x).
 #'
 #' @inheritParams periodogram
-#' @template references_c
+#' @template references_e
 #' @family period analysis functions
 #' @export
 #'

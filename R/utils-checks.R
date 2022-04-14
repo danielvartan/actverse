@@ -16,7 +16,7 @@ warn_any_missing <- function(x, name = deparse(substitute(x))) {
     if (any(is.na(x))) {
         cli::cli_alert_warning(paste0(
             "{.strong {cli::col_red(name)}} has missing values. ",
-            "The output may diverge."
+            "Results may diverge."
         ))
     } else {
         TRUE
