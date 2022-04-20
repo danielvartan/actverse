@@ -41,7 +41,8 @@ that will be skipped between computing one test and the next (e.g., when
 \code{1}, \code{3}, \code{5}, and \code{7}) (default: \code{1}).}
 
 \item{alpha}{(optional) a number, from \code{0} to \code{1}, indicating the significant
-level required for the peaks (default: \code{0.05}).}
+level (\eqn{\alpha}{alpha}) required for the peak significance test
+(default: \code{0.05}).}
 
 \item{print}{(optional) a \code{\link[=logical]{logical}} value indicating if the
 function must print the \eqn{Q_{p}}{Qp} plot (default: \code{TRUE}).}
@@ -127,9 +128,7 @@ you can see this documentation on the package
 }
 }
 
-\subsection{\eqn{A_{p}}{Ap}: the statistic adopted to express the "importance" of a}{
-
-period
+\subsection{\eqn{A_{p}}{Ap}: The statistic adopted to express "importance"}{
 
 \code{periodogram()} compute the \eqn{A_{p}}{Ap} stat for each test period
 \eqn{p}, between the minimum determined by \code{p_min} argument and the maximum
@@ -177,7 +176,7 @@ In which:
 
 \subsection{\eqn{Q_{p}}{Qp}: Sokolove & Bushell's peak significance test}{
 
-Plotting the \eqn{A_{p}}{Ap} values allows you to identify the expression of
+Plotting the \eqn{A_{p}}{Ap} values allows you to identify the magnitude of
 the standard deviations for different \eqn{p}'s. The higher the standard
 deviation the more it will tend to a peak. As these values are susceptible to
 high and instantaneous fluctuations, Sokolove & Bushell proposed adding a

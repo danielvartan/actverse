@@ -54,8 +54,7 @@
 #' you can see this documentation on the package
 #' [website](https://gipso.github.io/actverse/reference/).
 #'
-#' ## \eqn{A_{p}}{Ap}: the statistic adopted to express the "importance" of a
-#' period
+#' ## \eqn{A_{p}}{Ap}: The statistic adopted to express "importance"
 #'
 #' `periodogram()` compute the \eqn{A_{p}}{Ap} stat for each test period
 #' \eqn{p}, between the minimum determined by `p_min` argument and the maximum
@@ -104,7 +103,7 @@
 #'
 #' ## \eqn{Q_{p}}{Qp}: Sokolove & Bushell's peak significance test
 #'
-#' Plotting the \eqn{A_{p}}{Ap} values allows you to identify the expression of
+#' Plotting the \eqn{A_{p}}{Ap} values allows you to identify the magnitude of
 #' the standard deviations for different \eqn{p}'s. The higher the standard
 #' deviation the more it will tend to a peak. As these values are susceptible to
 #' high and instantaneous fluctuations, Sokolove & Bushell proposed adding a
@@ -157,7 +156,8 @@
 #' `p_min == 1`, `p_max == 7`, and `p_step == 2`, the test periods will be
 #' `1`, `3`, `5`, and `7`) (default: `1`).
 #' @param alpha (optional) a number, from `0` to `1`, indicating the significant
-#'   level required for the peaks (default: `0.05`).
+#'   level (\eqn{\alpha}{alpha}) required for the peak significance test
+#'   (default: `0.05`).
 #' @param print (optional) a [`logical`][logical()] value indicating if the
 #'   function must print the \eqn{Q_{p}}{Qp} plot (default: `TRUE`).
 #'
