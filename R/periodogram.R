@@ -170,6 +170,8 @@
 #' * `alpha`: a string indicating the significant level used.
 #' * `a_p`: a [`numeric`][numeric()] object with the root mean square amplitude
 #' (\eqn{A_{p}}{Ap}) for each period.
+#' * `a_p_plot`: a [`ggplot`][ggplot2::ggplot()] object with a line chart
+#' showing `a_p` (y) by `p_seq` (x).
 #' * `q_p`: a [`numeric`][numeric()] object with the peak significant test
 #' (\eqn{Q_{p}}{Qp}) for each period .
 #' * `q_p_critical`: a [`numeric`][numeric()] object with the
@@ -258,14 +260,21 @@ periodogram <- function(data, col, p_unit = "minutes", p_min = 1000,
             p_unit = p_unit,
             p_seq = p_seq,
             alpha = alpha,
-            q_p_peaks = find_periodogram_peaks(p_seq, .$q_p, .$q_p_critical,
-                                               .$q_p_pvalue),
-            q_p_plot = plot_periodogram(p_seq, .$q_p, .$q_p_critical,
-                                        alpha, paste0("Period (", p_unit, ")"))
+            a_p_plot = plot_periodogram_a_p(
+                p_seq, .$a_p, paste0("Period (", p_unit, ")")
+                ),
+            q_p_peaks = find_periodogram_peaks(
+                p_seq, .$q_p, .$q_p_critical, .$q_p_pvalue
+                ),
+            q_p_plot = plot_periodogram_q_p(
+                p_seq, .$q_p, .$q_p_critical, alpha,
+                paste0("Period (", p_unit, ")")
+                )
         )) %>%
-        magrittr::extract(c("p_unit", "p_seq", "alpha", "a_p", "q_p",
-                            "q_p_critical", "q_p_pvalue", "q_p_peaks",
-                            "q_p_plot"))
+        magrittr::extract(c(
+            "p_unit", "p_seq", "alpha", "a_p", "a_p_plot", "q_p",
+            "q_p_critical", "q_p_pvalue", "q_p_peaks", "q_p_plot"
+            ))
 
     if (isTRUE(print)) shush(print(out$q_p_plot))
 
@@ -388,17 +397,31 @@ clean_periodogram_peaks <- function(peaks, prop_q_p_rel = 0.1,
     out$period
 }
 
-plot_periodogram <- function(p_seq, q_p, q_p_critical, alpha_level,
-                             xlab = "Period", print = FALSE) {
+plot_periodogram_a_p <- function(p_seq, a_p, xlab = "Period", print = FALSE) {
     checkmate::assert_numeric(p_seq, min.len = 1)
-    checkmate::assert_numeric(q_p, min.len = 1)
-    checkmate::assert_numeric(q_p_critical, min.len = 1)
-    checkmate::assert_number(alpha_level, lower = 0.001, upper = 0.999)
+    checkmate::assert_numeric(a_p, min.len = 1)
     checkmate::assert_string(xlab)
     checkmate::assert_flag(print)
 
-    q_p_critical_legend <- paste0("Critical value ", "(alpha: ",
-                               alpha_level, ")")
+    out <- ggplot2::ggplot(mapping = ggplot2::aes(x = p_seq, y = a_p)) +
+        ggplot2::geom_line() +
+        ggplot2::labs(x = xlab, y = "Ap")
+
+    if (isTRUE(print)) shush(print(out))
+
+    invisible(out)
+}
+
+plot_periodogram_q_p <- function(p_seq, q_p, q_p_critical, alpha,
+                                 xlab = "Period", print = FALSE) {
+    checkmate::assert_numeric(p_seq, min.len = 1)
+    checkmate::assert_numeric(q_p, min.len = 1)
+    checkmate::assert_numeric(q_p_critical, min.len = 1)
+    checkmate::assert_number(alpha, lower = 0.001, upper = 0.999)
+    checkmate::assert_string(xlab)
+    checkmate::assert_flag(print)
+
+    q_p_critical_legend <- paste0("Critical value ", "(alpha: ", alpha, ")")
 
     out <- ggplot2::ggplot(mapping = ggplot2::aes(x = p_seq)) +
         ggplot2::geom_line(ggplot2::aes(y = q_p, colour = "Qp")) +

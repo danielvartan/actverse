@@ -12,11 +12,12 @@ test_that("periodogram() | general test", {
     object <- periodogram(data, "x", p_unit = "minutes", p_min = 1000,
                           p_max = 2500, p_step = 1, alpha = 0.05, print = TRUE)
 
-    checkmate::expect_list(object, len = 9)
+    checkmate::expect_list(object, len = 10)
     checkmate::expect_string(object$p_unit)
     checkmate::expect_numeric(object$p_seq, len = 1501)
     checkmate::expect_number(object$alpha)
     checkmate::expect_numeric(object$a_p, len = 1501)
+    expect_s3_class(object$a_p_plot, "ggplot")
     checkmate::expect_numeric(object$q_p, len = 1501)
     checkmate::expect_numeric(object$q_p_critical, len = 1501)
     checkmate::expect_numeric(object$q_p_pvalue, len = 1501)
@@ -367,7 +368,7 @@ test_that("clean_periodogram_peaks() | error test", {
         "Assertion on 'prop_bump' failed")
 })
 
-test_that("plot_periodogram() | general test", {
+test_that("plot_periodogram_a_p() | general test", {
     data <- dplyr::tibble(
         index = seq(as.POSIXct("2020-01-01"),
                     as.POSIXct("2020-01-02 05:59:59"),
@@ -378,66 +379,110 @@ test_that("plot_periodogram() | general test", {
     per <- periodogram(data = data, col = "x", p_min = 1, p_max = 350,
                        print = FALSE)
 
-    expect_s3_class(plot_periodogram(
-        per$p_seq, per$q_p, per$q_p_critical, alpha_level = 0.05,
-        xlab = "Period", print = TRUE),
+    expect_s3_class(plot_periodogram_a_p(
+        p_seq = per$p_seq, a_p = per$a_p, xlab = "Period", print = TRUE),
         "ggplot")
 })
 
-test_that("plot_periodogram() | error test", {
+test_that("plot_periodogram_a_p() | error test", {
     # checkmate::assert_numeric(p_seq, min.len = 1)
-    expect_error(plot_periodogram(
-        p_seq = "", q_p = 1, q_p_critical = 1, alpha_level = 0.1,
-        xlab = "Period", print = FALSE),
+    expect_error(plot_periodogram_a_p(
+        p_seq = "", a_p = 1, xlab = "Period", print = FALSE),
         "Assertion on 'p_seq' failed")
-    expect_error(plot_periodogram(
-        p_seq = numeric(), q_p = 1, q_p_critical = 1, alpha_level = 0.1,
+    expect_error(plot_periodogram_a_p(
+        p_seq = numeric(), a_p = 1, xlab = "Period", print = FALSE),
+        "Assertion on 'p_seq' failed")
+
+    # checkmate::assert_numeric(a_p, min.len = 1)
+    expect_error(plot_periodogram_a_p(
+        p_seq = 1, a_p = "", xlab = "Period", print = FALSE),
+        "Assertion on 'a_p' failed")
+    expect_error(plot_periodogram_a_p(
+        p_seq = 1, a_p = numeric(), xlab = "Period", print = FALSE),
+        "Assertion on 'a_p' failed")
+
+    # checkmate::assert_string(xlab)
+    expect_error(plot_periodogram_a_p(
+        p_seq = 1, a_p = 1, xlab = 1, print = FALSE),
+        "Assertion on 'xlab' failed")
+
+    # checkmate::assert_flag(print)
+    expect_error(plot_periodogram_a_p(
+        p_seq = 1, a_p = 1, xlab = "Period", print = 1),
+        "Assertion on 'print' failed")
+})
+
+test_that("plot_periodogram_q_p() | general test", {
+    data <- dplyr::tibble(
+        index = seq(as.POSIXct("2020-01-01"),
+                    as.POSIXct("2020-01-02 05:59:59"),
+                    by = "min"),
+        x = rep(seq(1, 60), times = 30)) %>%
+        tsibble::tsibble(index = index)
+
+    per <- periodogram(data = data, col = "x", p_min = 1, p_max = 350,
+                       print = FALSE)
+
+    expect_s3_class(plot_periodogram_q_p(
+        p_seq = per$p_seq, q_p = per$q_p, q_p_critical = per$q_p_critical,
+        alpha = 0.05, xlab = "Period", print = TRUE),
+        "ggplot")
+})
+
+test_that("plot_periodogram_q_p() | error test", {
+    # checkmate::assert_numeric(p_seq, min.len = 1)
+    expect_error(plot_periodogram_q_p(
+        p_seq = "", q_p = 1, q_p_critical = 1, alpha = 0.1, xlab = "Period",
+        print = FALSE),
+        "Assertion on 'p_seq' failed")
+    expect_error(plot_periodogram_q_p(
+        p_seq = numeric(), q_p = 1, q_p_critical = 1, alpha = 0.1,
         xlab = "Period", print = FALSE),
         "Assertion on 'p_seq' failed")
 
     # checkmate::assert_numeric(q_p, min.len = 1)
-    expect_error(plot_periodogram(
-        p_seq = 1, q_p = "", q_p_critical = 1, alpha_level = 0.1,
-        xlab = "Period", print = FALSE),
+    expect_error(plot_periodogram_q_p(
+        p_seq = 1, q_p = "", q_p_critical = 1, alpha = 0.1, xlab = "Period",
+        print = FALSE),
         "Assertion on 'q_p' failed")
-    expect_error(plot_periodogram(
-        p_seq = 1, q_p = numeric(), q_p_critical = 1, alpha_level = 0.1,
+    expect_error(plot_periodogram_q_p(
+        p_seq = 1, q_p = numeric(), q_p_critical = 1, alpha = 0.1,
         xlab = "Period", print = FALSE),
         "Assertion on 'q_p' failed")
 
     # checkmate::assert_numeric(q_p_critical, min.len = 1)
-    expect_error(plot_periodogram(
-        p_seq = 1, q_p = 1, q_p_critical = "", alpha_level = 0.1,
-        xlab = "Period", print = FALSE),
+    expect_error(plot_periodogram_q_p(
+        p_seq = 1, q_p = 1, q_p_critical = "", alpha = 0.1, xlab = "Period",
+        print = FALSE),
         "Assertion on 'q_p_critical' failed")
-    expect_error(plot_periodogram(
-        p_seq = 1, q_p = 1, q_p_critical = numeric(), alpha_level = 0.1,
+    expect_error(plot_periodogram_q_p(
+        p_seq = 1, q_p = 1, q_p_critical = numeric(), alpha = 0.1,
         xlab = "Period", print = FALSE),
         "Assertion on 'q_p_critical' failed")
 
-    # checkmate::assert_number(alpha_level, lower = 0.001, upper = 0.999)
-    expect_error(plot_periodogram(
-        p_seq = 1, q_p = 1, q_p_critical = 1, alpha_level = "",
-        xlab = "Period", print = FALSE),
-        "Assertion on 'alpha_level' failed")
-    expect_error(plot_periodogram(
-        p_seq = 1, q_p = 1, q_p_critical = 1, alpha_level = -1,
-        xlab = "Period", print = FALSE),
-        "Assertion on 'alpha_level' failed")
-    expect_error(plot_periodogram(
-        p_seq = 1, q_p = 1, q_p_critical = 1, alpha_level = 2,
-        xlab = "Period", print = FALSE),
-        "Assertion on 'alpha_level' failed")
+    # checkmate::assert_number(alpha, lower = 0.001, upper = 0.999)
+    expect_error(plot_periodogram_q_p(
+        p_seq = 1, q_p = 1, q_p_critical = 1, alpha = "", xlab = "Period",
+        print = FALSE),
+        "Assertion on 'alpha' failed")
+    expect_error(plot_periodogram_q_p(
+        p_seq = 1, q_p = 1, q_p_critical = 1, alpha = -1, xlab = "Period",
+        print = FALSE),
+        "Assertion on 'alpha' failed")
+    expect_error(plot_periodogram_q_p(
+        p_seq = 1, q_p = 1, q_p_critical = 1, alpha = 2, xlab = "Period",
+        print = FALSE),
+        "Assertion on 'alpha' failed")
 
     # checkmate::assert_string(xlab)
-    expect_error(plot_periodogram(
-        p_seq = 1, q_p = 1, q_p_critical = 1, alpha_level = 0.1,
-        xlab = 1, print = FALSE),
+    expect_error(plot_periodogram_q_p(
+        p_seq = 1, q_p = 1, q_p_critical = 1, alpha = 0.1, xlab = 1,
+        print = FALSE),
         "Assertion on 'xlab' failed")
 
     # checkmate::assert_flag(print)
-    expect_error(plot_periodogram(
-        p_seq = 1, q_p = 1, q_p_critical = 1, alpha_level = 0.1,
-        xlab = "Period", print = 1),
+    expect_error(plot_periodogram_q_p(
+        p_seq = 1, q_p = 1, q_p_critical = 1, alpha = 0.1, xlab = "Period",
+        print = 1),
         "Assertion on 'print' failed")
 })

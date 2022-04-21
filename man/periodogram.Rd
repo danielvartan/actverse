@@ -57,6 +57,8 @@ tested periods.
 \item \code{alpha}: a string indicating the significant level used.
 \item \code{a_p}: a \code{\link[=numeric]{numeric}} object with the root mean square amplitude
 (\eqn{A_{p}}{Ap}) for each period.
+\item \code{a_p_plot}: a \code{\link[ggplot2:ggplot]{ggplot}} object with a line chart
+showing \code{a_p} (y) by \code{p_seq} (x).
 \item \code{q_p}: a \code{\link[=numeric]{numeric}} object with the peak significant test
 (\eqn{Q_{p}}{Qp}) for each period .
 \item \code{q_p_critical}: a \code{\link[=numeric]{numeric}} object with the
