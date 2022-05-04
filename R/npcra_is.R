@@ -11,8 +11,8 @@
 #'  more sensitive result than a check in hours, where small changes tend to
 #'  have less influence on interdaily stability
 #'
-#' @param x Numeric vector with the activity data that will be used in the calculation.
-#' @param timestamp POSIX vector that contains the date and time of each observation.
+#' @param tsbl tsibble with timestamp as index and a numeric column as key, with
+#'  the activity data that will be used in the calculation.
 #' @param minutes_interval integer value representing the duration in minutes
 #' of the time interval for grouping the data. By default, 60 minutes are
 #' considered, this means that the activity will be averaged at hourly intervals.
@@ -63,15 +63,21 @@
 #' first_date <- as.POSIXct('2015-01-01')
 #' last_date <- as.POSIXct('2015-01-11')
 #' shuffled_timestamp <- sample(seq(first_date,
-#'                       last_date, by = "min"), 1000)
+#'                                  last_date, by = "min"), 1000)
 #' timestamp <- sort(shuffled_timestamp)
 #' x <- runif(1000, 0, 10000)
-#' npcra_is(x, timestamp, minutes_interval = 120) #expects a numeric value
+#' act <- tibble::tibble(x, timestamp)
+#'
+#' act <- tsibble::as_tsibble(act, key="x", index="timestamp")
+#' npcra_is(act, minutes_interval = 120) #expects a numeric value
 #' @export
-npcra_is <- function(x, timestamp, minutes_interval = 60){
-    checkmate::assert_numeric(x)
-    checkmate::assert_posixct(timestamp)
+npcra_is <- function(tsbl, minutes_interval = 60){
+    checkmate::assert_numeric(tsbl[[key(tsbl)[[1]]]])
+    checkmate::assert_posixct(tsbl[[index(tsbl)]])
     checkmate::assert_int(minutes_interval)
+
+    x <- tsbl[[key(tsbl)[[1]]]]
+    timestamp <- tsbl[[index(tsbl)]]
 
     if (minutes_interval < 0 | minutes_interval > 1440) {
         stop('The interval should be between 0 and 1440 minutes')
@@ -112,8 +118,8 @@ npcra_is <- function(x, timestamp, minutes_interval = 60){
 #' the limit is 60 minutes, so the 60 IS's will be calculated separately and the
 #'  results will be averaged to be returned.
 #'
-#' @param x Numeric vector with the activity data that will be used in the calculation.
-#' @param timestamp POSIX vector that contains the date and time of each observation.
+#' @param tsbl tsibble with timestamp as index and a numeric column as key, with
+#'  the activity data that will be used in the calculation.
 #' @param minute_limit integer value that corresponds to the last minute interval
 #' to group the data. The default is 60, so 60 values of IS will be calculated to
 #' take the average, with the first every minute and the last every 60 minutes.
@@ -153,16 +159,16 @@ npcra_is <- function(x, timestamp, minutes_interval = 60){
 #' x <- runif(1000, 0, 10000)
 #' npcra_ism(x, timestamp, minute_limit = 120) #expects a numeric value
 #' @export
-npcra_ism <- function(x, timestamp, minute_limit=60, summarize=FALSE){
-    checkmate::assert_numeric(x)
-    checkmate::assert_posixct(timestamp)
+npcra_ism <- function(tsbl, minute_limit=60, summarize=FALSE){
+    checkmate::assert_numeric(tsbl[[key(tsbl)[[1]]]])
+    checkmate::assert_posixct(tsbl[[index(tsbl)]])
     checkmate::assert_int(minute_limit)
 
     if (minute_limit <= 0 | minute_limit > 1440) {
         stop('The interval should be between 1 and 1440 minutes')
     }
 
-    if (dplyr::last(timestamp) - dplyr::first(timestamp) <
+    if (dplyr::last(tsbl[[index(tsbl)]]) - dplyr::first(tsbl[[index(tsbl)]]) <
         lubridate::minutes(minute_limit)) {
         stop("The requested interval is longer
              than the received data time interval")
@@ -172,10 +178,10 @@ npcra_ism <- function(x, timestamp, minute_limit=60, summarize=FALSE){
     is_minute <- c()
 
     for (current_minute in seq_len(minute_limit)) {
-        current_is <- npcra_is(x, timestamp, current_minute)
+        current_is <- npcra_is(tsbl, current_minute)
 
         is <- c(is, current_is)
-        is_minute <- c(is_minute, paste("IV", current_minute, sep = ""))
+        is_minute <- c(is_minute, paste("IS", current_minute, sep = ""))
     }
 
     ism <- sum(is) / minute_limit
