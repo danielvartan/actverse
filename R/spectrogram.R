@@ -12,8 +12,8 @@
 #' See [?periodogram][periodogram()] to learn more about the periodogram
 #' computation.
 #'
-#' @param int (optional) a string indicating the interval unit.Valid values are:
-#'   `“seconds”`, `“minutes”`, `“hours”`, `“days”`, `“weeks”`, `“months”`,
+#' @param int (optional) a string indicating the interval unit. Valid values 
+#'   are: `“seconds”`, `“minutes”`, `“hours”`, `“days”`, `“weeks”`, `“months”`,
 #'   `“quarters”`, and `“years”`) (default: `"days"`).
 #' @param int_n (optional) an integer number indicating the size of the
 #'   intervals, with the same unit as `int` (default: `7`).

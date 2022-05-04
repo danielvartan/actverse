@@ -5,6 +5,7 @@
 # roxygen namespace tags. Modify with care!
 ## usethis namespace: start
 #' @importFrom dplyr %>%
+#' @importFrom ggplot2 %+%
 #' @importFrom lifecycle deprecate_soft
 #' @importFrom lubridate duration period interval %within% %m-%
 #' @importFrom hms hms

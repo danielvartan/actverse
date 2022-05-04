@@ -179,7 +179,7 @@ In which:
 \subsection{\eqn{Q_{p}}{Qp}: Sokolove & Bushell's peak significance test}{
 
 Plotting the \eqn{A_{p}}{Ap} values allows you to identify the magnitude of
-the standard deviations for different \eqn{p}'s. The higher the standard
+the standard deviations for different \eqn{p}s. The higher the standard
 deviation the more it will tend to a peak. As these values are susceptible to
 high and instantaneous fluctuations, Sokolove & Bushell proposed adding a
 peak significance test, reducing the intensity of peaks by weighting the

@@ -33,14 +33,14 @@
 #' ## Missing values
 #'
 #' `periodogram()` will work even with missing values. As is the case for
-#' any analysis with missing data, the results may diverge, you may want to
+#' any analysis with missing data, the results may diverge. You may want to
 #' interpolate these data points.
 #'
 #' There are few articles that deals with interpolation in actigraphy. Tonon et
 #' al. (2022) recommends not using interpolation (i.e., maintain `NA` values)
-#' whenever is possible. The same authors also recommends using the weekly mean
-#' method of interpolation when the parameters cannot be computed in the
-#' presence of `NA` values.
+#' whenever is possible. The same authors also recommends using the 
+#' [weekly mean method][?na_weekly_mean] of interpolation when the parameters 
+#' cannot be computed in the presence of `NA` values.
 #'
 #' @section Guidelines:
 #'
@@ -62,8 +62,8 @@
 #' `p_min == 1`, `p_max == 5`, and `p_step == 1`, the test periods will be
 #' `1`, `2`, `3`, `4` and `5`).
 #'
-#' The \eqn{A_{p}}{Ap} measure of the Enright's periodogram is the standard
-#' deviation of the column means of a Buys-Ballot table, or, as Enright puts it,
+#' The \eqn{A_{p}}{Ap} measure of Enright's periodogram is the standard
+#' deviation of column means of a Buys-Ballot table, or, as Enright puts it,
 #' "the root mean square __amplitude__". This Buys-Ballot table has \eqn{P}
 #' columns and \eqn{m} rows, where \eqn{m} is a number that maximizes the amount
 #' of values that a time series of \eqn{N} values can have represented in a
@@ -104,7 +104,7 @@
 #' ## \eqn{Q_{p}}{Qp}: Sokolove & Bushell's peak significance test
 #'
 #' Plotting the \eqn{A_{p}}{Ap} values allows you to identify the magnitude of
-#' the standard deviations for different \eqn{p}'s. The higher the standard
+#' the standard deviations for different \eqn{p}s. The higher the standard
 #' deviation the more it will tend to a peak. As these values are susceptible to
 #' high and instantaneous fluctuations, Sokolove & Bushell proposed adding a
 #' peak significance test, reducing the intensity of peaks by weighting the
@@ -149,12 +149,12 @@
 #'   `p_unit = "minutes"`, `p_min = 1` means a period of 1 minute) (default:
 #'   `1000`).
 #' @param p_max (optional) an integer number indicating the maximum period
-#'  (\eqn{p}(), with the same unit as `p_unit`, to compute the test (default:
+#'  (\eqn{p}), with the same unit as `p_unit`, to compute the test (default:
 #'   `2500`).
 #' @param p_step (optional) an integer number indicating the range of values
-#'   that will be skipped between computing one test and the next (e.g., when
-#' `p_min == 1`, `p_max == 7`, and `p_step == 2`, the test periods will be
-#' `1`, `3`, `5`, and `7`) (default: `1`).
+#'   that must be skipped between computing one test and the next (e.g., when
+#'   `p_min == 1`, `p_max == 7`, and `p_step == 2`, the test periods will be
+#'   `1`, `3`, `5`, and `7`) (default: `1`).
 #' @param alpha (optional) a number, from `0` to `1`, indicating the significant
 #'   level (\eqn{\alpha}{alpha}) required for the peak significance test
 #'   (default: `0.05`).
@@ -167,7 +167,7 @@
 #' aggregated.
 #' * `p_seq`: a [`numeric`][numeric()] object with the the sequence of the
 #' tested periods.
-#' * `alpha`: a string indicating the significant level used.
+#' * `alpha`: a number indicating the significant level used.
 #' * `a_p`: a [`numeric`][numeric()] object with the root mean square amplitude
 #' (\eqn{A_{p}}{Ap}) for each period.
 #' * `a_p_plot`: a [`ggplot`][ggplot2::ggplot()] object with a line chart
