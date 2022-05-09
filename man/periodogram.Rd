@@ -32,11 +32,11 @@ series interval and, consequently, its \code{p} periods. Valid values are:
 \code{1000}).}
 
 \item{p_max}{(optional) an integer number indicating the maximum period
-(\eqn{p}(), with the same unit as \code{p_unit}, to compute the test (default:
+(\eqn{p}), with the same unit as \code{p_unit}, to compute the test (default:
 \code{2500}).}
 
 \item{p_step}{(optional) an integer number indicating the range of values
-that will be skipped between computing one test and the next (e.g., when
+that must be skipped between computing one test and the next (e.g., when
 \code{p_min == 1}, \code{p_max == 7}, and \code{p_step == 2}, the test periods will be
 \code{1}, \code{3}, \code{5}, and \code{7}) (default: \code{1}).}
 
@@ -54,7 +54,7 @@ A \code{\link[=list]{list}} object with the following elements:
 aggregated.
 \item \code{p_seq}: a \code{\link[=numeric]{numeric}} object with the the sequence of the
 tested periods.
-\item \code{alpha}: a string indicating the significant level used.
+\item \code{alpha}: a number indicating the significant level used.
 \item \code{a_p}: a \code{\link[=numeric]{numeric}} object with the root mean square amplitude
 (\eqn{A_{p}}{Ap}) for each period.
 \item \code{a_p_plot}: a \code{\link[ggplot2:ggplot]{ggplot}} object with a line chart
@@ -106,14 +106,14 @@ the most frequent value (mode) (for non-numeric or single integer variables).
 \subsection{Missing values}{
 
 \code{periodogram()} will work even with missing values. As is the case for
-any analysis with missing data, the results may diverge, you may want to
+any analysis with missing data, the results may diverge. You may want to
 interpolate these data points.
 
 There are few articles that deals with interpolation in actigraphy. Tonon et
 al. (2022) recommends not using interpolation (i.e., maintain \code{NA} values)
-whenever is possible. The same authors also recommends using the weekly mean
-method of interpolation when the parameters cannot be computed in the
-presence of \code{NA} values.
+whenever is possible. The same authors also recommends using the
+\link[=?na_weekly_mean]{weekly mean method} of interpolation when the parameters
+cannot be computed in the presence of \code{NA} values.
 }
 }
 \section{Guidelines}{
@@ -138,8 +138,8 @@ you can see this documentation on the package
 \code{p_min == 1}, \code{p_max == 5}, and \code{p_step == 1}, the test periods will be
 \code{1}, \code{2}, \code{3}, \code{4} and \code{5}).
 
-The \eqn{A_{p}}{Ap} measure of the Enright's periodogram is the standard
-deviation of the column means of a Buys-Ballot table, or, as Enright puts it,
+The \eqn{A_{p}}{Ap} measure of Enright's periodogram is the standard
+deviation of column means of a Buys-Ballot table, or, as Enright puts it,
 "the root mean square \strong{amplitude}". This Buys-Ballot table has \eqn{P}
 columns and \eqn{m} rows, where \eqn{m} is a number that maximizes the amount
 of values that a time series of \eqn{N} values can have represented in a
