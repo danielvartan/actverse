@@ -4,20 +4,18 @@
 \alias{npcra_iv}
 \title{Non-Parametric Function IV (Intradaily Variability)}
 \usage{
-npcra_iv(x, timestamp, minutes_interval = 60)
+npcra_iv(tsbl, col, minutes_interval = 60)
 }
 \arguments{
-\item{x}{Numeric vector with the activity data that will be used in the
-calculation.}
-
-\item{timestamp}{POSIX vector that contains the date and time of each
-observation.}
+\item{col}{A string indicating which column of \code{data} to use.}
 
 \item{minutes_interval}{integer value representing the duration in minutes
 of the time interval for grouping the data. By default, 60 minutes are
 considered, this means that the activity will be averaged at hourly intervals.
 The minimum value is 1 minute, where all points will be considered
 (so there will be no average in intervals).}
+
+\item{data}{A \code{\link[tsibble:tsibble]{tsibble}} object.}
 }
 \value{
 A numeric value.
@@ -90,7 +88,9 @@ shuffled_timestamp <- sample(seq(first_date,
                       last_date, by = "sec"), 100)
 timestamp <- sort(shuffled_timestamp)
 x <- runif(100, 0, 10000)
-npcra_iv(x, timestamp, minutes_interval = 120) #expects a numeric  value
+act <- dplyr::tibble(x, timestamp)
+act <- tsibble::as_tsibble(act, index="timestamp")
+npcra_iv(act, "x", minutes_interval = 120) #expects a numeric  value
 }
 \references{
 Witting, W., Kwa, I. H., Eikelenboom, P., Mirmiran, M., & Swaab, D. F.

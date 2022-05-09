@@ -12,10 +12,8 @@
 #' a more sensitive result than a check in hours, where small changes tend
 #' to have less influence on intradaily variability.
 #'
-#' @param x Numeric vector with the activity data that will be used in the
-#' calculation.
-#' @param timestamp POSIX vector that contains the date and time of each
-#' observation.
+#' @param data A [`tsibble`][tsibble::tsibble()] object.
+#' @param col A string indicating which column of `data` to use.
 #' @param minutes_interval integer value representing the duration in minutes
 #' of the time interval for grouping the data. By default, 60 minutes are
 #' considered, this means that the activity will be averaged at hourly intervals.
@@ -94,37 +92,22 @@
 #'                       last_date, by = "sec"), 100)
 #' timestamp <- sort(shuffled_timestamp)
 #' x <- runif(100, 0, 10000)
-#' npcra_iv(x, timestamp, minutes_interval = 120) #expects a numeric  value
+#' act <- dplyr::tibble(x, timestamp)
+#' act <- tsibble::as_tsibble(act, index="timestamp")
+#' npcra_iv(act, "x", minutes_interval = 120) #expects a numeric  value
 #' @export
-npcra_iv <- function(x, timestamp, minutes_interval = 60) {
-  checkmate::assert_numeric(x)
-  checkmate::assert_posixct(timestamp)
+npcra_iv <- function(tsbl, col, minutes_interval = 60) {
+  checkmate::assert_numeric(tsbl[[col]])
+  checkmate::assert_posixct(tsbl[[tsibble::index(tsbl)]])
   checkmate::assert_int(minutes_interval)
 
-  if(length(x) != length(timestamp)) {
-    stop("'x' and 'timestamp' must have the same length",
-         "\nLength of x = ", length(x),
-         "\nLength of timestamp = ", length(timestamp))
-  }
+  x <- tsbl[[col]]
+  timestamp <- tsbl[[tsibble::index(tsbl)]]
 
   if (minutes_interval <= 0 | minutes_interval > 1440) {
     stop("The interval should be between 1 and 1440 minutes",
          "\nminutes_interval = ", minutes_interval)
   }
-
-  first_timestamp <- dplyr::first(timestamp)
-  last_timestamp <- dplyr::last(timestamp)
-  real_interval <- difftime(last_timestamp, first_timestamp, units = "min")
-
-  if (real_interval < lubridate::minutes(minutes_interval)) {
-    stop("The requested interval is longer than the ",
-         "received data time interval",
-         "\nFirst timestamp: ", dplyr::first(timestamp),
-         "\nLast timestamp: ", dplyr::last(timestamp),
-         "\nReal interval (minutes) = ", real_interval,
-         "\nminutes_interval = ", minutes_interval)
-  }
-
 
   if(minutes_interval == 1) {
     periodic_means <- x
@@ -161,10 +144,8 @@ npcra_iv <- function(x, timestamp, minutes_interval = 60) {
 #' the limit is 60 minutes, so the 60 IV's will be calculated separately
 #' and the results will be averaged to be returned.
 #'
-#' @param x Numeric vector with the activity data that will be used in
-#' the calculation.
-#' @param timestamp POSIX vector that contains the date and time of
-#' each observation.
+#' @param data A [`tsibble`][tsibble::tsibble()] object.
+#' @param col A string indicating which column of `data` to use.
 #' @param minute_limit integer value that corresponds to the last
 #' minute interval to group the data. The default is 60, so 60 values
 #' of IV will be calculated to take the average, with the first
@@ -222,44 +203,27 @@ npcra_iv <- function(x, timestamp, minutes_interval = 60) {
 #'                       last_date, by = "sec"), 100)
 #' timestamp <- sort(shuffled_timestamp)
 #' x <- runif(n = 100, min = 0, max = 10000)
-#' npcra_ivm(x,
-#'           timestamp,
+#'
+#' act <- dplyr::tibble(x, timestamp)
+#' act <- tsibble::as_tsibble(act, index="timestamp")
+#' npcra_ivm(act,
+#'           col="x",
 #'           minute_limit = 120,
 #'           summarize = FALSE) #Expects a tibble 121 X 2
 #' @export
-npcra_ivm<- function(x,
-                     timestamp,
+npcra_ivm<- function(tsbl,
                      minute_limit = 60,
                      show_messages = TRUE,
                      summarize = TRUE) {
 
-  checkmate::assert_numeric(x)
-  checkmate::assert_posixct(timestamp)
+  checkmate::assert_numeric(tsbl[[col]])
+  checkmate::assert_posixct(tsbl[[tsibble::index(tsbl)]])
   checkmate::assert_numeric(minute_limit)
   checkmate::assert_logical(summarize)
   checkmate::assert_logical(show_messages)
 
-  if(length(x) != length(timestamp)) {
-    stop("'x' and 'timestamp' must have the same length",
-         "\nLength of x = ", length(x),
-         "\nLength of timestamp = ", length(timestamp))
-  }
-
   if (minute_limit <= 0 | minute_limit > 1440) {
     stop("The interval should be between 1 and 1440 minutes",
-         "\nminute_limit = ", minute_limit)
-  }
-
-  first_timestamp <- dplyr::first(timestamp)
-  last_timestamp <- dplyr::last(timestamp)
-  real_interval <- difftime(last_timestamp, first_timestamp, units = "min")
-
-  if (real_interval < lubridate::minutes(minute_limit)) {
-    stop("The requested interval is longer than the ",
-         "received data time interval",
-         "\nFirst timestamp: ", dplyr::first(timestamp),
-         "\nLast timestamp: ", dplyr::last(timestamp),
-         "\nReal interval (minutes) = ", real_interval,
          "\nminute_limit = ", minute_limit)
   }
 
@@ -267,7 +231,7 @@ npcra_ivm<- function(x,
   iv_minute <- c()
 
   for (current_minute in seq_len(minute_limit)) {
-    current_iv <- npcra_iv(x, timestamp, current_minute)
+    current_iv <- npcra_iv(tsbl, current_minute)
 
     iv <- c(iv, current_iv)
     iv_minute <- c(iv_minute, paste("IV", current_minute, sep = ""))

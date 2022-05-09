@@ -4,18 +4,18 @@
 \alias{npcra_is}
 \title{Non-Parametric Function IS (Interdaily Stability)}
 \usage{
-npcra_is(x, timestamp, minutes_interval = 60)
+npcra_is(tsbl, minutes_interval = 60)
 }
 \arguments{
-\item{x}{Numeric vector with the activity data that will be used in the calculation.}
-
-\item{timestamp}{POSIX vector that contains the date and time of each observation.}
-
 \item{minutes_interval}{integer value representing the duration in minutes
 of the time interval for grouping the data. By default, 60 minutes are
 considered, this means that the activity will be averaged at hourly intervals.
 The minimum value is 1 minute, where all points will be considered
 (so there will be no average in intervals).}
+
+\item{data}{A \code{\link[tsibble:tsibble]{tsibble}} object.}
+
+\item{col}{A string indicating which column of \code{data} to use.}
 }
 \value{
 A numeric value.
@@ -54,14 +54,15 @@ variation between the mean profile and the hourly variation is
 low, representing synchronization and constancy.
 }
 \examples{
-#'#Running for 1000 random observations
+# Running for 1 week of random observations
 first_date <- as.POSIXct('2015-01-01')
-last_date <- as.POSIXct('2015-01-11')
-shuffled_timestamp <- sample(seq(first_date,
-                      last_date, by = "min"), 1000)
+last_date <- as.POSIXct('2015-01-07')
+shuffled_timestamp <- seq(first_date, last_date, by = "min")
 timestamp <- sort(shuffled_timestamp)
-x <- runif(1000, 0, 10000)
-npcra_is(x, timestamp, minutes_interval = 120) #expects a numeric value
+x <- runif(8641, 0, 1000)
+act <- dplyr::tibble(x, timestamp)
+act <- tsibble::as_tsibble(act, index="timestamp")
+npcra_is(act, "x") #expects a numeric value
 }
 \references{
 WITTING, W. et al. Alterations in the circadian rest-activity rhythm in aging

@@ -4,21 +4,9 @@
 \alias{npcra_ivm}
 \title{Non-Parametric Function IVm (Intradaily Variability mean)}
 \usage{
-npcra_ivm(
-  x,
-  timestamp,
-  minute_limit = 60,
-  show_messages = TRUE,
-  summarize = TRUE
-)
+npcra_ivm(tsbl, minute_limit = 60, show_messages = TRUE, summarize = TRUE)
 }
 \arguments{
-\item{x}{Numeric vector with the activity data that will be used in
-the calculation.}
-
-\item{timestamp}{POSIX vector that contains the date and time of
-each observation.}
-
 \item{minute_limit}{integer value that corresponds to the last
 minute interval to group the data. The default is 60, so 60 values
 of IV will be calculated to take the average, with the first
@@ -30,6 +18,10 @@ every minute on the console as a message.}
 \item{summarize}{if set to true, only the IVm value will be
 output from the function, if set to false it will also return the
 IV values for each minute in a tibble}
+
+\item{data}{A \code{\link[tsibble:tsibble]{tsibble}} object.}
+
+\item{col}{A string indicating which column of \code{data} to use.}
 }
 \value{
 The numeric value of IVm if summarize is set as TRUE,
@@ -76,8 +68,11 @@ shuffled_timestamp <- sample(seq(first_date,
                       last_date, by = "sec"), 100)
 timestamp <- sort(shuffled_timestamp)
 x <- runif(n = 100, min = 0, max = 10000)
-npcra_ivm(x,
-          timestamp,
+
+act <- dplyr::tibble(x, timestamp)
+act <- tsibble::as_tsibble(act, index="timestamp")
+npcra_ivm(act,
+          col="x",
           minute_limit = 120,
           summarize = FALSE) #Expects a tibble 121 X 2
 }

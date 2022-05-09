@@ -4,14 +4,12 @@
 \alias{npcra_m10_each_day}
 \title{Non-Parametric Function M10 (Most Active 10 Hours) for each day}
 \usage{
-npcra_m10_each_day(x, timestamp)
+npcra_m10_each_day(tsbl, col, n_hours = 10)
 }
 \arguments{
-\item{x}{Numeric vector with the activity data that will be used in the
-calculation.}
+\item{col}{A string indicating which column of \code{data} to use.}
 
-\item{timestamp}{POSIXct/POSIXlt vector that contains the date and time of
-each observation.}
+\item{data}{A \code{\link[tsibble:tsibble]{tsibble}} object.}
 }
 \value{
 A tibble of two columns, with the values of M10 in the first column
@@ -76,7 +74,9 @@ shuffled_timestamp <- sample(seq(first_date,
                                  last_date, by = "min"), 1000)
 timestamp <- sort(shuffled_timestamp)
 x <- runif(1000, 0, 10000)
-npcra_m10_each_day(x, timestamp) #returns a tibble 10X2
+act <- dplyr::tibble(x, timestamp)
+act <- tsibble::as_tsibble(act, index="timestamp")
+npcra_m10_each_day(act, "x") #returns a tibble 10X2
 
 }
 \references{

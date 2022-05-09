@@ -4,16 +4,19 @@
 \alias{npcra_ism}
 \title{Non-Parametric Function ISm (Interdaily Stability mean)}
 \usage{
-npcra_ism(x, timestamp, minute_limit = 60, summarize = FALSE)
+npcra_ism(tsbl, col, minute_limit = 60, summarize = FALSE)
 }
 \arguments{
-\item{x}{Numeric vector with the activity data that will be used in the calculation.}
-
-\item{timestamp}{POSIX vector that contains the date and time of each observation.}
+\item{col}{A string indicating which column of \code{data} to use.}
 
 \item{minute_limit}{integer value that corresponds to the last minute interval
 to group the data. The default is 60, so 60 values of IS will be calculated to
 take the average, with the first every minute and the last every 60 minutes.}
+
+\item{summarize}{boolean value. If TRUE than returns just the ISm, if FALSE
+returns a tibble with all values of IS between 1 and minute_limit.}
+
+\item{data}{A \code{\link[tsibble:tsibble]{tsibble}} object.}
 }
 \value{
 A numeric value.
@@ -42,14 +45,15 @@ As an example, the default is 60 minutes, so IVs will be calculated
 with time intervals from 1 to 60 minutes and then average all these values.
 }
 \examples{
-#'#Running for 1000 random observations
+# Running for 1 week of random observations
 first_date <- as.POSIXct('2015-01-01')
-last_date <- as.POSIXct('2015-01-11')
-shuffled_timestamp <- sample(seq(first_date,
-                      last_date, by = "min"), 1000)
+last_date <- as.POSIXct('2015-01-07')
+shuffled_timestamp <- seq(first_date, last_date, by = "min")
 timestamp <- sort(shuffled_timestamp)
-x <- runif(1000, 0, 10000)
-npcra_ism(x, timestamp, minute_limit = 120) #expects a numeric value
+x <- runif(8641, 0, 1000)
+act <- dplyr::tibble(x, timestamp)
+act <- tsibble::as_tsibble(act, index="timestamp")
+npcra_ism(act, "x", minute_limit = 120, summarize=TRUE) # expects a numeric value
 }
 \references{
 WITTING, W. et al. Alterations in the circadian rest-activity rhythm in aging

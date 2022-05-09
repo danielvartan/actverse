@@ -4,14 +4,12 @@
 \alias{npcra_m10_mean_profile}
 \title{Non-Parametric Function M10 (Most Active 10 Hours) for the Mean Profile}
 \usage{
-npcra_m10_mean_profile(x, timestamp)
+npcra_m10_mean_profile(tsbl, col, n_hours = 10)
 }
 \arguments{
-\item{x}{Numeric vector with the activity data that will be used in the
-calculation.}
+\item{col}{A string indicating which column of \code{data} to use.}
 
-\item{timestamp}{POSIXct/POSIXlt vector that contains the date and time of
-each observation.}
+\item{data}{A \code{\link[tsibble:tsibble]{tsibble}} object.}
 }
 \value{
 A tibble of two columns, with the value of M10 in the first column
@@ -72,8 +70,9 @@ shuffled_timestamp <- sample(seq(first_date,
                                  last_date, by = "min"), 1000)
 timestamp <- sort(shuffled_timestamp)
 x <- runif(1000, 0, 10000)
-npcra_m10_mean_profile(x, timestamp)
-
+act <- dplyr::tibble(x, timestamp)
+act <- tsibble::as_tsibble(act, index="timestamp")
+npcra_m10_mean_profile(act, "x")
 }
 \references{
 WITTING, W. et al. Alterations in the circadian rest-activity rhythm in aging

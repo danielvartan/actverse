@@ -4,14 +4,12 @@
 \alias{npcra_m10_whole_period}
 \title{Non-Parametric Function M10 (Most Active 10 Hours) for the full period}
 \usage{
-npcra_m10_whole_period(x, timestamp)
+npcra_m10_whole_period(tsbl, col, n_hours = 10)
 }
 \arguments{
-\item{x}{Numeric vector with the activity data that will be used in the
-calculation.}
+\item{col}{A string indicating which column of \code{data} to use.}
 
-\item{timestamp}{POSIXct/POSIXlt vector that contains the date and time of
-each observation.}
+\item{data}{A \code{\link[tsibble:tsibble]{tsibble}} object.}
 }
 \value{
 A tibble 1 X 2 with the value of M10 in the first column and the
@@ -67,7 +65,9 @@ shuffled_timestamp <- sample(seq(first_date,
                       last_date, by = "min"), 10000)
 timestamp <- sort(shuffled_timestamp)
 x <- runif(10000, 0, 10000)
-npcra_m10_whole_period(x, timestamp)
+act <- dplyr::tibble(x, timestamp)
+act <- tsibble::as_tsibble(act, index="timestamp")
+npcra_m10_whole_period(act, "x")
 
 }
 \references{

@@ -7,18 +7,18 @@
 #' M10 is calculated by identifying the 10-hour window with the highest activity
 #'  in the given period.
 #'
-#' @param x Numeric vector with the activity data that will be used in the
-#' calculation.
-#' @param timestamp POSIX vector that contains the date and time of each
-#' observation.
-#' @param method An integer that represents one of the three common methods for
+#' @param data A [`tsibble`][tsibble::tsibble()] object.
+#' @param col A string indicating which column of `data` to use.
+#' @n_hours A integer indicating the window to calculate the M measure (the
+#' standard is 10, to calculate the M10)
+#' @param method An string that represents one of the three common methods for
 #' calculating and analyzing M10:
 #'
-#' 1 = whole period,
+#' whole_period,
 #'
-#' 2 = average day,
+#' mean_profile,
 #'
-#' 3 = each day.
+#' each_day.
 #'
 #' If you prefer you can also directly call the functions
 #' \code{npcra_m10_whole_period()}, \code{npcra_m10_average_day()}
@@ -60,36 +60,42 @@
 #'                       last_date, by = "min"), 1000)
 #' timestamp <- sort(shuffled_timestamp)
 #' x <- runif(1000, 0, 10000)
-#' npcra_m10(x, timestamp, method = 2) #expects a tibble 1X2
+#' act <- dplyr::::tibble(x, timestamp)
+#' act <- tsibble::as_tsibble(act, index="timestamp")
+#' npcra_m10(act, col="x", method = "mean_profile") #expects a tibble 1X2
 #'
 #' #Ordering dates and activity data to run (each day)
 #' data <- dplyr::as_tibble(x)
 #' data <- dplyr::mutate(data, timestamp = shuffled_timestamp)
 #' data <- dplyr::arrange(data, timestamp)
-#' npcra_m10(data$value, data$timestamp, method = 3) #expects a tibble 10X2
+#' act <- tsibble::as_tsibble(data, index="timestamp")
+#' npcra_m10(act, col="x", method = "each_day") #expects a tibble 10X2
 #'
 #' @export
-npcra_m10 <- function(x, timestamp, method = 1) {
-    checkmate::assert_numeric(x)
-    checkmate::assert_posixct(timestamp)
-    checkmate::assert_int(method)
+npcra_m10 <- function(tsbl, col, n_hours=10, method = "whole_period") {
+    checkmate::assert_numeric(tsbl[[col]])
+    checkmate::assert_posixct(tsbl[[tsibble::index(tsbl)]])
+    checkmate::assert_int(n_hours)
 
-    if (!is.element(method, c(1,2,3))) {
-        stop("Parameter 'method' expects an integer value equal to 1
-        (Whole period),2 (mean profile) or 3 (each day), but received ",
+    x <- tsbl[[col]]
+    timestamp <- tsbl[[tsibble::index(tsbl)]]
+
+    if (!is.element(method, c("whole_period", "mean_profile", "each_day"))) {
+        stop("Parameter 'method' expects an string equal to 'whole_period',
+             'mean_profile' or 'each_day'), but received ",
              method, " (class ", class(method), ")")
     }
 
     out <- dplyr::tibble()
 
-    if (method == 1) {
-        out <- npcra_m10_whole_period(x, timestamp)
+    if (method == "whole_period") {
+        out <- npcra_m10_whole_period(tsbl, col, n_hours)
     }
-    if (method == 2) {
-        out <- npcra_m10_mean_profile(x, timestamp)
+    if (method == "mean_profile") {
+        out <- npcra_m10_mean_profile(tsbl, col, n_hours)
     }
-    if (method == 3) {
-        out <- npcra_m10_each_day(x, timestamp)
+    if (method == "each_day") {
+        out <- npcra_m10_each_day(tsbl, col, n_hours)
     }
 
     out
@@ -104,10 +110,10 @@ npcra_m10 <- function(x, timestamp, method = 1) {
 #'
 #' Calculates and finds the most active window of 10 hours in all records.
 #'
-#' @param x Numeric vector with the activity data that will be used in the
-#' calculation.
-#' @param timestamp POSIXct/POSIXlt vector that contains the date and time of
-#' each observation.
+#' @param data A [`tsibble`][tsibble::tsibble()] object.
+#' @param col A string indicating which column of `data` to use.
+#' @n_hours A integer indicating the window to calculate the M measure (the
+#' standard is 10, to calculate the M10)
 #' @return A tibble 1 X 2 with the value of M10 in the first column and the
 #' start date of the 10 most active window in the period in the second position.
 #'
@@ -165,22 +171,24 @@ npcra_m10 <- function(x, timestamp, method = 1) {
 #'                       last_date, by = "min"), 10000)
 #' timestamp <- sort(shuffled_timestamp)
 #' x <- runif(10000, 0, 10000)
-#' npcra_m10_whole_period(x, timestamp)
+#' act <- dplyr::tibble(x, timestamp)
+#' act <- tsibble::as_tsibble(act, index="timestamp")
+#' npcra_m10_whole_period(act, "x")
 #'
 #' @export
-npcra_m10_whole_period <- function(x, timestamp) {
-    checkmate::assert_numeric(x)
-    checkmate::assert_posixct(timestamp)
+npcra_m10_whole_period <- function(tsbl, col, n_hours=10) {
+    checkmate::assert_numeric(tsbl[[col]])
+    checkmate::assert_posixct(tsbl[[tsibble::index(tsbl)]])
 
-    if (length(timestamp) != length(x)) {
-        stop("'x' and 'timestamp' must have the same length")
+    x <- tsbl[[col]]
+    timestamp <- tsbl[[tsibble::index(tsbl)]]
+
+    if (dplyr::last(timestamp) -
+        dplyr::first(timestamp) < lubridate::hours(n_hours)) {
+        stop("Data does not complete at least one n-hours requested period")
     }
 
-    if (dplyr::last(timestamp) - dplyr::first(timestamp) < lubridate::hours(10)) {
-        stop("Data does not complete at least one 10-hour period")
-    }
-
-    end_window <- timestamp + lubridate::hours(10)
+    end_window <- timestamp + lubridate::hours(n_hours)
     index_last_valid_register <- which.min(end_window < dplyr::last(timestamp))
     window_index <- 1
     value_to_remove <- 0
@@ -221,10 +229,10 @@ npcra_m10_whole_period <- function(x, timestamp) {
 #' composition of all activities is considered as a single day:
 #' the average day.
 #'
-#' @param x Numeric vector with the activity data that will be used in the
-#' calculation.
-#' @param timestamp POSIXct/POSIXlt vector that contains the date and time of
-#' each observation.
+#' @param data A [`tsibble`][tsibble::tsibble()] object.
+#' @param col A string indicating which column of `data` to use.
+#' @n_hours A integer indicating the window to calculate the M measure (the
+#' standard is 10, to calculate the M10)
 #' @return A tibble of two columns, with the value of M10 in the first column
 #' and the start time of the 10 most active period for the mean profile in
 #' the second position (to maintain the nomenclature standard,
@@ -282,16 +290,19 @@ npcra_m10_whole_period <- function(x, timestamp) {
 #'                                  last_date, by = "min"), 1000)
 #' timestamp <- sort(shuffled_timestamp)
 #' x <- runif(1000, 0, 10000)
-#' npcra_m10_mean_profile(x, timestamp)
-#'
+#' act <- dplyr::tibble(x, timestamp)
+#' act <- tsibble::as_tsibble(act, index="timestamp")
+#' npcra_m10_mean_profile(act, "x")
 #' @export
-npcra_m10_mean_profile <- function(x, timestamp) {
-    checkmate::assert_numeric(x)
-    checkmate::assert_posixct(timestamp)
+npcra_m10_mean_profile <- function(tsbl, col, n_hours=10) {
+    checkmate::assert_numeric(tsbl[[col]])
+    checkmate::assert_posixct(tsbl[[tsibble::index(tsbl)]])
 
+    x <- tsbl[[col]]
+    timestamp <- tsbl[[tsibble::index(tsbl)]]
 
-    if (dplyr::last(timestamp) - dplyr::first(timestamp) < lubridate::hours(10)) {
-        stop("Data does not complete at least one 10-hour period")
+    if (dplyr::last(timestamp) - dplyr::first(timestamp) < lubridate::hours(n_hours)) {
+        stop("Data does not complete at least one n-hour requested period")
     }
 
     if (length(timestamp) != length(x)) {
@@ -317,7 +328,7 @@ npcra_m10_mean_profile <- function(x, timestamp) {
         first_14h_index <- which.max(lubridate::hour(data$timestamp) >= 4)
     }
 
-    while (index <= last_valid_index) {
+    while (index < last_valid_index) {
         message(index, "|", window_index)
         window_sum <- 0
 
@@ -346,7 +357,7 @@ npcra_m10_mean_profile <- function(x, timestamp) {
         }
 
         sum_in_10_hours <- sum_in_10_hours - value_to_remove + window_sum
-
+        print(sum_in_10_hours / (size_window-index))
         if (sum_in_10_hours / (size_window-index) > m10) {
             m10 <- sum_in_10_hours / (size_window-index)
             start_date <- data$timestamp[index]
@@ -372,10 +383,10 @@ npcra_m10_mean_profile <- function(x, timestamp) {
 #' Calculates and finds the most active period of 10 hours for each different
 #' day.
 #'
-#' @param x Numeric vector with the activity data that will be used in the
-#' calculation.
-#' @param timestamp POSIXct/POSIXlt vector that contains the date and time of
-#' each observation.
+#' @param data A [`tsibble`][tsibble::tsibble()] object.
+#' @param col A string indicating which column of `data` to use.
+#' @n_hours A integer indicating the window to calculate the M measure (the
+#' standard is 10, to calculate the M10)
 #' @return A tibble of two columns, with the values of M10 in the first column
 #' and the start dates of the 10 most active period for each day in the second
 #' position (so, each row is a different day).
@@ -441,23 +452,24 @@ npcra_m10_mean_profile <- function(x, timestamp) {
 #'                                  last_date, by = "min"), 1000)
 #' timestamp <- sort(shuffled_timestamp)
 #' x <- runif(1000, 0, 10000)
-#' npcra_m10_each_day(x, timestamp) #returns a tibble 10X2
+#' act <- dplyr::tibble(x, timestamp)
+#' act <- tsibble::as_tsibble(act, index="timestamp")
+#' npcra_m10_each_day(act, "x") #returns a tibble 10X2
 #'
 #' @export
-npcra_m10_each_day <- function(x, timestamp){
-    checkmate::assert_numeric(x)
-    checkmate::assert_posixct(timestamp)
+npcra_m10_each_day <- function(tsbl, col, n_hours=10){
+    checkmate::assert_numeric(tsbl[[col]])
+    checkmate::assert_posixct(tsbl[[tsibble::index(tsbl)]])
 
-    if (dplyr::last(timestamp) - dplyr::first(timestamp) < lubridate::hours(10)) {
-        stop("Data does not complete at least one 10-hour period")
-    }
+    x <- tsbl[[col]]
+    timestamp <- tsbl[[tsibble::index(tsbl)]]
 
-    if (length(timestamp) != length(x)) {
-        stop("'x' and 'timestamp' must have the same length")
+    if (dplyr::last(timestamp) - dplyr::first(timestamp) < lubridate::hours(n_hours)) {
+        stop("Data does not complete at least one n-hour requested period")
     }
 
     dates <- lubridate::date(timestamp)
-    EndWindow <- timestamp + lubridate::hours(10)
+    EndWindow <- timestamp + lubridate::hours(n_hours)
 
     index_first_days <- match(unique(dates), dates)
     index_last_valid_register <- which.min(EndWindow < dplyr::last(timestamp))

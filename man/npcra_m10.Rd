@@ -4,28 +4,26 @@
 \alias{npcra_m10}
 \title{Non-Parametric Function M10 (Most Active 10 Hours)}
 \usage{
-npcra_m10(x, timestamp, method = 1)
+npcra_m10(tsbl, col, n_hours = 10, method = "whole_period")
 }
 \arguments{
-\item{x}{Numeric vector with the activity data that will be used in the
-calculation.}
+\item{col}{A string indicating which column of \code{data} to use.}
 
-\item{timestamp}{POSIX vector that contains the date and time of each
-observation.}
-
-\item{method}{An integer that represents one of the three common methods for
+\item{method}{An string that represents one of the three common methods for
 calculating and analyzing M10:
 
-1 = whole period,
+whole_period,
 
-2 = average day,
+mean_profile,
 
-3 = each day.
+each_day.
 
 If you prefer you can also directly call the functions
 \code{npcra_m10_whole_period()}, \code{npcra_m10_average_day()}
 or \code{npcra_m10_each_day()} and see the differences in the calculation
 method.}
+
+\item{data}{A \code{\link[tsibble:tsibble]{tsibble}} object.}
 }
 \value{
 A tibble with the value of M10 in the first column and the start
@@ -58,13 +56,16 @@ shuffled_timestamp <- sample(seq(first_date,
                       last_date, by = "min"), 1000)
 timestamp <- sort(shuffled_timestamp)
 x <- runif(1000, 0, 10000)
-npcra_m10(x, timestamp, method = 2) #expects a tibble 1X2
+act <- dplyr::::tibble(x, timestamp)
+act <- tsibble::as_tsibble(act, index="timestamp")
+npcra_m10(act, col="x", method = "mean_profile") #expects a tibble 1X2
 
 #Ordering dates and activity data to run (each day)
 data <- dplyr::as_tibble(x)
 data <- dplyr::mutate(data, timestamp = shuffled_timestamp)
 data <- dplyr::arrange(data, timestamp)
-npcra_m10(data$value, data$timestamp, method = 3) #expects a tibble 10X2
+act <- tsibble::as_tsibble(data, index="timestamp")
+npcra_m10(act, col="x", method = "each_day") #expects a tibble 10X2
 
 }
 \references{
