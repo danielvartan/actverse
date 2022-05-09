@@ -35,16 +35,16 @@ series interval and, consequently, its \code{p} periods. Valid values are:
 \code{1000}).}
 
 \item{p_max}{(optional) an integer number indicating the maximum period
-(\eqn{p}(), with the same unit as \code{p_unit}, to compute the test (default:
+(\eqn{p}), with the same unit as \code{p_unit}, to compute the test (default:
 \code{2500}).}
 
 \item{p_step}{(optional) an integer number indicating the range of values
-that will be skipped between computing one test and the next (e.g., when
+that must be skipped between computing one test and the next (e.g., when
 \code{p_min == 1}, \code{p_max == 7}, and \code{p_step == 2}, the test periods will be
 \code{1}, \code{3}, \code{5}, and \code{7}) (default: \code{1}).}
 
-\item{int}{(optional) a string indicating the interval unit.Valid values are:
-\verb{“seconds”}, \verb{“minutes”}, \verb{“hours”}, \verb{“days”}, \verb{“weeks”}, \verb{“months”},
+\item{int}{(optional) a string indicating the interval unit. Valid values
+are: \verb{“seconds”}, \verb{“minutes”}, \verb{“hours”}, \verb{“days”}, \verb{“weeks”}, \verb{“months”},
 \verb{“quarters”}, and \verb{“years”}) (default: \code{"days"}).}
 
 \item{int_n}{(optional) an integer number indicating the size of the
