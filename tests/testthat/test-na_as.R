@@ -5,19 +5,19 @@ test_that("na_as() | general test", {
 })
 
 test_that("na_as.logical() | general test", {
-    expect_equal(na_as(logical()),as.logical(NA))
+    expect_equal(na_as(logical()), as.logical(NA))
 })
 
 test_that("na_as.character() | general test", {
-    expect_equal(na_as(character()),as.character(NA))
+    expect_equal(na_as(character()), as.character(NA))
 })
 
 test_that("na_as.integer() | general test", {
-    expect_equal(na_as(integer()),as.integer(NA))
+    expect_equal(na_as(integer()), as.integer(NA))
 })
 
 test_that("na_as.numeric() | general test", {
-    expect_equal(na_as(numeric()),as.numeric(NA))
+    expect_equal(na_as(numeric()), as.numeric(NA))
 })
 
 test_that("na_as.Duration() | general test", {
@@ -30,7 +30,8 @@ test_that("na_as.Period() | general test", {
 
 test_that("na_as.difftime() | general test", {
     expect_equal(na_as(as.difftime(1, units = "secs")),
-                 as.difftime(as.numeric(NA), units = "secs"))
+                 as.difftime(as.numeric(NA), units = "secs")
+                 )
 })
 
 test_that("na_as.hms() | general test", {
@@ -53,7 +54,10 @@ test_that("na_as.POSIXlt() | general test", {
 })
 
 test_that("na_as.Interval() | general test", {
-    expect_equal(na_as(lubridate::as.interval(lubridate::dhours(1),
-                                              lubridate::ymd("2020-01-01"))),
-                 lubridate::interval(NA, NA, tz = "UTC"))
+    expect_equal(na_as(
+        lubridate::as.interval(lubridate::dhours(1),
+                               lubridate::ymd("2020-01-01"))
+    ),
+    lubridate::interval(NA, NA, tz = "UTC")
+    )
 })

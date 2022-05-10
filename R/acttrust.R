@@ -129,77 +129,92 @@
 #'   \item{timestamp}{
 #'   Date and time of the recorded events.
 #'   \cr \cr
-#'   R class: [`POSIXct`][as.POSIXct()].}
+#'   R class: [`POSIXct`][as.POSIXct()].
+#'   }
 #'
 #'   \item{pim}{
 #'   Wrist activity in Proportional Integral Mode (PIM).
 #'   \cr \cr
-#'   R class: [`numeric`][numeric()].}
+#'   R class: [`numeric`][numeric()].
+#'   }
 #'
 #'   \item{tat}{
 #'   Wrist activity in Time Above Threshold (TAT) mode.
 #'   \cr \cr
-#'   R class: [`numeric`][numeric()].}
+#'   R class: [`numeric`][numeric()].
+#'   }
 #'
 #'   \item{zcm}{
 #'   Wrist activity in Zero Crossing Mode (ZCM).
 #'   \cr \cr
-#'   R class: [`numeric`][numeric()].}
+#'   R class: [`numeric`][numeric()].
+#'   }
 #'
 #'   \item{orientation}{
 #'   Device orientation.
 #'   \cr \cr
-#'   R class: [`numeric`][numeric()].}
+#'   R class: [`numeric`][numeric()].
+#'   }
 #'
 #'   \item{wrist_temperature}{
 #'   Wrist temperature in degrees `Celsius`.
 #'   \cr \cr
-#'   R class: [`numeric`][numeric()].}
+#'   R class: [`numeric`][numeric()].
+#'   }
 #'
 #'   \item{external_temperature}{
 #'   External temperature in degrees `Celsius` (unreliable data).
 #'   \cr \cr
-#'   R class: [`numeric`][numeric()].}
+#'   R class: [`numeric`][numeric()].
+#'   }
 #'
 #'   \item{light}{
 #'   Light intensity in `lux`.
 #'   \cr \cr
-#'   R class: [`numeric`][numeric()].}
+#'   R class: [`numeric`][numeric()].
+#'   }
 #'
 #'   \item{ambient_light}{
 #'   Ambient light intensity in `microwatts/square meter`.
 #'   \cr \cr
-#'   R class: [`numeric`][numeric()].}
+#'   R class: [`numeric`][numeric()].
+#'   }
 #'
 #'   \item{red_light}{
 #'   Red light intensity in `microwatts/square centimeter`.
 #'   \cr \cr
-#'   R class: [`numeric`][numeric()].}
+#'   R class: [`numeric`][numeric()].
+#'   }
 #'
 #'   \item{green_light}{
 #'   Green light intensity in `microwatts/square centimeter`.
 #'   \cr \cr
-#'   R class: [`numeric`][numeric()].}
+#'   R class: [`numeric`][numeric()].
+#'   }
 #'
 #'   \item{blue_light}{
 #'   Blue light intensity in `microwatts/square centimeter`.
 #'   \cr \cr
-#'   R class: [`numeric`][numeric()].}
+#'   R class: [`numeric`][numeric()].
+#'   }
 #'
 #'   \item{ir_light}{
 #'   Infrared light intensity in `microwatts/square centimeter`.
 #'   \cr \cr
-#'   R class: [`numeric`][numeric()].}
+#'   R class: [`numeric`][numeric()].
+#'   }
 #'
 #'   \item{uva_light}{
 #'   Ultraviolet A light intensity in `microwatts/square centimeter`.
 #'   \cr \cr
-#'   R class: [`numeric`][numeric()].}
+#'   R class: [`numeric`][numeric()].
+#'   }
 #'
 #'   \item{uvb_light}{
 #'   Ultraviolet B light intensity in `microwatts/square centimeter`.
 #'   \cr \cr
-#'   R class: [`numeric`][numeric()].}
+#'   R class: [`numeric`][numeric()].
+#'   }
 #'
 #'   \item{event}{
 #'   A binary number indicating the moments when the subject pressed the event
@@ -207,7 +222,8 @@
 #'   pressed. This is commonly used to indicate when the subject goes to sleep
 #'   or wakes up.
 #'   \cr \cr
-#'   R class: [`numeric`][numeric()].}
+#'   R class: [`numeric`][numeric()].
+#'   }
 #'
 #'   \item{state}{
 #'   An integer number indicating the subject state: `0` for awake, `1` for
@@ -216,7 +232,8 @@
 #'   These states can be assigned by a specialist or by a validated inference
 #'   algorithm.
 #'   \cr \cr
-#'   R class: [`numeric`][numeric()].}
+#'   R class: [`numeric`][numeric()].
+#'   }
 #' }
 #'
 #' @source Created by Daniel Vartanian (package author).

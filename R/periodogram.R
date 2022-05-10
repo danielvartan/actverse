@@ -38,8 +38,8 @@
 #'
 #' There are few articles that deals with interpolation in actigraphy. Tonon et
 #' al. (2022) recommends not using interpolation (i.e., maintain `NA` values)
-#' whenever is possible. The same authors also recommends using the 
-#' [weekly mean method][?na_weekly_mean] of interpolation when the parameters 
+#' whenever is possible. The same authors also recommends using the [weekly mean
+#' method][actverse::na_weekly_mean()] of interpolation when the parameters
 #' cannot be computed in the presence of `NA` values.
 #'
 #' @section Guidelines:
@@ -49,10 +49,9 @@
 #'
 #' ## Notes
 #'
-#' * If you are visualizing this documentation in plain text (`ASCII`), you may
-#' have some trouble understanding the equations. If you want a better viewer,
-#' you can see this documentation on the package
-#' [website](https://gipso.github.io/actverse/reference/).
+#' * If you are visualizing this documentation in plain text, you may have some
+#' trouble understanding the equations. You can see this documentation on the
+#' package [website](https://gipso.github.io/actverse/reference/).
 #'
 #' ## \eqn{A_{p}}{Ap}: The statistic adopted to express "importance"
 #'
@@ -130,11 +129,11 @@
 #'
 #' Where:
 #'
-#' * \eqn{P} = number of columns of the test Buys-Ballot table.
-#' * \eqn{m} = number of rows of the test Buys-Ballot table.
-#' * \eqn{A_{p}}{Ap} = standard deviation of the column averages from the test
+#' * \eqn{P} = Number of columns of the test Buys-Ballot table.
+#' * \eqn{m} = Number of rows of the test Buys-Ballot table.
+#' * \eqn{A_{p}}{Ap} = Standard deviation of the column averages from the test
 #' Buys-Ballot table.
-#' * \eqn{\sigma^{2}_{\overline{X}}}{Var(X_line)}= variance of the test data
+#' * \eqn{\sigma^{2}_{\overline{X}}}{Var(X_line)}= Variance of the test data
 #' (\eqn{X}).
 #'
 #' @param data A [`tsibble`][tsibble::tsibble()] object.
@@ -197,7 +196,7 @@
 #'     x = rep(seq(1, 60), times = 30))
 #' data <- tsibble::tsibble(data, index = index)
 #'
-#' per <- periodogram(data, "x", p_unit = "minutes", p_min = 1,
+#' per <- periodogram(data = data, col = "x", p_unit = "minutes", p_min = 1,
 #'                    p_max = 350, p_step = 1, alpha = 0.05,
 #'                    print = TRUE)
 #'

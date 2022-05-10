@@ -6,8 +6,9 @@
 ## usethis namespace: start
 #' @importFrom dplyr %>%
 #' @importFrom ggplot2 %+%
+#' @importFrom hms hms
 #' @importFrom lifecycle deprecate_soft
 #' @importFrom lubridate duration period interval %within% %m-%
-#' @importFrom hms hms
+#' @importFrom rlang .data !!
 ## usethis namespace: end
 NULL

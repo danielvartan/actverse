@@ -1,5 +1,3 @@
-# Sort tests by type or use the alphabetical order.
-
 test_that("*_any_missing() | general test", {
     expect_true(test_any_missing(NA))
     expect_false(test_any_missing(1))
@@ -60,46 +58,81 @@ test_that("assert_identical() | general test", {
 })
 
 test_that("*_posixt() | general test", {
-    expect_true(test_posixt(lubridate::as_datetime(1)))
-    expect_true(test_posixt(as.POSIXlt(lubridate::as_datetime(1))))
-    expect_true(test_posixt(c(lubridate::as_datetime(1), NA),
-                            any.missing = TRUE))
-    expect_true(test_posixt(NULL, null.ok = TRUE))
-    expect_false(test_posixt("a"))
-    expect_false(test_posixt(1))
-    expect_false(test_posixt(lubridate::hours()))
-    expect_false(test_posixt(hms::hms(1)))
-    expect_false(test_posixt(datasets::iris))
-    expect_false(test_posixt(c(lubridate::as_datetime(1), NA),
-                             any.missing = FALSE))
-    expect_false(test_posixt(NULL, null.ok = FALSE))
-    expect_false(test_posixt(lubridate::as_datetime(1),
-                             lower = lubridate::as_datetime(2)))
-    expect_false(test_posixt(lubridate::as_datetime(1),
-                             upper = lubridate::as_datetime(0)))
+    expect_true(test_posixt(x = lubridate::as_datetime(1)))
+    expect_true(test_posixt(x = as.POSIXlt(lubridate::as_datetime(1))))
 
-    checkmate::expect_string(
-        check_posixt(c(1, NA), any.missing = FALSE),
-        pattern = "'c\\(1, NA\\)' cannot have missing values")
-    checkmate::expect_string(check_posixt(NULL, null.ok = FALSE),
-                             pattern = "'NULL' cannot be 'NULL'")
-    checkmate::expect_string(check_posixt(lubridate::as_datetime(1),
-                                          lower = lubridate::as_datetime(2)),
-                             pattern = "Element 1 is not >= ")
-    checkmate::expect_string(check_posixt(lubridate::as_datetime(1),
-                                          upper = lubridate::as_datetime(0)),
-                             pattern = "Element 1 is not <= ")
-    checkmate::expect_string(
-        check_posixt(c(1, 1)),
-        pattern = "Must be of type 'POSIXct' or 'POSIXlt', ")
-    expect_true(check_posixt(c(lubridate::as_datetime(1),
-                               lubridate::as_datetime(1))))
-    expect_true(check_posixt(NULL, null.ok = TRUE))
+    expect_true(test_posixt(
+        x = c(lubridate::as_datetime(1), NA), any.missing = TRUE)
+    )
 
-    expect_equal(assert_posixt(c(lubridate::as_datetime(1),
-                                 lubridate::as_datetime(1))),
-                 c(lubridate::as_datetime(1), lubridate::as_datetime(1)))
-    expect_error(assert_posixt(c(1, 1)), "Assertion on 'c\\(1, 1\\)' failed")
+    expect_true(test_posixt(x = NULL, null.ok = TRUE))
+    expect_false(test_posixt(x = "a"))
+    expect_false(test_posixt(x = 1))
+    expect_false(test_posixt(x = lubridate::hours()))
+    expect_false(test_posixt(x = hms::hms(1)))
+    expect_false(test_posixt(x = datasets::iris))
+
+    expect_false(test_posixt(
+        x = c(lubridate::as_datetime(1), NA), any.missing = FALSE)
+    )
+
+    expect_false(test_posixt(x = NULL, null.ok = FALSE))
+
+    expect_false(test_posixt(
+        x = lubridate::as_datetime(1), lower = lubridate::as_datetime(2))
+    )
+
+    expect_false(test_posixt(
+        x = lubridate::as_datetime(1), upper = lubridate::as_datetime(0))
+    )
+
+    checkmate::expect_string(check_posixt(
+        x = c(1, NA), any.missing = FALSE
+    ),
+    "'c\\(1, NA\\)' cannot have missing values"
+    )
+
+    checkmate::expect_string(check_posixt(
+        x = NULL, null.ok = FALSE
+    ),
+    "'NULL' cannot be 'NULL'"
+    )
+
+    checkmate::expect_string(check_posixt(
+        x = lubridate::as_datetime(1), lower = lubridate::as_datetime(2)
+    ),
+    "Element 1 is not <= "
+    )
+
+    checkmate::expect_string(check_posixt(
+        x = lubridate::as_datetime(1), upper = lubridate::as_datetime(0)
+    ),
+    "Element 1 is not >= "
+    )
+
+    checkmate::expect_string(check_posixt(
+        x = c(1, 1)
+    ),
+    "Must be of type 'POSIXct' or 'POSIXlt', "
+    )
+
+    expect_true(check_posixt(
+        x = c(lubridate::as_datetime(1), lubridate::as_datetime(1)))
+    )
+
+    expect_true(check_posixt(x = NULL, null.ok = TRUE))
+
+    expect_equal(assert_posixt(
+        x = c(lubridate::as_datetime(1), lubridate::as_datetime(1))
+    ),
+    c(lubridate::as_datetime(1), lubridate::as_datetime(1))
+    )
+
+    expect_error(assert_posixt(
+        x = c(1, 1)
+    ),
+    "Assertion on 'c\\(1, 1\\)' failed"
+    )
 })
 
 test_that("*_posixt() | error test", {

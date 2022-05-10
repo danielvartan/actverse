@@ -1,4 +1,4 @@
-# Sort by type or by alphabetical order.
+# Sort by type or alphabetical order.
 
 test_any_missing <- function(x) any(is.na(x))
 

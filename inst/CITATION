@@ -19,8 +19,10 @@ citEntry(
                        "Pedrazzoli, M.", " ",
                        "(2022)",  ". ",
                        "{actverse}:", " ",
-                       "an R Package for actigraphy data analysis", ". ",
+                       "an R Package for actigraphy data analysis", " ",
+                       "(v. 0.0.0). ",
                        "https://gipso.github.io/",
                        "actverse/"),
-  note        = "Lifecycle: experimental"
+  note        = paste0("(v. 0.0.0). ",
+                       "Lifecycle: experimental")
 )

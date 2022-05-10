@@ -1,4 +1,4 @@
-# Sort by type or use the alphabetical order.
+# Sort by type or alphabetical order.
 
 backtick_ <- function(x) paste0("`", x, "`")
 single_quote_ <- function(x) paste0("'", x, "'")

@@ -11,77 +11,92 @@ A \code{\link[tsibble:tsibble]{tsibble}} with 17 columns and 1,441 rows:
 \item{timestamp}{
 Date and time of the recorded events.
 \cr \cr
-R class: \code{\link[=as.POSIXct]{POSIXct}}.}
+R class: \code{\link[=as.POSIXct]{POSIXct}}.
+}
 
 \item{pim}{
 Wrist activity in Proportional Integral Mode (PIM).
 \cr \cr
-R class: \code{\link[=numeric]{numeric}}.}
+R class: \code{\link[=numeric]{numeric}}.
+}
 
 \item{tat}{
 Wrist activity in Time Above Threshold (TAT) mode.
 \cr \cr
-R class: \code{\link[=numeric]{numeric}}.}
+R class: \code{\link[=numeric]{numeric}}.
+}
 
 \item{zcm}{
 Wrist activity in Zero Crossing Mode (ZCM).
 \cr \cr
-R class: \code{\link[=numeric]{numeric}}.}
+R class: \code{\link[=numeric]{numeric}}.
+}
 
 \item{orientation}{
 Device orientation.
 \cr \cr
-R class: \code{\link[=numeric]{numeric}}.}
+R class: \code{\link[=numeric]{numeric}}.
+}
 
 \item{wrist_temperature}{
 Wrist temperature in degrees \code{Celsius}.
 \cr \cr
-R class: \code{\link[=numeric]{numeric}}.}
+R class: \code{\link[=numeric]{numeric}}.
+}
 
 \item{external_temperature}{
 External temperature in degrees \code{Celsius} (unreliable data).
 \cr \cr
-R class: \code{\link[=numeric]{numeric}}.}
+R class: \code{\link[=numeric]{numeric}}.
+}
 
 \item{light}{
 Light intensity in \code{lux}.
 \cr \cr
-R class: \code{\link[=numeric]{numeric}}.}
+R class: \code{\link[=numeric]{numeric}}.
+}
 
 \item{ambient_light}{
 Ambient light intensity in \verb{microwatts/square meter}.
 \cr \cr
-R class: \code{\link[=numeric]{numeric}}.}
+R class: \code{\link[=numeric]{numeric}}.
+}
 
 \item{red_light}{
 Red light intensity in \verb{microwatts/square centimeter}.
 \cr \cr
-R class: \code{\link[=numeric]{numeric}}.}
+R class: \code{\link[=numeric]{numeric}}.
+}
 
 \item{green_light}{
 Green light intensity in \verb{microwatts/square centimeter}.
 \cr \cr
-R class: \code{\link[=numeric]{numeric}}.}
+R class: \code{\link[=numeric]{numeric}}.
+}
 
 \item{blue_light}{
 Blue light intensity in \verb{microwatts/square centimeter}.
 \cr \cr
-R class: \code{\link[=numeric]{numeric}}.}
+R class: \code{\link[=numeric]{numeric}}.
+}
 
 \item{ir_light}{
 Infrared light intensity in \verb{microwatts/square centimeter}.
 \cr \cr
-R class: \code{\link[=numeric]{numeric}}.}
+R class: \code{\link[=numeric]{numeric}}.
+}
 
 \item{uva_light}{
 Ultraviolet A light intensity in \verb{microwatts/square centimeter}.
 \cr \cr
-R class: \code{\link[=numeric]{numeric}}.}
+R class: \code{\link[=numeric]{numeric}}.
+}
 
 \item{uvb_light}{
 Ultraviolet B light intensity in \verb{microwatts/square centimeter}.
 \cr \cr
-R class: \code{\link[=numeric]{numeric}}.}
+R class: \code{\link[=numeric]{numeric}}.
+}
 
 \item{event}{
 A binary number indicating the moments when the subject pressed the event
@@ -89,7 +104,8 @@ button: \code{0} when the button is not pressed and \code{1} when the button is
 pressed. This is commonly used to indicate when the subject goes to sleep
 or wakes up.
 \cr \cr
-R class: \code{\link[=numeric]{numeric}}.}
+R class: \code{\link[=numeric]{numeric}}.
+}
 
 \item{state}{
 An integer number indicating the subject state: \code{0} for awake, \code{1} for
@@ -98,7 +114,8 @@ editable state 1, \code{7} for editable state 2, and \code{8} for editable state
 These states can be assigned by a specialist or by a validated inference
 algorithm.
 \cr \cr
-R class: \code{\link[=numeric]{numeric}}.}
+R class: \code{\link[=numeric]{numeric}}.
+}
 }
 }
 \source{
