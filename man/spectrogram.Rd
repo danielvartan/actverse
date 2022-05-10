@@ -11,7 +11,7 @@ spectrogram(
   p_min = 1000,
   p_max = 2500,
   p_step = 1,
-  int = "days",
+  int_unit = "days",
   int_n = 7,
   int_step = 720,
   alpha = 0.05,
@@ -43,12 +43,12 @@ that must be skipped between computing one test and the next (e.g., when
 \code{p_min == 1}, \code{p_max == 7}, and \code{p_step == 2}, the test periods will be
 \code{1}, \code{3}, \code{5}, and \code{7}) (default: \code{1}).}
 
-\item{int}{(optional) a string indicating the interval unit. Valid values
-are: \verb{“seconds”}, \verb{“minutes”}, \verb{“hours”}, \verb{“days”}, \verb{“weeks”}, \verb{“months”},
-\verb{“quarters”}, and \verb{“years”}) (default: \code{"days"}).}
+\item{int_unit}{(optional) a string indicating the interval unit. Valid
+values are: \verb{“seconds”}, \verb{“minutes”}, \verb{“hours”}, \verb{“days”}, \verb{“weeks”},
+\verb{“months”}, \verb{“quarters”}, and \verb{“years”}) (default: \code{"days"}).}
 
 \item{int_n}{(optional) an integer number indicating the size of the
-intervals, with the same unit as \code{int} (default: \code{7}).}
+intervals, with the same unit as \code{int_unit} (default: \code{7}).}
 
 \item{int_step}{(optional) an integer number indicating the amount of epochs
 to advance at the end of each interval (default: \code{720}).}
@@ -91,15 +91,8 @@ data <- dplyr::tibble(
 data <- tsibble::tsibble(data, index = index)
 
 spec <- spectrogram(data, "x", p_unit = "minutes", p_min = 1,
-                    p_max = 120, p_step = 1, int = "hours", int_n = 2,
+                    p_max = 120, p_step = 1, int_unit = "hours", int_n = 2,
                     int_step = 59, alpha = 0.05, print = TRUE)
-
-## Using interactive plots
-
-if (interactive() &&
-    requireNamespace("plotly", quietly = TRUE)) {
-    plotly::ggplotly(spec$spectrogram)
-}
 }
 \references{
 Sokolove, P. G., & Bushell, W. N. (1978). The chi square periodogram: its

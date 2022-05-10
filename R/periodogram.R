@@ -199,13 +199,6 @@
 #' per <- periodogram(data = data, col = "x", p_unit = "minutes", p_min = 1,
 #'                    p_max = 350, p_step = 1, alpha = 0.05,
 #'                    print = TRUE)
-#'
-#' ## Using interactive plots
-#'
-#' if (interactive() &&
-#'     requireNamespace("plotly", quietly = TRUE)) {
-#'     plotly::ggplotly(per$q_p_plot)
-#' }
 periodogram <- function(data, col, p_unit = "minutes", p_min = 1000,
                         p_max = 2500, p_step = 1, alpha = 0.05, print = TRUE) {
     p_unit_choices <- c("second", "minute", "hour", "day", "week", "month",

@@ -9,7 +9,7 @@ test_that("spectrogram() | general test", {
 
     object <- spectrogram(
         data = data, col = "x", p_unit = "hours", p_min = 1, p_max = 100,
-        p_step = 1, int = "days", int_n = 7, int_step = 5, alpha = 0.05,
+        p_step = 1, int_unit = "days", int_n = 7, int_step = 5, alpha = 0.05,
         print = TRUE) %>%
         shush()
 
@@ -48,178 +48,178 @@ test_that("spectrogram() | error test", {
     # assert_tsibble(data, min.rows = 2, min.cols = 2)
     expect_error(spectrogram(
         data = 1, col = "x", p_unit = "minutes", p_min = 1, p_max = 4600,
-        p_step = 1, int = "days", int_n = 7, int_step = 720, alpha = 0.05,
+        p_step = 1, int_unit = "days", int_n = 7, int_step = 720, alpha = 0.05,
         print = FALSE),
         "Assertion on 'data' failed")
     expect_error(spectrogram(
         data = data_1[1, ], col = "x", p_unit = "minutes", p_min = 1,
-        p_max = 4600, int = "days", int_n = 7, int_step = 720, p_step = 1,
+        p_max = 4600, int_unit = "days", int_n = 7, int_step = 720, p_step = 1,
         alpha = 0.05, print = FALSE),
         "Assertion on 'data' failed")
     expect_error(spectrogram(
         data = data_1[, 1], col = "x", p_unit = "minutes", p_min = 1,
-        p_max = 4600, int = "days", int_n = 7, int_step = 720, p_step = 1,
+        p_max = 4600, int_unit = "days", int_n = 7, int_step = 720, p_step = 1,
         alpha = 0.05, print = FALSE),
         "Assertion on 'data' failed")
 
     # assert_index_class(data, c("Date", "POSIXt"))
     expect_error(spectrogram(
         data = data_2, col = "x", p_unit = "minutes", p_min = 1, p_max = 4600,
-        p_step = 1, int = "days", int_n = 7, int_step = 720, alpha = 0.05,
+        p_step = 1, int_unit = "days", int_n = 7, int_step = 720, alpha = 0.05,
         print = FALSE),
         "Assertion on 'data' failed")
 
     # assert_clear_epoch(data, 0.9)
     expect_error(spectrogram(
         data = data_3, col = "x", p_unit = "minutes", p_min = 1, p_max = 4600,
-        p_step = 1, int = "days", int_n = 7, int_step = 720, alpha = 0.05,
+        p_step = 1, int_unit = "days", int_n = 7, int_step = 720, alpha = 0.05,
         print = FALSE),
         "Assertion on 'data' failed")
 
     # checkmate::assert_choice(col, names(data))
     expect_error(spectrogram(
         data = data_1, col = "a", p_unit = "minutes", p_min = 1, p_max = 4600,
-        p_step = 1, int = "days", int_n = 7, int_step = 720, alpha = 0.05,
+        p_step = 1, int_unit = "days", int_n = 7, int_step = 720, alpha = 0.05,
         print = FALSE),
         "Assertion on 'col' failed")
 
     # checkmate::assert_numeric(data[[col]])
     expect_error(spectrogram(
         data = data_4, col = "x", p_unit = "minutes", p_min = 1, p_max = 4600,
-        p_step = 1, int = "days", int_n = 7, int_step = 720, alpha = 0.05,
+        p_step = 1, int_unit = "days", int_n = 7, int_step = 720, alpha = 0.05,
         print = FALSE),
         "Assertion on 'data\\[\\[col\\]\\]' failed")
 
     # checkmate::assert_choice(p_unit, p_unit_choices)
     expect_error(spectrogram(
         data = data_1, col = "x", p_unit = "a", p_min = 1, p_max = 4600,
-        p_step = 1, int = "days", int_n = 7, int_step = 720, alpha = 0.05,
+        p_step = 1, int_unit = "days", int_n = 7, int_step = 720, alpha = 0.05,
         print = FALSE),
         "Assertion on 'p_unit' failed")
 
     # assert_epoch_compatibility(data, p_unit)
     expect_error(spectrogram(
         data = data_1, col = "x", p_unit = "seconds", p_min = 1, p_max = 4600,
-        p_step = 1, int = "days", int_n = 7, int_step = 720, alpha = 0.05,
+        p_step = 1, int_unit = "days", int_n = 7, int_step = 720, alpha = 0.05,
         print = FALSE),
         "Assertion on 'data' failed")
 
     # checkmate::assert_int(p_min, lower = 1)
     expect_error(spectrogram(
         data = data_1, col = "x", p_unit = "minutes", p_min = "a",
-        p_max = 4600, int = "days", int_n = 7, int_step = 720, p_step = 1,
+        p_max = 4600, int_unit = "days", int_n = 7, int_step = 720, p_step = 1,
         alpha = 0.05, print = FALSE),
         "Assertion on 'p_min' failed")
     expect_error(spectrogram(
         data = data_1, col = "x", p_unit = "minutes", p_min = -1,
-        p_max = 4600, int = "days", int_n = 7, int_step = 720, p_step = 1,
+        p_max = 4600, int_unit = "days", int_n = 7, int_step = 720, p_step = 1,
         alpha = 0.05, print = FALSE),
         "Assertion on 'p_min' failed")
 
     # checkmate::assert_int(p_max, lower = 1)
     expect_error(spectrogram(
         data = data_1, col = "x", p_unit = "minutes", p_min = 1,  p_max = "a",
-        p_step = 1, int = "days", int_n = 7, int_step = 720, alpha = 0.05,
+        p_step = 1, int_unit = "days", int_n = 7, int_step = 720, alpha = 0.05,
         print = FALSE),
         "Assertion on 'p_max' failed")
     expect_error(spectrogram(
         data = data_1, col = "x", p_unit = "minutes", p_min = 1,  p_max = -1,
-        p_step = 1, int = "days", int_n = 7, int_step = 720, alpha = 0.05,
+        p_step = 1, int_unit = "days", int_n = 7, int_step = 720, alpha = 0.05,
         print = FALSE),
         "Assertion on 'p_max' failed")
 
     # checkmate::assert_int(p_step, lower = 1)
     expect_error(spectrogram(
         data = data_1, col = "x", p_unit = "minutes", p_min = 1, p_max = 4600,
-        p_step = "a", int = "days", int_n = 7, int_step = 720, alpha = 0.05,
-        print = FALSE),
+        p_step = "a", int_unit = "days", int_n = 7, int_step = 720,
+        alpha = 0.05, print = FALSE),
         "Assertion on 'p_step' failed")
     expect_error(spectrogram(
         data = data_1, col = "x", p_unit = "minutes", p_min = 1, p_max = 4600,
-        p_step = -1, int = "days", int_n = 7, int_step = 720, alpha = 0.05,
+        p_step = -1, int_unit = "days", int_n = 7, int_step = 720, alpha = 0.05,
         print = FALSE),
         "Assertion on 'p_step' failed")
 
     # assert_leq(p_min + p_step, p_max)
     expect_error(spectrogram(
         data = data_1, col = "x", p_unit = "minutes", p_min = 1, p_max = 2,
-        p_step = 2, int = "days", int_n = 7, int_step = 720, alpha = 0.05,
+        p_step = 2, int_unit = "days", int_n = 7, int_step = 720, alpha = 0.05,
         print = FALSE),
         "Assertion on 'p_min \\+ p_step' failed")
 
-    # checkmate::assert_choice(int, p_unit_choices)
+    # checkmate::assert_choice(int_unit, p_unit_choices)
     expect_error(spectrogram(
         data = data_1, col = "x", p_unit = "hours", p_min = 1, p_max = 4600,
-        p_step = 1, int = "", int_n = 7, int_step = 720, alpha = 0.05,
+        p_step = 1, int_unit = "", int_n = 7, int_step = 720, alpha = 0.05,
         print = FALSE),
-        "Assertion on 'int' failed")
+        "Assertion on 'int_unit' failed")
 
     # checkmate::assert_int(int_n, lower = 1)
     expect_error(spectrogram(
         data = data_1, col = "x", p_unit = "minutes", p_min = 1, p_max = 4600,
-        p_step = 1, int = "days", int_n = "", int_step = 720, alpha = 0.05,
+        p_step = 1, int_unit = "days", int_n = "", int_step = 720, alpha = 0.05,
         print = FALSE),
         "Assertion on 'int_n' failed")
     expect_error(spectrogram(
         data = data_1, col = "x", p_unit = "minutes", p_min = 1, p_max = 4600,
-        p_step = 1, int = "days", int_n = -1, int_step = 720, alpha = 0.05,
+        p_step = 1, int_unit = "days", int_n = -1, int_step = 720, alpha = 0.05,
         print = FALSE),
         "Assertion on 'int_n' failed")
 
     # checkmate::assert_int(int_step, lower = 1)
     expect_error(spectrogram(
         data = data_1, col = "x", p_unit = "minutes", p_min = 1, p_max = 4600,
-        p_step = 1, int = "days", int_n = 7, int_step = "", alpha = 0.05,
+        p_step = 1, int_unit = "days", int_n = 7, int_step = "", alpha = 0.05,
         print = FALSE),
         "Assertion on 'int_step' failed")
     expect_error(spectrogram(
         data = data_1, col = "x", p_unit = "minutes", p_min = 1, p_max = 4600,
-        p_step = 1, int = "days", int_n = 7, int_step = -1, alpha = 0.05,
+        p_step = 1, int_unit = "days", int_n = 7, int_step = -1, alpha = 0.05,
         print = FALSE),
         "Assertion on 'int_step' failed")
 
     # checkmate::assert_number(alpha, lower = 0.001, upper = 0.999)
     expect_error(spectrogram(
         data = data_1, col = "x", p_unit = "minutes", p_min = 1, p_max = 4600,
-        p_step = 1, int = "days", int_n = 7, int_step = 720, alpha = -1,
+        p_step = 1, int_unit = "days", int_n = 7, int_step = 720, alpha = -1,
         print = FALSE),
         "Assertion on 'alpha' failed")
     expect_error(spectrogram(
         data = data_1, col = "x", p_unit = "minutes", p_min = 1, p_max = 4600,
-        p_step = 1, int = "days", int_n = 7, int_step = 720, alpha = 2,
+        p_step = 1, int_unit = "days", int_n = 7, int_step = 720, alpha = 2,
         print = FALSE),
         "Assertion on 'alpha' failed")
 
     # checkmate::assert_flag(print)
     expect_error(spectrogram(
         data = data_1, col = "x", p_unit = "minutes", p_min = 1, p_max = 4600,
-        p_step = 1, int = "days", int_n = 7, int_step = 720, alpha = 0.05,
+        p_step = 1, int_unit = "days", int_n = 7, int_step = 720, alpha = 0.05,
         print = 1),
         "Assertion on 'print' failed")
 
-    # if (which(p_unit_choices == int) <= which(p_unit_choices == p_unit)) {
+    # if (which(p_unit_choices == int_unit) <= which(p_unit_choices == p_unit))
     expect_error(spectrogram(
         data = data_1, col = "x", p_unit = "minutes", p_min = 1, p_max = 4600,
-        p_step = 1, int = "seconds", int_n = 7, int_step = 720, alpha = 0.05,
-        print = FALSE))
+        p_step = 1, int_unit = "seconds", int_n = 7, int_step = 720,
+        alpha = 0.05, print = FALSE))
 
-    # if (as.numeric(data_int) < as.numeric(string_to_period(int))) {
+    # if (as.numeric(data_int) < as.numeric(string_to_period(int_unit))) {
     expect_error(spectrogram(
         data = data_1, col = "x", p_unit = "minutes", p_min = 1, p_max = 4600,
-        p_step = 1, int = "years", int_n = 7, int_step = 720, alpha = 0.05,
+        p_step = 1, int_unit = "years", int_n = 7, int_step = 720, alpha = 0.05,
         print = FALSE))
 
     # if (data_int <= lubridate::as.interval(
     expect_error(spectrogram(
         data = data_1, col = "x", p_unit = "minutes", p_min = 1, p_max = 4600,
-        p_step = 1, int = "days", int_n = 1000, int_step = 720, alpha = 0.05,
-        print = FALSE))
+        p_step = 1, int_unit = "days", int_n = 1000, int_step = 720,
+        alpha = 0.05, print = FALSE))
 
     # if (int_step >= int_max_n_epoch) {
     expect_error(spectrogram(
         data = data_1, col = "x", p_unit = "hours", p_min = 1, p_max = 100,
-        p_step = 1, int = "days", int_n = 1, int_step = 1000000, alpha = 0.05,
-        print = FALSE))
+        p_step = 1, int_unit = "days", int_n = 1, int_step = 1000000,
+        alpha = 0.05, print = FALSE))
 })
 
 test_that("spectrogram() | warning/message test", {
@@ -240,13 +240,13 @@ test_that("spectrogram() | warning/message test", {
     # warn_regularity(data, 0.99)
     expect_message(spectrogram(
         data = data_1, col = "x", p_unit = "minutes", p_min = 1, p_max = 100,
-        p_step = 1, int = "hours", int_n = 1, int_step = 59, alpha = 0.05,
+        p_step = 1, int_unit = "hours", int_n = 1, int_step = 59, alpha = 0.05,
         print = FALSE))
 
     # warn_any_missing(data[[col]])
     expect_message(spectrogram(
         data = data_2, col = "x", p_unit = "minutes", p_min = 1, p_max = 100,
-        p_step = 1, int = "hours", int_n = 1, int_step = 59, alpha = 0.05,
+        p_step = 1, int_unit = "hours", int_n = 1, int_step = 59, alpha = 0.05,
         print = FALSE))
 })
 
@@ -260,7 +260,7 @@ test_that("find_spectrogram_intervals() | general test", {
         tsibble::tsibble(index = index)
 
     object <- find_spectrogram_intervals(
-        data = data, int = "days", int_n = 7, int_step = 720) %>%
+        data = data, int_unit = "days", int_n = 7, int_step = 720) %>%
         shush()
 
     expect_equal(dplyr::last(object),
@@ -289,39 +289,39 @@ test_that("find_spectrogram_intervals() | error test", {
 
     # assert_tsibble(data, min.rows = 2, min.cols = 2)
     expect_error(find_spectrogram_intervals(
-        data = 1, int = "days", int_n = 7, int_step = 720),
+        data = 1, int_unit = "days", int_n = 7, int_step = 720),
         "Assertion on 'data' failed")
     expect_error(find_spectrogram_intervals(
-        data = data_1[1, ], int = "days", int_n = 7, int_step = 720),
+        data = data_1[1, ], int_unit = "days", int_n = 7, int_step = 720),
         "Assertion on 'data' failed")
     expect_error(find_spectrogram_intervals(
-        data = data_1[, 1], int = "days", int_n = 7, int_step = 720),
+        data = data_1[, 1], int_unit = "days", int_n = 7, int_step = 720),
         "Assertion on 'data' failed")
 
     # assert_index_class(data, c("Date", "POSIXt"))
     expect_error(find_spectrogram_intervals(
-        data = data_2, int = "days", int_n = 7, int_step = 720),
+        data = data_2, int_unit = "days", int_n = 7, int_step = 720),
         "Assertion on 'data' failed")
 
-    # checkmate::assert_choice(int, int_choices)
+    # checkmate::assert_choice(int_unit, int_choices)
     expect_error(find_spectrogram_intervals(
-        data = data_1, int = "", int_n = 7, int_step = 720),
-        "Assertion on 'int' failed")
+        data = data_1, int_unit = "", int_n = 7, int_step = 720),
+        "Assertion on 'int_unit' failed")
 
     # checkmate::assert_int(int_n, lower = 1)
     expect_error(find_spectrogram_intervals(
-        data = data_1, int = "days", int_n = "", int_step = 720),
+        data = data_1, int_unit = "days", int_n = "", int_step = 720),
         "Assertion on 'int_n' failed")
     expect_error(find_spectrogram_intervals(
-        data = data_1, int = "days", int_n = -1, int_step = 720),
+        data = data_1, int_unit = "days", int_n = -1, int_step = 720),
         "Assertion on 'int_n' failed")
 
     # checkmate::assert_int(int_step, lower = 1)
     expect_error(find_spectrogram_intervals(
-        data = data_1, int = "days", int_n = 7, int_step = ""),
+        data = data_1, int_unit = "days", int_n = 7, int_step = ""),
         "Assertion on 'int_step' failed")
     expect_error(find_spectrogram_intervals(
-        data = data_1, int = "days", int_n = 7, int_step = -1),
+        data = data_1, int_unit = "days", int_n = 7, int_step = -1),
         "Assertion on 'int_step' failed")
 })
 
@@ -494,7 +494,7 @@ test_that("plot_spectrogram() | general test", {
 
     spec <- spectrogram(
         data = data, col = "x", p_unit = "hours", p_min = 1, p_max = 100,
-        p_step = 1, int = "days", int_n = 7, int_step = 5, alpha = 0.05,
+        p_step = 1, int_unit = "days", int_n = 7, int_step = 5, alpha = 0.05,
         print = FALSE) %>%
         shush()
 

@@ -57,7 +57,8 @@ Imports:
     rlang (>= 1.0.2),
     stats (>= 4.0.0),
     tsibble (>= 1.1.1),
-    viridis (>= 0.6.2)
+    viridis (>= 0.6.2),
+    withr (>= 2.5.0)
 Suggests: 
     covr (>= 3.5.1),
     knitr (>= 1.37),
@@ -66,6 +67,7 @@ Suggests:
     readr (>= 2.1.2),
     rmarkdown (>= 2.13),
     spelling (>= 2.2),
+    suncalc (>= 0.5.0),
     testthat (>= 3.1.2),
     tibble (>= 3.1.6),
     utils (>= 4.0.0),

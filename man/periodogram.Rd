@@ -224,13 +224,6 @@ data <- tsibble::tsibble(data, index = index)
 per <- periodogram(data = data, col = "x", p_unit = "minutes", p_min = 1,
                    p_max = 350, p_step = 1, alpha = 0.05,
                    print = TRUE)
-
-## Using interactive plots
-
-if (interactive() &&
-    requireNamespace("plotly", quietly = TRUE)) {
-    plotly::ggplotly(per$q_p_plot)
-}
 }
 \references{
 Enright, J. T. (1965). The search for rhythmicity in biological time-series.

@@ -12,11 +12,11 @@
 #' See [?periodogram][periodogram()] to learn more about the periodogram
 #' computation.
 #'
-#' @param int (optional) a string indicating the interval unit. Valid values 
-#'   are: `“seconds”`, `“minutes”`, `“hours”`, `“days”`, `“weeks”`, `“months”`,
-#'   `“quarters”`, and `“years”`) (default: `"days"`).
+#' @param int_unit (optional) a string indicating the interval unit. Valid
+#'   values are: `“seconds”`, `“minutes”`, `“hours”`, `“days”`, `“weeks”`,
+#'   `“months”`, `“quarters”`, and `“years”`) (default: `"days"`).
 #' @param int_n (optional) an integer number indicating the size of the
-#'   intervals, with the same unit as `int` (default: `7`).
+#'   intervals, with the same unit as `int_unit` (default: `7`).
 #' @param int_step (optional) an integer number indicating the amount of epochs
 #'   to advance at the end of each interval (default: `720`).
 #' @param alpha (optional) a number, from `0` to `1`, indicating the significant
@@ -48,17 +48,10 @@
 #' data <- tsibble::tsibble(data, index = index)
 #'
 #' spec <- spectrogram(data, "x", p_unit = "minutes", p_min = 1,
-#'                     p_max = 120, p_step = 1, int = "hours", int_n = 2,
+#'                     p_max = 120, p_step = 1, int_unit = "hours", int_n = 2,
 #'                     int_step = 59, alpha = 0.05, print = TRUE)
-#'
-#' ## Using interactive plots
-#'
-#' if (interactive() &&
-#'     requireNamespace("plotly", quietly = TRUE)) {
-#'     plotly::ggplotly(spec$spectrogram)
-#' }
 spectrogram <- function(data, col, p_unit = "minutes", p_min = 1000,
-                        p_max = 2500, p_step = 1, int = "days", int_n = 7,
+                        p_max = 2500, p_step = 1, int_unit = "days", int_n = 7,
                         int_step = 720, alpha = 0.05, print = TRUE) {
     p_unit_choices <- c("second", "minute", "hour", "day", "week", "month",
                         "quarter", "year")
@@ -75,7 +68,7 @@ spectrogram <- function(data, col, p_unit = "minutes", p_min = 1000,
     checkmate::assert_int(p_max, lower = 1)
     checkmate::assert_int(p_step, lower = 1)
     assert_leq(p_min + p_step, p_max)
-    checkmate::assert_choice(int, p_unit_choices)
+    checkmate::assert_choice(int_unit, p_unit_choices)
     checkmate::assert_int(int_n, lower = 1)
     checkmate::assert_int(int_step, lower = 1)
     checkmate::assert_number(alpha, lower = 0.001, upper = 0.999)
@@ -87,9 +80,9 @@ spectrogram <- function(data, col, p_unit = "minutes", p_min = 1000,
     # R CMD Check variable bindings fix (see: http://bit.ly/3bliuam)
     . <- NULL
 
-    if (which(p_unit_choices == int) <= which(p_unit_choices == p_unit)) {
+    if (which(p_unit_choices == int_unit) <= which(p_unit_choices == p_unit)) {
         cli::cli_abort(paste0(
-            "The {.strong {cli::col_blue('int')}} value must be greater ",
+            "The {.strong {cli::col_blue('int_unit')}} value must be greater ",
             "than the {.strong {cli::col_red('p_unit')}} value."
         ))
     }
@@ -97,20 +90,22 @@ spectrogram <- function(data, col, p_unit = "minutes", p_min = 1000,
     data_int <- interval(dplyr::first(data[[tsibble::index_var(data)]]),
                          dplyr::last(data[[tsibble::index_var(data)]]))
 
-    if (as.numeric(data_int) < as.numeric(string_to_period(int))) {
+    if (as.numeric(data_int) < as.numeric(string_to_period(int_unit))) {
         cli::cli_abort(paste0(
             "{.strong {cli::col_blue('data')}} has a length of ",
             "{lubridate::duration(as.numeric(data_int))}. ",
-            "The {.strong {cli::col_red('int')}} value must be lower ",
+            "The {.strong {cli::col_red('int_unit')}} value must be lower ",
             "than that."
         ))
     }
 
     if (data_int <= lubridate::as.interval(
-        period_(int_n, int), dplyr::first(data[[tsibble::index_var(data)]]))) {
+        period_(int_n, int_unit),
+        dplyr::first(data[[tsibble::index_var(data)]])
+        )) {
         cli::cli_abort(paste0(
             "{.strong {cli::col_blue('data')}} has a length of ",
-            "{data_int / period_(1, int)} {int}. ",
+            "{data_int / period_(1, int_unit)} {int_unit}. ",
             "The {.strong {cli::col_red('int_n')}} value must be below ",
             "that."
         ))
@@ -124,18 +119,18 @@ spectrogram <- function(data, col, p_unit = "minutes", p_min = 1000,
         aggregate_index(p_unit)
 
     epoch <- find_epoch(data, 0.9)
-    int_max_n_epoch <- as.numeric(string_to_period(int)) / epoch$best_match
+    int_max_n_epoch <- as.numeric(string_to_period(int_unit)) / epoch$best_match
 
     if (int_step >= int_max_n_epoch) {
         cli::cli_abort(paste0(
             "{.strong {cli::col_red('int_step')}} cannot be ",
             "greater or equal to the total amount of epochs available in ",
-            "{.strong {cli::col_blue('int')}} after data aggregation ",
+            "{.strong {cli::col_blue('int_unit')}} after data aggregation ",
             "({int_max_n_epoch})."
         ))
     }
 
-    ints <- find_spectrogram_intervals(data, int, int_n, int_step)
+    ints <- find_spectrogram_intervals(data, int_unit, int_n, int_step)
     peaks <- per_main$q_p_peaks
     p_seq <- seq(p_min, p_max, by = p_step)
     envir <- environment()
@@ -156,14 +151,14 @@ spectrogram <- function(data, col, p_unit = "minutes", p_min = 1000,
     invisible(out)
 }
 
-find_spectrogram_intervals <- function(data, int = "days", int_n = 7,
+find_spectrogram_intervals <- function(data, int_unit = "days", int_n = 7,
                                        int_step = 720) {
     int_choices <- c("microseconds", "milliseconds", "seconds", "minutes",
                        "hours", "days", "weeks", "months", "quarters", "years")
 
     assert_tsibble(data, min.rows = 2, min.cols = 2)
     assert_index_class(data, c("Date", "POSIXt"))
-    checkmate::assert_choice(int, int_choices)
+    checkmate::assert_choice(int_unit, int_choices)
     checkmate::assert_int(int_n, lower = 1)
     checkmate::assert_int(int_step, lower = 1)
 
@@ -172,20 +167,20 @@ find_spectrogram_intervals <- function(data, int = "days", int_n = 7,
                          dplyr::last(data[[tsibble::index_var(data)]]))
 
     step <- lubridate::dseconds(epoch * int_step)
-    out <- lubridate::as.interval(period_(int_n, int),
+    out <- lubridate::as.interval(period_(int_n, int_unit),
                                   lubridate::int_start(data_int))
     check <- lubridate::as.interval(
-        period_(int_n, int),
+        period_(int_n, int_unit),
         lubridate::int_start(dplyr::last(out)) + step) %>%
         lubridate::int_end()
 
     while (check < lubridate::int_end(data_int)) {
         out <- append(out, lubridate::as.interval(
-            period_(int_n, int),
+            period_(int_n, int_unit),
             lubridate::int_start(dplyr::last(out)) + step))
 
         check <- lubridate::as.interval(
-            period_(int_n, int),
+            period_(int_n, int_unit),
             lubridate::int_start(dplyr::last(out)) + step) %>%
             lubridate::int_end()
     }
