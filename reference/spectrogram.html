@@ -75,7 +75,7 @@ computation.</p>
   p_min <span class="op">=</span> <span class="fl">1000</span>,
   p_max <span class="op">=</span> <span class="fl">2500</span>,
   p_step <span class="op">=</span> <span class="fl">1</span>,
-  int <span class="op">=</span> <span class="st">"days"</span>,
+  int_unit <span class="op">=</span> <span class="st">"days"</span>,
   int_n <span class="op">=</span> <span class="fl">7</span>,
   int_step <span class="op">=</span> <span class="fl">720</span>,
   alpha <span class="op">=</span> <span class="fl">0.05</span>,
@@ -109,13 +109,13 @@ series interval and, consequently, its <code>p</code> periods. Valid values are:
 that must be skipped between computing one test and the next (e.g., when
 <code>p_min == 1</code>, <code>p_max == 7</code>, and <code>p_step == 2</code>, the test periods will be
 <code>1</code>, <code>3</code>, <code>5</code>, and <code>7</code>) (default: <code>1</code>).</p></dd>
-<dt>int</dt>
-<dd><p>(optional) a string indicating the interval unit. Valid values
-are: <code>“seconds”</code>, <code>“minutes”</code>, <code>“hours”</code>, <code>“days”</code>, <code>“weeks”</code>, <code>“months”</code>,
-<code>“quarters”</code>, and <code>“years”</code>) (default: <code>"days"</code>).</p></dd>
+<dt>int_unit</dt>
+<dd><p>(optional) a string indicating the interval unit. Valid
+values are: <code>“seconds”</code>, <code>“minutes”</code>, <code>“hours”</code>, <code>“days”</code>, <code>“weeks”</code>,
+<code>“months”</code>, <code>“quarters”</code>, and <code>“years”</code>) (default: <code>"days"</code>).</p></dd>
 <dt>int_n</dt>
 <dd><p>(optional) an integer number indicating the size of the
-intervals, with the same unit as <code>int</code> (default: <code>7</code>).</p></dd>
+intervals, with the same unit as <code>int_unit</code> (default: <code>7</code>).</p></dd>
 <dt>int_step</dt>
 <dd><p>(optional) an integer number indicating the amount of epochs
 to advance at the end of each interval (default: <code>720</code>).</p></dd>
@@ -159,16 +159,9 @@ utility for analysis of circadian rhythms. <em>Journal of Theoretical Biology</e
 <span class="r-in"><span class="va">data</span> <span class="op">&lt;-</span> <span class="fu">tsibble</span><span class="fu">::</span><span class="fu"><a href="https://tsibble.tidyverts.org/reference/tsibble.html" class="external-link">tsibble</a></span><span class="op">(</span><span class="va">data</span>, index <span class="op">=</span> <span class="va">index</span><span class="op">)</span></span>
 <span class="r-in"></span>
 <span class="r-in"><span class="va">spec</span> <span class="op">&lt;-</span> <span class="fu">spectrogram</span><span class="op">(</span><span class="va">data</span>, <span class="st">"x"</span>, p_unit <span class="op">=</span> <span class="st">"minutes"</span>, p_min <span class="op">=</span> <span class="fl">1</span>,</span>
-<span class="r-in">                    p_max <span class="op">=</span> <span class="fl">120</span>, p_step <span class="op">=</span> <span class="fl">1</span>, int <span class="op">=</span> <span class="st">"hours"</span>, int_n <span class="op">=</span> <span class="fl">2</span>,</span>
+<span class="r-in">                    p_max <span class="op">=</span> <span class="fl">120</span>, p_step <span class="op">=</span> <span class="fl">1</span>, int_unit <span class="op">=</span> <span class="st">"hours"</span>, int_n <span class="op">=</span> <span class="fl">2</span>,</span>
 <span class="r-in">                    int_step <span class="op">=</span> <span class="fl">59</span>, alpha <span class="op">=</span> <span class="fl">0.05</span>, print <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span class="r-plt img"><img src="spectrogram-1.png" alt="" width="700" height="433"></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## Using interactive plots</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/interactive.html" class="external-link">interactive</a></span><span class="op">(</span><span class="op">)</span> <span class="op">&amp;&amp;</span></span>
-<span class="r-in">    <span class="fu"><a href="https://rdrr.io/r/base/ns-load.html" class="external-link">requireNamespace</a></span><span class="op">(</span><span class="st">"plotly"</span>, quietly <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
-<span class="r-in">    <span class="fu">plotly</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/plotly/man/ggplotly.html" class="external-link">ggplotly</a></span><span class="op">(</span><span class="va">spec</span><span class="op">$</span><span class="va">spectrogram</span><span class="op">)</span></span>
-<span class="r-in"><span class="op">}</span></span>
 </code></pre></div>
     </div>
   </div>
