@@ -101,11 +101,11 @@ series interval and, consequently, its <code>p</code> periods. Valid values are:
 <code>1000</code>).</p></dd>
 <dt>p_max</dt>
 <dd><p>(optional) an integer number indicating the maximum period
-(\(p\)(), with the same unit as <code>p_unit</code>, to compute the test (default:
+(\(p\)), with the same unit as <code>p_unit</code>, to compute the test (default:
 <code>2500</code>).</p></dd>
 <dt>p_step</dt>
 <dd><p>(optional) an integer number indicating the range of values
-that will be skipped between computing one test and the next (e.g., when
+that must be skipped between computing one test and the next (e.g., when
 <code>p_min == 1</code>, <code>p_max == 7</code>, and <code>p_step == 2</code>, the test periods will be
 <code>1</code>, <code>3</code>, <code>5</code>, and <code>7</code>) (default: <code>1</code>).</p></dd>
 <dt>alpha</dt>
@@ -122,7 +122,7 @@ function must print the \(Q_{p}\) plot (default: <code>TRUE</code>).</p></dd>
 aggregated.</p></li>
 <li><p><code>p_seq</code>: a <code><a href="https://rdrr.io/r/base/numeric.html" class="external-link">numeric</a></code> object with the the sequence of the
 tested periods.</p></li>
-<li><p><code>alpha</code>: a string indicating the significant level used.</p></li>
+<li><p><code>alpha</code>: a number indicating the significant level used.</p></li>
 <li><p><code>a_p</code>: a <code><a href="https://rdrr.io/r/base/numeric.html" class="external-link">numeric</a></code> object with the root mean square amplitude
 (\(A_{p}\)) for each period.</p></li>
 <li><p><code>a_p_plot</code>: a <code><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></code> object with a line chart
@@ -169,13 +169,12 @@ the most frequent value (mode) (for non-numeric or single integer variables).</p
 
 
 <p><code>periodogram()</code> will work even with missing values. As is the case for
-any analysis with missing data, the results may diverge, you may want to
+any analysis with missing data, the results may diverge. You may want to
 interpolate these data points.</p>
 <p>There are few articles that deals with interpolation in actigraphy. Tonon et
 al. (2022) recommends not using interpolation (i.e., maintain <code>NA</code> values)
-whenever is possible. The same authors also recommends using the weekly mean
-method of interpolation when the parameters cannot be computed in the
-presence of <code>NA</code> values.</p>
+whenever is possible. The same authors also recommends using the <a href="na_approx.html">weekly mean method</a> of interpolation when the parameters
+cannot be computed in the presence of <code>NA</code> values.</p>
 </div>
 
     </div>
@@ -188,10 +187,9 @@ presence of <code>NA</code> values.</p>
 \(\chi^{2}\) periodogram computation are as follows.</p><div class="section">
 <h3 id="notes">Notes<a class="anchor" aria-label="anchor" href="#notes"></a></h3>
 
-<ul><li><p>If you are visualizing this documentation in plain text (<code>ASCII</code>), you may
-have some trouble understanding the equations. If you want a better viewer,
-you can see this documentation on the package
-<a href="https://gipso.github.io/actverse/reference/">website</a>.</p></li>
+<ul><li><p>If you are visualizing this documentation in plain text, you may have some
+trouble understanding the equations. You can see this documentation on the
+package <a href="https://gipso.github.io/actverse/reference/">website</a>.</p></li>
 </ul></div>
 
 <div class="section">
@@ -203,8 +201,8 @@ you can see this documentation on the package
 <code>p_max</code> argument, at a step determined by <code>p_step</code> argument (e.g., when
 <code>p_min == 1</code>, <code>p_max == 5</code>, and <code>p_step == 1</code>, the test periods will be
 <code>1</code>, <code>2</code>, <code>3</code>, <code>4</code> and <code>5</code>).</p>
-<p>The \(A_{p}\) measure of the Enright's periodogram is the standard
-deviation of the column means of a Buys-Ballot table, or, as Enright puts it,
+<p>The \(A_{p}\) measure of Enright's periodogram is the standard
+deviation of column means of a Buys-Ballot table, or, as Enright puts it,
 "the root mean square <strong>amplitude</strong>". This Buys-Ballot table has \(P\)
 columns and \(m\) rows, where \(m\) is a number that maximizes the amount
 of values that a time series of \(N\) values can have represented in a
@@ -255,11 +253,11 @@ freedom.</p>
 <p><strong>$$Q_{p} = \frac{P \times Ap^{2}}{\sigma^{2}_{\overline{X}}}$$</strong></p>
 <p>In which:</p>
 <p><strong>$$\sigma^{2}_{\overline{X}} = \frac{\sigma^{2}_{X}}{m}$$</strong></p>
-<p>Where:</p><ul><li><p>\(P\) = number of columns of the test Buys-Ballot table.</p></li>
-<li><p>\(m\) = number of rows of the test Buys-Ballot table.</p></li>
-<li><p>\(A_{p}\) = standard deviation of the column averages from the test
+<p>Where:</p><ul><li><p>\(P\) = Number of columns of the test Buys-Ballot table.</p></li>
+<li><p>\(m\) = Number of rows of the test Buys-Ballot table.</p></li>
+<li><p>\(A_{p}\) = Standard deviation of the column averages from the test
 Buys-Ballot table.</p></li>
-<li><p>\(\sigma^{2}_{\overline{X}}\)= variance of the test data
+<li><p>\(\sigma^{2}_{\overline{X}}\)= Variance of the test data
 (\(X\)).</p></li>
 </ul></div>
 
@@ -294,7 +292,7 @@ time series measured by actimetry. <em>Chronobiology International</em>.
 <span class="r-in">    x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">60</span><span class="op">)</span>, times <span class="op">=</span> <span class="fl">30</span><span class="op">)</span><span class="op">)</span></span>
 <span class="r-in"><span class="va">data</span> <span class="op">&lt;-</span> <span class="fu">tsibble</span><span class="fu">::</span><span class="fu"><a href="https://tsibble.tidyverts.org/reference/tsibble.html" class="external-link">tsibble</a></span><span class="op">(</span><span class="va">data</span>, index <span class="op">=</span> <span class="va">index</span><span class="op">)</span></span>
 <span class="r-in"></span>
-<span class="r-in"><span class="va">per</span> <span class="op">&lt;-</span> <span class="fu">periodogram</span><span class="op">(</span><span class="va">data</span>, <span class="st">"x"</span>, p_unit <span class="op">=</span> <span class="st">"minutes"</span>, p_min <span class="op">=</span> <span class="fl">1</span>,</span>
+<span class="r-in"><span class="va">per</span> <span class="op">&lt;-</span> <span class="fu">periodogram</span><span class="op">(</span>data <span class="op">=</span> <span class="va">data</span>, col <span class="op">=</span> <span class="st">"x"</span>, p_unit <span class="op">=</span> <span class="st">"minutes"</span>, p_min <span class="op">=</span> <span class="fl">1</span>,</span>
 <span class="r-in">                   p_max <span class="op">=</span> <span class="fl">350</span>, p_step <span class="op">=</span> <span class="fl">1</span>, alpha <span class="op">=</span> <span class="fl">0.05</span>,</span>
 <span class="r-in">                   print <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span class="r-plt img"><img src="periodogram-1.png" alt="" width="700" height="433"></span>
