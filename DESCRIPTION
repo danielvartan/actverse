@@ -61,6 +61,8 @@ Imports:
     withr (>= 2.5.0)
 Suggests: 
     covr (>= 3.5.1),
+    curl (>= 4.3.2),
+    jsonlite (>= 1.8.0),
     knitr (>= 1.37),
     mockr (>= 0.1),
     plotly (>= 4.10.0),

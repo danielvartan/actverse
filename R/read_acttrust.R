@@ -127,8 +127,7 @@ tidy_acttrust_data <- function(data, tz = "UTC") {
     checkmate::assert_tibble(data, min.cols = 1, min.rows = 1)
     checkmate::assert_choice(tz, OlsonNames())
 
-    # R CMD Check variable bindings fix (see: http://bit.ly/3bliuam)
-
+    # R CMD Check variable bindings fix (see: https://bit.ly/3z24hbU)
     . <- NULL
     timestamp <- date <- time <- ms <- NULL
     pim <- pim_n <- tat <- tat_n <- zcm <- zcm_n <- NULL
@@ -198,8 +197,7 @@ validate_acttrust_data <- function(data, regularize = TRUE) {
     checkmate::assert_tibble(data, min.cols = 1, min.rows = 1)
     checkmate::assert_flag(regularize)
 
-    # R CMD Check variable bindings fix (see: http://bit.ly/3bliuam)
-
+    # R CMD Check variable bindings fix (see: https://bit.ly/3z24hbU)
     . <- timestamp <- NULL
 
     # TO DO: use the 'validate' package.
@@ -255,8 +253,7 @@ regularize_acttrust_data <- function(data) {
     assert_tsibble(data, min.rows = 2, min.cols = 2)
     assert_index_class(data, c("Date", "POSIXt"))
 
-    # R CMD Check variable bindings fix (see: http://bit.ly/3bliuam)
-
+    # R CMD Check variable bindings fix (see: https://bit.ly/3z24hbU)
     . <- .from <- .to <- state <- NULL
 
     epoch <- data %>%
@@ -306,8 +303,7 @@ find_offwrist_intervals <- function(data) {
     assert_index_class(data, c("Date", "POSIXt"))
     checkmate::assert_subset(c("timestamp", "state"), names(data))
 
-    # R CMD Check variable bindings fix (see: http://bit.ly/3bliuam)
-
+    # R CMD Check variable bindings fix (see: https://bit.ly/3z24hbU)
     . <- timestamp <- state <- offwrist_start <- offwrist_end <- NULL
 
     out <- data %>%

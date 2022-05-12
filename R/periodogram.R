@@ -222,7 +222,7 @@ periodogram <- function(data, col, p_unit = "minutes", p_min = 1000,
     warn_regularity(data, 0.99)
     warn_any_missing(data[[col]])
 
-    # R CMD Check variable bindings fix (see: http://bit.ly/3bliuam)
+    # R CMD Check variable bindings fix (see: https://bit.ly/3z24hbU)
     . <- NULL
 
     data <- data %>%
@@ -315,7 +315,7 @@ find_periodogram_peaks <- function(p_seq, q_p, q_p_critical, q_p_pvalue = NULL,
         assert_identical(p_seq, q_p, q_p_critical, q_p_pvalue, type = "length")
     }
 
-    # R CMD Check variable bindings fix (see: http://bit.ly/3bliuam)
+    # R CMD Check variable bindings fix (see: https://bit.ly/3z24hbU)
 
     . <- q_p_rel <- NULL
 
@@ -360,7 +360,7 @@ clean_periodogram_peaks <- function(peaks, prop_q_p_rel = 0.1,
     checkmate::assert_number(prop_q_p_rel, lower = 0.001, upper = 0.999)
     checkmate::assert_number(prop_bump, lower = 0.001, upper = 0.999)
 
-    # R CMD Check variable bindings fix (see: http://bit.ly/3bliuam)
+    # R CMD Check variable bindings fix (see: https://bit.ly/3z24hbU)
 
     . <- q_p_rel <- bump <- NULL
 

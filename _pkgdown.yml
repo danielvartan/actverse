@@ -36,6 +36,10 @@ reference:
   contents:
   - acttrust
 
+- title: APIs
+  contents:
+  - sun_stats
+
 - title: Utilities
   contents:
   - aggregate_index

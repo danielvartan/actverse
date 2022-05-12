@@ -89,6 +89,48 @@ assert_identical <- function(..., type = "value", any.missing = TRUE,
     }
 }
 
+test_hms <- function(x, lower = - Inf, upper = Inf, any.missing = TRUE,
+                     null.ok = FALSE) {
+    checkmate::assert_flag(any.missing)
+    checkmate::assert_flag(null.ok)
+
+    if (is.null(x) && isTRUE(null.ok)) {
+        TRUE
+    } else if (any(is.na(x)) && isFALSE(any.missing)) {
+        FALSE
+    } else if (hms::is_hms(x) &&
+               !all(x >= lower & x <= upper, na.rm = TRUE)) {
+        FALSE
+    } else {
+        hms::is_hms(x)
+    }
+}
+
+check_hms <- function(x, lower = - Inf, upper = Inf, any.missing = TRUE,
+                      null.ok = FALSE,
+                      name = deparse(substitute(x))) {
+    checkmate::assert_flag(any.missing)
+    checkmate::assert_flag(null.ok)
+
+    if (is.null(x) && isTRUE(null.ok)) {
+        TRUE
+    } else if (any(is.na(x)) && isFALSE(any.missing)) {
+        paste0(single_quote_(name), " cannot have missing values")
+    } else if (is.null(x) && isFALSE(null.ok)) {
+        paste0(single_quote_(name), " cannot be 'NULL'")
+    } else if (hms::is_hms(x) && !all(x >= lower, na.rm = TRUE)) {
+        paste0("Element ", which(x < lower)[1], " is not >= ", lower)
+    } else if (hms::is_hms(x) && !all(x <= upper, na.rm = TRUE)) {
+        paste0("Element ", which(x > upper)[1], " is not <= ", upper)
+    } else  if (!test_hms(x)) {
+        paste0("Must be of type 'hms', not ", class_collapse(x))
+    } else {
+        TRUE
+    }
+}
+
+assert_hms <- checkmate::makeAssertionFunction(check_hms)
+
 test_posixt <- function(x, lower = - Inf, upper = Inf, any.missing = TRUE,
                         null.ok = FALSE) {
     checkmate::assert_flag(any.missing)
@@ -362,7 +404,7 @@ test_epoch_compatibility <- function(x, unit) {
     assert_clear_epoch(x, 0.7)
     checkmate::assert_choice(unit, unit_choices)
 
-    # R CMD Check variable bindings fix (see: http://bit.ly/3bliuam)
+    # R CMD Check variable bindings fix (see: https://bit.ly/3z24hbU)
     . <- proportion <- NULL
 
     epochs <- find_epoch(x)$prevalence %>%
@@ -388,7 +430,7 @@ check_epoch_compatibility <- function(x, unit,
     assert_clear_epoch(x, 0.7)
     checkmate::assert_choice(unit, unit_choices)
 
-    # R CMD Check variable bindings fix (see: http://bit.ly/3bliuam)
+    # R CMD Check variable bindings fix (see: https://bit.ly/3z24hbU)
     . <- proportion <- NULL
 
     epochs <- find_epoch(x)$prevalence %>%

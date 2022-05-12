@@ -63,7 +63,7 @@ write_acttrust <- function(data, file, delim = ";", header = NULL) {
     checkmate::assert_string(header, null.ok = TRUE)
     require_pkg("readr")
 
-    # R CMD Check variable bindings fix (see: http://bit.ly/3bliuam)
+    # R CMD Check variable bindings fix (see: https://bit.ly/3z24hbU)
     acttrust <- acttrust
     . <- NULL
     timestamp <- date <- time <- ms <- NULL

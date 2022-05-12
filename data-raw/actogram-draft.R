@@ -4,6 +4,8 @@
 #'
 #' @description
 #'
+#' `r lifecycle::badge("experimental")`
+#'
 #' `actogram()` returns actogram plot for a [`tsibble`][tsibble::tsibble()]
 #' object.
 #'
@@ -19,6 +21,29 @@
 #'
 #' ## Light/Dark phase
 #'
+#' The light/dark phase is calculated by using the first timestamp of the
+#' time series. Please note that the time zone will be retrieved from this same
+#' timestamp. If the time zone doesn't match with the latitude and
+#' longitude, the light/dark phase may shift.
+#'
+#' ## `trans` argument
+#'
+#' `actogram()` allows you to provide a function for transforming the base
+#' data. That's is useful when dealing with extreme ranges.
+#'
+#' * Example:
+#'
+#' ```{r}
+# trans_fun <- function(x) {
+#     log(x) %>% `[<-`(log(x) < 1, 1) %>% `-`(1)
+# }
+#'
+#' actogram(acttrust, "light", days = 1, trans = trans_fun)
+#' ````
+#' ## Labels order
+#'
+#' The labels order will be the same as the order of the `labels` argument.
+#'
 #' @param data A [`tsibble`][tsibble::tsibble()] object.
 #' @param base_col A  string indicating which column of `data` to use for the
 #'   basic data (area plot).
@@ -32,7 +57,7 @@
 #' @param days
 #' @param state_alpha (optional) a number, from `0` to `1`, indicating the
 #'   transparency level of the state rectangles (default: `0.5`).
-#' @param var_lab
+#' @param base_label
 #' @param date_format
 #' @param lat (optional) a number indicating the latitude in decimal degrees
 #' that must be used to compute the light/dark phase. Set this argument to
@@ -44,7 +69,7 @@
 #' to learn more (default: `NULL`).
 #' @param grid (optional) a [`logical`][logical()] value indicating if the
 #'   plot must have an overlay grid (default: `TRUE`).
-#' @param state_colors
+#' @param colors
 #' @param print (optional) a [`logical`][logical()] value indicating if the
 #'   function must print the \eqn{Q_{p}}{Qp} plot (default: `TRUE`).
 #'
@@ -54,51 +79,62 @@
 #' @export
 #'
 #' @examples
-#' actogram(acttrust, "pim")
-actogram <- function(data, base_col, state_col = "state", days = 7,
-                     state_alpha = 0.5, var_lab = toupper(base_col),
-                     date_format ="%a %d/%m", lat = NULL, lon = NULL,
-                     base_color = "#000000",
-                     state_names = c(
-                         "1" = "Sleeping", "2" = "Awakening", "4" = "Offwrist",
-                         "lp" = "Light phase", "dp" = "Dark phase"
+#' actogram(acttrust, "pim", lat = -23.5489, lon = -46.6388)
+actogram <- function(data, base_col, days = 7, trans = NULL,
+                     state_col = "state", state_alpha = 0.5, lat = NULL,
+                     lon = NULL,
+                     labels = c(
+                         "1" = "Sleeping", "2" = "Resting", "4" = "Offwrist",
+                         "base" = base_col, "lp" = "Light phase",
+                         "dp" = "Dark phase"
                      ),
-                     state_colors = c(
+                     colors = c(
                          "1" = viridis::viridis(3, alpha = NULL)[2],
                          "2" = viridis::viridis(3, alpha = NULL)[3],
                          "4" = viridis::viridis(3, alpha = NULL)[1],
-                         "lp" = "#faf3b4", "dp" = "#ebebeb"
+                         "base" = "#000000", "lp" = "#faf3b4", "dp" = "#ebebeb"
                          ),
-                     grid = TRUE, print = TRUE) {
+                     date_format ="%a %d/%m", double_plot = TRUE, grid = TRUE,
+                     print = TRUE) {
     assert_tsibble(data)
     checkmate::assert_choice(base_col, names(data))
     checkmate::assert_numeric(data[[base_col]])
-    checkmate::assert_choice(state_col, names(data))
-    checkmate::assert_numeric(data[[state_col]])
     checkmate::assert_int(days, null.ok = TRUE)
+    checkmate::assert_function(trans, null.ok = TRUE)
+    checkmate::assert_choice(state_col, names(data), null.ok = TRUE)
     checkmate::assert_number(state_alpha, lower = 0, upper = 1)
-    checkmate::assert_string(var_lab)
-    checkmate::assert_string(date_format)
-    checkmate::assert_number(lat, null.ok = TRUE)
-    checkmate::assert_number(lon, null.ok = TRUE)
-    checkmate::assert_string(base_color, pattern = "^#.{6}$")
+    checkmate::assert_number(lat, lower = -90, upper = 90, null.ok = TRUE)
+    checkmate::assert_number(lon, lower = -180, upper = 180, null.ok = TRUE)
+    checkmate::assert_character(labels, any.missing = FALSE,names = "unique")
     checkmate::assert_character(
-        state_names, any.missing = FALSE,names = "unique")
-    checkmate::assert_character(
-        state_colors, pattern = "^#.{6}$", any.missing = FALSE, names = "unique"
+        colors, pattern = "^#.{6}$", any.missing = FALSE, names = "unique"
         )
-    checkmate::assert_set_equal(names(state_names), names(state_colors))
+    checkmate::assert_set_equal(names(labels), names(colors))
+    checkmate::assert_string(date_format)
+    checkmate::assert_flag(double_plot)
     checkmate::assert_flag(grid)
     checkmate::assert_flag(print)
+
+    if ((!is.null(lat) && is.null(lon)) || (is.null(lat) && !is.null(lon))) {
+        cli::cli_abort(paste0(
+            "{.strong {cli::col_red('lat')}} and ",
+            "{.strong {cli::col_red('lon')}} must both be assigned ",
+            "values or must be both {.strong NULL}."
+        ))
+    }
+
+    # R CMD Check variable bindings fix (see: https://bit.ly/3z24hbU)
+    . <- NULL
 
     # TO DO:
     #
     # * Resting x despertar
     # * Work on API
     # * Add douple-plot option.
-    # * Add solarimetric model.
-    # * Add summary_day
+    # * Add summary_day()
     # * lens_chart()
+
+    # Order colors by names(labels)
 
     index <- data %>% tsibble::index_var()
 
@@ -110,73 +146,101 @@ actogram <- function(data, base_col, state_col = "state", days = 7,
 
     if (is.null(days) || days > n_days) days <- n_days
 
-    for (i in c("state_names", "state_colors")) {
-        j <- c(
-            get(i)[which(
-                shush(as.numeric(names(get(i)))) %in%
-                    unique(data[[state_col]]) |
-                    names(get(i)) %in% c("lp", "dp")
-            )]
-        )
-        assign(i, j)
+    if ("base" %in% labels) {
+        base_label <- unname(labels["base"])
+        base_color <- unname(colors["base"])
+    } else {
+        base_label <- base_col
+        base_color <- "#000000"
     }
 
-    # Add lp and dp to 'state_names' and 'state_colors' if they are not assigned
+    if (!is.null(state_col)) {
+        checkmate::assert_integerish(data[[state_col]], null.ok = TRUE)
 
-    bind <- dplyr::tibble(
-        !!as.symbol(index) := seq(
-            from = flat_hour(dplyr::first(data$timestamp)),
-            to = dplyr::first(data$timestamp), by = "min"
+        for (i in c("labels", "colors")) {
+            j <- c(
+                get(i)[which(
+                    shush(as.numeric(names(get(i)))) %in%
+                        unique(data[[state_col]]) |
+                        names(get(i)) %in% c("lp", "dp")
+                )]
             )
-    )
+            assign(i, j)
+        }
+
+        col_match <- paste0("^", index, "$|^", base_col, "$|^", state_col, "$")
+    } else {
+        for (i in c("labels", "colors")) {
+            j <- c(
+                get(i)[which(names(get(i)) %in% c("lp", "dp"))]
+            )
+            assign(i, j)
+        }
+
+        col_match <- paste0("^", index, "$|^", base_col, "$")
+    }
+
+    # Add base, lp and dp to 'labels' and 'colors'
+    # if they are not assigned
 
     data <- data %>%
-        tsibble::as_tibble() %>%
-        dplyr::select(
-            dplyr::all_of(c(index, base_col, state_col))
-            ) %>%
-        dplyr::filter(lubridate::date(timestamp) <=
-                          lubridate::date(dplyr::first(timestamp)) +
-                          lubridate::days(days - 1)) %>%
-        dplyr::bind_rows(bind) %>%
-        dplyr::arrange(!!as.symbol(index)) %>%
-        dplyr::mutate(dplyr::across(
-            !dplyr::matches(
-                "^timestamp$|^orientation$|^event$|^state$"),
-            ~ na_zero(.x)
-        )) %>%
+        dplyr::select(dplyr::matches(col_match)) %>%
+        dplyr::filter(lubridate::date(!!as.symbol(index)) <=
+                          lubridate::date(dplyr::first(!!as.symbol(index))) +
+                          lubridate::days(days - 1)
+        ) %>%
+        fill_actogram_data_tips() %>%
+        dplyr::mutate(dplyr::across(!dplyr::matches(col_match), ~ na_zero(.x)))
+
+
+    if (!is.null(trans)) {
+        data <- data %>%
+            dplyr::mutate(
+                !!as.symbol(base_col) := trans(!!as.symbol(base_col))
+                )
+    }
+
+    data <- data %>%
         dplyr::mutate(
-            date = lubridate::as_date(timestamp),
-            time = hms::as_hms(timestamp),
-            state = as.character(state),
-            state = dplyr::if_else(
-                state %in% shush(rm_na(as.numeric(names(state_names)))),
-                state, "Unassigned"
-            )
+            date = lubridate::as_date(!!as.symbol(index)),
+            time = hms::as_hms(!!as.symbol(index)),
         )
 
-    for (i in seq_along(state_names)) {
-        if (is.na(shush(as.numeric(names(state_names[i]))))) next()
+    if (!is.null(state_col)) {
+        data <- data %>%
+            dplyr::mutate(
+                !!as.symbol(state_col) := as.character(!!as.symbol(state_col)),
+                !!as.symbol(state_col) := dplyr::if_else(
+                    !!as.symbol(state_col) %in% shush(
+                        rm_na(as.numeric(names(labels)))
+                        ),
+                    !!as.symbol(state_col), "Unassigned"
+                )
+            )
+
+        for (i in seq_along(labels)) {
+            if (is.na(shush(as.numeric(names(labels[i]))))) next()
+
+            data <- data %>%
+                dplyr::mutate(
+                    !!as.symbol(state_col) := dplyr::if_else(
+                        !!as.symbol(state_col) == names(labels[i]),
+                        unname(labels[i]), !!as.symbol(state_col)
+                    ),
+                )
+        }
 
         data <- data %>%
             dplyr::mutate(
-                state = dplyr::if_else(
-                    state == names(state_names[i]), unname(state_names[i]),
-                    state
-                    ),
+                !!as.symbol(state_col) := factor(
+                    !!as.symbol(state_col),
+                    levels = unname(labels[which(
+                        !names(labels) %in% c("lp", "dp")
+                    )]),
+                    ordered = TRUE
+                )
             )
     }
-
-    data <- data %>%
-        dplyr::mutate(
-            state = factor(
-                state,
-                levels = unname(state_names[which(
-                    !names(state_names) %in% c("lp", "dp")
-                    )]),
-                ordered = TRUE
-            )
-        )
 
     out <- data %>%
         ggplot2::ggplot(ggplot2::aes(
@@ -186,14 +250,14 @@ actogram <- function(data, base_col, state_col = "state", days = 7,
     if (!is.null(lat) && !is.null(lon)) {
         require_pkg("suncalc")
 
-        sun_stats <- get_sun_stats(
-            lat = lat, lon = lon, date = lubridate::date(data$timestamp[1]),
-            tz = lubridate::tz(data$timestamp[1])
+        sun_stats <- sun_stats(
+            lat = lat, lon = lon, date = lubridate::date(data[[index]][1]),
+            tz = lubridate::tz(data[[index]][1])
         )
 
-        tz <- lubridate::tz(data$timestamp[1])
-        sunrise <- flat_posixt(sun_stats$sunrise, force_tz = FALSE)
-        sunset <- flat_posixt(sun_stats$sunset, force_tz = FALSE)
+        tz <- lubridate::tz(data[[index]][1])
+        sunrise <- lubridate::as_datetime(sun_stats$sunrise, tz = tz)
+        sunset <- lubridate::as_datetime(sun_stats$sunset, tz = tz)
 
         dark_phase_1 <- lubridate::interval(
             lubridate::force_tz(lubridate::as_datetime(0), tzone = tz),
@@ -206,7 +270,7 @@ actogram <- function(data, base_col, state_col = "state", days = 7,
         )
 
         ld_fill <- dplyr::tibble(
-            index = flat_posixt(data$timestamp, force_tz = FALSE),
+            index = flat_posixt_date(data[[index]]),
             ld = dplyr::case_when(
                 index %within% dark_phase_1 ~ "Dark phase",
                 index %within% light_phase ~ "Light phase",
@@ -227,14 +291,14 @@ actogram <- function(data, base_col, state_col = "state", days = 7,
                         dplyr::lead(time) <= time ~ time,
                         TRUE ~ dplyr::lead(time),
                     ),
-                    ymin = 0,
+                    ymin = min(!!as.symbol(base_col), na.rm = TRUE),
                     ymax = max(!!as.symbol(base_col), na.rm = TRUE),
                     fill = ld_fill
                     ),
                 na.rm = TRUE
             ) +
             ggplot2::scale_fill_manual(
-                values = unname(state_colors), limits = unname(state_names),
+                values = unname(colors), limits = unname(labels),
                 na.value = NA
             )
     } else {
@@ -247,25 +311,30 @@ actogram <- function(data, base_col, state_col = "state", days = 7,
                         dplyr::lead(time) <= time ~ time,
                         TRUE ~ dplyr::lead(time),
                     ),
-                    ymin = 0,
+                    ymin = min(!!as.symbol(base_col), na.rm = TRUE),
                     ymax = max(!!as.symbol(base_col), na.rm = TRUE)
                     ),
                 colour = "#ebebeb",
                 na.rm = TRUE
-            ) +
+            )
+
+        if (!is.null(state_col)) {
             ggplot2::scale_fill_manual(
-                values = unname(state_colors[which(
-                    !names(state_colors) %in% c("lp", "dp")
+                values = unname(colors[which(
+                    !names(colors) %in% c("lp", "dp")
                 )]),
-                limits = unname(state_names[which(
-                    !names(state_names) %in% c("lp", "dp")
+                limits = unname(labels[which(
+                    !names(labels) %in% c("lp", "dp")
                 )]),
                 na.value = NA
             )
+        }
     }
 
     out <- out +
-        ggplot2::geom_area(ggplot2::aes(colour = var_lab), fill = base_color) +
+        ggplot2::geom_area(
+            ggplot2::aes(colour = base_label), fill = base_color
+            ) +
         ggplot2::scale_y_continuous(expand = c(0, 0)) +
         ggplot2::scale_x_continuous(
             breaks = as.numeric(lubridate::dhours(c(0:24)[!0:24 %% 2])),
@@ -274,21 +343,28 @@ actogram <- function(data, base_col, state_col = "state", days = 7,
             sec.axis = ggplot2::dup_axis()
             ) +
         ggplot2::scale_colour_manual(
-            ggplot2::element_blank(), breaks = var_lab, values = base_color
-            ) +
-        ggplot2::geom_rect(
-            ggplot2::aes(
-                xmin = time,
-                xmax = dplyr::case_when(
-                    time == dplyr::last(time) ~ time,
-                    dplyr::lead(time) <= time ~ time,
-                    TRUE ~ dplyr::lead(time),
-                ),
-                ymin = 0, ymax = max(!!as.symbol(base_col), na.rm = TRUE),
-                fill = state),
-            na.rm = TRUE,
-            alpha = state_alpha
-        ) +
+            ggplot2::element_blank(), breaks = base_label, values = base_color
+            )
+
+    if (!is.null(state_col)) {
+        out <- out +
+            ggplot2::geom_rect(
+                ggplot2::aes(
+                    xmin = time,
+                    xmax = dplyr::case_when(
+                        time == dplyr::last(time) ~ time,
+                        dplyr::lead(time) <= time ~ time,
+                        TRUE ~ dplyr::lead(time),
+                    ),
+                    ymin = min(!!as.symbol(base_col), na.rm = TRUE),
+                    ymax = max(!!as.symbol(base_col), na.rm = TRUE),
+                    fill = !!as.symbol(state_col)),
+                na.rm = TRUE,
+                alpha = state_alpha
+            )
+    }
+
+    out <- out +
         ggplot2::facet_grid(
             row = ggplot2::vars(date),
             labeller = ggplot2::labeller(.rows = function(x) {
@@ -335,70 +411,47 @@ actogram <- function(data, base_col, state_col = "state", days = 7,
     invisible(out)
 }
 
-get_sun_stats <-function(lat, lon, date = Sys.Date(), tz = "UTC",
-                         formatted = 0) {
-    checkmate::assert_number(lat)
-    checkmate::assert_number(lon)
-    checkmate::assert_date(date)
-    checkmate::assert_choice(tz, OlsonNames())
-    checkmate::assert_int(formatted)
+fill_actogram_data_tips <- function(data) {
+    assert_tsibble(data)
 
-    # 'suncalc' package solution
+    # R CMD Check variable bindings fix (see: https://bit.ly/3z24hbU)
+    . <- NULL
 
-    require_pkg("suncalc")
+    index <- tsibble::index_var(data)
+    epoch <- find_epoch(data)$best_match
 
-    suncalc::getSunlightTimes(date = date, lat = lat, lon = lon, tz = tz) %>%
-        as.list()
+    if (!is.null(epoch)) by = epoch else by = "min"
 
-    # # 'sunrise-sunset.org' solution
-    # #
-    # # https://sunrise-sunset.org/api solution (OK)
-    #
-    # require_pkg("curl", "jsonlite")
-    #
-    # if (isTRUE(curl::has_internet())) {
-    #     get <- jsonlite::read_json(paste0(
-    #         "https://api.sunrise-sunset.org/json?",
-    #         "lat=", lat, "&lng=", lon, "&date=", date, "&formatted", formatted
-    #     ))
-    #
-    #     if (!get$status == "OK") {
-    #         NULL
-    #     } else {
-    #         get %>%
-    #             magrittr::extract2("results") %>%
-    #             purrr::map(
-    #                 ~ paste0(as.character(date), " ", .x) %>%
-    #                     lubridate::parse_date_time("Ymd IMS p") %>%
-    #                     lubridate::with_tz(tzone = tz) %>%
-    #                     hms::as_hms()
-    #             ) %>%
-    #             append(list(date = date), .)
-    #     }
-    # } else {
-    #     NULL
-    # }
+    if (!as.numeric(hms::as_hms(dplyr::first(data[[index]]))) == 0) {
+        data <- data %>%
+            dplyr::bind_rows(
+                dplyr::tibble(
+                    !!as.symbol(index) := seq(
+                        from = flat_posixt_hour(
+                            dplyr::first(data[[index]]),
+                            base = hms::parse_hms("00:00:00")
+                        ),
+                        to = dplyr::first(data[[index]]),
+                        by = by
+                    )),
+                .
+            )
+    }
 
-    # NOAA / 'rnoaa' package solution
-    #
-    # https://gml.noaa.gov/grad/solcalc/
-    # https://docs.ropensci.org/rnoaa
-
-    # # NASA POWER solution / 'nasapower' package solution
-    # #
-    # # https://power.larc.nasa.gov/#resources
-    # # https://power.larc.nasa.gov/docs/
-    # # nasapower:::parameters$DAILY_AG
-    # # rdocumentation.org/packages/nasapower/versions/3.0.1/topics/parameters
-    #
-    # nasapower::get_power(
-    #     community = "ag",
-    #     pars = c("ZENITH_LUMINANCE"),
-    #     temporal_api = "daily",
-    #     lonlat = c(lon, lat),
-    #     dates = c("2022-05-01", "2022-05-05"),
-    #     time_standard = "UTC"
-    # )
+    if (!as.numeric(hms::as_hms(dplyr::last(data[[index]]))) >=
+        hms::parse_hms("23:59:59")) {
+        data <- data %>%
+            dplyr::bind_rows(
+                dplyr::tibble(
+                    !!as.symbol(index) := seq(
+                        from = dplyr::last(data[[index]]),
+                        to = flat_posixt_hour(
+                            dplyr::last(data[[index]]),
+                            base = hms::parse_hms("23:59:59")),
+                        by = by
+                    ))
+            )
+    }
 }
 
 actogram_x_breaks <- function(...) {
@@ -412,6 +465,7 @@ actogram_x_labels <- function(x) {
     lubridate::hour(x)
 }
 
+# Move to utils
 label_jump <- function(x, type = "even") {
     checkmate::assert_atomic(x)
     checkmate::assert_choice(type, c("even", "odd"))
@@ -423,26 +477,21 @@ label_jump <- function(x, type = "even") {
     }
 }
 
-flat_posixt <- function(posixt, base = as.Date("1970-01-01"),
-                        force_tz = FALSE, tz = "UTC") {
+# Move to utils
+flat_posixt_date <- function(posixt, base = as.Date("1970-01-01")) {
     assert_posixt(posixt, null.ok = FALSE)
     checkmate::assert_date(base, len = 1, all.missing = FALSE)
-    checkmate::assert_flag(force_tz)
-    checkmate::assert_choice(tz, OlsonNames())
 
-    lubridate::date(posixt) <- base
-
-    if (isTRUE(force_tz)) {
-        lubridate::force_tz(posixt, tz)
-    } else {
-        posixt
-    }
+    posixt %>% lubridate::`date<-`(base)
 }
 
-flat_hour <- function(posixt, h = 0, m = 0, s = 0) {
+# Move to utils
+flat_posixt_hour <- function(posixt, base = hms::parse_hms("00:00:00")) {
     assert_posixt(posixt)
+    assert_hms(base, any.missing = FALSE)
 
     posixt %>%
         lubridate::date() %>%
+        paste0(" ", base) %>%
         lubridate::as_datetime(tz = lubridate::tz(posixt))
 }

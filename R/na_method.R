@@ -262,7 +262,7 @@ na_approx <- function(x, index, fill_na_tips = TRUE) {
     checkmate::assert_flag(fill_na_tips)
     require_pkg("zoo")
 
-    # R CMD Check variable bindings fix (see: http://bit.ly/3bliuam)
+    # R CMD Check variable bindings fix (see: https://bit.ly/3z24hbU)
     . <- NULL
 
     # TO DO: Remove zoo dependency.
@@ -279,7 +279,7 @@ na_locf <- function(x, fill_na_tips = TRUE) {
     checkmate::assert_numeric(x, min.len = 1, all.missing = FALSE)
     checkmate::assert_flag(fill_na_tips)
 
-    # R CMD Check variable bindings fix (see: http://bit.ly/3bliuam)
+    # R CMD Check variable bindings fix (see: https://bit.ly/3z24hbU)
     . <- NULL
 
     not_na <- !is.na(x)
@@ -352,7 +352,7 @@ na_weekly_mean <- function(x, index, fill_na_tips = TRUE, week_start = 1) {
     checkmate::assert_flag(fill_na_tips)
     checkmate::assert_choice(week_start, c(1, 7))
 
-    # R CMD Check variable bindings fix (see: http://bit.ly/3bliuam)
+    # R CMD Check variable bindings fix (see: https://bit.ly/3z24hbU)
     . <- NULL
 
     data <- dplyr::tibble(index = index, x = x) %>%
@@ -487,7 +487,7 @@ na_tip_correction <- function(x, intp, fill_na_tips = TRUE) {
 }
 
 na_example_data <- function() {
-    # R CMD Check variable bindings fix (see: http://bit.ly/3bliuam)
+    # R CMD Check variable bindings fix (see: https://bit.ly/3z24hbU)
     . <- timestamp <- pim <- x <- index <- NULL
     acttrust <- acttrust
 

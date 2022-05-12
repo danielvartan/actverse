@@ -14,7 +14,7 @@
     "name": "R",
     "url": "https://r-project.org"
   },
-  "runtimePlatform": "R version 4.1.1 (2021-08-10)",
+  "runtimePlatform": "R version 4.2.0 (2022-04-22 ucrt)",
   "author": [
     {
       "@type": "Person",
@@ -105,6 +105,32 @@
     },
     {
       "@type": "SoftwareApplication",
+      "identifier": "curl",
+      "name": "curl",
+      "version": ">= 4.3.2",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=curl"
+    },
+    {
+      "@type": "SoftwareApplication",
+      "identifier": "jsonlite",
+      "name": "jsonlite",
+      "version": ">= 1.8.0",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=jsonlite"
+    },
+    {
+      "@type": "SoftwareApplication",
       "identifier": "knitr",
       "name": "knitr",
       "version": ">= 1.37",
@@ -180,6 +206,19 @@
         "url": "https://cran.r-project.org"
       },
       "sameAs": "https://CRAN.R-project.org/package=spelling"
+    },
+    {
+      "@type": "SoftwareApplication",
+      "identifier": "suncalc",
+      "name": "suncalc",
+      "version": ">= 0.5.0",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=suncalc"
     },
     {
       "@type": "SoftwareApplication",
@@ -353,11 +392,24 @@
     },
     "11": {
       "@type": "SoftwareApplication",
+      "identifier": "rlang",
+      "name": "rlang",
+      "version": ">= 1.0.2",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=rlang"
+    },
+    "12": {
+      "@type": "SoftwareApplication",
       "identifier": "stats",
       "name": "stats",
       "version": ">= 4.0.0"
     },
-    "12": {
+    "13": {
       "@type": "SoftwareApplication",
       "identifier": "tsibble",
       "name": "tsibble",
@@ -370,7 +422,7 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=tsibble"
     },
-    "13": {
+    "14": {
       "@type": "SoftwareApplication",
       "identifier": "viridis",
       "name": "viridis",
@@ -383,9 +435,22 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=viridis"
     },
+    "15": {
+      "@type": "SoftwareApplication",
+      "identifier": "withr",
+      "name": "withr",
+      "version": ">= 2.5.0",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=withr"
+    },
     "SystemRequirements": null
   },
-  "fileSize": "553.183KB",
+  "fileSize": "588.786KB",
   "citation": [
     {
       "@type": "CreativeWork",
@@ -419,7 +484,7 @@
       ],
       "name": "{actverse}: an R Package for actigraphy data analysis",
       "url": "https://gipso.github.io/actverse/",
-      "description": "Lifecycle: experimental"
+      "description": "(v. 0.0.0). Lifecycle: experimental"
     }
   ],
   "releaseNotes": "https://github.com/gipso/actverse/blob/master/NEWS.md",

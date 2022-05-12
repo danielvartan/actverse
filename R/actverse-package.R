@@ -9,6 +9,6 @@
 #' @importFrom hms hms
 #' @importFrom lifecycle deprecate_soft
 #' @importFrom lubridate duration period interval %within% %m-%
-#' @importFrom rlang .data !!
+#' @importFrom rlang .data !! :=
 ## usethis namespace: end
 NULL

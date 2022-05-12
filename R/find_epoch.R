@@ -51,7 +51,7 @@ find_epoch <- function(data, threshold = 0.9) {
     assert_index_class(data, c("Date", "POSIXt"))
     checkmate::assert_number(threshold, lower = 0.001, upper = 1)
 
-    # R CMD Check variable bindings fix (see: http://bit.ly/3bliuam)
+    # R CMD Check variable bindings fix (see: https://bit.ly/3z24hbU)
     . <- .x <- proportion <- NULL
 
     diff <- diff(data[[tsibble::index_var(data)]]) %>%

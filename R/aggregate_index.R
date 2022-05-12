@@ -80,7 +80,7 @@ aggregate_index <- function(data, unit, fun = NULL, week_start = 1) {
     checkmate::assert_function(fun, null.ok = TRUE)
     checkmate::assert_choice(week_start, c(1, 7))
 
-    # R CMD Check variable bindings fix (see: http://bit.ly/3bliuam)
+    # R CMD Check variable bindings fix (see: https://bit.ly/3z24hbU)
     . <- .InDeX_pLaCeHoLdEr1 <- NULL
 
     index_var <- tsibble::index_var(data)

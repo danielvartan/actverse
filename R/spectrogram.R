@@ -77,7 +77,7 @@ spectrogram <- function(data, col, p_unit = "minutes", p_min = 1000,
     warn_regularity(data, 0.99)
     warn_any_missing(data[[col]])
 
-    # R CMD Check variable bindings fix (see: http://bit.ly/3bliuam)
+    # R CMD Check variable bindings fix (see: https://bit.ly/3z24hbU)
     . <- NULL
 
     if (which(p_unit_choices == int_unit) <= which(p_unit_choices == p_unit)) {
@@ -200,8 +200,7 @@ compute_interval_periodogram <- function(data, col, int_i, p_unit, p_seq,
     checkmate::assert_number(alpha, lower = 0.001, upper = 0.999)
     checkmate::assert_environment(envir, null.ok = TRUE)
 
-    # R CMD Check variable bindings fix (see: http://bit.ly/3bliuam)
-
+    # R CMD Check variable bindings fix (see: https://bit.ly/3z24hbU)
     . <- q_p <- q_p_critical <- q_p_rel <- NULL
 
     data <- data %>%
