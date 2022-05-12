@@ -2,9 +2,10 @@ test_that("sun_stats() | general test", {
     object <- sun_stats(
         lat = 40.730610, lon = -73.935242, date = Sys.Date(),
         tz = "America/New_York", method = "suncalc"
-    )
+    ) %>%
+        magrittr::extract2("lat")
 
-    expect_equal(object$sunrise_start, hms::parse_hms("05:44:01"))
+    expect_equal(object, 40.730610)
 
     mock_list <- list(
         results = list(
@@ -116,9 +117,10 @@ test_that("sun_stats_suncalc() | general test", {
     object <- sun_stats(
         lat = -23.5489, lon = -46.6388, date = Sys.Date(),
         tz = "America/Sao_Paulo", method = "suncalc"
-    )
+    ) %>%
+        magrittr::extract2("lat")
 
-    expect_equal(object$sunrise_start, hms::parse_hms("06:32:45"))
+    expect_equal(object, -23.5489)
 })
 
 test_that("sun_stats_sunrise_sunset() | general test", {

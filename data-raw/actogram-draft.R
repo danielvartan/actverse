@@ -138,6 +138,7 @@ actogram <- function(data, base_col, days = 7, trans = NULL,
 
     index <- data %>% tsibble::index_var()
 
+    # Move to function
     n_days <- lubridate::interval(
         dplyr::first(data[[index]]), dplyr::last(data[[index]])
         ) %>%

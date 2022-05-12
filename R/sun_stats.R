@@ -4,7 +4,7 @@
 #'
 #' `r lifecycle::badge("experimental")`
 #'
-#' `sun_stats()` allows you to get sun statistics using different APIs.
+#' `sun_stats()` allows you to get sun statistics from different APIs.
 #'
 #' At the moment, none of the `sun_stats()` methods use real world data, all of
 #' them are based on models.
@@ -24,16 +24,16 @@
 #'
 #' If you don't have any or one of the packages mentioned above, you can install
 #' them with `install.packages("suncalc")`, `install.packages("curl")`, and
-#' `install.packages("[`curl`]")`.
+#' `install.packages("jsonlite")`.
 #'
 #' ## `methods` argument
 #'
 #' At the moment the function access the results of only two APIs, described
 #' below.
 #'
-#' * `"suncalc"`: Use the results of the
+#' * `"suncalc"`: Compute the sun statistics by using the
 #' [`suncalc`](https://github.com/datastorm-open/suncalc) package.
-#' * `"sunrise-sunset.org"`: Use the results of the
+#' * `"sunrise-sunset.org"`: Compute the sun statistics by using the
 #' \url{https://sunrise-sunset.org/} API (requires an internet connection). See
 #' \url{https://sunrise-sunset.org/api} to learn more.
 #'
@@ -47,9 +47,9 @@
 #'
 #' ## Other statistics
 #'
-#' The purpose of this function is to return basic statistics about the sun
-#' movement. If you need other related statistics, we recommend checking the
-#' following packages.
+#' The purpose of this function is to return basic statistics about the sun. If
+#' you need other related statistics, we recommend checking the following
+#' packages.
 #'
 #' * [`nasapower`](https://docs.ropensci.org/nasapower/): NASA POWER API Client.
 #' * [`rnoaa`](https://docs.ropensci.org/rnoaa/): 'NOAA' Weather Data from R.
@@ -60,12 +60,13 @@
 #' of the desired location.
 #' @param lon A number indicating the longitude, in decimal degrees,
 #' of the desired location.
-#' @param date A [`Date`][base::as.Date()] value indicating the moment in time.
-#' @param tz A string indicating the time zone of the results. See
-#'   [`timezones`][base::timezones] to learn more.
-#' @param method A string indicating which API to use. Valid values are:
-#'   `"suncalc"` and `"sunrise-sunset.org"`. See the Details section to learn
-#'   more.
+#' @param date (optional) a [`Date`][base::as.Date()] value indicating the
+#'   moment in time (default: `Sys.Date()`).
+#' @param tz (optional) a string indicating the time zone of the results. See
+#'   [`timezones`][base::timezones] to learn more (default: `"UTC"`).
+#' @param method (optional) a string indicating which API to use. Valid values
+#'   are: `"suncalc"` and `"sunrise-sunset.org"`. See the Details section to
+#'   learn more (default: `"suncalc"`).
 #'
 #' @return A [`list`][list()] object with the following elements:
 #'

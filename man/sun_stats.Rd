@@ -13,14 +13,15 @@ of the desired location.}
 \item{lon}{A number indicating the longitude, in decimal degrees,
 of the desired location.}
 
-\item{date}{A \code{\link[base:as.Date]{Date}} value indicating the moment in time.}
+\item{date}{(optional) a \code{\link[base:as.Date]{Date}} value indicating the
+moment in time (default: \code{Sys.Date()}).}
 
-\item{tz}{A string indicating the time zone of the results. See
-\code{\link[base:timezones]{timezones}} to learn more.}
+\item{tz}{(optional) a string indicating the time zone of the results. See
+\code{\link[base:timezones]{timezones}} to learn more (default: \code{"UTC"}).}
 
-\item{method}{A string indicating which API to use. Valid values are:
-\code{"suncalc"} and \code{"sunrise-sunset.org"}. See the Details section to learn
-more.}
+\item{method}{(optional) a string indicating which API to use. Valid values
+are: \code{"suncalc"} and \code{"sunrise-sunset.org"}. See the Details section to
+learn more (default: \code{"suncalc"}).}
 }
 \value{
 A \code{\link[=list]{list}} object with the following elements:
@@ -68,7 +69,7 @@ the morning civil twilight starts.
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
 
-\code{sun_stats()} allows you to get sun statistics using different APIs.
+\code{sun_stats()} allows you to get sun statistics from different APIs.
 
 At the moment, none of the \code{sun_stats()} methods use real world data, all of
 them are based on models.
@@ -85,7 +86,7 @@ This function requires the
 
 If you don't have any or one of the packages mentioned above, you can install
 them with \code{install.packages("suncalc")}, \code{install.packages("curl")}, and
-\verb{install.packages("[}curl\verb{]")}.
+\code{install.packages("jsonlite")}.
 }
 
 \subsection{\code{methods} argument}{
@@ -93,9 +94,9 @@ them with \code{install.packages("suncalc")}, \code{install.packages("curl")}, a
 At the moment the function access the results of only two APIs, described
 below.
 \itemize{
-\item \code{"suncalc"}: Use the results of the
+\item \code{"suncalc"}: Compute the sun statistics by using the
 \href{https://github.com/datastorm-open/suncalc}{\code{suncalc}} package.
-\item \code{"sunrise-sunset.org"}: Use the results of the
+\item \code{"sunrise-sunset.org"}: Compute the sun statistics by using the
 \url{https://sunrise-sunset.org/} API (requires an internet connection). See
 \url{https://sunrise-sunset.org/api} to learn more.
 }
@@ -111,9 +112,9 @@ this method.
 
 \subsection{Other statistics}{
 
-The purpose of this function is to return basic statistics about the sun
-movement. If you need other related statistics, we recommend checking the
-following packages.
+The purpose of this function is to return basic statistics about the sun. If
+you need other related statistics, we recommend checking the following
+packages.
 \itemize{
 \item \href{https://docs.ropensci.org/nasapower/}{\code{nasapower}}: NASA POWER API Client.
 \item \href{https://docs.ropensci.org/rnoaa/}{\code{rnoaa}}: 'NOAA' Weather Data from R.
