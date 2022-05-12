@@ -10,8 +10,6 @@ assignees: ''
 > Comentarios en inglés, español o portugués son bienvenidos.
 > Comentários em inglês, espanhol ou português são bem-vindos.
 
-* __Due date__: `yyyy/mm/dd`.
-
 ---
 
 ## Instructions

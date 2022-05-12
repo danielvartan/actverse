@@ -83,16 +83,21 @@ See \link[=periodogram]{?periodogram} to learn more about the periodogram
 computation.
 }
 \examples{
-data <- dplyr::tibble(
-    index = seq(as.POSIXct("2020-01-01"),
-                as.POSIXct("2020-01-02 05:59:59"),
-                by = "min"),
-    x = rep(seq(1, 60), times = 30))
-data <- tsibble::tsibble(data, index = index)
+\dontrun{
+if (requireNamespace("curl", quietly = TRUE) &&
+    requireNamespace("jsonlite", quietly = TRUE) &&
+    requireNamespace("tools", quietly = TRUE)) {
+        if (curl::has_internet()) {
+            file <- get_from_zenodo(
+                doi = "10.5281/zenodo.4898822", path = tempdir(),
+                file = "processed.txt"
+            )
 
-spec <- spectrogram(data, "x", p_unit = "minutes", p_min = 1,
-                    p_max = 120, p_step = 1, int_unit = "hours", int_n = 2,
-                    int_step = 59, alpha = 0.05, print = TRUE)
+            data <- read_acttrust(file, tz = "America/Sao_Paulo")
+            spec <- spectrogram(data, "pim")
+        }
+}
+}
 }
 \references{
 Sokolove, P. G., & Bushell, W. N. (1978). The chi square periodogram: its

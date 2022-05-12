@@ -79,7 +79,27 @@
 #' @export
 #'
 #' @examples
-#' actogram(acttrust, "pim", lat = -23.5489, lon = -46.6388)
+#' \dontrun{
+#' if (requireNamespace("curl", quietly = TRUE) &&
+#'     requireNamespace("jsonlite", quietly = TRUE) &&
+#'     requireNamespace("tools", quietly = TRUE)) {
+#'         if (curl::has_internet()) {
+#'             file <- get_from_zenodo(
+#'                 doi = "10.5281/zenodo.4898822", path = tempdir(),
+#'                 file = "processed.txt"
+#'             )
+#'
+#'             data <- read_acttrust(file, tz = "America/Sao_Paulo")
+#'             actogram <- actogram(
+#'                 data, "pim", lat = -23.5489, lon = -46.6388,
+#'                 labels = c(
+#'                     "1" = "Sleeping", "2" = "Resting", "4" = "Offwrist",
+#'                      "base" = "PIM", "lp" = "Light phase",
+#'                      "dp" = "Dark phase"
+#'                 ))
+#'         }
+#' }
+#' }
 actogram <- function(data, base_col, days = 7, trans = NULL,
                      state_col = "state", state_alpha = 0.5, lat = NULL,
                      lon = NULL,
@@ -147,7 +167,7 @@ actogram <- function(data, base_col, days = 7, trans = NULL,
 
     if (is.null(days) || days > n_days) days <- n_days
 
-    if ("base" %in% labels) {
+    if ("base" %in% names(labels)) {
         base_label <- unname(labels["base"])
         base_color <- unname(colors["base"])
     } else {
@@ -251,14 +271,17 @@ actogram <- function(data, base_col, days = 7, trans = NULL,
     if (!is.null(lat) && !is.null(lon)) {
         require_pkg("suncalc")
 
-        sun_stats <- sun_stats(
+        tz <- lubridate::tz(data[[index]][1])
+
+        sun_stats <- get_sun_stats(
             lat = lat, lon = lon, date = lubridate::date(data[[index]][1]),
-            tz = lubridate::tz(data[[index]][1])
+            tz = tz
         )
 
-        tz <- lubridate::tz(data[[index]][1])
-        sunrise <- lubridate::as_datetime(sun_stats$sunrise, tz = tz)
-        sunset <- lubridate::as_datetime(sun_stats$sunset, tz = tz)
+        sunrise <- as.POSIXct(sun_stats$sunrise_start) %>%
+            lubridate::force_tz(tzone = tz)
+        sunset <- as.POSIXct(sun_stats$sunset_end) %>%
+            lubridate::force_tz(tzone = tz)
 
         dark_phase_1 <- lubridate::interval(
             lubridate::force_tz(lubridate::as_datetime(0), tzone = tz),
@@ -453,46 +476,4 @@ fill_actogram_data_tips <- function(data) {
                     ))
             )
     }
-}
-
-actogram_x_breaks <- function(...) {
-    lubridate::dhours(0:24) %>%
-        as.numeric() %>%
-        hms::as_hms() %>%
-        label_jump()
-}
-
-actogram_x_labels <- function(x) {
-    lubridate::hour(x)
-}
-
-# Move to utils
-label_jump <- function(x, type = "even") {
-    checkmate::assert_atomic(x)
-    checkmate::assert_choice(type, c("even", "odd"))
-
-    if (type == "even") {
-        x[!seq_along(x) %% 2 == 0]
-    } else if (type == "odd") {
-        x[seq_along(x) %% 2 == 0]
-    }
-}
-
-# Move to utils
-flat_posixt_date <- function(posixt, base = as.Date("1970-01-01")) {
-    assert_posixt(posixt, null.ok = FALSE)
-    checkmate::assert_date(base, len = 1, all.missing = FALSE)
-
-    posixt %>% lubridate::`date<-`(base)
-}
-
-# Move to utils
-flat_posixt_hour <- function(posixt, base = hms::parse_hms("00:00:00")) {
-    assert_posixt(posixt)
-    assert_hms(base, any.missing = FALSE)
-
-    posixt %>%
-        lubridate::date() %>%
-        paste0(" ", base) %>%
-        lubridate::as_datetime(tz = lubridate::tz(posixt))
 }

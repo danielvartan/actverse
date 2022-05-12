@@ -10,7 +10,7 @@ check_any_missing <- function(x, name = deparse(substitute(x))) {
     }
 }
 
-assert_any_missing  <- checkmate::makeAssertionFunction(check_any_missing)
+assert_any_missing <- checkmate::makeAssertionFunction(check_any_missing)
 
 warn_any_missing <- function(x, name = deparse(substitute(x))) {
     if (any(is.na(x))) {
@@ -43,7 +43,18 @@ check_leq <- function(x, y, name_x = deparse(substitute(x)),
     }
 }
 
-assert_leq  <- checkmate::makeAssertionFunction(check_leq)
+assert_leq <- checkmate::makeAssertionFunction(check_leq)
+
+assert_internet <- function() {
+    if (isFALSE(has_internet())) {
+        cli::cli_abort(paste0(
+            "No internet connection was found. ",
+            "You must have an internet connection to run this function."
+        ))
+    } else {
+        invisible(TRUE)
+    }
+}
 
 assert_identical <- function(..., type = "value", any.missing = TRUE,
                              null.ok = FALSE) {

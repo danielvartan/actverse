@@ -20,7 +20,7 @@
 #' If `fun == NULL`, `aggregate_index()` will use the following function to
 #' transform each measured variable:
 #'
-#' ````
+#' ```
 #' function(x) {
 #'     checkmate::assert_atomic_vector(x)
 #'
@@ -32,7 +32,7 @@
 #'         unique[which.max(tabulate(match(y, unique)))]
 #'     }
 #' }
-#' ````
+#' ```
 #' This function average values for numeric variables and assigning the most
 #' frequent value (mode) for single integer or other type of variables. If no
 #' mode can be found, the function will return the first value of `x`.

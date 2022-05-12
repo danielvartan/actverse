@@ -45,6 +45,36 @@ You can install the development version from GitHub with:
 remotes::install_github("gipso/actverse")
 ```
 
+## Usage
+
+Our process of development is continuous and based on an agile approach. That 
+means that you can always count with new features on the development version without the need to wait for the next published version.
+
+Our plan is to launch a first version of `actverse` in the month of August of 2022. Until them, you can install the development version and use the features already available (see the Installation section).
+
+### Time series standard
+
+The R ecosystem has a [vast number](https://cran.r-project.org/view=TimeSeries) of time series standards and we had to use one of them. A standard for time objects is really a must, since time can have many representations and can be rooted in  different numerical systems.
+
+We found that the best standard available for packages that adheres the [tidyverse principles](https://tidyverse.tidyverse.org/articles/manifesto.html) is the [`tsibble`](https://tsibble.tidyverts.org/index.html). That way, all of the `actverse` functions will require that your data is in this format. Please refer to [`tsibble`](https://tsibble.tidyverts.org/index.html) documentation to learn how to format your data.
+
+We also recommend seeing the [`tsbox`](https://www.tsbox.help/) package, an R
+package that propose to be an "universal translator" (🖖) for R time series standards.
+
+## Read/Write
+
+### Period functions
+
+### Data interpolation
+
+### API clients
+
+### Other features
+
+`actverse()` also comes equipped with many utility functions. The package also provides free datasets for testing and learning purposes.
+
+All functions are well documented, showing all the guidelines behind the computations. Click [here](http://gipso.github.io/actverse) to see a list of them.
+
 ## Citation
 
 If you use `actverse` in your research, please consider citing it. We put a lot of work to build and maintain a free and open-source R package. You can find the `actverse` citation below.

@@ -157,6 +157,12 @@
     },
     {
       "@type": "SoftwareApplication",
+      "identifier": "parallel",
+      "name": "parallel",
+      "version": ">= 4.0.0"
+    },
+    {
+      "@type": "SoftwareApplication",
       "identifier": "plotly",
       "name": "plotly",
       "version": ">= 4.10.0",
@@ -245,6 +251,12 @@
         "url": "https://cran.r-project.org"
       },
       "sameAs": "https://CRAN.R-project.org/package=tibble"
+    },
+    {
+      "@type": "SoftwareApplication",
+      "identifier": "tools",
+      "name": "tools",
+      "version": ">= 4.0.0"
     },
     {
       "@type": "SoftwareApplication",
@@ -450,7 +462,7 @@
     },
     "SystemRequirements": null
   },
-  "fileSize": "588.786KB",
+  "fileSize": "617.029KB",
   "citation": [
     {
       "@type": "CreativeWork",

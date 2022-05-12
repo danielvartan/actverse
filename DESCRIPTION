@@ -65,6 +65,7 @@ Suggests:
     jsonlite (>= 1.8.0),
     knitr (>= 1.37),
     mockr (>= 0.1),
+    parallel (>= 4.0.0),
     plotly (>= 4.10.0),
     readr (>= 2.1.2),
     rmarkdown (>= 2.13),
@@ -72,6 +73,7 @@ Suggests:
     suncalc (>= 0.5.0),
     testthat (>= 3.1.2),
     tibble (>= 3.1.6),
+    tools (>= 4.0.0),
     utils (>= 4.0.0),
     zoo (>= 1.8-9)
 VignetteBuilder: 

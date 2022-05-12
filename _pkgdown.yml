@@ -28,17 +28,18 @@ reference:
   - periodogram
   - spectrogram
 
-- title: Interpolation
+- title: Data interpolation
   contents:
   - na_approx
+
+- title: API clients
+  contents:
+  - get_from_zenodo
+  - get_sun_stats
 
 - title: Data
   contents:
   - acttrust
-
-- title: APIs
-  contents:
-  - sun_stats
 
 - title: Utilities
   contents:

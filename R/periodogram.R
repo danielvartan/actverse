@@ -189,16 +189,20 @@
 #' @export
 #'
 #' @examples
-#' data <- dplyr::tibble(
-#'     index = seq(as.POSIXct("2020-01-01"),
-#'                 as.POSIXct("2020-01-02 05:59:59"),
-#'                 by = "min"),
-#'     x = rep(seq(1, 60), times = 30))
-#' data <- tsibble::tsibble(data, index = index)
+#' \dontrun {
+#' if (requireNamespace("curl", quietly = TRUE) &&
+#'     requireNamespace("jsonlite", quietly = TRUE) &&
+#'     requireNamespace("tools", quietly = TRUE)) {
+#'         if (curl::has_internet()) {
+#'             file <- get_from_zenodo(
+#'                 doi = "10.5281/zenodo.4898822", path = tempdir(),
+#'                 file = "processed.txt"
+#'             )
 #'
-#' per <- periodogram(data = data, col = "x", p_unit = "minutes", p_min = 1,
-#'                    p_max = 350, p_step = 1, alpha = 0.05,
-#'                    print = TRUE)
+#'             data <- read_acttrust(file, tz = "America/Sao_Paulo")
+#'             per <- periodogram(data, "pim")
+#'         }
+#' }
 periodogram <- function(data, col, p_unit = "minutes", p_min = 1000,
                         p_max = 2500, p_step = 1, alpha = 0.05, print = TRUE) {
     p_unit_choices <- c("second", "minute", "hour", "day", "week", "month",

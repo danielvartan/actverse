@@ -372,6 +372,19 @@ references:
   url: https://CRAN.R-project.org/package=mockr
   version: '>= 0.1'
 - type: software
+  title: parallel
+  abstract: 'R: A Language and Environment for Statistical Computing'
+  notes: Suggests
+  authors:
+  - name: R Core Team
+  location:
+    name: Vienna, Austria
+  year: '2022'
+  url: https://www.R-project.org/
+  institution:
+    name: R Foundation for Statistical Computing
+  version: '>= 4.0.0'
+- type: software
   title: plotly
   abstract: 'plotly: Create Interactive Web Graphics via ''plotly.js'''
   notes: Suggests
@@ -513,6 +526,19 @@ references:
   year: '2022'
   url: https://CRAN.R-project.org/package=tibble
   version: '>= 3.1.6'
+- type: software
+  title: tools
+  abstract: 'R: A Language and Environment for Statistical Computing'
+  notes: Suggests
+  authors:
+  - name: R Core Team
+  location:
+    name: Vienna, Austria
+  year: '2022'
+  url: https://www.R-project.org/
+  institution:
+    name: R Foundation for Statistical Computing
+  version: '>= 4.0.0'
 - type: software
   title: utils
   abstract: 'R: A Language and Environment for Statistical Computing'

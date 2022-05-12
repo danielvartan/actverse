@@ -6,6 +6,32 @@ double_quote_ <- function(x) paste0("\"", x, "\"")
 
 class_collapse <- function(x) single_quote_(paste0(class(x), collapse = "/"))
 
+flat_posixt_date <- function(posixt, base = as.Date("1970-01-01")) {
+    assert_posixt(posixt, null.ok = FALSE)
+    checkmate::assert_date(base, len = 1, any.missing = FALSE)
+
+    posixt %>% lubridate::`date<-`(base) %>% c()
+}
+
+flat_posixt_hour <- function(posixt, base = hms::parse_hms("00:00:00")) {
+    assert_posixt(posixt)
+    assert_hms(base, any.missing = FALSE)
+
+    posixt %>%
+        lubridate::date() %>%
+        paste0(" ", base) %>%
+        lubridate::as_datetime(tz = lubridate::tz(posixt))
+}
+
+find_absolute_path <- function(relative_path) {
+    require_pkg("tools")
+
+    vapply(
+        relative_path, tools::file_path_as_absolute, character(1),
+        USE.NAMES = FALSE
+        )
+}
+
 paste_collapse <- function(x, sep = "", last = sep) {
     checkmate::assert_string(sep)
     checkmate::assert_string(last)

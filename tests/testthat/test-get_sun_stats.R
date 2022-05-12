@@ -1,5 +1,5 @@
-test_that("sun_stats() | general test", {
-    object <- sun_stats(
+test_that("get_sun_stats() | general test", {
+    object <- get_sun_stats(
         lat = 40.730610, lon = -73.935242, date = Sys.Date(),
         tz = "America/New_York", method = "suncalc"
     ) %>%
@@ -25,9 +25,9 @@ test_that("sun_stats() | general test", {
 
     mock <- function(.parent = parent.frame(), .env = topenv(.parent)) {
         mockr::with_mock(
-            has_internet = function(...) TRUE,
+            assert_internet = function(...) TRUE,
             read_json = function(...) mock_list,
-            {magrittr::extract2(sun_stats(
+            {magrittr::extract2(get_sun_stats(
                 lat = 40.730610, lon = -73.935242, date = Sys.Date(),
                 tz = "America/New_York", method = "sunrise-sunset.org"
             ),
@@ -39,59 +39,60 @@ test_that("sun_stats() | general test", {
     expect_equal(mock(), hms::parse_hms("04:44:43"))
 })
 
-test_that("sun_stats() | error test", {
+test_that("get_sun_stats() | error test", {
     # checkmate::assert_number(lat, lower = -90, upper = 90)
-    expect_error(sun_stats(
+    expect_error(get_sun_stats(
         lat = "", lon = 1, date = Sys.Date(), tz = "UTC", method = "suncalc"
     ),
     "Assertion on 'lat' failed"
     )
-    expect_error(sun_stats(
+
+    expect_error(get_sun_stats(
         lat = -91, lon = 1, date = Sys.Date(), tz = "UTC", method = "suncalc"
     ),
     "Assertion on 'lat' failed"
     )
 
-    expect_error(sun_stats(
+    expect_error(get_sun_stats(
         lat = 91, lon = 1, date = Sys.Date(), tz = "UTC", method = "suncalc"
     ),
     "Assertion on 'lat' failed"
     )
 
     # checkmate::assert_number(lon, lower = -180, upper = 180)
-    expect_error(sun_stats(
+    expect_error(get_sun_stats(
         lat = 1, lon = "", date = Sys.Date(), tz = "UTC", method = "suncalc"
     ),
     "Assertion on 'lon' failed"
     )
 
-    expect_error(sun_stats(
+    expect_error(get_sun_stats(
         lat = 1, lon = -181, date = Sys.Date(), tz = "UTC", method = "suncalc"
     ),
     "Assertion on 'lon' failed",
     )
 
-    expect_error(sun_stats(
+    expect_error(get_sun_stats(
         lat = 1, lon = 181, date = Sys.Date(), tz = "UTC", method = "suncalc"
     ),
     "Assertion on 'lon' failed",
     )
 
     # checkmate::assert_date(date, len = 1, any.missing = FALSE)
-    expect_error(sun_stats(
+    expect_error(get_sun_stats(
         lat = 1, lon = 1, date = "", tz = "UTC", method = "suncalc"
     ),
     "Assertion on 'date' failed",
     )
 
-    expect_error(sun_stats(
+    expect_error(get_sun_stats(
         lat = 1, lon = 1, date = rep(Sys.Date(), 2), tz = "UTC",
         method = "suncalc"
     ),
     "Assertion on 'date' failed",
     )
 
-    expect_error(sun_stats(
+    expect_error(get_sun_stats(
         lat = 1, lon = 1, date = c(Sys.Date(), NA), tz = "UTC",
         method = "suncalc"
     ),
@@ -99,31 +100,31 @@ test_that("sun_stats() | error test", {
     )
 
     # checkmate::assert_choice(tz, OlsonNames())
-    expect_error(sun_stats(
+    expect_error(get_sun_stats(
         lat = 1, lon = 1, date = Sys.Date(), tz = "", method = "suncalc"
     ),
     "Assertion on 'tz' failed"
     )
 
     # checkmate::assert_choice(method, method_choices)
-    expect_error(sun_stats(
+    expect_error(get_sun_stats(
         lat = 1, lon = 1, date = Sys.Date(), tz = "UTC", method = ""
     ),
     "Assertion on 'method' failed",
     )
 })
 
-test_that("sun_stats_suncalc() | general test", {
-    object <- sun_stats(
+test_that("get_sun_stats_suncalc() | general test", {
+    object <- get_sun_stats_suncalc(
         lat = -23.5489, lon = -46.6388, date = Sys.Date(),
-        tz = "America/Sao_Paulo", method = "suncalc"
+        tz = "America/Sao_Paulo"
     ) %>%
         magrittr::extract2("lat")
 
     expect_equal(object, -23.5489)
 })
 
-test_that("sun_stats_sunrise_sunset() | general test", {
+test_that("get_sun_stats_sunrise_sunset() | general test", {
     mock_list <- list(
         results = list(
             sunrise = "9:30:23 AM",
@@ -142,11 +143,11 @@ test_that("sun_stats_sunrise_sunset() | general test", {
 
     mock <- function(.parent = parent.frame(), .env = topenv(.parent)) {
         mockr::with_mock(
-            has_internet = function(...) TRUE,
+            assert_internet = function(...) TRUE,
             read_json = function(...) mock_list,
-            {magrittr::extract2(sun_stats(
+            {magrittr::extract2(get_sun_stats_sunrise_sunset(
                 lat = -23.5489, lon = -46.6388, date = Sys.Date(),
-                tz = "America/Sao_Paulo", method = "sunrise-sunset.org"
+                tz = "America/Sao_Paulo"
             ),
             "sunrise_start"
             )}
@@ -157,23 +158,11 @@ test_that("sun_stats_sunrise_sunset() | general test", {
 
     mock <- function(.parent = parent.frame(), .env = topenv(.parent)) {
         mockr::with_mock(
-            has_internet = function(...) TRUE,
-            read_json = function(...) list(status == "NOT OK"),
-            {sun_stats(
+            assert_internet = function(...) TRUE,
+            read_json = function(...) list(status = "NOT OK"),
+            {get_sun_stats_sunrise_sunset(
                 lat = -23.5489, lon = -46.6388, date = Sys.Date(),
-                tz = "America/Sao_Paulo", method = "sunrise-sunset.org"
-            )}
-        )
-    }
-
-    expect_error(mock())
-
-    mock <- function(.parent = parent.frame(), .env = topenv(.parent)) {
-        mockr::with_mock(
-            has_internet = function(...) FALSE,
-            {sun_stats(
-                lat = -23.5489, lon = -46.6388, date = Sys.Date(),
-                tz = "America/Sao_Paulo", method = "sunrise-sunset.org"
+                tz = "America/Sao_Paulo"
             )}
         )
     }

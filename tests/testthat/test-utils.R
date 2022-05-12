@@ -33,6 +33,70 @@ test_that("class_collapse() | general test", {
     )
 })
 
+test_that("flat_posixt_date() | general test", {
+    expect_equal(flat_posixt_date(
+        posixt = as.POSIXct("2020-01-01 05:55:55", tz = "UTC"),
+        base = as.Date("1975-01-01")
+    ),
+    lubridate::as_datetime("1975-01-01 05:55:55", tz = "UTC")
+    )
+})
+
+test_that("flat_posixt_date() | error test", {
+    # assert_posixt(posixt, null.ok = FALSE)
+    expect_error(flat_posixt_date(posixt = "", base = as.Date("1970-01-01")),
+                 "Assertion on 'posixt' failed")
+
+    # checkmate::assert_date(base, len = 1, any.missing = FALSE)
+    expect_error(
+        flat_posixt_date(posixt = Sys.time(), base = ""),
+        "Assertion on 'base' failed"
+    )
+
+    expect_error(flat_posixt_date(
+        posixt = Sys.time(), base = c(Sys.Date(), NA)
+    ),
+    "Assertion on 'base' failed"
+    )
+})
+
+test_that("flat_posixt_hour() | general test", {
+    expect_equal(flat_posixt_hour(
+        posixt = as.POSIXct("2020-01-01 05:55:55", tz = "UTC"),
+        base = hms::parse_hms("00:01:00")
+    ),
+    lubridate::as_datetime("2020-01-01 00:01:00", tz = "UTC")
+    )
+})
+
+test_that("flat_posixt_hour() | error test", {
+    # assert_posixt(posixt, null.ok = FALSE)
+    expect_error(flat_posixt_hour(
+        posixt = "", base = hms::parse_hms("00:00:00")
+    ),
+    "Assertion on 'posixt' failed"
+    )
+
+    # assert_hms(base, any.missing = FALSE)
+    expect_error(
+        flat_posixt_hour(posixt = Sys.time(), base = ""),
+        "Assertion on 'base' failed"
+    )
+
+    expect_error(flat_posixt_hour(
+        posixt = Sys.time(), base = c(hms::hms(0), NA)
+    ),
+    "Assertion on 'base' failed"
+    )
+})
+
+test_that("find_absolute_path() | general test", {
+    expect_equal(
+        find_absolute_path(list.files()[1]),
+        file.path(getwd(), list.files()[1])
+    )
+})
+
 test_that("paste_collapse() | general test", {
     expect_equal(paste_collapse(1), 1)
     expect_equal(paste_collapse(1:2), "12")
