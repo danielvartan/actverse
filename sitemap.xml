@@ -37,6 +37,12 @@
     <loc>https://gipso.github.io/actverse/reference/find_epoch.html</loc>
   </url>
   <url>
+    <loc>https://gipso.github.io/actverse/reference/get_from_zenodo.html</loc>
+  </url>
+  <url>
+    <loc>https://gipso.github.io/actverse/reference/get_sun_stats.html</loc>
+  </url>
+  <url>
     <loc>https://gipso.github.io/actverse/reference/index.html</loc>
   </url>
   <url>
@@ -53,9 +59,6 @@
   </url>
   <url>
     <loc>https://gipso.github.io/actverse/reference/spectrogram.html</loc>
-  </url>
-  <url>
-    <loc>https://gipso.github.io/actverse/reference/sun_stats.html</loc>
   </url>
   <url>
     <loc>https://gipso.github.io/actverse/reference/write_acttrust.html</loc>
