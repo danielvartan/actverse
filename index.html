@@ -76,35 +76,170 @@
 <div class="section level2">
 <h2 id="overview">Overview<a class="anchor" aria-label="anchor" href="#overview"></a>
 </h2>
-<p><code>actverse</code> is an R package that provides a complete and consistent toolkit to process, analyze and visualize actigraphy data in R. The aim of <code>actverse</code> is to facilitate the work of sleep and chronobiology scientists with actigraphy data while also helping with research reproducibility.</p>
-<p><code>actverse</code> adheres to the <a href="https://tidyverse.tidyverse.org/articles/manifesto.html" class="external-link">tidyverse principles</a> and integrates with the <a href="https://www.tidyverse.org/" class="external-link">tidyverse ecosystem</a>. That’s why we choose to work with the <a href="https://tsibble.tidyverts.org/index.html" class="external-link"><code>tsibble</code></a> standard for time series, that also follow the same principles.</p>
+<p><code>actverse</code> is an R package that provides a complete toolkit to process, analyze and visualize actigraphy data in R. Its aim is to facilitate the work of sleep and chronobiology scientists with actigraphy data and help with research reproducibility.</p>
+<p><code>actverse</code> adheres to the <a href="https://tidyverse.tidyverse.org/articles/manifesto.html" class="external-link">tidyverse principles</a> and integrates with the <a href="https://www.tidyverse.org/" class="external-link">tidyverse ecosystem</a>.</p>
+<p>Our plan is to submit a first version of the <code>actverse</code> package to the <a href="https://ropensci.org/" class="external-link">rOpenSci</a> software peer-review process in August 2022.</p>
 </div>
 <div class="section level2">
 <h2 id="prerequisites">Prerequisites<a class="anchor" aria-label="anchor" href="#prerequisites"></a>
 </h2>
-<p>You only need to have some familiarity with the <a href="https://www.r-project.org/" class="external-link">R programming language</a> to use the <code>actverse</code> main functions.</p>
+<p>You need to have some familiarity with the <a href="https://www.r-project.org/" class="external-link">R programming language</a> and with the <a href="https://tsibble.tidyverts.org/index.html" class="external-link"><code>tsibble</code></a> package to use <code>actverse</code> main functions.</p>
 <p>In case you don’t feel comfortable with R, we strongly recommend checking Hadley Wickham and Garrett Grolemund’s free and online book <a href="https://r4ds.had.co.nz/" class="external-link">R for Data Science</a> and the Coursera course from the John Hopkins University <a href="https://www.coursera.org/specializations/data-science-foundations-r" class="external-link">Data Science: Foundations using R</a> (free for audit students).</p>
+<p>Please refer to the <a href="https://tsibble.tidyverts.org/index.html" class="external-link"><code>tsibble</code></a> package documentation to learn more about it. <code>tsibble</code> is an essential package to deal with time series in R. We also recommend that you read the <a href="https://r4ds.had.co.nz/dates-and-times.html" class="external-link">Dates and times</a> chapter from Wickham &amp; Grolemund’s book <a href="https://r4ds.had.co.nz/" class="external-link">R for Data Science</a> and the <a href="https://otexts.com/fpp3/tsibbles.html" class="external-link">tsibble objects</a> subchapter from Rob J. Hyndman &amp; George Athanasopoulos’ book <a href="https://otexts.com/fpp3/" class="external-link">Forecasting: Principles and Practice</a>.</p>
 </div>
 <div class="section level2">
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
 </h2>
+<p>Our development process is based on an agile approach. That means that each feature is a separate project and it’s integrated to the main branch as soon as it’s reviewed and validated.</p>
 <p>You can install the development version from GitHub with:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># install.packages("remotes")</span>
 <span class="fu">remotes</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"gipso/actverse"</span><span class="op">)</span></code></pre></div>
 </div>
 <div class="section level2">
+<h2 id="usage">Usage<a class="anchor" aria-label="anchor" href="#usage"></a>
+</h2>
+<p>The R ecosystem has a <a href="https://cran.r-project.org/view=TimeSeries" class="external-link">vast number</a> of time series standards and we had to choose one of them while developing <code>actverse</code>. A standard for time objects is a must, because time can have many representations and can be rooted in different numerical systems.</p>
+<p>We believe that the best time series standard available for packages that adheres to the <a href="https://tidyverse.tidyverse.org/articles/manifesto.html" class="external-link">tidyverse principles</a> is the <a href="https://tsibble.tidyverts.org/index.html" class="external-link"><code>tsibble</code></a>. As the name suggests, <code>tsibble</code> is an adaptation of the <a href="https://www.tidyverse.org/" class="external-link">tidyverse</a> <a href="https://tibble.tidyverse.org/" class="external-link"><code>tibble</code></a> object for time series.</p>
+<p>Most <code>actverse</code> functions will require that your data be in the <a href="https://tsibble.tidyverts.org/index.html" class="external-link"><code>tsibble</code></a> standard. Adapting your data is a simple process and can make a big difference when dealing with time series. Please refer to <a href="https://tsibble.tidyverts.org/index.html" class="external-link"><code>tsibble</code></a> documentation to learn how to do it. After your data is set to start, just use the <code>actverse</code> functions below.</p>
+<p>We also recommend seeing the <a href="https://www.tsbox.help/" class="external-link"><code>tsbox</code></a> package, an R package that propose to be an “universal translator” (🖖) for R time series standards.</p>
+<div class="section level3">
+<h3 id="readwrite">Read/Write<a class="anchor" aria-label="anchor" href="#readwrite"></a>
+</h3>
+<ul>
+<li>
+<code><a href="reference/read_acttrust.html">read_acttrust()</a></code>: Read, tidy, and validate an <a href="https://www.condorinst.com.br/acttrust-actigrafo/" class="external-link">ActTrust</a> file.</li>
+<li>
+<code><a href="reference/write_acttrust.html">write_acttrust()</a></code>: Adapt and write a <code>tsibble</code> to a readable <a href="https://www.condorinst.com.br/acttrust-actigrafo/" class="external-link">ActTrust</a> file.</li>
+</ul>
+<p>Example:</p>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">file</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/get_from_zenodo.html">get_from_zenodo</a></span><span class="op">(</span>
+    doi <span class="op">=</span> <span class="st">"10.5281/zenodo.4898822"</span>, path <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span>,
+    file <span class="op">=</span> <span class="st">"processed.txt"</span>
+<span class="op">)</span>
+
+<span class="va">data</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/read_acttrust.html">read_acttrust</a></span><span class="op">(</span><span class="va">file</span>, tz <span class="op">=</span> <span class="st">"America/Sao_Paulo"</span><span class="op">)</span>
+
+<span class="va">data</span>
+<span class="co">#&gt; # A tsibble: 51,806 x 17 [1m] &lt;America/Sao_Paulo&gt;</span>
+<span class="co">#&gt;    timestamp             pim   tat   zcm orientation wrist_temperature</span>
+<span class="co">#&gt;    &lt;dttm&gt;              &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;       &lt;dbl&gt;             &lt;dbl&gt;</span>
+<span class="co">#&gt;  1 2021-04-24 04:14:00  7815   608   228           0              26.9</span>
+<span class="co">#&gt;  2 2021-04-24 04:15:00  2661   160    64           0              27.2</span>
+<span class="co">#&gt;  3 2021-04-24 04:16:00  3402   243    80           0              27.7</span>
+<span class="co">#&gt;  4 2021-04-24 04:17:00  4580   317   125           0              27.9</span>
+<span class="co">#&gt;  5 2021-04-24 04:18:00  2624   255    33           0              28.0</span>
+<span class="co">#&gt;  6 2021-04-24 04:19:00  3929   246   105           0              28.1</span>
+<span class="co">#&gt;  7 2021-04-24 04:20:00  5812   369   171           0              28.2</span>
+<span class="co">#&gt;  8 2021-04-24 04:21:00  3182   270    54           0              28.4</span>
+<span class="co">#&gt;  9 2021-04-24 04:22:00  6362   373   189           0              28.6</span>
+<span class="co">#&gt; 10 2021-04-24 04:23:00  2621   159    64           0              28.7</span>
+<span class="co">#&gt; # … with 51,796 more rows, and 11 more variables: external_temperature &lt;dbl&gt;,</span>
+<span class="co">#&gt; #   light &lt;dbl&gt;, ambient_light &lt;dbl&gt;, red_light &lt;dbl&gt;, green_light &lt;dbl&gt;,</span>
+<span class="co">#&gt; #   blue_light &lt;dbl&gt;, ir_light &lt;dbl&gt;, uva_light &lt;dbl&gt;, uvb_light &lt;dbl&gt;,</span>
+<span class="co">#&gt; #   event &lt;dbl&gt;, state &lt;dbl&gt;</span></code></pre></div>
+</div>
+<div class="section level3">
+<h3 id="period-functions">Period functions<a class="anchor" aria-label="anchor" href="#period-functions"></a>
+</h3>
+<ul>
+<li>
+<code><a href="reference/periodogram.html">periodogram()</a></code>: Compute Sokolove &amp; Bushell’s <img src="https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&amp;space;%5Cbg_white&amp;space;%5Cchi%5E%7B2%7D" title="\chi^{2}" alt="\chi^{2}"> periodogram.</li>
+<li>
+<code><a href="reference/spectrogram.html">spectrogram()</a></code>: Compute a spectrogram based on Sokolove &amp; Bushell’s periodogram.</li>
+</ul>
+<p>Example:</p>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">per</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/periodogram.html">periodogram</a></span><span class="op">(</span><span class="va">data</span>, <span class="st">"pim"</span><span class="op">)</span></code></pre></div>
+<p><img src="reference/figures/README-unnamed-chunk-4-1.png" width="100%"></p>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">spec</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/spectrogram.html">spectrogram</a></span><span class="op">(</span><span class="va">data</span>, <span class="st">"pim"</span><span class="op">)</span></code></pre></div>
+<p><img src="reference/figures/README-unnamed-chunk-4-2.png" width="100%"></p>
+</div>
+<div class="section level3">
+<h3 id="data-interpolation">Data interpolation<a class="anchor" aria-label="anchor" href="#data-interpolation"></a>
+</h3>
+<ul><li>
+<code><a href="reference/na_approx.html">na_approx()</a></code> <code><a href="reference/na_approx.html">na_locf()</a></code> <code><a href="reference/na_approx.html">na_overall_mean()</a></code> <code><a href="reference/na_approx.html">na_overall_median()</a></code> <code><a href="reference/na_approx.html">na_overall_mode()</a></code> <code><a href="reference/na_approx.html">na_spline()</a></code> <code><a href="reference/na_approx.html">na_weekly_mean()</a></code> <code><a href="reference/na_approx.html">na_zero()</a></code> <code><a href="reference/na_approx.html">na_plot()</a></code>: Replace <code>NA</code> by interpolation.</li></ul>
+<p>Example:</p>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="cn">NA</span>, <span class="fl">1</span>, <span class="fl">5</span>, <span class="fl">10</span>, <span class="cn">NA</span>, <span class="fl">5</span>, <span class="fl">10</span>, <span class="fl">1</span>, <span class="cn">NA</span>, <span class="fl">10</span>, <span class="fl">1</span>, <span class="fl">5</span>, <span class="cn">NA</span>, <span class="cn">NA</span><span class="op">)</span>
+<span class="va">index</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/as.Date.html" class="external-link">as.Date</a></span><span class="op">(</span><span class="st">"2020-01-01"</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/as.Date.html" class="external-link">as.Date</a></span><span class="op">(</span><span class="st">"2020-01-14"</span><span class="op">)</span>, by <span class="op">=</span> <span class="st">"day"</span><span class="op">)</span>
+
+<span class="fu"><a href="reference/na_approx.html">na_approx</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">index</span>, fill_na_tips <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
+<span class="co">#&gt;  [1]  1.0  1.0  5.0 10.0  7.5  5.0 10.0  1.0  5.5 10.0  1.0  5.0  5.0  5.0</span>
+<span class="fu"><a href="reference/na_approx.html">na_plot</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">index</span>, <span class="fu"><a href="reference/na_approx.html">na_approx</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">index</span>, fill_na_tips <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<p><img src="reference/figures/README-unnamed-chunk-5-1.png" width="100%"></p>
+</div>
+<div class="section level3">
+<h3 id="api-clients">API clients<a class="anchor" aria-label="anchor" href="#api-clients"></a>
+</h3>
+<ul>
+<li>
+<code><a href="reference/get_from_zenodo.html">get_from_zenodo()</a></code>: Get data from a Zenodo record.</li>
+<li>
+<code><a href="reference/get_sun_stats.html">get_sun_stats()</a></code>: Get sun related statistics from different APIs.</li>
+</ul>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="reference/get_sun_stats.html">get_sun_stats</a></span><span class="op">(</span>lat <span class="op">=</span> <span class="op">-</span><span class="fl">23.5489</span>, lon <span class="op">=</span> <span class="op">-</span><span class="fl">46.6388</span>, tz <span class="op">=</span> <span class="st">"America/Sao_Paulo"</span><span class="op">)</span> <span class="op">%&gt;%</span>
+    <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://tibble.tidyverse.org/reference/as_tibble.html" class="external-link">as_tibble</a></span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span> 
+    <span class="fu"><a href="https://rdrr.io/r/base/t.html" class="external-link">t</a></span><span class="op">(</span><span class="op">)</span>
+<span class="co">#&gt;                   [,1]               </span>
+<span class="co">#&gt; date              "2022-05-12"       </span>
+<span class="co">#&gt; lat               "-23.5489"         </span>
+<span class="co">#&gt; lon               "-46.6388"         </span>
+<span class="co">#&gt; tz                "America/Sao_Paulo"</span>
+<span class="co">#&gt; sunrise_start     "06:33:14"         </span>
+<span class="co">#&gt; sunrise_end       "06:35:42"         </span>
+<span class="co">#&gt; golden_hour_end   "07:05:11"         </span>
+<span class="co">#&gt; solar_noon        "12:04:15"         </span>
+<span class="co">#&gt; golden_hour_start "17:03:19"         </span>
+<span class="co">#&gt; sunset_start      "17:32:49"         </span>
+<span class="co">#&gt; sunset_end        "17:35:17"         </span>
+<span class="co">#&gt; dusk              "17:59:02"         </span>
+<span class="co">#&gt; nautical_dusk     "18:26:16"         </span>
+<span class="co">#&gt; night_start       "18:53:12"         </span>
+<span class="co">#&gt; nadir             "00:04:15"         </span>
+<span class="co">#&gt; night_end         "05:15:18"         </span>
+<span class="co">#&gt; nautical_dawn     "05:42:15"         </span>
+<span class="co">#&gt; dawn              "06:09:29"</span></code></pre></div>
+</div>
+<div class="section level3">
+<h3 id="other-features">Other features<a class="anchor" aria-label="anchor" href="#other-features"></a>
+</h3>
+<p><code><a href="reference/actverse-package.html">actverse()</a></code> also comes equipped with many utility functions. The package also provides free datasets for testing and learning purposes.</p>
+<p>All functions are well documented, showing all the guidelines behind the computations. Click <a href="http://gipso.github.io/actverse" class="external-link">here</a> to see a list of them.</p>
+<p>Example:</p>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># Find the epochs/periodicities in a 'tsibble'</span>
+<span class="fu"><a href="reference/read_acttrust.html">read_acttrust</a></span><span class="op">(</span><span class="va">file</span>, regularize <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> <span class="op">%&gt;%</span>
+    <span class="fu"><a href="reference/find_epoch.html">find_epoch</a></span><span class="op">(</span><span class="op">)</span>
+<span class="co">#&gt; $best_match</span>
+<span class="co">#&gt; [1] 60</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $prevalence</span>
+<span class="co">#&gt; # A tibble: 4 × 2</span>
+<span class="co">#&gt;   epoch proportion</span>
+<span class="co">#&gt;   &lt;dbl&gt;      &lt;dbl&gt;</span>
+<span class="co">#&gt; 1    60  1.00     </span>
+<span class="co">#&gt; 2    94  0.0000193</span>
+<span class="co">#&gt; 3    86  0.0000193</span>
+<span class="co">#&gt; 4   101  0.0000193</span></code></pre></div>
+</div>
+</div>
+<div class="section level2">
 <h2 id="citation">Citation<a class="anchor" aria-label="anchor" href="#citation"></a>
 </h2>
 <p>If you use <code>actverse</code> in your research, please consider citing it. We put a lot of work to build and maintain a free and open-source R package. You can find the <code>actverse</code> citation below.</p>
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/citation.html" class="external-link">citation</a></span><span class="op">(</span><span class="st">"actverse"</span><span class="op">)</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; To cite {actverse} in publications use:</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt;   Vartanian, D., Matias, V. A., Serrano, C. A. M., Benedito-Silva, A.</span>
 <span class="co">#&gt;   A., &amp; Pedrazzoli, M. (2022). {actverse}: an R Package for actigraphy</span>
-<span class="co">#&gt;   data analysis. https://gipso.github.io/actverse/</span>
+<span class="co">#&gt;   data analysis (v. 0.0.0). https://gipso.github.io/actverse/</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; A BibTeX entry for LaTeX users is</span>
 <span class="co">#&gt; </span>
@@ -113,7 +248,7 @@
 <span class="co">#&gt;     author = {Daniel Vartanian and Vinicius Alves Matias and Cassio Almeida Mattos Serrano and Ana Amelia Benedito-Silva and Mario Pedrazzoli},</span>
 <span class="co">#&gt;     year = {2022},</span>
 <span class="co">#&gt;     url = {https://gipso.github.io/actverse/},</span>
-<span class="co">#&gt;     note = {Lifecycle: experimental},</span>
+<span class="co">#&gt;     note = {(v. 0.0.0). Lifecycle: experimental},</span>
 <span class="co">#&gt;   }</span></code></pre></div>
 </div>
 <div class="section level2">
