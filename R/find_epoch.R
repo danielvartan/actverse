@@ -1,4 +1,4 @@
-#' Find the epochs/periodicities of a `tsibble`
+#' Find the epochs/periodicities in a `tsibble`
 #'
 #' @description
 #'

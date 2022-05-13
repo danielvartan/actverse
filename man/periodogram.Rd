@@ -214,7 +214,7 @@ Buys-Ballot table.
 }
 
 \examples{
-\dontrun{
+\dontrun {
 if (requireNamespace("curl", quietly = TRUE) &&
     requireNamespace("jsonlite", quietly = TRUE) &&
     requireNamespace("tools", quietly = TRUE)) {

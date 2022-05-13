@@ -2,7 +2,7 @@
 % Please edit documentation in R/find_epoch.R
 \name{find_epoch}
 \alias{find_epoch}
-\title{Find the epochs/periodicities of a \code{tsibble}}
+\title{Find the epochs/periodicities in a \code{tsibble}}
 \usage{
 find_epoch(data, threshold = 0.9)
 }

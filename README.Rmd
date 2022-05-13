@@ -11,6 +11,11 @@ knitr::opts_chunk$set(
   fig.path = "man/figures/README-",
   out.width = "100%"
 )
+
+library(actverse)
+library(dplyr)
+library(lubridate)
+library(hms)
 ```
 
 # actverse
@@ -26,17 +31,23 @@ knitr::opts_chunk$set(
 
 ## Overview
 
-`actverse` is an R package that provides a complete and consistent toolkit to process, analyze and visualize actigraphy data in R. The aim of `actverse` is to facilitate the work of sleep and chronobiology scientists with actigraphy data while also helping with research reproducibility.
+`actverse` is an R package that provides a complete toolkit to process, analyze and visualize actigraphy data in R. Its aim is to facilitate the work of sleep and chronobiology scientists with actigraphy data and help with research reproducibility.
 
-`actverse` adheres to the [tidyverse principles](https://tidyverse.tidyverse.org/articles/manifesto.html) and integrates with the [tidyverse ecosystem](https://www.tidyverse.org/). That's why we choose to work with the [`tsibble`](https://tsibble.tidyverts.org/index.html) standard for time series, that also follow the same principles.
+`actverse` adheres to the [tidyverse principles](https://tidyverse.tidyverse.org/articles/manifesto.html) and integrates with the [tidyverse ecosystem](https://www.tidyverse.org/).
+
+Our plan is to submit a first version of the `actverse` package to the [rOpenSci](https://ropensci.org/) software peer-review process in August 2022.
 
 ## Prerequisites
 
-You only need to have some familiarity with the [R programming language](https://www.r-project.org/) to use the `actverse` main functions.
+You need to have some familiarity with the [R programming language](https://www.r-project.org/) and with the [`tsibble`](https://tsibble.tidyverts.org/index.html) package to use `actverse` main functions.
 
 In case you don't feel comfortable with R, we strongly recommend checking Hadley Wickham and Garrett Grolemund's free and online book [R for Data Science](https://r4ds.had.co.nz/) and the Coursera course from the John Hopkins University [Data Science: Foundations using R](https://www.coursera.org/specializations/data-science-foundations-r) (free for audit students).
 
+Please refer to the [`tsibble`](https://tsibble.tidyverts.org/index.html) package documentation to learn more about it. `tsibble` is an essential package to deal with time series in R. We also recommend that you read the [Dates and times](https://r4ds.had.co.nz/dates-and-times.html) chapter from Wickham & Grolemund's book [R for Data Science](https://r4ds.had.co.nz/) and the [tsibble objects](https://otexts.com/fpp3/tsibbles.html) subchapter from Rob J. Hyndman  & George Athanasopoulos' book [Forecasting: Principles and Practice](https://otexts.com/fpp3/).
+
 ## Installation
+
+Our development process is based on an agile approach. That means that each feature is a separate project and it's integrated to the main branch as soon as it's reviewed and validated.
 
 You can install the development version from GitHub with:
 
@@ -47,33 +58,84 @@ remotes::install_github("gipso/actverse")
 
 ## Usage
 
-Our process of development is continuous and based on an agile approach. That 
-means that you can always count with new features on the development version without the need to wait for the next published version.
+The R ecosystem has a [vast number](https://cran.r-project.org/view=TimeSeries) of time series standards and we had to choose one of them while developing `actverse`. A standard for time objects is a must, because time can have many representations and can be rooted in  different numerical systems.
 
-Our plan is to launch a first version of `actverse` in the month of August of 2022. Until them, you can install the development version and use the features already available (see the Installation section).
+We believe that the best time series standard available for packages that adheres to the [tidyverse principles](https://tidyverse.tidyverse.org/articles/manifesto.html) is the [`tsibble`](https://tsibble.tidyverts.org/index.html). As the name suggests, `tsibble` is an adaptation of the [tidyverse](https://www.tidyverse.org/) [`tibble`](https://tibble.tidyverse.org/) object for time series.
 
-### Time series standard
-
-The R ecosystem has a [vast number](https://cran.r-project.org/view=TimeSeries) of time series standards and we had to use one of them. A standard for time objects is really a must, since time can have many representations and can be rooted in  different numerical systems.
-
-We found that the best standard available for packages that adheres the [tidyverse principles](https://tidyverse.tidyverse.org/articles/manifesto.html) is the [`tsibble`](https://tsibble.tidyverts.org/index.html). That way, all of the `actverse` functions will require that your data is in this format. Please refer to [`tsibble`](https://tsibble.tidyverts.org/index.html) documentation to learn how to format your data.
+Most `actverse` functions will require that your data be in the [`tsibble`](https://tsibble.tidyverts.org/index.html) standard. Adapting your data is a simple process and can make a big difference when dealing with time series. Please refer to [`tsibble`](https://tsibble.tidyverts.org/index.html) documentation to learn how to do it. After your data is set to start, just use the `actverse` functions below.
 
 We also recommend seeing the [`tsbox`](https://www.tsbox.help/) package, an R
 package that propose to be an "universal translator" (🖖) for R time series standards.
 
-## Read/Write
+### Read/Write
+
+* `read_acttrust()`: Read, tidy, and validate an [ActTrust](https://www.condorinst.com.br/acttrust-actigrafo/) file.
+* `write_acttrust()`: Adapt and write a `tsibble` to a readable [ActTrust](https://www.condorinst.com.br/acttrust-actigrafo/) file.
+
+Example:
+
+```{r message = FALSE, warning = FALSE}
+file <- get_from_zenodo(
+    doi = "10.5281/zenodo.4898822", path = tempdir(),
+    file = "processed.txt"
+)
+
+data <- read_acttrust(file, tz = "America/Sao_Paulo")
+
+data
+```
 
 ### Period functions
 
+* `periodogram()`: Compute Sokolove & Bushell's $\chi^{2}$ periodogram.
+* `spectrogram()`: Compute a spectrogram based on Sokolove & Bushell's periodogram.
+
+Example:
+
+```{r message = FALSE, warning = FALSE}
+per <- periodogram(data, "pim")
+
+spec <- spectrogram(data, "pim")
+```
+
 ### Data interpolation
 
+* `na_approx()` `na_locf()` `na_overall_mean()` `na_overall_median()` `na_overall_mode()` `na_spline()` `na_weekly_mean()` `na_zero()` `na_plot()`: Replace `NA` by interpolation.
+
+Example:
+
+```{r message = FALSE, warning = FALSE}
+x <- c(NA, 1, 5, 10, NA, 5, 10, 1, NA, 10, 1, 5, NA, NA)
+index <- seq(as.Date("2020-01-01"), as.Date("2020-01-14"), by = "day")
+
+na_approx(x, index, fill_na_tips = TRUE)
+na_plot(x, index, na_approx(x, index, fill_na_tips = TRUE))
+```
+
 ### API clients
+
+* `get_from_zenodo()`: Get data from a Zenodo record.
+* `get_sun_stats()`: Get sun related statistics from different APIs.
+
+```{r message = FALSE, warning = FALSE}
+get_sun_stats(lat = -23.5489, lon = -46.6388, tz = "America/Sao_Paulo") %>%
+    dplyr::as_tibble() %>% 
+    t()
+```
 
 ### Other features
 
 `actverse()` also comes equipped with many utility functions. The package also provides free datasets for testing and learning purposes.
 
 All functions are well documented, showing all the guidelines behind the computations. Click [here](http://gipso.github.io/actverse) to see a list of them.
+
+Example:
+
+```{r message = FALSE, warning = FALSE}
+# Find the epochs/periodicities in a 'tsibble'
+read_acttrust(file, regularize = FALSE) %>%
+    find_epoch()
+```
 
 ## Citation
 
