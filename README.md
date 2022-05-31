@@ -77,8 +77,9 @@ remotes::install_github("gipso/actverse")
 The R ecosystem has a [vast
 number](https://cran.r-project.org/view=TimeSeries) of time series
 standards and we had to choose one of them while developing `actverse`.
-A standard for time objects is a must, because time can have many
-representations and can be rooted in different numerical systems.
+A standard for time objects is a must, because [time can have many
+representations](https://youtu.be/eelVqfm8vVc) and can be rooted in
+different numerical systems.
 
 We believe that the best time series standard available for packages
 that adheres to the [tidyverse
@@ -188,30 +189,30 @@ get_sun_stats(lat = -23.5489, lon = -46.6388, tz = "America/Sao_Paulo") %>%
     dplyr::as_tibble() %>% 
     t()
 #>                   [,1]               
-#> date              "2022-05-12"       
+#> date              "2022-05-27"       
 #> lat               "-23.5489"         
 #> lon               "-46.6388"         
 #> tz                "America/Sao_Paulo"
-#> sunrise_start     "06:33:14"         
-#> sunrise_end       "06:35:42"         
-#> golden_hour_end   "07:05:11"         
-#> solar_noon        "12:04:15"         
-#> golden_hour_start "17:03:19"         
-#> sunset_start      "17:32:49"         
-#> sunset_end        "17:35:17"         
-#> dusk              "17:59:02"         
-#> nautical_dusk     "18:26:16"         
-#> night_start       "18:53:12"         
-#> nadir             "00:04:15"         
-#> night_end         "05:15:18"         
-#> nautical_dawn     "05:42:15"         
-#> dawn              "06:09:29"
+#> sunrise_start     "06:40:20"         
+#> sunrise_end       "06:42:52"         
+#> golden_hour_end   "07:13:08"         
+#> solar_noon        "12:05:10"         
+#> golden_hour_start "16:57:11"         
+#> sunset_start      "17:27:27"         
+#> sunset_end        "17:29:59"         
+#> dusk              "17:54:16"         
+#> nautical_dusk     "18:22:01"         
+#> night_start       "18:49:25"         
+#> nadir             "00:05:10"         
+#> night_end         "05:20:54"         
+#> nautical_dawn     "05:48:18"         
+#> dawn              "06:16:03"
 ```
 
 ### Other features
 
-`actverse()` also comes equipped with many utility functions. The
-package also provides free datasets for testing and learning purposes.
+`actverse` also comes equipped with many utility functions. The package
+also provides free datasets for testing and learning purposes.
 
 All functions are well documented, showing all the guidelines behind the
 computations. Click [here](http://gipso.github.io/actverse) to see a

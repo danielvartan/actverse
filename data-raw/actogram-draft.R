@@ -90,7 +90,7 @@
 #'             )
 #'
 #'             data <- read_acttrust(file, tz = "America/Sao_Paulo")
-#'             actogram <- actogram(
+#'             act <- actogram(
 #'                 data, "pim", lat = -23.5489, lon = -46.6388,
 #'                 labels = c(
 #'                     "1" = "Sleeping", "2" = "Resting", "4" = "Offwrist",

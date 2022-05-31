@@ -58,7 +58,7 @@ remotes::install_github("gipso/actverse")
 
 ## Usage
 
-The R ecosystem has a [vast number](https://cran.r-project.org/view=TimeSeries) of time series standards and we had to choose one of them while developing `actverse`. A standard for time objects is a must, because time can have many representations and can be rooted in  different numerical systems.
+The R ecosystem has a [vast number](https://cran.r-project.org/view=TimeSeries) of time series standards and we had to choose one of them while developing `actverse`. A standard for time objects is a must, because [time can have many representations](https://youtu.be/eelVqfm8vVc) and can be rooted in  different numerical systems.
 
 We believe that the best time series standard available for packages that adheres to the [tidyverse principles](https://tidyverse.tidyverse.org/articles/manifesto.html) is the [`tsibble`](https://tsibble.tidyverts.org/index.html). As the name suggests, `tsibble` is an adaptation of the [tidyverse](https://www.tidyverse.org/) [`tibble`](https://tibble.tidyverse.org/) object for time series.
 
@@ -125,7 +125,7 @@ get_sun_stats(lat = -23.5489, lon = -46.6388, tz = "America/Sao_Paulo") %>%
 
 ### Other features
 
-`actverse()` also comes equipped with many utility functions. The package also provides free datasets for testing and learning purposes.
+`actverse` also comes equipped with many utility functions. The package also provides free datasets for testing and learning purposes.
 
 All functions are well documented, showing all the guidelines behind the computations. Click [here](http://gipso.github.io/actverse) to see a list of them.
 
