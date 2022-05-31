@@ -7,8 +7,8 @@
 find_epoch(data, threshold = 0.9)
 }
 \arguments{
-\item{data}{A \link[tsibble:tsibble]{tsibble} object with a \code{\link[=as.Date]{Date}}
-or \code{\link[=as.POSIXct]{POSIXt}} vector as index.}
+\item{data}{A \code{\link[tsibble:tsibble]{tsibble}} object with a
+\code{\link[=as.Date]{Date}} or \code{\link[=as.POSIXct]{POSIXt}} vector as index.}
 
 \item{threshold}{(optional) a number, from \code{0} to \code{1}, indicating the minimum proportion
 that an epoch must have to be considered valid. \code{threshold = 1} means that

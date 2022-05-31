@@ -1,4 +1,3 @@
-#npcra_iv() tests
 test_that('npcra_iv() | Random data', {
     # Random data
     # It is very likely that there are time intervals with no activity data

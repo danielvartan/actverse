@@ -11,20 +11,20 @@ npcra_iv(data, col, minutes_interval = 60)
 
 \item{col}{A string indicating which column of \code{data} to use.}
 
-\item{minutes_interval}{integer value representing the duration in minutes
+\item{minutes_interval}{A integer value representing the duration in minutes
 of the time interval for grouping the data. By default, 60 minutes are
-considered, this means that the activity will be averaged at hourly intervals.
-The minimum value is 1 minute, where all points will be considered
-(so there will be no average in intervals).}
+considered, this means that the activity will be averaged at hourly
+intervals. The minimum value is 1 minute, where all points will be
+considered (so there will be no average in intervals).}
 }
 \value{
-A numeric value.
+A \code{\link[base:numeric]{numeric}} value.
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
 
-Calculates the Intradaily Variability, which identifies the
-fragmentation of the rest-activity rhythms.
+Calculates the Intradaily Variability, which identifies the fragmentation of
+the rest-activity rhythms.
 
 This fragmentation can have different results for the same data according
 to the chosen time interval, that is, a minute by minute calculation brings
@@ -32,9 +32,9 @@ a more sensitive result than a check in hours, where small changes tend
 to have less influence on intradaily variability.
 }
 \details{
-Intradaily variability is a number that is usually between 0 and
-2 calculated by dividing the square mean of the first derivative
-of the data by the population variance (Witting et al., 1990).
+Intradaily variability is a number that is usually between 0 and 2 calculated
+by dividing the square mean of the first derivative of the data by the
+population variance (Witting et al., 1990).
 
 Although real records typically have an IV value less than 2,
 it is possible that this number exceeds 2. IVs greater than 2
@@ -42,8 +42,8 @@ are quite common in simulations of random values, since there is
 no way to define a standard for the data and, therefore, will have
 a high variability.
 
-If X represents the activity or other numeric variable passed as parameter
-\code{x}, the IV follows the formula below:
+If \eqn{X} represents the activity or other numeric variable passed as
+parameter \code{x}, the IV follows the formula below:
 
 \deqn{IV = SQM_FD / VAR(X)}
 
@@ -81,30 +81,32 @@ immediate changes between time intervals, such as naps during the day and
 nighttime awakenings.
 }
 \examples{
-#Running for 100 random observations
+## Running for 100 random observations
+
 first_date <- as.POSIXct('2015-01-01')
 last_date <- as.POSIXct('2015-01-11')
-shuffled_timestamp <- sample(seq(first_date,
-                      last_date, by = "sec"), 100)
+shuffled_timestamp <- sample(seq(first_date, last_date, by = "sec"), 100)
 timestamp <- sort(shuffled_timestamp)
 x <- runif(100, 0, 10000)
-act <- dplyr::tibble(x, timestamp)
-act <- tsibble::as_tsibble(act, index="timestamp")
-npcra_iv(act, "x", minutes_interval = 120) #expects a numeric  value
+
+act <- dplyr::tibble(x, timestamp) \%>\%
+           tsibble::as_tsibble(index = "timestamp")
+
+npcra_iv(act, "x", minutes_interval = 120)
 }
 \references{
+Goncalves, B. S. B., Cavalcanti, P. R. A., Tavares, G. R., Campos,
+T. F., & Araujo, J. F. (2014). Nonparametric methods in actigraphy: an
+update. Sleep Science, 7(3), 158-164.
+\doi{10.1016/j.slsci.2014.09.013}
+
 Witting, W., Kwa, I. H., Eikelenboom, P., Mirmiran, M., & Swaab, D. F.
 (1990). Alterations in the circadian rest-activity rhythm in aging and
-Alzheimer's disease. Biological Psychiatry, 27(6), 563-572.
-\doi{https://doi.org/10.1016/0006-3223(90)90523-5}
-
-Goncalves, B. S. B., Cavalcanti, P. R. A., Tavares, G. R., Campos,
-T. F., & Araujo, J. F. (2014). Nonparametric methods in actigraphy: An
-update. Sleep Science, 7(3), 158-164.
-\doi{https://doi.org/10.1016/j.slsci.2014.09.013}
+Alzheimer's disease. \emph{Biological Psychiatry}, \emph{27}(6), 563-572.
+\doi{10.1016/0006-3223(90)90523-5}.
 }
 \seealso{
-Other NPCRA functions:
+Other NPCRA functions: 
 \code{\link{npcra_ivm}()}
 }
 \concept{NPCRA functions}

@@ -14,8 +14,8 @@
 #' periodicities with the same prevalence above the threshold, `best_match` will
 #' return just one of those values.
 #'
-#' @param data A [tsibble][tsibble::tsibble()] object with a [`Date`][as.Date()]
-#'   or [`POSIXt`][as.POSIXct()] vector as index.
+#' @param data A [`tsibble`][tsibble::tsibble()] object with a
+#'   [`Date`][as.Date()] or [`POSIXt`][as.POSIXct()] vector as index.
 #' @param threshold (optional) a number, from `0` to `1`, indicating the minimum proportion
 #'   that an epoch must have to be considered valid. `threshold = 1` means that
 #'   the regularity of the time series must be strict (i.e., have just 1
