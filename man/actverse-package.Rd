@@ -4,7 +4,7 @@
 \name{actverse-package}
 \alias{actverse}
 \alias{actverse-package}
-\title{actverse: An R Package for Actigraphy Data Analysis}
+\title{actverse: Actigraphy Data Analysis Tools}
 \description{
 \if{html}{\figure{logo.png}{options: align='right' alt='logo' width='120'}}
 
