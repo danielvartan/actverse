@@ -99,7 +99,7 @@
 <div class="section level2">
 <h2 id="usage">Usage<a class="anchor" aria-label="anchor" href="#usage"></a>
 </h2>
-<p>The R ecosystem has a <a href="https://cran.r-project.org/view=TimeSeries" class="external-link">vast number</a> of time series standards and we had to choose one of them while developing <code>actverse</code>. A standard for time objects is a must, because time can have many representations and can be rooted in different numerical systems.</p>
+<p>The R ecosystem has a <a href="https://cran.r-project.org/view=TimeSeries" class="external-link">vast number</a> of time series standards and we had to choose one of them while developing <code>actverse</code>. A standard for time objects is a must, because <a href="https://youtu.be/eelVqfm8vVc" class="external-link">time can have many representations</a> and can be rooted in different numerical systems.</p>
 <p>We believe that the best time series standard available for packages that adheres to the <a href="https://tidyverse.tidyverse.org/articles/manifesto.html" class="external-link">tidyverse principles</a> is the <a href="https://tsibble.tidyverts.org/index.html" class="external-link"><code>tsibble</code></a>. As the name suggests, <code>tsibble</code> is an adaptation of the <a href="https://www.tidyverse.org/" class="external-link">tidyverse</a> <a href="https://tibble.tidyverse.org/" class="external-link"><code>tibble</code></a> object for time series.</p>
 <p>Most <code>actverse</code> functions will require that your data be in the <a href="https://tsibble.tidyverts.org/index.html" class="external-link"><code>tsibble</code></a> standard. Adapting your data is a simple process and can make a big difference when dealing with time series. Please refer to <a href="https://tsibble.tidyverts.org/index.html" class="external-link"><code>tsibble</code></a> documentation to learn how to do it. After your data is set to start, just use the <code>actverse</code> functions below.</p>
 <p>We also recommend seeing the <a href="https://www.tsbox.help/" class="external-link"><code>tsbox</code></a> package, an R package that propose to be an “universal translator” (🖖) for R time series standards.</p>
@@ -186,29 +186,29 @@
     <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://tibble.tidyverse.org/reference/as_tibble.html" class="external-link">as_tibble</a></span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span> 
     <span class="fu"><a href="https://rdrr.io/r/base/t.html" class="external-link">t</a></span><span class="op">(</span><span class="op">)</span>
 <span class="co">#&gt;                   [,1]               </span>
-<span class="co">#&gt; date              "2022-05-12"       </span>
+<span class="co">#&gt; date              "2022-05-27"       </span>
 <span class="co">#&gt; lat               "-23.5489"         </span>
 <span class="co">#&gt; lon               "-46.6388"         </span>
 <span class="co">#&gt; tz                "America/Sao_Paulo"</span>
-<span class="co">#&gt; sunrise_start     "06:33:14"         </span>
-<span class="co">#&gt; sunrise_end       "06:35:42"         </span>
-<span class="co">#&gt; golden_hour_end   "07:05:11"         </span>
-<span class="co">#&gt; solar_noon        "12:04:15"         </span>
-<span class="co">#&gt; golden_hour_start "17:03:19"         </span>
-<span class="co">#&gt; sunset_start      "17:32:49"         </span>
-<span class="co">#&gt; sunset_end        "17:35:17"         </span>
-<span class="co">#&gt; dusk              "17:59:02"         </span>
-<span class="co">#&gt; nautical_dusk     "18:26:16"         </span>
-<span class="co">#&gt; night_start       "18:53:12"         </span>
-<span class="co">#&gt; nadir             "00:04:15"         </span>
-<span class="co">#&gt; night_end         "05:15:18"         </span>
-<span class="co">#&gt; nautical_dawn     "05:42:15"         </span>
-<span class="co">#&gt; dawn              "06:09:29"</span></code></pre></div>
+<span class="co">#&gt; sunrise_start     "06:40:20"         </span>
+<span class="co">#&gt; sunrise_end       "06:42:52"         </span>
+<span class="co">#&gt; golden_hour_end   "07:13:08"         </span>
+<span class="co">#&gt; solar_noon        "12:05:10"         </span>
+<span class="co">#&gt; golden_hour_start "16:57:11"         </span>
+<span class="co">#&gt; sunset_start      "17:27:27"         </span>
+<span class="co">#&gt; sunset_end        "17:29:59"         </span>
+<span class="co">#&gt; dusk              "17:54:16"         </span>
+<span class="co">#&gt; nautical_dusk     "18:22:01"         </span>
+<span class="co">#&gt; night_start       "18:49:25"         </span>
+<span class="co">#&gt; nadir             "00:05:10"         </span>
+<span class="co">#&gt; night_end         "05:20:54"         </span>
+<span class="co">#&gt; nautical_dawn     "05:48:18"         </span>
+<span class="co">#&gt; dawn              "06:16:03"</span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="other-features">Other features<a class="anchor" aria-label="anchor" href="#other-features"></a>
 </h3>
-<p><code><a href="reference/actverse-package.html">actverse()</a></code> also comes equipped with many utility functions. The package also provides free datasets for testing and learning purposes.</p>
+<p><code>actverse</code> also comes equipped with many utility functions. The package also provides free datasets for testing and learning purposes.</p>
 <p>All functions are well documented, showing all the guidelines behind the computations. Click <a href="http://gipso.github.io/actverse" class="external-link">here</a> to see a list of them.</p>
 <p>Example:</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
