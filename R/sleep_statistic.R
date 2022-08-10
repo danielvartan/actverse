@@ -1,4 +1,4 @@
-#' Sleep statist
+#' Sleep statistics
 #'
 #' @description
 #'

@@ -11,7 +11,7 @@ data_actstudio <- function(file = file.choose()) {
 }
 
 sleep_select <- function(x, log_Data, type_Data) {
-    checkmate::assert_choice(c, 1:10)
+    checkmate::assert_integerish(x, lower = 0)
     checkmate::assert_choice(type_Data, "actstudio")
 
     if (type_Data == "actstudio") {

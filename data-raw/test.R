@@ -1,6 +1,11 @@
+library(chron)
+library(circular)
+library(dplyr)
+library(hms)
+
 data <- actverse::read_acttrust()
 
-data <- bkp %>%
+stats <- data %>%
     tsibble::as_tibble() %>%
     dplyr::transmute(
         DATE = as.character(lubridate::date(timestamp)),
