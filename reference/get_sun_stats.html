@@ -66,7 +66,7 @@ for a better understanding of the mechanisms behind them.</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">get_sun_stats</span><span class="op">(</span><span class="va">lat</span>, <span class="va">lon</span>, date <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Sys.time.html" class="external-link">Sys.Date</a></span><span class="op">(</span><span class="op">)</span>, tz <span class="op">=</span> <span class="st">"UTC"</span>, method <span class="op">=</span> <span class="st">"suncalc"</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">get_sun_stats</span><span class="op">(</span><span class="va">lat</span>, <span class="va">lon</span>, date <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Sys.time.html" class="external-link">Sys.Date</a></span><span class="op">(</span><span class="op">)</span>, tz <span class="op">=</span> <span class="st">"UTC"</span>, method <span class="op">=</span> <span class="st">"suncalc"</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -74,23 +74,34 @@ for a better understanding of the mechanisms behind them.</p>
     <dl><dt>lat</dt>
 <dd><p>A number indicating the latitude, in decimal degrees,
 of the desired location.</p></dd>
+
+
 <dt>lon</dt>
 <dd><p>A number indicating the longitude, in decimal degrees,
 of the desired location.</p></dd>
+
+
 <dt>date</dt>
 <dd><p>(optional) a <code><a href="https://rdrr.io/r/base/as.Date.html" class="external-link">Date</a></code> value indicating the
 moment in time (default: <code><a href="https://rdrr.io/r/base/Sys.time.html" class="external-link">Sys.Date()</a></code>).</p></dd>
+
+
 <dt>tz</dt>
 <dd><p>(optional) a string indicating the time zone of the results. See
 <code><a href="https://rdrr.io/r/base/timezones.html" class="external-link">timezones</a></code> to learn more (default: <code>"UTC"</code>).</p></dd>
+
+
 <dt>method</dt>
 <dd><p>(optional) a string indicating which API to use. Valid values
 are: <code>"suncalc"</code> and <code>"sunrise-sunset.org"</code>. See the Details section to
 learn more (default: <code>"suncalc"</code>).</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>A <code><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></code> object with the following elements:</p><ul><li><p><code>date</code>: A <code><a href="https://rdrr.io/r/base/as.Date.html" class="external-link">Date</a></code> object with the same value of the <code>date</code>
+    
+
+<p>A <code><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></code> object with the following elements:</p><ul><li><p><code>date</code>: A <code><a href="https://rdrr.io/r/base/as.Date.html" class="external-link">Date</a></code> object with the same value of the <code>date</code>
 parameter.</p></li>
 <li><p><code>lat</code>: A number with the same value of the <code>lat</code> parameter.</p></li>
 <li><p><code>lon</code>: A number with the same value of the <code>lon</code> parameter.</p></li>
@@ -184,16 +195,16 @@ packages.</p><ul><li><p><a href="https://github.com/rpradosiqueira/cptec" class=
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="va">lat</span> <span class="op">&lt;-</span> <span class="op">-</span><span class="fl">23.5489</span></span>
-<span class="r-in"><span class="va">lon</span> <span class="op">&lt;-</span> <span class="op">-</span><span class="fl">46.6388</span></span>
-<span class="r-in"><span class="va">date</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/Sys.time.html" class="external-link">Sys.Date</a></span><span class="op">(</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">tz</span> <span class="op">=</span> <span class="st">"America/Sao_Paulo"</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/ns-load.html" class="external-link">requireNamespace</a></span><span class="op">(</span><span class="st">"suncalc"</span>, quietly <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
-<span class="r-in">    <span class="fu">get_sun_stats</span><span class="op">(</span>lat <span class="op">=</span> <span class="va">lat</span>, <span class="va">lon</span>, <span class="va">date</span>, <span class="va">tz</span>, method <span class="op">=</span> <span class="st">"suncalc"</span><span class="op">)</span></span>
-<span class="r-in"><span class="op">}</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">lat</span> <span class="op">&lt;-</span> <span class="op">-</span><span class="fl">23.5489</span></span></span>
+<span class="r-in"><span><span class="va">lon</span> <span class="op">&lt;-</span> <span class="op">-</span><span class="fl">46.6388</span></span></span>
+<span class="r-in"><span><span class="va">date</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/Sys.time.html" class="external-link">Sys.Date</a></span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">tz</span> <span class="op">=</span> <span class="st">"America/Sao_Paulo"</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/ns-load.html" class="external-link">requireNamespace</a></span><span class="op">(</span><span class="st">"suncalc"</span>, quietly <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span>    <span class="fu">get_sun_stats</span><span class="op">(</span>lat <span class="op">=</span> <span class="va">lat</span>, <span class="va">lon</span>, <span class="va">date</span>, <span class="va">tz</span>, method <span class="op">=</span> <span class="st">"suncalc"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $date</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "2022-05-31"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "2022-11-12"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $lat</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] -23.5489</span>
@@ -205,58 +216,58 @@ packages.</p><ul><li><p><a href="https://github.com/rpradosiqueira/cptec" class=
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "America/Sao_Paulo"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $sunrise_start</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 06:42:07</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 05:16:14</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $sunrise_end</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 06:44:39</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 05:18:43</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $golden_hour_end</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 07:15:06</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 05:47:38</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $solar_noon</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 12:05:41</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 11:52:04</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $golden_hour_start</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 16:56:17</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 17:56:30</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $sunset_start</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 17:26:43</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 18:25:25</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $sunset_end</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 17:29:16</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 18:27:54</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $dusk</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 17:53:40</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 18:52:03</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $nautical_dusk</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 18:21:33</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 19:20:41</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $night_start</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 18:49:02</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 19:50:11</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $nadir</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 00:05:41</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 23:52:04</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $night_end</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 05:22:21</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 03:53:57</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $nautical_dawn</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 05:49:50</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 04:23:27</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $dawn</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 06:17:43</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 04:52:05</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-in"></span>
-<span class="r-in"><span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/ns-load.html" class="external-link">requireNamespace</a></span><span class="op">(</span><span class="st">"curl"</span>, quietly <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op">&amp;&amp;</span></span>
-<span class="r-in">    <span class="fu"><a href="https://rdrr.io/r/base/ns-load.html" class="external-link">requireNamespace</a></span><span class="op">(</span><span class="st">"jsonlite"</span>, quietly <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
-<span class="r-in">    <span class="kw">if</span> <span class="op">(</span><span class="fu">curl</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/curl/man/nslookup.html" class="external-link">has_internet</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
-<span class="r-in">        <span class="fu">get_sun_stats</span><span class="op">(</span></span>
-<span class="r-in">            lat <span class="op">=</span> <span class="va">lat</span>, <span class="va">lon</span>, <span class="va">date</span>, <span class="va">tz</span>, method <span class="op">=</span> <span class="st">"sunrise-sunset.org"</span></span>
-<span class="r-in">            <span class="op">)</span></span>
-<span class="r-in">    <span class="op">}</span></span>
-<span class="r-in"><span class="op">}</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/ns-load.html" class="external-link">requireNamespace</a></span><span class="op">(</span><span class="st">"curl"</span>, quietly <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op">&amp;&amp;</span></span></span>
+<span class="r-in"><span>    <span class="fu"><a href="https://rdrr.io/r/base/ns-load.html" class="external-link">requireNamespace</a></span><span class="op">(</span><span class="st">"jsonlite"</span>, quietly <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span>    <span class="kw">if</span> <span class="op">(</span><span class="fu">curl</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/curl/man/nslookup.html" class="external-link">has_internet</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span>        <span class="fu">get_sun_stats</span><span class="op">(</span></span></span>
+<span class="r-in"><span>            lat <span class="op">=</span> <span class="va">lat</span>, <span class="va">lon</span>, <span class="va">date</span>, <span class="va">tz</span>, method <span class="op">=</span> <span class="st">"sunrise-sunset.org"</span></span></span>
+<span class="r-in"><span>            <span class="op">)</span></span></span>
+<span class="r-in"><span>    <span class="op">}</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $date</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "2022-05-31"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "2022-11-12"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $lat</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] -23.5489</span>
@@ -268,7 +279,7 @@ packages.</p><ul><li><p><a href="https://github.com/rpradosiqueira/cptec" class=
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "America/Sao_Paulo"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $sunrise_start</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 06:33:05</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 05:06:57</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $sunrise_end</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> NA</span>
@@ -277,7 +288,7 @@ packages.</p><ul><li><p><a href="https://github.com/rpradosiqueira/cptec" class=
 <span class="r-out co"><span class="r-pr">#&gt;</span> NA</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $solar_noon</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 11:57:48</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 11:44:14</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $golden_hour_start</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> NA</span>
@@ -286,28 +297,28 @@ packages.</p><ul><li><p><a href="https://github.com/rpradosiqueira/cptec" class=
 <span class="r-out co"><span class="r-pr">#&gt;</span> NA</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $sunset_end</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 17:22:32</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 18:21:31</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $dusk</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 17:45:41</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 18:44:26</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $nautical_dusk</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 18:13:34</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 19:13:06</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $night_start</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 18:41:04</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 19:42:38</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $nadir</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> NA</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $night_end</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 05:14:32</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 03:45:50</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $nautical_dawn</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 05:42:02</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 04:15:22</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $dawn</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 06:09:55</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 04:44:02</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 </code></pre></div>
     </div>
@@ -323,7 +334,7 @@ packages.</p><ul><li><p><a href="https://github.com/rpradosiqueira/cptec" class=
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
 </div>
 
       </footer></div>

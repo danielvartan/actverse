@@ -60,7 +60,7 @@ purposes. <code>raw_data()</code> makes it easy to access their paths.</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">raw_data</span><span class="op">(</span>file <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">raw_data</span><span class="op">(</span>file <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -69,10 +69,13 @@ purposes. <code>raw_data()</code> makes it easy to access their paths.</p>
 <dd><p>(optional) a <code><a href="https://rdrr.io/r/base/character.html" class="external-link">character</a></code> object indicating the raw
 data file name(s). If <code>NULL</code>, all raw data file names will be returned
 (default: <code>NULL</code>).</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>If <code>file == NULL</code>, a <code><a href="https://rdrr.io/r/base/character.html" class="external-link">character</a></code> object with all file
+    
+
+<p>If <code>file == NULL</code>, a <code><a href="https://rdrr.io/r/base/character.html" class="external-link">character</a></code> object with all file
 names available. Else, a string with the file name path.</p>
     </div>
     <div id="see-also">
@@ -86,14 +89,14 @@ names available. Else, a string with the file name path.</p>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="co">## To list all raw data file names available</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="fu">raw_data</span><span class="op">(</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co">## To list all raw data file names available</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu">raw_data</span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "acttrust.txt"</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## To get the file path from a specific raw data</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="fu">raw_data</span><span class="op">(</span><span class="st">"acttrust.txt"</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## To get the file path from a specific raw data</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu">raw_data</span><span class="op">(</span><span class="st">"acttrust.txt"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "/home/runner/work/_temp/Library/actverse/extdata/acttrust.txt"</span>
 </code></pre></div>
     </div>
@@ -109,7 +112,7 @@ names available. Else, a string with the file name path.</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
 </div>
 
       </footer></div>

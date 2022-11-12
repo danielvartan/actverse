@@ -93,8 +93,8 @@
 <p>Our development process is based on an agile approach. That means that each feature is a separate project and it’s integrated to the main branch as soon as it’s reviewed and validated.</p>
 <p>You can install the development version from GitHub with:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># install.packages("remotes")</span>
-<span class="fu">remotes</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"gipso/actverse"</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="co"># install.packages("remotes")</span></span>
+<span><span class="fu">remotes</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"gipso/actverse"</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="usage">Usage<a class="anchor" aria-label="anchor" href="#usage"></a>
@@ -114,31 +114,31 @@
 </ul>
 <p>Example:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">file</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/get_from_zenodo.html">get_from_zenodo</a></span><span class="op">(</span>
-    doi <span class="op">=</span> <span class="st">"10.5281/zenodo.4898822"</span>, path <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span>,
-    file <span class="op">=</span> <span class="st">"processed.txt"</span>
-<span class="op">)</span>
-
-<span class="va">data</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/read_acttrust.html">read_acttrust</a></span><span class="op">(</span><span class="va">file</span>, tz <span class="op">=</span> <span class="st">"America/Sao_Paulo"</span><span class="op">)</span>
-
-<span class="va">data</span>
-<span class="co">#&gt; # A tsibble: 51,806 x 17 [1m] &lt;America/Sao_Paulo&gt;</span>
-<span class="co">#&gt;    timestamp             pim   tat   zcm orientation wrist_temperature</span>
-<span class="co">#&gt;    &lt;dttm&gt;              &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;       &lt;dbl&gt;             &lt;dbl&gt;</span>
-<span class="co">#&gt;  1 2021-04-24 04:14:00  7815   608   228           0              26.9</span>
-<span class="co">#&gt;  2 2021-04-24 04:15:00  2661   160    64           0              27.2</span>
-<span class="co">#&gt;  3 2021-04-24 04:16:00  3402   243    80           0              27.7</span>
-<span class="co">#&gt;  4 2021-04-24 04:17:00  4580   317   125           0              27.9</span>
-<span class="co">#&gt;  5 2021-04-24 04:18:00  2624   255    33           0              28.0</span>
-<span class="co">#&gt;  6 2021-04-24 04:19:00  3929   246   105           0              28.1</span>
-<span class="co">#&gt;  7 2021-04-24 04:20:00  5812   369   171           0              28.2</span>
-<span class="co">#&gt;  8 2021-04-24 04:21:00  3182   270    54           0              28.4</span>
-<span class="co">#&gt;  9 2021-04-24 04:22:00  6362   373   189           0              28.6</span>
-<span class="co">#&gt; 10 2021-04-24 04:23:00  2621   159    64           0              28.7</span>
-<span class="co">#&gt; # … with 51,796 more rows, and 11 more variables: external_temperature &lt;dbl&gt;,</span>
-<span class="co">#&gt; #   light &lt;dbl&gt;, ambient_light &lt;dbl&gt;, red_light &lt;dbl&gt;, green_light &lt;dbl&gt;,</span>
-<span class="co">#&gt; #   blue_light &lt;dbl&gt;, ir_light &lt;dbl&gt;, uva_light &lt;dbl&gt;, uvb_light &lt;dbl&gt;,</span>
-<span class="co">#&gt; #   event &lt;dbl&gt;, state &lt;dbl&gt;</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">file</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/get_from_zenodo.html">get_from_zenodo</a></span><span class="op">(</span></span>
+<span>    doi <span class="op">=</span> <span class="st">"10.5281/zenodo.4898822"</span>, path <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>    file <span class="op">=</span> <span class="st">"processed.txt"</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">data</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/read_acttrust.html">read_acttrust</a></span><span class="op">(</span><span class="va">file</span>, tz <span class="op">=</span> <span class="st">"America/Sao_Paulo"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">data</span></span>
+<span><span class="co">#&gt; # A tsibble: 51,806 x 17 [1m] &lt;America/Sao_Paulo&gt;</span></span>
+<span><span class="co">#&gt;    timestamp             pim   tat   zcm orientation wrist_temperature</span></span>
+<span><span class="co">#&gt;    &lt;dttm&gt;              &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;       &lt;dbl&gt;             &lt;dbl&gt;</span></span>
+<span><span class="co">#&gt;  1 2021-04-24 04:14:00  7815   608   228           0              26.9</span></span>
+<span><span class="co">#&gt;  2 2021-04-24 04:15:00  2661   160    64           0              27.2</span></span>
+<span><span class="co">#&gt;  3 2021-04-24 04:16:00  3402   243    80           0              27.7</span></span>
+<span><span class="co">#&gt;  4 2021-04-24 04:17:00  4580   317   125           0              27.9</span></span>
+<span><span class="co">#&gt;  5 2021-04-24 04:18:00  2624   255    33           0              28.0</span></span>
+<span><span class="co">#&gt;  6 2021-04-24 04:19:00  3929   246   105           0              28.1</span></span>
+<span><span class="co">#&gt;  7 2021-04-24 04:20:00  5812   369   171           0              28.2</span></span>
+<span><span class="co">#&gt;  8 2021-04-24 04:21:00  3182   270    54           0              28.4</span></span>
+<span><span class="co">#&gt;  9 2021-04-24 04:22:00  6362   373   189           0              28.6</span></span>
+<span><span class="co">#&gt; 10 2021-04-24 04:23:00  2621   159    64           0              28.7</span></span>
+<span><span class="co">#&gt; # … with 51,796 more rows, and 11 more variables: external_temperature &lt;dbl&gt;,</span></span>
+<span><span class="co">#&gt; #   light &lt;dbl&gt;, ambient_light &lt;dbl&gt;, red_light &lt;dbl&gt;, green_light &lt;dbl&gt;,</span></span>
+<span><span class="co">#&gt; #   blue_light &lt;dbl&gt;, ir_light &lt;dbl&gt;, uva_light &lt;dbl&gt;, uvb_light &lt;dbl&gt;,</span></span>
+<span><span class="co">#&gt; #   event &lt;dbl&gt;, state &lt;dbl&gt;</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="period-functions">Period functions<a class="anchor" aria-label="anchor" href="#period-functions"></a>
@@ -151,10 +151,10 @@
 </ul>
 <p>Example:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">per</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/periodogram.html">periodogram</a></span><span class="op">(</span><span class="va">data</span>, <span class="st">"pim"</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">per</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/periodogram.html">periodogram</a></span><span class="op">(</span><span class="va">data</span>, <span class="st">"pim"</span><span class="op">)</span></span></code></pre></div>
 <p><img src="reference/figures/README-unnamed-chunk-4-1.png" width="100%"></p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">spec</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/spectrogram.html">spectrogram</a></span><span class="op">(</span><span class="va">data</span>, <span class="st">"pim"</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">spec</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/spectrogram.html">spectrogram</a></span><span class="op">(</span><span class="va">data</span>, <span class="st">"pim"</span><span class="op">)</span></span></code></pre></div>
 <p><img src="reference/figures/README-unnamed-chunk-4-2.png" width="100%"></p>
 </div>
 <div class="section level3">
@@ -164,12 +164,12 @@
 <code><a href="reference/na_approx.html">na_approx()</a></code> <code><a href="reference/na_approx.html">na_locf()</a></code> <code><a href="reference/na_approx.html">na_overall_mean()</a></code> <code><a href="reference/na_approx.html">na_overall_median()</a></code> <code><a href="reference/na_approx.html">na_overall_mode()</a></code> <code><a href="reference/na_approx.html">na_spline()</a></code> <code><a href="reference/na_approx.html">na_weekly_mean()</a></code> <code><a href="reference/na_approx.html">na_zero()</a></code> <code><a href="reference/na_approx.html">na_plot()</a></code>: Replace <code>NA</code> by interpolation.</li></ul>
 <p>Example:</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="cn">NA</span>, <span class="fl">1</span>, <span class="fl">5</span>, <span class="fl">10</span>, <span class="cn">NA</span>, <span class="fl">5</span>, <span class="fl">10</span>, <span class="fl">1</span>, <span class="cn">NA</span>, <span class="fl">10</span>, <span class="fl">1</span>, <span class="fl">5</span>, <span class="cn">NA</span>, <span class="cn">NA</span><span class="op">)</span>
-<span class="va">index</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/as.Date.html" class="external-link">as.Date</a></span><span class="op">(</span><span class="st">"2020-01-01"</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/as.Date.html" class="external-link">as.Date</a></span><span class="op">(</span><span class="st">"2020-01-14"</span><span class="op">)</span>, by <span class="op">=</span> <span class="st">"day"</span><span class="op">)</span>
-
-<span class="fu"><a href="reference/na_approx.html">na_approx</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">index</span>, fill_na_tips <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
-<span class="co">#&gt;  [1]  1.0  1.0  5.0 10.0  7.5  5.0 10.0  1.0  5.5 10.0  1.0  5.0  5.0  5.0</span>
-<span class="fu"><a href="reference/na_approx.html">na_plot</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">index</span>, <span class="fu"><a href="reference/na_approx.html">na_approx</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">index</span>, fill_na_tips <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="cn">NA</span>, <span class="fl">1</span>, <span class="fl">5</span>, <span class="fl">10</span>, <span class="cn">NA</span>, <span class="fl">5</span>, <span class="fl">10</span>, <span class="fl">1</span>, <span class="cn">NA</span>, <span class="fl">10</span>, <span class="fl">1</span>, <span class="fl">5</span>, <span class="cn">NA</span>, <span class="cn">NA</span><span class="op">)</span></span>
+<span><span class="va">index</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/as.Date.html" class="external-link">as.Date</a></span><span class="op">(</span><span class="st">"2020-01-01"</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/as.Date.html" class="external-link">as.Date</a></span><span class="op">(</span><span class="st">"2020-01-14"</span><span class="op">)</span>, by <span class="op">=</span> <span class="st">"day"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="reference/na_approx.html">na_approx</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">index</span>, fill_na_tips <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="co">#&gt;  [1]  1.0  1.0  5.0 10.0  7.5  5.0 10.0  1.0  5.5 10.0  1.0  5.0  5.0  5.0</span></span>
+<span><span class="fu"><a href="reference/na_approx.html">na_plot</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">index</span>, <span class="fu"><a href="reference/na_approx.html">na_approx</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">index</span>, fill_na_tips <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <p><img src="reference/figures/README-unnamed-chunk-5-1.png" width="100%"></p>
 </div>
 <div class="section level3">
@@ -182,28 +182,28 @@
 <code><a href="reference/get_sun_stats.html">get_sun_stats()</a></code>: Get sun related statistics from different APIs.</li>
 </ul>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="reference/get_sun_stats.html">get_sun_stats</a></span><span class="op">(</span>lat <span class="op">=</span> <span class="op">-</span><span class="fl">23.5489</span>, lon <span class="op">=</span> <span class="op">-</span><span class="fl">46.6388</span>, tz <span class="op">=</span> <span class="st">"America/Sao_Paulo"</span><span class="op">)</span> <span class="op">%&gt;%</span>
-    <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://tibble.tidyverse.org/reference/as_tibble.html" class="external-link">as_tibble</a></span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span> 
-    <span class="fu"><a href="https://rdrr.io/r/base/t.html" class="external-link">t</a></span><span class="op">(</span><span class="op">)</span>
-<span class="co">#&gt;                   [,1]               </span>
-<span class="co">#&gt; date              "2022-05-27"       </span>
-<span class="co">#&gt; lat               "-23.5489"         </span>
-<span class="co">#&gt; lon               "-46.6388"         </span>
-<span class="co">#&gt; tz                "America/Sao_Paulo"</span>
-<span class="co">#&gt; sunrise_start     "06:40:20"         </span>
-<span class="co">#&gt; sunrise_end       "06:42:52"         </span>
-<span class="co">#&gt; golden_hour_end   "07:13:08"         </span>
-<span class="co">#&gt; solar_noon        "12:05:10"         </span>
-<span class="co">#&gt; golden_hour_start "16:57:11"         </span>
-<span class="co">#&gt; sunset_start      "17:27:27"         </span>
-<span class="co">#&gt; sunset_end        "17:29:59"         </span>
-<span class="co">#&gt; dusk              "17:54:16"         </span>
-<span class="co">#&gt; nautical_dusk     "18:22:01"         </span>
-<span class="co">#&gt; night_start       "18:49:25"         </span>
-<span class="co">#&gt; nadir             "00:05:10"         </span>
-<span class="co">#&gt; night_end         "05:20:54"         </span>
-<span class="co">#&gt; nautical_dawn     "05:48:18"         </span>
-<span class="co">#&gt; dawn              "06:16:03"</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="reference/get_sun_stats.html">get_sun_stats</a></span><span class="op">(</span>lat <span class="op">=</span> <span class="op">-</span><span class="fl">23.5489</span>, lon <span class="op">=</span> <span class="op">-</span><span class="fl">46.6388</span>, tz <span class="op">=</span> <span class="st">"America/Sao_Paulo"</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
+<span>    <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://tibble.tidyverse.org/reference/as_tibble.html" class="external-link">as_tibble</a></span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span> </span>
+<span>    <span class="fu"><a href="https://rdrr.io/r/base/t.html" class="external-link">t</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co">#&gt;                   [,1]               </span></span>
+<span><span class="co">#&gt; date              "2022-05-27"       </span></span>
+<span><span class="co">#&gt; lat               "-23.5489"         </span></span>
+<span><span class="co">#&gt; lon               "-46.6388"         </span></span>
+<span><span class="co">#&gt; tz                "America/Sao_Paulo"</span></span>
+<span><span class="co">#&gt; sunrise_start     "06:40:20"         </span></span>
+<span><span class="co">#&gt; sunrise_end       "06:42:52"         </span></span>
+<span><span class="co">#&gt; golden_hour_end   "07:13:08"         </span></span>
+<span><span class="co">#&gt; solar_noon        "12:05:10"         </span></span>
+<span><span class="co">#&gt; golden_hour_start "16:57:11"         </span></span>
+<span><span class="co">#&gt; sunset_start      "17:27:27"         </span></span>
+<span><span class="co">#&gt; sunset_end        "17:29:59"         </span></span>
+<span><span class="co">#&gt; dusk              "17:54:16"         </span></span>
+<span><span class="co">#&gt; nautical_dusk     "18:22:01"         </span></span>
+<span><span class="co">#&gt; night_start       "18:49:25"         </span></span>
+<span><span class="co">#&gt; nadir             "00:05:10"         </span></span>
+<span><span class="co">#&gt; night_end         "05:20:54"         </span></span>
+<span><span class="co">#&gt; nautical_dawn     "05:48:18"         </span></span>
+<span><span class="co">#&gt; dawn              "06:16:03"</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="other-features">Other features<a class="anchor" aria-label="anchor" href="#other-features"></a>
@@ -212,20 +212,20 @@
 <p>All functions are well documented, showing all the guidelines behind the computations. Click <a href="http://gipso.github.io/actverse" class="external-link">here</a> to see a list of them.</p>
 <p>Example:</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># Find the epochs/periodicities in a 'tsibble'</span>
-<span class="fu"><a href="reference/read_acttrust.html">read_acttrust</a></span><span class="op">(</span><span class="va">file</span>, regularize <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> <span class="op">%&gt;%</span>
-    <span class="fu"><a href="reference/find_epoch.html">find_epoch</a></span><span class="op">(</span><span class="op">)</span>
-<span class="co">#&gt; $best_match</span>
-<span class="co">#&gt; [1] 60</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; $prevalence</span>
-<span class="co">#&gt; # A tibble: 4 × 2</span>
-<span class="co">#&gt;   epoch proportion</span>
-<span class="co">#&gt;   &lt;dbl&gt;      &lt;dbl&gt;</span>
-<span class="co">#&gt; 1    60  1.00     </span>
-<span class="co">#&gt; 2    94  0.0000193</span>
-<span class="co">#&gt; 3    86  0.0000193</span>
-<span class="co">#&gt; 4   101  0.0000193</span></code></pre></div>
+<code class="sourceCode R"><span><span class="co"># Find the epochs/periodicities in a 'tsibble'</span></span>
+<span><span class="fu"><a href="reference/read_acttrust.html">read_acttrust</a></span><span class="op">(</span><span class="va">file</span>, regularize <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
+<span>    <span class="fu"><a href="reference/find_epoch.html">find_epoch</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co">#&gt; $best_match</span></span>
+<span><span class="co">#&gt; [1] 60</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $prevalence</span></span>
+<span><span class="co">#&gt; # A tibble: 4 × 2</span></span>
+<span><span class="co">#&gt;   epoch proportion</span></span>
+<span><span class="co">#&gt;   &lt;dbl&gt;      &lt;dbl&gt;</span></span>
+<span><span class="co">#&gt; 1    60  1.00     </span></span>
+<span><span class="co">#&gt; 2    94  0.0000193</span></span>
+<span><span class="co">#&gt; 3    86  0.0000193</span></span>
+<span><span class="co">#&gt; 4   101  0.0000193</span></span></code></pre></div>
 </div>
 </div>
 <div class="section level2">
@@ -233,23 +233,23 @@
 </h2>
 <p>If you use <code>actverse</code> in your research, please consider citing it. We put a lot of work to build and maintain a free and open-source R package. You can find the <code>actverse</code> citation below.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/citation.html" class="external-link">citation</a></span><span class="op">(</span><span class="st">"actverse"</span><span class="op">)</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; To cite {actverse} in publications use:</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt;   Vartanian, D., Matias, V. A., Serrano, C. A. M., Benedito-Silva, A.</span>
-<span class="co">#&gt;   A., &amp; Pedrazzoli, M. (2022). {actverse}: an R Package for actigraphy</span>
-<span class="co">#&gt;   data analysis (v. 0.0.0). https://gipso.github.io/actverse/</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; A BibTeX entry for LaTeX users is</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt;   @Unpublished{,</span>
-<span class="co">#&gt;     title = {{actverse}: an R Package for actigraphy data analysis},</span>
-<span class="co">#&gt;     author = {Daniel Vartanian and Vinicius Alves Matias and Cassio Almeida Mattos Serrano and Ana Amelia Benedito-Silva and Mario Pedrazzoli},</span>
-<span class="co">#&gt;     year = {2022},</span>
-<span class="co">#&gt;     url = {https://gipso.github.io/actverse/},</span>
-<span class="co">#&gt;     note = {(v. 0.0.0). Lifecycle: experimental},</span>
-<span class="co">#&gt;   }</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/citation.html" class="external-link">citation</a></span><span class="op">(</span><span class="st">"actverse"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; To cite {actverse} in publications use:</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt;   Vartanian, D., Matias, V. A., Serrano, C. A. M., Benedito-Silva, A.</span></span>
+<span><span class="co">#&gt;   A., &amp; Pedrazzoli, M. (2022). {actverse}: an R Package for actigraphy</span></span>
+<span><span class="co">#&gt;   data analysis (v. 0.0.0). https://gipso.github.io/actverse/</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; A BibTeX entry for LaTeX users is</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt;   @Unpublished{,</span></span>
+<span><span class="co">#&gt;     title = {{actverse}: an R Package for actigraphy data analysis},</span></span>
+<span><span class="co">#&gt;     author = {Daniel Vartanian and Vinicius Alves Matias and Cassio Almeida Mattos Serrano and Ana Amelia Benedito-Silva and Mario Pedrazzoli},</span></span>
+<span><span class="co">#&gt;     year = {2022},</span></span>
+<span><span class="co">#&gt;     url = {https://gipso.github.io/actverse/},</span></span>
+<span><span class="co">#&gt;     note = {(v. 0.0.0). Lifecycle: experimental},</span></span>
+<span><span class="co">#&gt;   }</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="contributing">Contributing<a class="anchor" aria-label="anchor" href="#contributing"></a>
@@ -336,7 +336,7 @@
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
 </div>
 
       </footer>

@@ -66,50 +66,63 @@ to visualize and find the best interpolation technique for your data.</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">na_approx</span><span class="op">(</span><span class="va">x</span>, <span class="va">index</span>, fill_na_tips <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
-
-<span class="fu">na_locf</span><span class="op">(</span><span class="va">x</span>, fill_na_tips <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
-
-<span class="fu">na_overall_mean</span><span class="op">(</span><span class="va">x</span><span class="op">)</span>
-
-<span class="fu">na_overall_median</span><span class="op">(</span><span class="va">x</span><span class="op">)</span>
-
-<span class="fu">na_overall_mode</span><span class="op">(</span><span class="va">x</span><span class="op">)</span>
-
-<span class="fu">na_spline</span><span class="op">(</span><span class="va">x</span>, <span class="va">index</span><span class="op">)</span>
-
-<span class="fu">na_weekly_mean</span><span class="op">(</span><span class="va">x</span>, <span class="va">index</span>, fill_na_tips <span class="op">=</span> <span class="cn">TRUE</span>, week_start <span class="op">=</span> <span class="fl">1</span><span class="op">)</span>
-
-<span class="fu">na_zero</span><span class="op">(</span><span class="va">x</span><span class="op">)</span>
-
-<span class="fu">na_plot</span><span class="op">(</span><span class="va">x</span>, <span class="va">index</span>, intp <span class="op">=</span> <span class="cn">NULL</span>, print <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">na_approx</span><span class="op">(</span><span class="va">x</span>, <span class="va">index</span>, fill_na_tips <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">na_locf</span><span class="op">(</span><span class="va">x</span>, fill_na_tips <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">na_overall_mean</span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">na_overall_median</span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">na_overall_mode</span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">na_spline</span><span class="op">(</span><span class="va">x</span>, <span class="va">index</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">na_weekly_mean</span><span class="op">(</span><span class="va">x</span>, <span class="va">index</span>, fill_na_tips <span class="op">=</span> <span class="cn">TRUE</span>, week_start <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">na_zero</span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">na_plot</span><span class="op">(</span><span class="va">x</span>, <span class="va">index</span>, intp <span class="op">=</span> <span class="cn">NULL</span>, print <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>x</dt>
 <dd><p>A <code><a href="https://rdrr.io/r/base/numeric.html" class="external-link">numeric</a></code> object.</p></dd>
+
+
 <dt>index</dt>
 <dd><p>An R object with the same length of <code>x</code> representing the index
 of a time series.</p></dd>
+
+
 <dt>fill_na_tips</dt>
 <dd><p>(optional) a <code><a href="https://rdrr.io/r/base/logical.html" class="external-link">logical</a></code> value indicating if
 the function must fill remaining <code>NA</code> values with the closest non-missing
 data point. Learn more about it in the Details section (default: <code>TRUE</code>).</p></dd>
+
+
 <dt>week_start</dt>
 <dd><p>(optional) an integer number indicating the day on which
 the week starts (<code>1</code> for Monday and <code>7</code> for <code>Sunday</code>) (default: <code>1</code>).</p></dd>
+
+
 <dt>intp</dt>
 <dd><p>(optional) a <code><a href="https://rdrr.io/r/base/numeric.html" class="external-link">numeric</a></code> object with the same length
 of <code>x</code> and with the output of the <code>NA</code> interpolation of <code>x</code> (default:
 <code>NULL</code>).</p></dd>
+
+
 <dt>print</dt>
 <dd><p>(optional) a <code><a href="https://rdrr.io/r/base/logical.html" class="external-link">logical</a></code> value indicating if the
 function must print the plot (default: <code>TRUE</code>).</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <ul><li><p>For <code>na_*</code>: a <code><a href="https://rdrr.io/r/base/numeric.html" class="external-link">numeric</a></code> object with the same length of <code>x</code>.</p></li>
+    
+
+<ul><li><p>For <code>na_*</code>: a <code><a href="https://rdrr.io/r/base/numeric.html" class="external-link">numeric</a></code> object with the same length of <code>x</code>.</p></li>
 <li><p>For <code>na_plot()</code>: a <code><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></code> object with a point and
 line chart showing the original data versus the interpolated data.</p></li>
 </ul></div>
@@ -134,17 +147,17 @@ presence of <code>NA</code> values.</p>
 <p>Some interpolation methods can result in outputs with remaining <code>NA</code> values.
 That's the case, for example, with the linear interpolation method
 (<code>na_approx()</code>).</p><ul><li><p>Example:</p></li>
-</ul><p></p><div class="sourceCode r"><pre><code><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="cn">NA</span>, <span class="fl">1</span>, <span class="fl">5</span>, <span class="fl">10</span>, <span class="cn">NA</span>, <span class="fl">5</span>, <span class="fl">10</span>, <span class="fl">1</span>, <span class="cn">NA</span>, <span class="fl">10</span>, <span class="fl">1</span>, <span class="fl">5</span>, <span class="cn">NA</span>, <span class="cn">NA</span><span class="op">)</span>
-<span class="va">index</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/as.Date.html" class="external-link">as.Date</a></span><span class="op">(</span><span class="st">"2020-01-01"</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/as.Date.html" class="external-link">as.Date</a></span><span class="op">(</span><span class="st">"2020-01-14"</span><span class="op">)</span>, by <span class="op">=</span> <span class="st">"day"</span><span class="op">)</span>
-
-<span class="fu"><a href="../reference/na_approx.html">na_approx</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">index</span>, fill_na_tips <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></code></pre><p></p></div><div class="sourceCode"><pre><code><span class="co">##  [1]   NA  1.0  5.0 10.0  7.5  5.0 10.0  1.0  5.5 10.0  1.0  5.0   NA   NA</span></code></pre></div>
-
+</ul><p></p><div class="sourceCode r"><pre><code><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="cn">NA</span>, <span class="fl">1</span>, <span class="fl">5</span>, <span class="fl">10</span>, <span class="cn">NA</span>, <span class="fl">5</span>, <span class="fl">10</span>, <span class="fl">1</span>, <span class="cn">NA</span>, <span class="fl">10</span>, <span class="fl">1</span>, <span class="fl">5</span>, <span class="cn">NA</span>, <span class="cn">NA</span><span class="op">)</span></span>
+<span><span class="va">index</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/as.Date.html" class="external-link">as.Date</a></span><span class="op">(</span><span class="st">"2020-01-01"</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/as.Date.html" class="external-link">as.Date</a></span><span class="op">(</span><span class="st">"2020-01-14"</span><span class="op">)</span>, by <span class="op">=</span> <span class="st">"day"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="../reference/na_approx.html">na_approx</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">index</span>, fill_na_tips <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span><span class="co">#&gt;  [1]   NA  1.0  5.0 10.0  7.5  5.0 10.0  1.0  5.5 10.0  1.0  5.0   NA   NA</span></span></code></pre><p></p></div>
 <p><br>
 By using <code>fill_na_gaps == TRUE</code> (default), the function will fill those gaps
 with the closest non-missing data point.
 <br></p><ul><li><p>Example:</p></li>
-</ul><p></p><div class="sourceCode r"><pre><code><span class="fu"><a href="../reference/na_approx.html">na_approx</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">index</span>, fill_na_tips <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></code></pre><p></p></div><div class="sourceCode"><pre><code><span class="co">##  [1]  1.0  1.0  5.0 10.0  7.5  5.0 10.0  1.0  5.5 10.0  1.0  5.0  5.0  5.0</span></code></pre></div>
-
+</ul><p></p><div class="sourceCode r"><pre><code><span><span class="fu"><a href="../reference/na_approx.html">na_approx</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">index</span>, fill_na_tips <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="co">#&gt;  [1]  1.0  1.0  5.0 10.0  7.5  5.0 10.0  1.0  5.5 10.0  1.0  5.0  5.0  5.0</span></span></code></pre><p></p></div>
 </div>
 
     </div>
@@ -240,124 +253,124 @@ time series measured by actimetry. <em>Chronobiology International</em>.
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="cn">NA</span>, <span class="fl">1</span>, <span class="fl">5</span>, <span class="fl">10</span>, <span class="cn">NA</span>, <span class="fl">5</span>, <span class="fl">10</span>, <span class="fl">1</span>, <span class="cn">NA</span>, <span class="fl">10</span>, <span class="fl">1</span>, <span class="fl">5</span>, <span class="cn">NA</span>, <span class="cn">NA</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">index</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/as.Date.html" class="external-link">as.Date</a></span><span class="op">(</span><span class="st">"2020-01-01"</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/as.Date.html" class="external-link">as.Date</a></span><span class="op">(</span><span class="st">"2020-01-14"</span><span class="op">)</span>, by <span class="op">=</span> <span class="st">"day"</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">x</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="cn">NA</span>, <span class="fl">1</span>, <span class="fl">5</span>, <span class="fl">10</span>, <span class="cn">NA</span>, <span class="fl">5</span>, <span class="fl">10</span>, <span class="fl">1</span>, <span class="cn">NA</span>, <span class="fl">10</span>, <span class="fl">1</span>, <span class="fl">5</span>, <span class="cn">NA</span>, <span class="cn">NA</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">index</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/as.Date.html" class="external-link">as.Date</a></span><span class="op">(</span><span class="st">"2020-01-01"</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/as.Date.html" class="external-link">as.Date</a></span><span class="op">(</span><span class="st">"2020-01-14"</span><span class="op">)</span>, by <span class="op">=</span> <span class="st">"day"</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">x</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [1] NA  1  5 10 NA  5 10  1 NA 10  1  5 NA NA</span>
-<span class="r-in"><span class="co">#&gt; [1] NA  1  5 10 NA  5 10  1 NA 10  1  5 NA NA # Expected</span></span>
-<span class="r-in"><span class="fu">na_plot</span><span class="op">(</span><span class="va">x</span>, <span class="va">index</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="co">#&gt; [1] NA  1  5 10 NA  5 10  1 NA 10  1  5 NA NA # Expected</span></span></span>
+<span class="r-in"><span><span class="fu">na_plot</span><span class="op">(</span><span class="va">x</span>, <span class="va">index</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="na_approx-1.png" alt="" width="700" height="433"></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## 'na_approx()': Linear interpolation</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="fu">na_approx</span><span class="op">(</span><span class="va">x</span>, <span class="va">index</span>, fill_na_tips <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## 'na_approx()': Linear interpolation</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu">na_approx</span><span class="op">(</span><span class="va">x</span>, <span class="va">index</span>, fill_na_tips <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [1]   NA  1.0  5.0 10.0  7.5  5.0 10.0  1.0  5.5 10.0  1.0  5.0   NA   NA</span>
-<span class="r-in"><span class="co">#&gt; [1]   NA  1.0  5.0 10.0  7.5  5.0 10.0  1.0  5.5 10.0</span></span>
-<span class="r-in"><span class="co">#&gt; [11] 1.0  5.0  NA   NA # Expected</span></span>
-<span class="r-in"><span class="fu">na_plot</span><span class="op">(</span><span class="va">x</span>, <span class="va">index</span>, <span class="fu">na_approx</span><span class="op">(</span><span class="va">x</span>, <span class="va">index</span>, fill_na_tips <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="co">#&gt; [1]   NA  1.0  5.0 10.0  7.5  5.0 10.0  1.0  5.5 10.0</span></span></span>
+<span class="r-in"><span><span class="co">#&gt; [11] 1.0  5.0  NA   NA # Expected</span></span></span>
+<span class="r-in"><span><span class="fu">na_plot</span><span class="op">(</span><span class="va">x</span>, <span class="va">index</span>, <span class="fu">na_approx</span><span class="op">(</span><span class="va">x</span>, <span class="va">index</span>, fill_na_tips <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="na_approx-2.png" alt="" width="700" height="433"></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="fu">na_approx</span><span class="op">(</span><span class="va">x</span>, <span class="va">index</span>, fill_na_tips <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu">na_approx</span><span class="op">(</span><span class="va">x</span>, <span class="va">index</span>, fill_na_tips <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [1]  1.0  1.0  5.0 10.0  7.5  5.0 10.0  1.0  5.5 10.0  1.0  5.0  5.0  5.0</span>
-<span class="r-in"><span class="co">#&gt; [1]   1.0  1.0  5.0 10.0  7.5  5.0 10.0  1.0  5.5 10.0</span></span>
-<span class="r-in"><span class="co">#&gt; [11] 1.0  5.0  5.0  5.0 # Expected</span></span>
-<span class="r-in"><span class="fu">na_plot</span><span class="op">(</span><span class="va">x</span>, <span class="va">index</span>, <span class="fu">na_approx</span><span class="op">(</span><span class="va">x</span>, <span class="va">index</span>, fill_na_tips <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="co">#&gt; [1]   1.0  1.0  5.0 10.0  7.5  5.0 10.0  1.0  5.5 10.0</span></span></span>
+<span class="r-in"><span><span class="co">#&gt; [11] 1.0  5.0  5.0  5.0 # Expected</span></span></span>
+<span class="r-in"><span><span class="fu">na_plot</span><span class="op">(</span><span class="va">x</span>, <span class="va">index</span>, <span class="fu">na_approx</span><span class="op">(</span><span class="va">x</span>, <span class="va">index</span>, fill_na_tips <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="na_approx-3.png" alt="" width="700" height="433"></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## 'na_locf()': Last observation carried forward</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="fu">na_locf</span><span class="op">(</span><span class="va">x</span>, fill_na_tips <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## 'na_locf()': Last observation carried forward</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu">na_locf</span><span class="op">(</span><span class="va">x</span>, fill_na_tips <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [1] NA  1  5 10 10  5 10  1  1 10  1  5  5  5</span>
-<span class="r-in"><span class="co">#&gt; [1] NA  1  5 10 10  5 10  1  1 10  1  5  5  5 # Expected</span></span>
-<span class="r-in"><span class="fu">na_plot</span><span class="op">(</span><span class="va">x</span>, <span class="va">index</span>, <span class="fu">na_locf</span><span class="op">(</span><span class="va">x</span>, fill_na_tips <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="co">#&gt; [1] NA  1  5 10 10  5 10  1  1 10  1  5  5  5 # Expected</span></span></span>
+<span class="r-in"><span><span class="fu">na_plot</span><span class="op">(</span><span class="va">x</span>, <span class="va">index</span>, <span class="fu">na_locf</span><span class="op">(</span><span class="va">x</span>, fill_na_tips <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="na_approx-4.png" alt="" width="700" height="433"></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="fu">na_locf</span><span class="op">(</span><span class="va">x</span>, fill_na_tips <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu">na_locf</span><span class="op">(</span><span class="va">x</span>, fill_na_tips <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [1]  1  1  5 10 10  5 10  1  1 10  1  5  5  5</span>
-<span class="r-in"><span class="co">#&gt; [1]  1  1  5 10 10  5 10  1  1 10  1  5  5  5 # Expected</span></span>
-<span class="r-in"><span class="fu">na_plot</span><span class="op">(</span><span class="va">x</span>, <span class="va">index</span>, <span class="fu">na_locf</span><span class="op">(</span><span class="va">x</span>, fill_na_tips <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="co">#&gt; [1]  1  1  5 10 10  5 10  1  1 10  1  5  5  5 # Expected</span></span></span>
+<span class="r-in"><span><span class="fu">na_plot</span><span class="op">(</span><span class="va">x</span>, <span class="va">index</span>, <span class="fu">na_locf</span><span class="op">(</span><span class="va">x</span>, fill_na_tips <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="na_approx-5.png" alt="" width="700" height="433"></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## 'na_overall_mean()': Overall mean</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="fu">na_overall_mean</span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## 'na_overall_mean()': Overall mean</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu">na_overall_mean</span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [1]  5.333333  1.000000  5.000000 10.000000  5.333333  5.000000 10.000000</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [8]  1.000000  5.333333 10.000000  1.000000  5.000000  5.333333  5.333333</span>
-<span class="r-in"><span class="co">#&gt; [1]  5.333333  1.000000  5.000000 10.000000  5.333333  5.000000 10.000000</span></span>
-<span class="r-in"><span class="co">#&gt; [8] 1.000000 5.333333 10.000000  1.000000  5.000000  5.333333</span></span>
-<span class="r-in"><span class="co">#&gt; [14] 5.333333 # Expected</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">x</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="co">#&gt; [1]  5.333333  1.000000  5.000000 10.000000  5.333333  5.000000 10.000000</span></span></span>
+<span class="r-in"><span><span class="co">#&gt; [8] 1.000000 5.333333 10.000000  1.000000  5.000000  5.333333</span></span></span>
+<span class="r-in"><span><span class="co">#&gt; [14] 5.333333 # Expected</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">x</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 5.333333</span>
-<span class="r-in"><span class="co">#&gt; [1] 5.333333 # Expected</span></span>
-<span class="r-in"><span class="fu">na_plot</span><span class="op">(</span><span class="va">x</span>, <span class="va">index</span>, <span class="fu">na_overall_mean</span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="co">#&gt; [1] 5.333333 # Expected</span></span></span>
+<span class="r-in"><span><span class="fu">na_plot</span><span class="op">(</span><span class="va">x</span>, <span class="va">index</span>, <span class="fu">na_overall_mean</span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="na_approx-6.png" alt="" width="700" height="433"></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## 'na_overall_median()': Overall median</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="fu">na_overall_median</span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## 'na_overall_median()': Overall median</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu">na_overall_median</span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [1]  5  1  5 10  5  5 10  1  5 10  1  5  5  5</span>
-<span class="r-in"><span class="co">#&gt; [1]  5  1  5 10  5  5 10  1  5 10  1  5  5  5 # Expected</span></span>
-<span class="r-in"><span class="fu">stats</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/stats/median.html" class="external-link">median</a></span><span class="op">(</span><span class="va">x</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="co">#&gt; [1]  5  1  5 10  5  5 10  1  5 10  1  5  5  5 # Expected</span></span></span>
+<span class="r-in"><span><span class="fu">stats</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/stats/median.html" class="external-link">median</a></span><span class="op">(</span><span class="va">x</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 5</span>
-<span class="r-in"><span class="co">#&gt; [1] 5 # Expected</span></span>
-<span class="r-in"><span class="fu">na_plot</span><span class="op">(</span><span class="va">x</span>, <span class="va">index</span>, <span class="fu">na_overall_median</span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="co">#&gt; [1] 5 # Expected</span></span></span>
+<span class="r-in"><span><span class="fu">na_plot</span><span class="op">(</span><span class="va">x</span>, <span class="va">index</span>, <span class="fu">na_overall_median</span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="na_approx-7.png" alt="" width="700" height="433"></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## 'na_overall_mode()': Overall mode</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="fu">na_overall_mode</span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## 'na_overall_mode()': Overall mode</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu">na_overall_mode</span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #BBBB00;">!</span> No mode was found. <span style="color: #BB0000; font-weight: bold;">x</span> was not interpolated.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [1] NA  1  5 10 NA  5 10  1 NA 10  1  5 NA NA</span>
-<span class="r-in"><span class="co">#&gt; ! No mode was found. x was not interpolated.</span></span>
-<span class="r-in"><span class="co">#&gt; [1] NA  1  5 10 NA  5 10  1 NA 10  1  5 NA NA # Expected</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">x2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/append.html" class="external-link">append</a></span><span class="op">(</span><span class="va">x</span>, <span class="fl">1</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">index2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/append.html" class="external-link">append</a></span><span class="op">(</span><span class="va">index</span>, <span class="fu"><a href="https://rdrr.io/r/base/as.Date.html" class="external-link">as.Date</a></span><span class="op">(</span><span class="st">"2020-01-15"</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="fu">na_overall_mode</span><span class="op">(</span><span class="va">x2</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="co">#&gt; ! No mode was found. x was not interpolated.</span></span></span>
+<span class="r-in"><span><span class="co">#&gt; [1] NA  1  5 10 NA  5 10  1 NA 10  1  5 NA NA # Expected</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">x2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/append.html" class="external-link">append</a></span><span class="op">(</span><span class="va">x</span>, <span class="fl">1</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">index2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/append.html" class="external-link">append</a></span><span class="op">(</span><span class="va">index</span>, <span class="fu"><a href="https://rdrr.io/r/base/as.Date.html" class="external-link">as.Date</a></span><span class="op">(</span><span class="st">"2020-01-15"</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu">na_overall_mode</span><span class="op">(</span><span class="va">x2</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [1]  1  1  5 10  1  5 10  1  1 10  1  5  1  1  1</span>
-<span class="r-in"><span class="co">#&gt; [1]  1  1  5 10  1  5 10  1  1 10  1  5  1  1  1 # Expected</span></span>
-<span class="r-in"><span class="fu">na_plot</span><span class="op">(</span><span class="va">x2</span>, <span class="va">index2</span>, <span class="fu">na_overall_mode</span><span class="op">(</span><span class="va">x2</span><span class="op">)</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="co">#&gt; [1]  1  1  5 10  1  5 10  1  1 10  1  5  1  1  1 # Expected</span></span></span>
+<span class="r-in"><span><span class="fu">na_plot</span><span class="op">(</span><span class="va">x2</span>, <span class="va">index2</span>, <span class="fu">na_overall_mode</span><span class="op">(</span><span class="va">x2</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="na_approx-8.png" alt="" width="700" height="433"></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## 'na_spline()': Cubic spline interpolation</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="fu">na_spline</span><span class="op">(</span><span class="va">x</span>, <span class="va">index</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## 'na_spline()': Cubic spline interpolation</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu">na_spline</span><span class="op">(</span><span class="va">x</span>, <span class="va">index</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [1]   4.567728   1.000000   5.000000  10.000000   6.589146   5.000000</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [7]  10.000000   1.000000   5.037198  10.000000   1.000000   5.000000</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [13]  42.905390 131.216171</span>
-<span class="r-in"><span class="co">#&gt; [1]  4.567728   1.000000   5.000000  10.000000   6.589146   5.000000</span></span>
-<span class="r-in"><span class="co">#&gt; [7]  10.000000  1.000000   5.037198  10.000000   1.000000   5.000000</span></span>
-<span class="r-in"><span class="co">#&gt; [13] 42.905390 131.216171</span></span>
-<span class="r-in"><span class="fu">na_plot</span><span class="op">(</span><span class="va">x</span>, <span class="va">index</span>, <span class="fu">na_spline</span><span class="op">(</span><span class="va">x</span>, <span class="va">index</span><span class="op">)</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="co">#&gt; [1]  4.567728   1.000000   5.000000  10.000000   6.589146   5.000000</span></span></span>
+<span class="r-in"><span><span class="co">#&gt; [7]  10.000000  1.000000   5.037198  10.000000   1.000000   5.000000</span></span></span>
+<span class="r-in"><span><span class="co">#&gt; [13] 42.905390 131.216171</span></span></span>
+<span class="r-in"><span><span class="fu">na_plot</span><span class="op">(</span><span class="va">x</span>, <span class="va">index</span>, <span class="fu">na_spline</span><span class="op">(</span><span class="va">x</span>, <span class="va">index</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="na_approx-9.png" alt="" width="700" height="433"></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## 'na_weekly_mean()': Weekly mean</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="fu">na_weekly_mean</span><span class="op">(</span><span class="va">x</span>, <span class="va">index</span>, fill_na_tips <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## 'na_weekly_mean()': Weekly mean</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu">na_weekly_mean</span><span class="op">(</span><span class="va">x</span>, <span class="va">index</span>, fill_na_tips <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [1]  5.333333  1.000000  5.000000 10.000000  5.333333  5.000000 10.000000</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [8]  1.000000  5.333333 10.000000  1.000000  5.000000        NA        NA</span>
-<span class="r-in"><span class="co">#&gt; [1]  5.333333  1.000000  5.000000 10.000000  5.333333  5.000000 10.000000</span></span>
-<span class="r-in"><span class="co">#&gt; [8] 1.000000 5.333333 10.000000  1.000000  5.000000  NA  NA # Expected</span></span>
-<span class="r-in"><span class="fu">na_plot</span><span class="op">(</span><span class="va">x</span>, <span class="va">index</span>, <span class="fu">na_weekly_mean</span><span class="op">(</span><span class="va">x</span>, <span class="va">index</span>, fill_na_tips <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="co">#&gt; [1]  5.333333  1.000000  5.000000 10.000000  5.333333  5.000000 10.000000</span></span></span>
+<span class="r-in"><span><span class="co">#&gt; [8] 1.000000 5.333333 10.000000  1.000000  5.000000  NA  NA # Expected</span></span></span>
+<span class="r-in"><span><span class="fu">na_plot</span><span class="op">(</span><span class="va">x</span>, <span class="va">index</span>, <span class="fu">na_weekly_mean</span><span class="op">(</span><span class="va">x</span>, <span class="va">index</span>, fill_na_tips <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="na_approx-10.png" alt="" width="700" height="433"></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="fu">na_weekly_mean</span><span class="op">(</span><span class="va">x</span>, <span class="va">index</span>, fill_na_tips <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu">na_weekly_mean</span><span class="op">(</span><span class="va">x</span>, <span class="va">index</span>, fill_na_tips <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [1]  5.333333  1.000000  5.000000 10.000000  5.333333  5.000000 10.000000</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [8]  1.000000  5.333333 10.000000  1.000000  5.000000  5.000000  5.000000</span>
-<span class="r-in"><span class="co">#&gt; [1]  5.333333  1.000000  5.000000 10.000000  5.333333  5.000000 10.000000</span></span>
-<span class="r-in"><span class="co">#&gt; [8] 1.000000 5.333333 10.000000  1.000000  5.000000  5.000000</span></span>
-<span class="r-in"><span class="co">#&gt; [14] 5.000000 # Expected</span></span>
-<span class="r-in"><span class="fu">na_plot</span><span class="op">(</span><span class="va">x</span>, <span class="va">index</span>, <span class="fu">na_weekly_mean</span><span class="op">(</span><span class="va">x</span>, <span class="va">index</span>, fill_na_tips <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="co">#&gt; [1]  5.333333  1.000000  5.000000 10.000000  5.333333  5.000000 10.000000</span></span></span>
+<span class="r-in"><span><span class="co">#&gt; [8] 1.000000 5.333333 10.000000  1.000000  5.000000  5.000000</span></span></span>
+<span class="r-in"><span><span class="co">#&gt; [14] 5.000000 # Expected</span></span></span>
+<span class="r-in"><span><span class="fu">na_plot</span><span class="op">(</span><span class="va">x</span>, <span class="va">index</span>, <span class="fu">na_weekly_mean</span><span class="op">(</span><span class="va">x</span>, <span class="va">index</span>, fill_na_tips <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="na_approx-11.png" alt="" width="700" height="433"></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## 'na_zero()': Replace 'NA' with '0's</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="fu">na_zero</span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## 'na_zero()': Replace 'NA' with '0's</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu">na_zero</span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [1]  0  1  5 10  0  5 10  1  0 10  1  5  0  0</span>
-<span class="r-in"><span class="co">#&gt; [1]  0  1  5 10  0  5 10  1  0 10  1  5  0  0 # Expected</span></span>
-<span class="r-in"><span class="fu">na_plot</span><span class="op">(</span><span class="va">x</span>, <span class="va">index</span>, <span class="fu">na_zero</span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="co">#&gt; [1]  0  1  5 10  0  5 10  1  0 10  1  5  0  0 # Expected</span></span></span>
+<span class="r-in"><span><span class="fu">na_plot</span><span class="op">(</span><span class="va">x</span>, <span class="va">index</span>, <span class="fu">na_zero</span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="na_approx-12.png" alt="" width="700" height="433"></span>
 </code></pre></div>
     </div>
@@ -373,7 +386,7 @@ time series measured by actimetry. <em>Chronobiology International</em>.
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
 </div>
 
       </footer></div>

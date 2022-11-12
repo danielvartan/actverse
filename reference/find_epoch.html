@@ -62,7 +62,7 @@ on a predefined threshold.</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">find_epoch</span><span class="op">(</span><span class="va">data</span>, threshold <span class="op">=</span> <span class="fl">0.9</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">find_epoch</span><span class="op">(</span><span class="va">data</span>, threshold <span class="op">=</span> <span class="fl">0.9</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -70,15 +70,20 @@ on a predefined threshold.</p>
     <dl><dt>data</dt>
 <dd><p>A <a href="https://tsibble.tidyverts.org/reference/tsibble.html" class="external-link">tsibble</a> object with a <code><a href="https://rdrr.io/r/base/as.Date.html" class="external-link">Date</a></code>
 or <code><a href="https://rdrr.io/r/base/as.POSIXlt.html" class="external-link">POSIXt</a></code> vector as index.</p></dd>
+
+
 <dt>threshold</dt>
 <dd><p>(optional) a number, from <code>0</code> to <code>1</code>, indicating the minimum proportion
 that an epoch must have to be considered valid. <code>threshold = 1</code> means that
 the regularity of the time series must be strict (i.e., have just 1
 periodicity) (default: <code>0.9</code>).</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>A <code><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></code> object with the following elements:</p><ul><li><p><code>best_match</code>: A number indicating the epoch/periodicity above the
+    
+
+<p>A <code><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></code> object with the following elements:</p><ul><li><p><code>best_match</code>: A number indicating the epoch/periodicity above the
 <code>threshold</code> with greater prevalence in seconds. If none is find, <code>best_match</code>
 value will be equal as <code>as.numeric(NA)</code>.</p></li>
 <li><p><code>prevalence</code>: a <code><a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble</a></code> listing the unique
@@ -101,19 +106,19 @@ return just one of those values.</p>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="va">data</span> <span class="op">&lt;-</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble</a></span><span class="op">(</span></span>
-<span class="r-in">    index <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
-<span class="r-in">        <span class="fu"><a href="https://rdrr.io/r/base/as.POSIXlt.html" class="external-link">as.POSIXct</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">60</span>, <span class="fl">5400</span>, by <span class="op">=</span> <span class="fl">60</span><span class="op">)</span>, origin <span class="op">=</span> <span class="fu">lubridate</span><span class="fu">::</span><span class="va"><a href="https://lubridate.tidyverse.org/reference/origin.html" class="external-link">origin</a></span><span class="op">)</span>,</span>
-<span class="r-in">        <span class="fu"><a href="https://rdrr.io/r/base/as.POSIXlt.html" class="external-link">as.POSIXct</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">5430</span>, <span class="fl">5490</span>, by <span class="op">=</span> <span class="fl">30</span><span class="op">)</span>, origin <span class="op">=</span> <span class="fu">lubridate</span><span class="fu">::</span><span class="va"><a href="https://lubridate.tidyverse.org/reference/origin.html" class="external-link">origin</a></span><span class="op">)</span>,</span>
-<span class="r-in">        <span class="fu"><a href="https://rdrr.io/r/base/as.POSIXlt.html" class="external-link">as.POSIXct</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">5505</span>, <span class="fl">5520</span>, by <span class="op">=</span> <span class="fl">15</span><span class="op">)</span>, origin <span class="op">=</span> <span class="fu">lubridate</span><span class="fu">::</span><span class="va"><a href="https://lubridate.tidyverse.org/reference/origin.html" class="external-link">origin</a></span><span class="op">)</span>,</span>
-<span class="r-in">        <span class="fu"><a href="https://rdrr.io/r/base/as.POSIXlt.html" class="external-link">as.POSIXct</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">5530</span>, <span class="fl">5540</span>, by <span class="op">=</span> <span class="fl">10</span><span class="op">)</span>, origin <span class="op">=</span> <span class="fu">lubridate</span><span class="fu">::</span><span class="va"><a href="https://lubridate.tidyverse.org/reference/origin.html" class="external-link">origin</a></span><span class="op">)</span>,</span>
-<span class="r-in">        <span class="fu"><a href="https://rdrr.io/r/base/as.POSIXlt.html" class="external-link">as.POSIXct</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">5545</span>, <span class="fl">5555</span>, by <span class="op">=</span> <span class="fl">5</span><span class="op">)</span>, origin <span class="op">=</span> <span class="fu">lubridate</span><span class="fu">::</span><span class="va"><a href="https://lubridate.tidyverse.org/reference/origin.html" class="external-link">origin</a></span><span class="op">)</span></span>
-<span class="r-in">        <span class="op">)</span>,</span>
-<span class="r-in">    x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq_along</a></span><span class="op">(</span><span class="va">timestamp</span><span class="op">)</span></span>
-<span class="r-in">    <span class="op">)</span></span>
-<span class="r-in"><span class="va">data</span> <span class="op">&lt;-</span> <span class="fu">tsibble</span><span class="fu">::</span><span class="fu"><a href="https://tsibble.tidyverts.org/reference/tsibble.html" class="external-link">tsibble</a></span><span class="op">(</span><span class="va">data</span>, index <span class="op">=</span> <span class="va">index</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="fu">find_epoch</span><span class="op">(</span><span class="va">data</span>, <span class="fl">0.8</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">data</span> <span class="op">&lt;-</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>    index <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>        <span class="fu"><a href="https://rdrr.io/r/base/as.POSIXlt.html" class="external-link">as.POSIXct</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">60</span>, <span class="fl">5400</span>, by <span class="op">=</span> <span class="fl">60</span><span class="op">)</span>, origin <span class="op">=</span> <span class="fu">lubridate</span><span class="fu">::</span><span class="va"><a href="https://lubridate.tidyverse.org/reference/origin.html" class="external-link">origin</a></span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>        <span class="fu"><a href="https://rdrr.io/r/base/as.POSIXlt.html" class="external-link">as.POSIXct</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">5430</span>, <span class="fl">5490</span>, by <span class="op">=</span> <span class="fl">30</span><span class="op">)</span>, origin <span class="op">=</span> <span class="fu">lubridate</span><span class="fu">::</span><span class="va"><a href="https://lubridate.tidyverse.org/reference/origin.html" class="external-link">origin</a></span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>        <span class="fu"><a href="https://rdrr.io/r/base/as.POSIXlt.html" class="external-link">as.POSIXct</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">5505</span>, <span class="fl">5520</span>, by <span class="op">=</span> <span class="fl">15</span><span class="op">)</span>, origin <span class="op">=</span> <span class="fu">lubridate</span><span class="fu">::</span><span class="va"><a href="https://lubridate.tidyverse.org/reference/origin.html" class="external-link">origin</a></span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>        <span class="fu"><a href="https://rdrr.io/r/base/as.POSIXlt.html" class="external-link">as.POSIXct</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">5530</span>, <span class="fl">5540</span>, by <span class="op">=</span> <span class="fl">10</span><span class="op">)</span>, origin <span class="op">=</span> <span class="fu">lubridate</span><span class="fu">::</span><span class="va"><a href="https://lubridate.tidyverse.org/reference/origin.html" class="external-link">origin</a></span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>        <span class="fu"><a href="https://rdrr.io/r/base/as.POSIXlt.html" class="external-link">as.POSIXct</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">5545</span>, <span class="fl">5555</span>, by <span class="op">=</span> <span class="fl">5</span><span class="op">)</span>, origin <span class="op">=</span> <span class="fu">lubridate</span><span class="fu">::</span><span class="va"><a href="https://lubridate.tidyverse.org/reference/origin.html" class="external-link">origin</a></span><span class="op">)</span></span></span>
+<span class="r-in"><span>        <span class="op">)</span>,</span></span>
+<span class="r-in"><span>    x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq_along</a></span><span class="op">(</span><span class="va">timestamp</span><span class="op">)</span></span></span>
+<span class="r-in"><span>    <span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">data</span> <span class="op">&lt;-</span> <span class="fu">tsibble</span><span class="fu">::</span><span class="fu"><a href="https://tsibble.tidyverts.org/reference/tsibble.html" class="external-link">tsibble</a></span><span class="op">(</span><span class="va">data</span>, index <span class="op">=</span> <span class="va">index</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu">find_epoch</span><span class="op">(</span><span class="va">data</span>, <span class="fl">0.8</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $best_match</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 60</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
@@ -141,7 +146,7 @@ return just one of those values.</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
 </div>
 
       </footer></div>
