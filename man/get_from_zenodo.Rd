@@ -68,7 +68,9 @@ and Floris Vanderhaeghe (floris.vanderhaeghe@inbo.be).
 We give our thanks for the INBO institute and for all developers involved
 in this piece of software.
 
-Please note that this code comes with an \href{https://opensource.org/licenses/MIT}{MIT License}. You can read the latter below.\preformatted{Copyright (c) 2016 Instituut voor Natuur en Bosonderzoek (INBO)
+Please note that this code comes with an \href{https://opensource.org/licenses/MIT}{MIT License}. You can read the latter below.
+
+\if{html}{\out{<div class="sourceCode">}}\preformatted{Copyright (c) 2016 Instituut voor Natuur en Bosonderzoek (INBO)
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -87,7 +89,7 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
-}
+}\if{html}{\out{</div>}}
 }
 }
 \examples{

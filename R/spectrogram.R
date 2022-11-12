@@ -120,7 +120,7 @@ spectrogram <- function(data, col, p_unit = "minutes", p_min = 1000,
                                   alpha = alpha, print = FALSE))
 
     data <- data %>%
-        dplyr::select(tsibble::index2_var(.), col) %>%
+        dplyr::select(dplyr::all_of(c(tsibble::index2_var(.), col))) %>%
         aggregate_index(p_unit)
 
     epoch <- find_epoch(data, 0.9)

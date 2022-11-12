@@ -40,8 +40,10 @@ ActTrust is a trademark of
 \subsection{Requirements}{
 
 \code{write_acttrust()} requires the \code{\link[readr:readr-package]{readr}} package. If
-you don't already have it installed, you can install it with:\preformatted{install.packages("readr")
-}
+you don't already have it installed, you can install it with:
+
+\if{html}{\out{<div class="sourceCode">}}\preformatted{install.packages("readr")
+}\if{html}{\out{</div>}}
 }
 
 \subsection{\code{NA} values}{

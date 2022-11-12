@@ -84,12 +84,14 @@ That's the case, for example, with the linear interpolation method
 (\code{na_approx()}).
 \itemize{
 \item Example:
-}\if{html}{\out{<div class="sourceCode r">}}\preformatted{x <- c(NA, 1, 5, 10, NA, 5, 10, 1, NA, 10, 1, 5, NA, NA)
+}
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{x <- c(NA, 1, 5, 10, NA, 5, 10, 1, NA, 10, 1, 5, NA, NA)
 index <- seq(as.Date("2020-01-01"), as.Date("2020-01-14"), by = "day")
 
 na_approx(x, index, fill_na_tips = FALSE)
-}\if{html}{\out{</div>}}\preformatted{##  [1]   NA  1.0  5.0 10.0  7.5  5.0 10.0  1.0  5.5 10.0  1.0  5.0   NA   NA
-}
+#>  [1]   NA  1.0  5.0 10.0  7.5  5.0 10.0  1.0  5.5 10.0  1.0  5.0   NA   NA
+}\if{html}{\out{</div>}}
 
 \cr
 By using \code{fill_na_gaps == TRUE} (default), the function will fill those gaps
@@ -97,9 +99,11 @@ with the closest non-missing data point.
 \cr
 \itemize{
 \item Example:
-}\if{html}{\out{<div class="sourceCode r">}}\preformatted{na_approx(x, index, fill_na_tips = TRUE)
-}\if{html}{\out{</div>}}\preformatted{##  [1]  1.0  1.0  5.0 10.0  7.5  5.0 10.0  1.0  5.5 10.0  1.0  5.0  5.0  5.0
 }
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{na_approx(x, index, fill_na_tips = TRUE)
+#>  [1]  1.0  1.0  5.0 10.0  7.5  5.0 10.0  1.0  5.5 10.0  1.0  5.0  5.0  5.0
+}\if{html}{\out{</div>}}
 }
 }
 \section{Methods}{

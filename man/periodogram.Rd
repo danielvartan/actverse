@@ -147,7 +147,9 @@ the difference between the columns, more intense will be the standard
 deviation (\eqn{A_{p}}{Ap}).
 \itemize{
 \item Buys-Ballot table for an integral period \eqn{p}:
-}\preformatted{                               P (count)
+}
+
+\if{html}{\out{<div class="sourceCode">}}\preformatted{                               P (count)
           |------------------------------------------------|     -
                                                                  |
 Row 1          X_1          X_2          ...          X_P        |
@@ -157,7 +159,7 @@ Row m      X_P(m-1)+1   X_P(m-1)+2       ...          X_Pm       |
           --------------------------------------------------     -
 Totals        U_P,1        U_P,2         ...          U_P,P
 Averages      Y_P,1        Y_P,2         ...          Y_P,P
-}
+}\if{html}{\out{</div>}}
 
 As the table above shows, \eqn{P} is the number of columns in the array
 (matrix/table), while \eqn{m} is the number of rows. When \eqn{p} (test

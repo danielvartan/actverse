@@ -40,7 +40,9 @@ provided by the \href{https://tsibble.tidyverts.org/}{\code{tsibble}} package.
 \subsection{Default function}{
 
 If \code{fun == NULL}, \code{aggregate_index()} will use the following function to
-transform each measured variable:\preformatted{function(x) \{
+transform each measured variable:
+
+\if{html}{\out{<div class="sourceCode">}}\preformatted{function(x) \{
     checkmate::assert_atomic_vector(x)
 
     if (is.numeric(x) && !all(nchar(x) == 1, na.rm = TRUE)) \{
@@ -51,7 +53,7 @@ transform each measured variable:\preformatted{function(x) \{
         unique[which.max(tabulate(match(y, unique)))]
     \}
 \}
-}
+}\if{html}{\out{</div>}}
 
 This function average values for numeric variables and assigning the most
 frequent value (mode) for single integer or other type of variables. If no
