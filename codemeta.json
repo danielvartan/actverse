@@ -14,7 +14,7 @@
     "name": "R",
     "url": "https://r-project.org"
   },
-  "runtimePlatform": "R version 4.2.0 (2022-04-22 ucrt)",
+  "runtimePlatform": "R version 4.2.2 (2022-10-31 ucrt)",
   "author": [
     {
       "@type": "Person",
@@ -94,7 +94,7 @@
       "@type": "SoftwareApplication",
       "identifier": "covr",
       "name": "covr",
-      "version": ">= 3.5.1",
+      "version": ">= 3.6.1",
       "provider": {
         "@id": "https://cran.r-project.org",
         "@type": "Organization",
@@ -107,7 +107,7 @@
       "@type": "SoftwareApplication",
       "identifier": "curl",
       "name": "curl",
-      "version": ">= 4.3.2",
+      "version": ">= 4.3.3",
       "provider": {
         "@id": "https://cran.r-project.org",
         "@type": "Organization",
@@ -120,7 +120,7 @@
       "@type": "SoftwareApplication",
       "identifier": "jsonlite",
       "name": "jsonlite",
-      "version": ">= 1.8.0",
+      "version": ">= 1.8.3",
       "provider": {
         "@id": "https://cran.r-project.org",
         "@type": "Organization",
@@ -133,7 +133,7 @@
       "@type": "SoftwareApplication",
       "identifier": "knitr",
       "name": "knitr",
-      "version": ">= 1.37",
+      "version": ">= 1.40",
       "provider": {
         "@id": "https://cran.r-project.org",
         "@type": "Organization",
@@ -146,7 +146,7 @@
       "@type": "SoftwareApplication",
       "identifier": "mockr",
       "name": "mockr",
-      "version": ">= 0.1",
+      "version": ">= 0.2.0",
       "provider": {
         "@id": "https://cran.r-project.org",
         "@type": "Organization",
@@ -159,13 +159,13 @@
       "@type": "SoftwareApplication",
       "identifier": "parallel",
       "name": "parallel",
-      "version": ">= 4.0.0"
+      "version": ">= 4.1.0"
     },
     {
       "@type": "SoftwareApplication",
       "identifier": "plotly",
       "name": "plotly",
-      "version": ">= 4.10.0",
+      "version": ">= 4.10.1",
       "provider": {
         "@id": "https://cran.r-project.org",
         "@type": "Organization",
@@ -178,7 +178,7 @@
       "@type": "SoftwareApplication",
       "identifier": "readr",
       "name": "readr",
-      "version": ">= 2.1.2",
+      "version": ">= 2.1.3",
       "provider": {
         "@id": "https://cran.r-project.org",
         "@type": "Organization",
@@ -191,7 +191,7 @@
       "@type": "SoftwareApplication",
       "identifier": "rmarkdown",
       "name": "rmarkdown",
-      "version": ">= 2.13",
+      "version": ">= 2.18",
       "provider": {
         "@id": "https://cran.r-project.org",
         "@type": "Organization",
@@ -217,7 +217,7 @@
       "@type": "SoftwareApplication",
       "identifier": "suncalc",
       "name": "suncalc",
-      "version": ">= 0.5.0",
+      "version": ">= 0.5.1",
       "provider": {
         "@id": "https://cran.r-project.org",
         "@type": "Organization",
@@ -230,7 +230,7 @@
       "@type": "SoftwareApplication",
       "identifier": "testthat",
       "name": "testthat",
-      "version": ">= 3.1.2",
+      "version": ">= 3.1.5",
       "provider": {
         "@id": "https://cran.r-project.org",
         "@type": "Organization",
@@ -243,7 +243,7 @@
       "@type": "SoftwareApplication",
       "identifier": "tibble",
       "name": "tibble",
-      "version": ">= 3.1.6",
+      "version": ">= 3.1.8",
       "provider": {
         "@id": "https://cran.r-project.org",
         "@type": "Organization",
@@ -256,19 +256,19 @@
       "@type": "SoftwareApplication",
       "identifier": "tools",
       "name": "tools",
-      "version": ">= 4.0.0"
+      "version": ">= 4.1.0"
     },
     {
       "@type": "SoftwareApplication",
       "identifier": "utils",
       "name": "utils",
-      "version": ">= 4.0.0"
+      "version": ">= 4.1.0"
     },
     {
       "@type": "SoftwareApplication",
       "identifier": "zoo",
       "name": "zoo",
-      "version": ">= 1.8-9",
+      "version": ">= 1.8-11",
       "provider": {
         "@id": "https://cran.r-project.org",
         "@type": "Organization",
@@ -283,13 +283,13 @@
       "@type": "SoftwareApplication",
       "identifier": "R",
       "name": "R",
-      "version": ">= 4.0"
+      "version": ">= 4.1"
     },
     "2": {
       "@type": "SoftwareApplication",
       "identifier": "checkmate",
       "name": "checkmate",
-      "version": ">= 2.0.0",
+      "version": ">= 2.1.0",
       "provider": {
         "@id": "https://cran.r-project.org",
         "@type": "Organization",
@@ -302,7 +302,7 @@
       "@type": "SoftwareApplication",
       "identifier": "cli",
       "name": "cli",
-      "version": ">= 3.2.0",
+      "version": ">= 3.4.1",
       "provider": {
         "@id": "https://cran.r-project.org",
         "@type": "Organization",
@@ -315,7 +315,7 @@
       "@type": "SoftwareApplication",
       "identifier": "dplyr",
       "name": "dplyr",
-      "version": ">= 1.0.8",
+      "version": ">= 1.0.10",
       "provider": {
         "@id": "https://cran.r-project.org",
         "@type": "Organization",
@@ -328,7 +328,7 @@
       "@type": "SoftwareApplication",
       "identifier": "ggplot2",
       "name": "ggplot2",
-      "version": ">= 3.3.5",
+      "version": ">= 3.4.0",
       "provider": {
         "@id": "https://cran.r-project.org",
         "@type": "Organization",
@@ -341,7 +341,7 @@
       "@type": "SoftwareApplication",
       "identifier": "hms",
       "name": "hms",
-      "version": ">= 1.1.1",
+      "version": ">= 1.1.2",
       "provider": {
         "@id": "https://cran.r-project.org",
         "@type": "Organization",
@@ -354,7 +354,7 @@
       "@type": "SoftwareApplication",
       "identifier": "lifecycle",
       "name": "lifecycle",
-      "version": ">= 1.0.1",
+      "version": ">= 1.0.3",
       "provider": {
         "@id": "https://cran.r-project.org",
         "@type": "Organization",
@@ -367,7 +367,7 @@
       "@type": "SoftwareApplication",
       "identifier": "lubridate",
       "name": "lubridate",
-      "version": ">= 1.8.0",
+      "version": ">= 1.9.0",
       "provider": {
         "@id": "https://cran.r-project.org",
         "@type": "Organization",
@@ -393,7 +393,7 @@
       "@type": "SoftwareApplication",
       "identifier": "purrr",
       "name": "purrr",
-      "version": ">= 0.3.4",
+      "version": ">= 0.3.5",
       "provider": {
         "@id": "https://cran.r-project.org",
         "@type": "Organization",
@@ -406,7 +406,7 @@
       "@type": "SoftwareApplication",
       "identifier": "rlang",
       "name": "rlang",
-      "version": ">= 1.0.2",
+      "version": ">= 1.0.6",
       "provider": {
         "@id": "https://cran.r-project.org",
         "@type": "Organization",
@@ -419,13 +419,13 @@
       "@type": "SoftwareApplication",
       "identifier": "stats",
       "name": "stats",
-      "version": ">= 4.0.0"
+      "version": ">= 4.1.0"
     },
     "13": {
       "@type": "SoftwareApplication",
       "identifier": "tsibble",
       "name": "tsibble",
-      "version": ">= 1.1.1",
+      "version": ">= 1.1.3",
       "provider": {
         "@id": "https://cran.r-project.org",
         "@type": "Organization",
@@ -462,7 +462,7 @@
     },
     "SystemRequirements": null
   },
-  "fileSize": "617.029KB",
+  "fileSize": "666.139KB",
   "citation": [
     {
       "@type": "CreativeWork",

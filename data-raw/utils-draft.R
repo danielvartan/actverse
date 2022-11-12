@@ -1,8 +1,8 @@
-library(anonymizer)
-library(checkmate)
-library(magrittr)
-library(tools)
-library(utils)
+# library(anonymizer)
+# library(checkmate)
+# library(magrittr)
+# library(tools)
+# library(utils)
 
 anonymize_file_names <- function(dir = utils::choose.dir(), algo = "md5",
                                  seed = 0, chars = letters, n_chars = 5L) {

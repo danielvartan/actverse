@@ -1,5 +1,5 @@
 # -----------------------------------------------------------
-# CITATION file created with {cffr} R package, v0.2.2
+# CITATION file created with {cffr} R package, v0.3.0
 # See also: https://docs.ropensci.org/cffr/
 # -----------------------------------------------------------
  
@@ -82,7 +82,7 @@ references:
   url: https://www.R-project.org/
   institution:
     name: R Foundation for Statistical Computing
-  version: '>= 4.0'
+  version: '>= 4.1'
 - type: software
   title: checkmate
   abstract: 'checkmate: Fast and Versatile Argument Checks'
@@ -94,7 +94,7 @@ references:
     orcid: https://orcid.org/0000-0001-9754-0393
   year: '2022'
   url: https://CRAN.R-project.org/package=checkmate
-  version: '>= 2.0.0'
+  version: '>= 2.1.0'
 - type: software
   title: cli
   abstract: 'cli: Helpers for Developing Command Line Interfaces'
@@ -105,7 +105,7 @@ references:
     email: csardi.gabor@gmail.com
   year: '2022'
   url: https://CRAN.R-project.org/package=cli
-  version: '>= 3.2.0'
+  version: '>= 3.4.1'
 - type: software
   title: dplyr
   abstract: 'dplyr: A Grammar of Data Manipulation'
@@ -125,7 +125,7 @@ references:
     orcid: https://orcid.org/0000-0002-1416-3412
   year: '2022'
   url: https://CRAN.R-project.org/package=dplyr
-  version: '>= 1.0.8'
+  version: '>= 1.0.10'
 - type: software
   title: ggplot2
   abstract: 'ggplot2: Create Elegant Data Visualisations Using the Grammar of Graphics'
@@ -160,7 +160,7 @@ references:
     orcid: https://orcid.org/0000-0002-9415-4582
   year: '2022'
   url: https://CRAN.R-project.org/package=ggplot2
-  version: '>= 3.3.5'
+  version: '>= 3.4.0'
 - type: software
   title: hms
   abstract: 'hms: Pretty Time of Day'
@@ -168,10 +168,11 @@ references:
   authors:
   - family-names: Müller
     given-names: Kirill
-    email: krlmlr+r@mailbox.org
+    email: kirill@cynkra.com
+    orcid: https://orcid.org/0000-0002-1416-3412
   year: '2022'
   url: https://CRAN.R-project.org/package=hms
-  version: '>= 1.1.1'
+  version: '>= 1.1.2'
 - type: software
   title: lifecycle
   abstract: 'lifecycle: Manage the Life Cycle of your Package Functions'
@@ -186,7 +187,7 @@ references:
     orcid: https://orcid.org/0000-0003-4757-117X
   year: '2022'
   url: https://CRAN.R-project.org/package=lifecycle
-  version: '>= 1.0.1'
+  version: '>= 1.0.3'
 - type: software
   title: lubridate
   abstract: 'lubridate: Make Dealing with Dates a Little Easier'
@@ -201,7 +202,7 @@ references:
     given-names: Hadley
   year: '2022'
   url: https://CRAN.R-project.org/package=lubridate
-  version: '>= 1.8.0'
+  version: '>= 1.9.0'
 - type: software
   title: magrittr
   abstract: 'magrittr: A Forward-Pipe Operator for R'
@@ -229,7 +230,7 @@ references:
     email: hadley@rstudio.com
   year: '2022'
   url: https://CRAN.R-project.org/package=purrr
-  version: '>= 0.3.4'
+  version: '>= 0.3.5'
 - type: software
   title: rlang
   abstract: 'rlang: Functions for Base Types and Core R and ''Tidyverse'' Features'
@@ -243,7 +244,7 @@ references:
     email: hadley@rstudio.com
   year: '2022'
   url: https://CRAN.R-project.org/package=rlang
-  version: '>= 1.0.2'
+  version: '>= 1.0.6'
 - type: software
   title: stats
   abstract: 'R: A Language and Environment for Statistical Computing'
@@ -256,7 +257,7 @@ references:
   url: https://www.R-project.org/
   institution:
     name: R Foundation for Statistical Computing
-  version: '>= 4.0.0'
+  version: '>= 4.1.0'
 - type: software
   title: tsibble
   abstract: 'tsibble: Tidy Temporal Data Frames and Tools'
@@ -277,7 +278,7 @@ references:
     orcid: https://orcid.org/0000-0001-6729-7695
   year: '2022'
   url: https://CRAN.R-project.org/package=tsibble
-  version: '>= 1.1.1'
+  version: '>= 1.1.3'
 - type: software
   title: viridis
   abstract: 'viridis: Colorblind-Friendly Color Maps for R'
@@ -323,7 +324,7 @@ references:
     email: james.f.hester@gmail.com
   year: '2022'
   url: https://CRAN.R-project.org/package=covr
-  version: '>= 3.5.1'
+  version: '>= 3.6.1'
 - type: software
   title: curl
   abstract: 'curl: A Modern and Flexible Web Client for R'
@@ -335,7 +336,7 @@ references:
     orcid: https://orcid.org/0000-0002-4035-0289
   year: '2022'
   url: https://CRAN.R-project.org/package=curl
-  version: '>= 4.3.2'
+  version: '>= 4.3.3'
 - type: software
   title: jsonlite
   abstract: 'jsonlite: A Simple and Robust JSON Parser and Generator for R'
@@ -347,7 +348,7 @@ references:
     orcid: https://orcid.org/0000-0002-4035-0289
   year: '2022'
   url: https://CRAN.R-project.org/package=jsonlite
-  version: '>= 1.8.0'
+  version: '>= 1.8.3'
 - type: software
   title: knitr
   abstract: 'knitr: A General-Purpose Package for Dynamic Report Generation in R'
@@ -359,7 +360,7 @@ references:
     orcid: https://orcid.org/0000-0003-0645-5666
   year: '2022'
   url: https://CRAN.R-project.org/package=knitr
-  version: '>= 1.37'
+  version: '>= 1.40'
 - type: software
   title: mockr
   abstract: 'mockr: Mocking in R'
@@ -370,7 +371,7 @@ references:
     email: krlmlr+r@mailbox.org
   year: '2022'
   url: https://CRAN.R-project.org/package=mockr
-  version: '>= 0.1'
+  version: '>= 0.2.0'
 - type: software
   title: parallel
   abstract: 'R: A Language and Environment for Statistical Computing'
@@ -383,7 +384,7 @@ references:
   url: https://www.R-project.org/
   institution:
     name: R Foundation for Statistical Computing
-  version: '>= 4.0.0'
+  version: '>= 4.1.0'
 - type: software
   title: plotly
   abstract: 'plotly: Create Interactive Web Graphics via ''plotly.js'''
@@ -414,7 +415,7 @@ references:
     email: pedro@plot.ly
   year: '2022'
   url: https://CRAN.R-project.org/package=plotly
-  version: '>= 4.10.0'
+  version: '>= 4.10.1'
 - type: software
   title: readr
   abstract: 'readr: Read Rectangular Text Data'
@@ -431,7 +432,7 @@ references:
     orcid: https://orcid.org/0000-0002-6983-2759
   year: '2022'
   url: https://CRAN.R-project.org/package=readr
-  version: '>= 2.1.2'
+  version: '>= 2.1.3'
 - type: software
   title: rmarkdown
   abstract: 'rmarkdown: Dynamic Documents for R'
@@ -471,7 +472,7 @@ references:
     orcid: https://orcid.org/0000-0003-3925-190X
   year: '2022'
   url: https://CRAN.R-project.org/package=rmarkdown
-  version: '>= 2.13'
+  version: '>= 2.18'
 - type: software
   title: spelling
   abstract: 'spelling: Tools for Spell Checking in R'
@@ -485,6 +486,7 @@ references:
     given-names: Jim
     email: james.hester@rstudio.com
   year: '2022'
+  url: https://CRAN.R-project.org/package=spelling
   version: '>= 2.2'
 - type: software
   title: suncalc
@@ -494,13 +496,13 @@ references:
   authors:
   - family-names: Thieurmel
     given-names: Benoit
-    email: benoit.thieurmel@datastorm.fr
+    email: bthieurmel@gmail.com
   - family-names: Elmarhraoui
     given-names: Achraf
-    email: achraf.elmarhraoui@datastorm.fr
+    email: achraf.elmar@gmail.com
   year: '2022'
   url: https://CRAN.R-project.org/package=suncalc
-  version: '>= 0.5.0'
+  version: '>= 0.5.1'
 - type: software
   title: testthat
   abstract: 'testthat: Unit Testing for R'
@@ -511,7 +513,7 @@ references:
     email: hadley@rstudio.com
   year: '2022'
   url: https://CRAN.R-project.org/package=testthat
-  version: '>= 3.1.2'
+  version: '>= 3.1.5'
 - type: software
   title: tibble
   abstract: 'tibble: Simple Data Frames'
@@ -525,7 +527,7 @@ references:
     email: hadley@rstudio.com
   year: '2022'
   url: https://CRAN.R-project.org/package=tibble
-  version: '>= 3.1.6'
+  version: '>= 3.1.8'
 - type: software
   title: tools
   abstract: 'R: A Language and Environment for Statistical Computing'
@@ -538,7 +540,7 @@ references:
   url: https://www.R-project.org/
   institution:
     name: R Foundation for Statistical Computing
-  version: '>= 4.0.0'
+  version: '>= 4.1.0'
 - type: software
   title: utils
   abstract: 'R: A Language and Environment for Statistical Computing'
@@ -551,7 +553,7 @@ references:
   url: https://www.R-project.org/
   institution:
     name: R Foundation for Statistical Computing
-  version: '>= 4.0.0'
+  version: '>= 4.1.0'
 - type: software
   title: zoo
   abstract: 'zoo: S3 Infrastructure for Regular and Irregular Time Series (Z''s Ordered
@@ -570,7 +572,7 @@ references:
     email: jeff.a.ryan@gmail.com
   year: '2022'
   url: https://CRAN.R-project.org/package=zoo
-  version: '>= 1.8-9'
+  version: '>= 1.8-11'
 identifiers:
 - type: url
   value: https://github.com/gipso/actverse/
