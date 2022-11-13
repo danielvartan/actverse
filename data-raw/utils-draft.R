@@ -1,5 +1,8 @@
+# library(actverse)
 # library(anonymizer)
 # library(checkmate)
+# library(cli)
+# library(lubridate)
 # library(magrittr)
 # library(tools)
 # library(utils)
@@ -34,6 +37,82 @@ anonymize_file_names <- function(dir = utils::choose.dir(), algo = "md5",
     }
 
     NULL
+}
+
+# list_files_to_clipboard(dir = normalizePath(readClipboard(), "/",
+#                                             mustWork = FALSE))
+
+list_files_to_clipboard <- function(dir = utils::choose.dir()) {
+    checkmate::assert_directory_exists(dir)
+
+    if (length(list.files(dir)) == 0) {
+        cli::cli_alert_warning(paste0("No files were found."))
+
+        return(invisible(NULL))
+    }
+
+    out <- character()
+
+    for (i in list.files(dir)) {
+        if (checkmate::test_file_exists(file.path(dir, i))) {
+            out <- append(out, i)
+        }
+    }
+
+    if (length(out) == 0) {
+        utils::writeClipboard("NULL")
+        cli::cli_alert_warning(paste0("No files were found."))
+    } else {
+        utils::writeClipboard(out)
+        print(out)
+    }
+
+    invisible(NULL)
+}
+
+# list_newest_and_oldest_data(dir = normalizePath(readClipboard(), "/",
+#                                                 mustWork = FALSE))
+
+list_newest_and_oldest_data <- function(dir = utils::choose.dir()) {
+    checkmate::assert_directory_exists(dir)
+
+    if (length(list.files(dir)) == 0) {
+        cli::cli_alert_warning(paste0("No files were found."))
+
+        return(invisible(NULL))
+    }
+
+    out <- character()
+
+    for (i in list.files(dir)) {
+        file <- file.path(dir, i)
+
+        if (checkmate::test_file_exists(file)) {
+            data <- actverse:::shush(actverse:::read_acttrust_data(file))
+
+            out <- append(out, data[[1]][1])
+        }
+    }
+
+    out <- out %>% lubridate::dmy_hms() %>% sort()
+
+    if (length(out) == 0) {
+        cli::cli_alert_warning(paste0("No files were found."))
+    } else {
+        cli::cli_alert_info(paste0(
+            "{.strong Number of files}: {length(out)}"
+        ))
+
+        cli::cli_alert_info(paste0(
+            "{.strong Newest file}: {out[1]}"
+        ))
+
+        cli::cli_alert_info(paste0(
+            "{.strong Oldest file}: {out[length(out)]}"
+        ))
+    }
+
+    invisible(NULL)
 }
 
 remove_acttrust_header <- function(dir = utils::choose.dir()) {

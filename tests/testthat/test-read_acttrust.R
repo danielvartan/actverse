@@ -77,7 +77,7 @@ test_that("read_acttrust_data() | general test", {
 
     expect_equal(shush(read_acttrust_data(file)), expected)
 
-    header <- c("Condor Instruments Report", rep("\n", 12))
+    header <- c("Condor Instruments Report", rep("\n", 12), "+--------+")
     data <- gsub(";", "\t", data)
 
     writeLines(c(header, data), file)

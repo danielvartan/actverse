@@ -100,10 +100,18 @@ read_acttrust_data <- function(file = file.choose()) {
 
     cli::cli_progress_step("Reading data")
 
-    if (grepl("Condor Instruments Report",
-              readLines(file, n = 1))) {
-        skip <- 25
-        n <- 26
+    lines <- readLines(file, n = 100)
+
+    if (grepl("Condor Instruments Report", lines[1])) {
+        for (i in seq(2, length(lines))) {
+            if (grepl("^\\+\\-\\-\\-", lines[i]) &&
+                grepl("\\-\\-\\-\\+$", lines[i])) {
+                break
+            }
+        }
+
+        skip <- i
+        n <- i + 1
     } else {
         skip <- 0
         n <- 1
