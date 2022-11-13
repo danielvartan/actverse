@@ -104,7 +104,7 @@ write_acttrust <- function(data, file, delim = ";", header = NULL) {
                           ~ dplyr::if_else(is.na(.x), 0, .x))
             ) %>%
         dplyr::mutate(
-            timestamp = as.character(timestamp, "%d/%m/%Y %H:%M:%S"),
+            timestamp = as.character(timestamp, format = "%d/%m/%Y %H:%M:%S"),
             ms = 0,
             pim_n = pim / epoch,
             tat_n = tat / epoch,
