@@ -7,14 +7,18 @@
 # library(tools)
 # library(utils)
 
+# anonymize_file_names(dir = normalizePath(readClipboard(), "/",
+#                                          mustWork = FALSE))
+
 anonymize_file_names <- function(dir = utils::choose.dir(), algo = "md5",
-                                 seed = 0, chars = letters, n_chars = 5L) {
+                                 seed = sample(1:1000, 1), chars = letters,
+                                 n_chars = 5L) {
     choices_algo = c(
         "md5", "sha1", "crc32", "sha256", "sha512", "xxhash32", "xxhash64",
         "murmur32", "spookyhash", "blake3"
     )
 
-    checkmate::assert_atomic_vector(dir)
+    checkmate::assert_directory_exists(dir)
     checkmate::assert_choice(algo, choices_algo)
     checkmate::assert_integerish(seed)
     checkmate::assert_character(chars)
@@ -36,7 +40,7 @@ anonymize_file_names <- function(dir = utils::choose.dir(), algo = "md5",
         }
     }
 
-    NULL
+    invisible(NULL)
 }
 
 # list_files_to_clipboard(dir = normalizePath(readClipboard(), "/",
@@ -88,13 +92,16 @@ list_newest_and_oldest_data <- function(dir = utils::choose.dir()) {
         file <- file.path(dir, i)
 
         if (checkmate::test_file_exists(file)) {
-            data <- actverse:::shush(actverse:::read_acttrust_data(file))
+            data <- file %>%
+                actverse:::read_acttrust_data() %>%
+                actverse:::tidy_acttrust_data() %>%
+                actverse:::shush()
 
-            out <- append(out, data[[1]][1])
+            out <- append(out, data$timestamp[1])
         }
     }
 
-    out <- out %>% lubridate::dmy_hms() %>% sort()
+    out <- out %>% sort()
 
     if (length(out) == 0) {
         cli::cli_alert_warning(paste0("No files were found."))
@@ -104,11 +111,11 @@ list_newest_and_oldest_data <- function(dir = utils::choose.dir()) {
         ))
 
         cli::cli_alert_info(paste0(
-            "{.strong Newest file}: {out[1]}"
+            "{.strong Oldest file}: {out[1]}"
         ))
 
         cli::cli_alert_info(paste0(
-            "{.strong Oldest file}: {out[length(out)]}"
+            "{.strong Newest file}: {out[length(out)]}"
         ))
     }
 
