@@ -59,9 +59,11 @@ test_that("na_locf() | error test", {
 test_that("na_overall_mean() | general test", {
     x <- c(NA, 1, 5, 10, NA, 5, 10, 1, NA, 10, 1, 5, NA, NA)
 
-    expect_equal(na_overall_mean(x),
-                 c(5 + 1/3, 1, 5, 10, 5 + 1/3, 5, 10, 1, 5 + 1/3, 10, 1, 5,
-                   5 + 1/3, 5 + 1/3))
+    expect_equal(
+        na_overall_mean(x),
+        c(5 + (1 / 3), 1, 5, 10, 5 + (1 / 3), 5, 10, 1, 5 + (1 / 3), 10, 1,
+          5, 5 + (1 / 3), 5 + (1 / 3))
+        )
 })
 
 test_that("na_overall_mean() | error test", {
@@ -136,15 +138,22 @@ test_that("na_weekly_mean() | general test", {
     x <- c(NA, 1, 5, 10, NA, 5, 10, 1, NA, 10, 1, 5, NA, NA)
     index <- seq(as.Date("2020-01-01"), as.Date("2020-01-14"), by = "day")
 
-    expect_equal(na_weekly_mean(x, index, fill_na_tips = TRUE, week_start = 1),
-                 c(5 + 1/3, 1, 5, 10, 5 + 1/3, 5, 10, 1, 5 + 1/3, 10, 1, 5,
-                   5, 5))
-    expect_equal(na_weekly_mean(x, index, fill_na_tips = FALSE, week_start = 1),
-                 c(5 + 1/3, 1, 5, 10, 5 + 1/3, 5, 10, 1, 5 + 1/3, 10, 1, 5,
-                   NA, NA))
-    expect_equal(na_weekly_mean(x, index, fill_na_tips = TRUE, week_start = 7),
-                 c(5 + 1/3, 1, 5, 10, 5.4, 5, 10, 1, 5.4, 10, 1, 5,
-                   5, 5))
+    expect_equal(
+        na_weekly_mean(x, index, fill_na_tips = TRUE, week_start = 1),
+        c(5 + (1 / 3), 1, 5, 10, 5 + (1 / 3), 5, 10, 1, 5 + (1 / 3), 10, 1, 5,
+          5, 5)
+        )
+
+    expect_equal(
+        na_weekly_mean(x, index, fill_na_tips = FALSE, week_start = 1),
+        c(5 + (1 / 3), 1, 5, 10, 5 + (1 / 3), 5, 10, 1, 5 + (1 / 3), 10, 1, 5,
+          NA, NA)
+        )
+
+    expect_equal(
+        na_weekly_mean(x, index, fill_na_tips = TRUE, week_start = 7),
+        c(5 + (1 / 3), 1, 5, 10, 5.4, 5, 10, 1, 5.4, 10, 1, 5, 5, 5)
+        )
 })
 
 test_that("na_weekly_mean() | error test", {

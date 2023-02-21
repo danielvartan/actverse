@@ -16,10 +16,10 @@
 #'
 #' @param data A [tsibble][tsibble::tsibble()] object with a [`Date`][as.Date()]
 #'   or [`POSIXt`][as.POSIXct()] vector as index.
-#' @param threshold (optional) a number, from `0` to `1`, indicating the minimum proportion
-#'   that an epoch must have to be considered valid. `threshold = 1` means that
-#'   the regularity of the time series must be strict (i.e., have just 1
-#'   periodicity) (default: `0.9`).
+#' @param threshold (optional) a number, from `0` to `1`, indicating the minimum
+#'   proportion that an epoch must have to be considered valid. `threshold = 1`
+#'   means that the regularity of the time series must be strict (i.e., have
+#'   just 1 periodicity) (default: `0.9`).
 #'
 #' @return A [`list`][list()] object with the following elements:
 #'
@@ -52,7 +52,9 @@ find_epoch <- function(data, threshold = 0.9) {
     checkmate::assert_number(threshold, lower = 0.001, upper = 1)
 
     # R CMD Check variable bindings fix (see: https://bit.ly/3z24hbU)
+    # nolint start: object_usage_linter.
     . <- .x <- proportion <- NULL
+    # nolint end
 
     diff <- diff(data[[tsibble::index_var(data)]]) %>%
         `units<-`("secs") %>%

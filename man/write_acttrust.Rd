@@ -14,7 +14,7 @@ type of index.}
 \item{file}{A string with a file path to write to.}
 
 \item{delim}{(optional) a string indicating the delimiter that must be used
-to separate values. Valid delimiters are: \code{";"} and \code{"\\t"} (default:
+to separate values. Valid delimiters are: \code{";"} and \code{"\t"} (default:
 \code{";"}).}
 
 \item{header}{(optional) a string indicating the path to a file (usually

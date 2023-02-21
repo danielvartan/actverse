@@ -327,7 +327,7 @@ test_that("clean_periodogram_peaks() | general test", {
         dplyr::tibble())
 
     peaks <- dplyr::tibble(
-        period = c(1, 2, 3, 100,101),
+        period = c(1, 2, 3, 100, 101),
         q_p = c(100, 200, 300, 400, 500),
         q_p_critical = c(90, 190, 290, 200, 100),
         q_p_rel = q_p - q_p_critical,

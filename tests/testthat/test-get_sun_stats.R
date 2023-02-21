@@ -27,12 +27,15 @@ test_that("get_sun_stats() | general test", {
         mockr::with_mock(
             assert_internet = function(...) TRUE,
             read_json = function(...) mock_list,
-            {magrittr::extract2(get_sun_stats(
-                lat = 40.730610, lon = -73.935242, date = Sys.Date(),
-                tz = "America/New_York", method = "sunrise-sunset.org"
-            ),
-            "sunrise_start"
-            )}
+            {
+                magrittr::extract2(
+                    get_sun_stats(
+                        lat = 40.730610, lon = -73.935242, date = Sys.Date(),
+                        tz = "America/New_York", method = "sunrise-sunset.org"
+                        ),
+                    "sunrise_start"
+                    )
+            }
         )
     }
 
@@ -145,12 +148,15 @@ test_that("get_sun_stats_sunrise_sunset() | general test", {
         mockr::with_mock(
             assert_internet = function(...) TRUE,
             read_json = function(...) mock_list,
-            {magrittr::extract2(get_sun_stats_sunrise_sunset(
-                lat = -23.5489, lon = -46.6388, date = Sys.Date(),
-                tz = "America/Sao_Paulo"
-            ),
-            "sunrise_start"
-            )}
+            {
+                magrittr::extract2(
+                    get_sun_stats_sunrise_sunset(
+                        lat = -23.5489, lon = -46.6388, date = Sys.Date(),
+                        tz = "America/Sao_Paulo"
+                        ),
+                    "sunrise_start"
+                    )
+            }
         )
     }
 
@@ -160,10 +166,12 @@ test_that("get_sun_stats_sunrise_sunset() | general test", {
         mockr::with_mock(
             assert_internet = function(...) TRUE,
             read_json = function(...) list(status = "NOT OK"),
-            {get_sun_stats_sunrise_sunset(
-                lat = -23.5489, lon = -46.6388, date = Sys.Date(),
-                tz = "America/Sao_Paulo"
-            )}
+            {
+                get_sun_stats_sunrise_sunset(
+                    lat = -23.5489, lon = -46.6388, date = Sys.Date(),
+                    tz = "America/Sao_Paulo"
+                    )
+            }
         )
     }
 

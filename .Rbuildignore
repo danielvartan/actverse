@@ -1,4 +1,5 @@
 ^\.github$
+^\.lintr$
 ^\.Rproj\.user$
 ^_pkgdown\.yml$
 ^actverse\.Rproj$

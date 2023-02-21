@@ -16,7 +16,6 @@ navbar:
     right: github
   components:
     home: ~
-    news: ~
     intro: ~
     articles: ~
 

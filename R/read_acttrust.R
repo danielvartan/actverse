@@ -136,8 +136,8 @@ tidy_acttrust_data <- function(data, tz = "UTC") {
     checkmate::assert_choice(tz, OlsonNames())
 
     # R CMD Check variable bindings fix (see: https://bit.ly/3z24hbU)
-    . <- NULL
-    timestamp <- date <- time <- ms <- NULL
+    # nolint start: object_usage_linter, object_name_linter.
+    timestamp <- ms <- NULL
     pim <- pim_n <- tat <- tat_n <- zcm <- zcm_n <- NULL
     orientation <- wrist_temperature <- external_temperature <- NULL
     light <- ambient_light <- red_light <- green_light <- blue_light <- NULL
@@ -150,6 +150,7 @@ tidy_acttrust_data <- function(data, tz = "UTC") {
     LIGHT <- `AMB LIGHT` <- `RED LIGHT` <- `GREEN LIGHT` <- NULL
     `BLUE LIGHT` <- `IR LIGHT` <- `UVA LIGHT` <- `UVB LIGHT` <- NULL
     EVENT <- STATE <- NULL
+    # nolint end
 
     cli::cli_progress_step("Tidying data")
 
@@ -212,9 +213,11 @@ validate_acttrust_data <- function(data, regularize = TRUE) {
     checkmate::assert_flag(regularize)
 
     # R CMD Check variable bindings fix (see: https://bit.ly/3z24hbU)
+    # nolint start: object_usage_linter.
     . <- timestamp <- NULL
+    # nolint end
 
-    # TO DO: use the 'validate' package.
+    # TODO: use the 'validate' package.
 
     cli::cli_progress_step("Validating data")
 
@@ -268,7 +271,9 @@ regularize_acttrust_data <- function(data) {
     assert_index_class(data, c("Date", "POSIXt"))
 
     # R CMD Check variable bindings fix (see: https://bit.ly/3z24hbU)
+    # nolint start: object_usage_linter.
     . <- .from <- .to <- state <- NULL
+    # nolint end
 
     epoch <- data %>%
         find_epoch(0.9) %>%
@@ -286,7 +291,8 @@ regularize_acttrust_data <- function(data) {
 
         data
     } else {
-        out <- data %>% aggregate_index(epoch_unit) %>%
+        out <- data %>%
+            aggregate_index(epoch_unit) %>%
             dplyr::mutate(dplyr::across(
                 !dplyr::matches("^timestamp$"),
                 ~ dplyr::if_else(is.nan(.x), gutils::na_as(.x), .x)
@@ -304,7 +310,8 @@ regularize_acttrust_data <- function(data) {
             ))
         }
 
-        out %>% tsibble::fill_gaps() %>%
+        out %>%
+            tsibble::fill_gaps() %>%
             dplyr::mutate(dplyr::across(
                 dplyr::matches("^orientation$|^event$"),
                 ~ dplyr::if_else(is.na(.x), 0, .x))) %>%
@@ -318,7 +325,9 @@ find_offwrist_intervals <- function(data) {
     checkmate::assert_subset(c("timestamp", "state"), names(data))
 
     # R CMD Check variable bindings fix (see: https://bit.ly/3z24hbU)
+    # nolint start: object_usage_linter.
     . <- timestamp <- state <- offwrist_start <- offwrist_end <- NULL
+    # nolint end
 
     out <- data %>%
         dplyr::mutate(

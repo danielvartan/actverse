@@ -237,7 +237,9 @@ test_that("require_pkg() | general test", {
     mock <- function(.parent = parent.frame(), .env = topenv(.parent)) {
         mockr::with_mock(
             require_namespace = function(...) TRUE,
-            {require_pkg("test")}
+            {
+                require_pkg("test")
+            }
         )
     }
 
@@ -276,4 +278,3 @@ test_that("shush() | general test", {
     expect_equal(shush(x = test(), quiet = TRUE), "test")
     expect_warning(shush(x = test(), quiet = FALSE), "test")
 })
-

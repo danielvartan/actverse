@@ -163,23 +163,23 @@ test_that("aggregate_index() | error test", {
                  "Assertion on 'data' failed")
 })
 
-test_that("aggregate_index_default_function() | general test", {
+test_that("aggregate_index_default_fun() | general test", {
     # if (is.numeric(x) && !all(nchar(x) == 1, na.rm = TRUE))
-    expect_equal(aggregate_index_default_function(1:100), mean(1:100))
+    expect_equal(aggregate_index_default_fun(1:100), mean(1:100))
 
     # else
-    expect_equal(aggregate_index_default_function(1:9), 1)
-    expect_equal(aggregate_index_default_function(as.numeric(NA)),
+    expect_equal(aggregate_index_default_fun(1:9), 1)
+    expect_equal(aggregate_index_default_fun(as.numeric(NA)),
                  as.numeric(NA))
-    expect_equal(aggregate_index_default_function(c("a", "a", "b")),  "a")
-    expect_equal(aggregate_index_default_function(c("a", "a", "a")),  "a")
-    expect_equal(aggregate_index_default_function(c("a", "b", "c")),  "a")
-    expect_equal(aggregate_index_default_function(c(NA, NA)),  NA)
+    expect_equal(aggregate_index_default_fun(c("a", "a", "b")),  "a")
+    expect_equal(aggregate_index_default_fun(c("a", "a", "a")),  "a")
+    expect_equal(aggregate_index_default_fun(c("a", "b", "c")),  "a")
+    expect_equal(aggregate_index_default_fun(c(NA, NA)),  NA)
 
 })
 
-test_that("aggregate_index_default_function() | error test", {
+test_that("aggregate_index_default_fun() | error test", {
     # checkmate::assert_atomic_vector(x)
-    expect_error(aggregate_index_default_function(list(a = 1)),
+    expect_error(aggregate_index_default_fun(list(a = 1)),
                  "Assertion on 'x' failed")
 })

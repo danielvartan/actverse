@@ -70,8 +70,8 @@
 #'
 #' @return A [`list`][list()] object with the following elements:
 #'
-#' * `date`: A [`Date`][base::as.Date()] object with the same value of the `date`
-#' parameter.
+#' * `date`: A [`Date`][base::as.Date()] object with the same value of the
+#' `date` parameter.
 #' * `lat`: A number with the same value of the `lat` parameter.
 #' * `lon`: A number with the same value of the `lon` parameter.
 #' * `tz`: A string with the same value of the `tz` parameter.
@@ -130,7 +130,7 @@
 #'             )
 #'     }
 #' }
-get_sun_stats <-function(lat, lon, date = Sys.Date(), tz = "UTC",
+get_sun_stats <- function(lat, lon, date = Sys.Date(), tz = "UTC",
                      method = "suncalc") {
     method_choices <- c("suncalc", "sunrise-sunset.org")
 
@@ -158,6 +158,7 @@ get_sun_stats_suncalc <- function(lat, lon, date = Sys.Date(), tz = "UTC") {
     require_pkg("suncalc")
 
     # R CMD Check variable bindings fix (see: https://bit.ly/3z24hbU)
+    # nolint start: object_usage_linter, object_name_linter.
     sunrise <- sunriseEnd <- goldenHourEnd <- solarNoon <- NULL
     solarNoon <- goldenHour <- sunsetStart <- sunset <- NULL
     nauticalDusk <- nightEnd <- nauticalDawn <- night <- NULL
@@ -165,6 +166,7 @@ get_sun_stats_suncalc <- function(lat, lon, date = Sys.Date(), tz = "UTC") {
     solar_noon <- golden_hour_start <- sunset_start <- sunset_end <- NULL
     dusk <- nautical_dusk <- night_start <- nadir <- NULL
     night_end <- nautical_dawn <- dawn <- NULL
+    # nolint end
 
     suncalc::getSunlightTimes(date = date, lat = lat, lon = lon, tz = tz) %>%
         dplyr::mutate(tz = tz) %>%
@@ -199,6 +201,7 @@ get_sun_stats_sunrise_sunset <- function(lat, lon, date = Sys.Date(),
     require_pkg("curl", "jsonlite")
 
     # R CMD Check variable bindings fix (see: https://bit.ly/3z24hbU)
+    # nolint start: object_usage_linter.
     sunrise <- sunset <- civil_twilight_end <- nautical_twilight_end <- NULL
     astronomical_twilight_end <- astronomical_twilight_begin <- NULL
     nautical_twilight_begin <- civil_twilight_begin <- NULL
@@ -206,6 +209,7 @@ get_sun_stats_sunrise_sunset <- function(lat, lon, date = Sys.Date(),
     golden_hour_start <- sunset_start <- sunset_end <- dusk <- NULL
     nautical_dusk <- night_start <- nadir <- night_end <- nautical_dawn <- NULL
     dawn <- NULL
+    # nolint end
 
     get <- read_json(paste0(
         "https://api.sunrise-sunset.org/json?",

@@ -122,7 +122,9 @@ get_from_zenodo <- function(doi, path = ".", file = NULL, parallel = FALSE) {
     require_pkg("curl", "jsonlite", "tools")
 
     # R CMD Check variable bindings fix (see: https://bit.ly/3z24hbU)
+    # nolint start: object_usage_linter.
     . <- key <- NULL
+    # nolint end
 
     metadata <- get_metadata_from_zenodo(doi = doi)
 
@@ -157,7 +159,9 @@ get_metadata_from_zenodo <- function(doi) {
     assert_internet()
 
     # R CMD Check variable bindings fix (see: https://bit.ly/3z24hbU)
+    # nolint start: object_usage_linter.
     . <- NULL
+    # nolint end
 
     cli::cli_progress_step("Downloading metadata")
 
@@ -181,7 +185,7 @@ get_data_from_zenodo <- function(file_url, file_dest, parallel = FALSE) {
     checkmate::assert_flag(parallel)
     assert_internet()
 
-    file_length <- length(file_url)
+    file_length <- length(file_url) # nolint
 
     if (isTRUE(parallel)) {
         require_pkg("parallel")
@@ -241,7 +245,7 @@ check_zenodo_file_integrity <- function(file_md5, file_dest) {
     file_name <- basename(file_dest)
 
     for (i in seq_along(file_md5)) {
-        name <- file_name[i]
+        name <- file_name[i] # nolint
         dest <- file_dest[i]
         md5 <- unname(tools::md5sum(dest))
         zenodo_md5 <- gsub("^md5:", "", file_md5[i])

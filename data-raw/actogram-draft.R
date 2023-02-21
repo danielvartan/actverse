@@ -114,7 +114,7 @@ actogram <- function(data, base_col, days = 7, trans = NULL,
                          "4" = viridis::viridis(3, alpha = NULL)[1],
                          "base" = "#000000", "lp" = "#faf3b4", "dp" = "#ebebeb"
                          ),
-                     date_format ="%a %d/%m", double_plot = TRUE, grid = TRUE,
+                     date_format = "%a %d/%m", double_plot = TRUE, grid = TRUE,
                      print = TRUE) {
     assert_tsibble(data)
     checkmate::assert_choice(base_col, names(data))
@@ -125,7 +125,7 @@ actogram <- function(data, base_col, days = 7, trans = NULL,
     checkmate::assert_number(state_alpha, lower = 0, upper = 1)
     checkmate::assert_number(lat, lower = -90, upper = 90, null.ok = TRUE)
     checkmate::assert_number(lon, lower = -180, upper = 180, null.ok = TRUE)
-    checkmate::assert_character(labels, any.missing = FALSE,names = "unique")
+    checkmate::assert_character(labels, any.missing = FALSE, names = "unique")
     checkmate::assert_character(
         colors, pattern = "^#.{6}$", any.missing = FALSE, names = "unique"
         )
@@ -144,7 +144,9 @@ actogram <- function(data, base_col, days = 7, trans = NULL,
     }
 
     # R CMD Check variable bindings fix (see: https://bit.ly/3z24hbU)
-    . <- NULL
+    # nolint start: object_usage_linter.
+    . <- ld <- NULL
+    # nolint end
 
     # TO DO:
     #
@@ -283,12 +285,12 @@ actogram <- function(data, base_col, days = 7, trans = NULL,
         sunset <- as.POSIXct(sun_stats$sunset_end) %>%
             lubridate::force_tz(tzone = tz)
 
-        dark_phase_1 <- lubridate::interval(
+        dark_phase_1 <- lubridate::interval( # nolint
             lubridate::force_tz(lubridate::as_datetime(0), tzone = tz),
             sunrise - lubridate::dseconds()
         )
-        light_phase <- lubridate::interval(sunrise, sunset)
-        dark_phase_2 <- lubridate::interval(
+        light_phase <- lubridate::interval(sunrise, sunset) # nolint
+        dark_phase_2 <- lubridate::interval( # nolint
             sunset + lubridate::dseconds(),
             lubridate::force_tz(lubridate::as_datetime(86400 - 1), tzone = tz)
         )
@@ -302,7 +304,9 @@ actogram <- function(data, base_col, days = 7, trans = NULL,
             )
         ) %>%
             dplyr::mutate(
-                ld = factor(ld, levels = c("Dark phase", "Light phase"))
+                ld = factor(
+                    ld, levels = c("Dark phase", "Light phase")
+                    )
             ) %>%
             magrittr::extract2("ld")
 
@@ -420,7 +424,7 @@ actogram <- function(data, base_col, days = 7, trans = NULL,
         out <- out +
             ggplot2::theme(
                 panel.grid.major.x = ggplot2::element_line(
-                    colour = "gray", linetype="dashed", size = 0.1
+                    colour = "gray", linetype = "dashed", size = 0.1
                 )
             )
     } else {
@@ -439,12 +443,14 @@ fill_actogram_data_tips <- function(data) {
     assert_tsibble(data)
 
     # R CMD Check variable bindings fix (see: https://bit.ly/3z24hbU)
+    # nolint start: object_usage_linter.
     . <- NULL
+    # nolint end
 
     index <- tsibble::index_var(data)
     epoch <- find_epoch(data)$best_match
 
-    if (!is.null(epoch)) by = epoch else by = "min"
+    if (!is.null(epoch)) by <- epoch else by <- "min"
 
     if (!as.numeric(hms::as_hms(dplyr::first(data[[index]]))) == 0) {
         data <- data %>%

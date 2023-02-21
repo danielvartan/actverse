@@ -416,7 +416,9 @@ test_epoch_compatibility <- function(x, unit) {
     checkmate::assert_choice(unit, unit_choices)
 
     # R CMD Check variable bindings fix (see: https://bit.ly/3z24hbU)
+    # nolint start: object_usage_linter.
     . <- proportion <- NULL
+    # nolint end
 
     epochs <- find_epoch(x)$prevalence %>%
         dplyr::filter(proportion >= 0.7) %>%
@@ -442,7 +444,9 @@ check_epoch_compatibility <- function(x, unit,
     checkmate::assert_choice(unit, unit_choices)
 
     # R CMD Check variable bindings fix (see: https://bit.ly/3z24hbU)
+    # nolint start: object_usage_linter.
     . <- proportion <- NULL
+    # nolint end
 
     epochs <- find_epoch(x)$prevalence %>%
         dplyr::filter(proportion >= 0.7) %>%

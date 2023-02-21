@@ -13,10 +13,12 @@ test_that("get_from_zenodo() | general test", {
             get_data_from_zenodo = function(...) TRUE,
             check_zenodo_file_integrity = function(...) TRUE,
             find_absolute_path = function(...) TRUE,
-            {get_from_zenodo(
-                doi = "10.5281/zenodo.4898822", path = ".", file = NULL,
-                parallel = FALSE
-            )}
+            {
+                get_from_zenodo(
+                    doi = "10.5281/zenodo.4898822", path = ".",
+                    file = NULL, parallel = FALSE
+                    )
+            }
         )
     }
 
@@ -30,10 +32,12 @@ test_that("get_from_zenodo() | general test", {
             get_data_from_zenodo = function(...) TRUE,
             check_zenodo_file_integrity = function(...) TRUE,
             find_absolute_path = function(...) TRUE,
-            {get_from_zenodo(
-                doi = "10.5281/zenodo.4898822", path = ".", file = "test",
-                parallel = FALSE
-            )}
+            {
+                get_from_zenodo(
+                    doi = "10.5281/zenodo.4898822", path = ".", file = "test",
+                    parallel = FALSE
+                    )
+            }
         )
     }
 
@@ -93,7 +97,9 @@ test_that("get_metadata_from_zenodo() | general test", {
             curl_fetch_memory = function(...) list(content = "61"),
             raw_to_char = function(...) TRUE,
             from_json = function(...) TRUE,
-            {shush(get_metadata_from_zenodo(doi = "10.5281/zenodo.4898822"))}
+            {
+                shush(get_metadata_from_zenodo(doi = "10.5281/zenodo.4898822"))
+            }
         )
     }
 
@@ -117,10 +123,12 @@ test_that("get_data_from_zenodo() | general test", {
     mock <- function(.parent = parent.frame(), .env = topenv(.parent)) {
         mockr::with_mock(
             curl_download = function(...) TRUE,
-            {shush(get_data_from_zenodo(
-                file_url = "http://test.com/test.txt",
-                file_dest = "./TeSt.txt", parallel = FALSE
-                ))}
+            {
+                shush(get_data_from_zenodo(
+                    file_url = "http://test.com/test.txt",
+                    file_dest = "./TeSt.txt", parallel = FALSE
+                    ))
+            }
         )
     }
 
@@ -132,10 +140,12 @@ test_that("get_data_from_zenodo() | general test", {
             cluster_map = function(...) TRUE,
             curl_download = function(...) TRUE,
             stop_cluster = function(...) TRUE,
-            {shush(get_data_from_zenodo(
-                file_url = "http://test.com/test.txt",
-                file_dest = "./TeSt.txt", parallel = TRUE
-            ))}
+            {
+                shush(get_data_from_zenodo(
+                    file_url = "http://test.com/test.txt",
+                    file_dest = "./TeSt.txt", parallel = TRUE
+                    ))
+            }
         )
     }
 

@@ -13,7 +13,7 @@
 anonymize_file_names <- function(dir = utils::choose.dir(), algo = "md5",
                                  seed = sample(1:1000, 1), chars = letters,
                                  n_chars = 5L) {
-    choices_algo = c(
+    choices_algo <- c(
         "md5", "sha1", "crc32", "sha256", "sha512", "xxhash32", "xxhash64",
         "murmur32", "spookyhash", "blake3"
     )
@@ -24,6 +24,11 @@ anonymize_file_names <- function(dir = utils::choose.dir(), algo = "md5",
     checkmate::assert_character(chars)
     checkmate::assert_integerish(n_chars)
 
+    # R CMD Check variable bindings fix (see: https://bit.ly/3z24hbU)
+    # nolint start: object_usage_linter.
+    . <- NULL
+    # nolint end
+
     for (i in list.files(dir)) {
         file <- file.path(dir, i)
 
@@ -31,8 +36,10 @@ anonymize_file_names <- function(dir = utils::choose.dir(), algo = "md5",
             file_ext <- tools::file_ext(i)
 
             anonymize_file <- file %>%
-                anonymizer::anonymize(.algo = algo, .seed = seed, .chars = chars,
-                                      .n_chars = n_chars) %>%
+                anonymizer::anonymize(
+                    .algo = algo, .seed = seed, .chars = chars,
+                    .n_chars = n_chars
+                    ) %>%
                 file.path(dir, .) %>%
                 paste0(".", file_ext)
 

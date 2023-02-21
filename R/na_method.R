@@ -263,9 +263,11 @@ na_approx <- function(x, index, fill_na_tips = TRUE) {
     require_pkg("zoo")
 
     # R CMD Check variable bindings fix (see: https://bit.ly/3z24hbU)
+    # nolint start: object_usage_linter.
     . <- NULL
+    # nolint end
 
-    # TO DO: Remove zoo dependency.
+    # TODO: Remove zoo dependency.
 
     zoo::zoo(x = x, order.by = index) %>%
         zoo::na.approx() %>%
@@ -280,7 +282,9 @@ na_locf <- function(x, fill_na_tips = TRUE) {
     checkmate::assert_flag(fill_na_tips)
 
     # R CMD Check variable bindings fix (see: https://bit.ly/3z24hbU)
+    # nolint start: object_usage_linter.
     . <- NULL
+    # nolint end
 
     not_na <- !is.na(x)
 
@@ -353,7 +357,9 @@ na_weekly_mean <- function(x, index, fill_na_tips = TRUE, week_start = 1) {
     checkmate::assert_choice(week_start, c(1, 7))
 
     # R CMD Check variable bindings fix (see: https://bit.ly/3z24hbU)
+    # nolint start: object_usage_linter.
     . <- NULL
+    # nolint end
 
     data <- dplyr::tibble(index = index, x = x) %>%
         tsibble::tsibble(index = index) %>%
@@ -393,9 +399,6 @@ na_zero <- function(x) {
 #' @rdname na_approx
 #' @export
 na_plot <- function(x, index, intp = NULL, print = TRUE) {
-    method_choices <- c("approx", "locf", "overall_mean", "overall_mode",
-                        "spline", "weekly_mean", "zero")
-
     checkmate::assert_numeric(x, min.len = 1, all.missing = FALSE)
     checkmate::assert_numeric(intp, min.len = 1, all.missing = FALSE,
                               null.ok = TRUE)
@@ -488,8 +491,10 @@ na_tip_correction <- function(x, intp, fill_na_tips = TRUE) {
 
 na_example_data <- function() {
     # R CMD Check variable bindings fix (see: https://bit.ly/3z24hbU)
+    # nolint start: object_usage_linter.
     . <- timestamp <- pim <- x <- index <- NULL
     acttrust <- acttrust
+    # nolint end
 
     acttrust %>%
         tsibble::as_tibble() %>%

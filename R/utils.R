@@ -157,7 +157,7 @@ get_names <- function(...) {
         vapply(unlist, character(1)) %>%
         noquote()
 
-    gsub("\\\"","", out)
+    gsub("\\\"", "", out)
 }
 
 require_pkg <- function(...) {

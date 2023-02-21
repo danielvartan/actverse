@@ -10,10 +10,10 @@ find_epoch(data, threshold = 0.9)
 \item{data}{A \link[tsibble:tsibble]{tsibble} object with a \code{\link[=as.Date]{Date}}
 or \code{\link[=as.POSIXct]{POSIXt}} vector as index.}
 
-\item{threshold}{(optional) a number, from \code{0} to \code{1}, indicating the minimum proportion
-that an epoch must have to be considered valid. \code{threshold = 1} means that
-the regularity of the time series must be strict (i.e., have just 1
-periodicity) (default: \code{0.9}).}
+\item{threshold}{(optional) a number, from \code{0} to \code{1}, indicating the minimum
+proportion that an epoch must have to be considered valid. \code{threshold = 1}
+means that the regularity of the time series must be strict (i.e., have
+just 1 periodicity) (default: \code{0.9}).}
 }
 \value{
 A \code{\link[=list]{list}} object with the following elements:

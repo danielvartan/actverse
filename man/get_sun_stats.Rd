@@ -26,8 +26,8 @@ learn more (default: \code{"suncalc"}).}
 \value{
 A \code{\link[=list]{list}} object with the following elements:
 \itemize{
-\item \code{date}: A \code{\link[base:as.Date]{Date}} object with the same value of the \code{date}
-parameter.
+\item \code{date}: A \code{\link[base:as.Date]{Date}} object with the same value of the
+\code{date} parameter.
 \item \code{lat}: A number with the same value of the \code{lat} parameter.
 \item \code{lon}: A number with the same value of the \code{lon} parameter.
 \item \code{tz}: A string with the same value of the \code{tz} parameter.

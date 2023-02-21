@@ -34,7 +34,7 @@
 #'   type of index.
 #' @param file A string with a file path to write to.
 #' @param delim (optional) a string indicating the delimiter that must be used
-#'   to separate values. Valid delimiters are: `";"` and `"\t"` (default:
+#'   to separate values. Valid delimiters are: `";"` and \code{"\t"} (default:
 #'   `";"`).
 #' @param header (optional) a string indicating the path to a file (usually
 #'   the raw data file) with the ActTrust header. This is not mandatory,
@@ -64,6 +64,7 @@ write_acttrust <- function(data, file, delim = ";", header = NULL) {
     require_pkg("readr")
 
     # R CMD Check variable bindings fix (see: https://bit.ly/3z24hbU)
+    # nolint start: object_usage_linter.
     acttrust <- acttrust
     . <- NULL
     timestamp <- date <- time <- ms <- NULL
@@ -72,6 +73,7 @@ write_acttrust <- function(data, file, delim = ";", header = NULL) {
     light <- ambient_light <- red_light <- green_light <- blue_light <- NULL
     ir_light <- uva_light <- uvb_light <- NULL
     event <- state <- NULL
+    # nolint end
 
     epoch <- find_epoch(data)$best_match
     cols <- paste0("^timestamp$|^", tsibble::index2_var(data), "$") %>%

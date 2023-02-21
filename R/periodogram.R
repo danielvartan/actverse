@@ -228,7 +228,9 @@ periodogram <- function(data, col, p_unit = "minutes", p_min = 1000,
     warn_any_missing(data[[col]])
 
     # R CMD Check variable bindings fix (see: https://bit.ly/3z24hbU)
+    # nolint start: object_usage_linter.
     . <- NULL
+    # nolint end
 
     data <- data %>%
         dplyr::select(dplyr::all_of(c(tsibble::index2_var(.), col))) %>%
@@ -321,8 +323,9 @@ find_periodogram_peaks <- function(p_seq, q_p, q_p_critical, q_p_pvalue = NULL,
     }
 
     # R CMD Check variable bindings fix (see: https://bit.ly/3z24hbU)
-
+    # nolint start: object_usage_linter.
     . <- q_p_rel <- NULL
+    # nolint end
 
     if (length(which(q_p > q_p_critical)) == 0) {
         out <- dplyr::tibble(period = numeric(), q_p = numeric(),
@@ -366,8 +369,9 @@ clean_periodogram_peaks <- function(peaks, prop_q_p_rel = 0.1,
     checkmate::assert_number(prop_bump, lower = 0.001, upper = 0.999)
 
     # R CMD Check variable bindings fix (see: https://bit.ly/3z24hbU)
-
+    # nolint start: object_usage_linter.
     . <- q_p_rel <- bump <- NULL
+    # nolint end
 
     if (nrow(peaks) == 0) return(peaks)
 
@@ -376,7 +380,7 @@ clean_periodogram_peaks <- function(peaks, prop_q_p_rel = 0.1,
                       q_p_rel >= 100) %>%
         dplyr::arrange(period)
 
-    while(any(dplyr::lead(out$period) - out$period <=
+    while (any(dplyr::lead(out$period) - out$period <=
               prop_bump * mean(out$period), na.rm = TRUE) &&
           any(dplyr::lag(out$period) - out$period <=
               prop_bump * mean(out$period), na.rm = TRUE)) {

@@ -81,16 +81,18 @@ aggregate_index <- function(data, unit, fun = NULL, week_start = 1) {
     checkmate::assert_choice(week_start, c(1, 7))
 
     # R CMD Check variable bindings fix (see: https://bit.ly/3z24hbU)
-    . <- .InDeX_pLaCeHoLdEr1 <- NULL
+    # nolint start: object_usage_linter.
+    . <- .indec_placeholder_ <- NULL
+    # nolint end
 
     index_var <- tsibble::index_var(data)
     index <- data[[index_var]]
 
     # Workaround to avoid problems with dplyr::select()
     data <- data %>%
-        dplyr::rename(.InDeX_pLaCeHoLdEr1 = tsibble::index_var(data))
+        dplyr::rename(.indec_placeholder_ = tsibble::index_var(data))
 
-    if (is.null(fun)) fun <- aggregate_index_default_function
+    if (is.null(fun)) fun <- aggregate_index_default_fun
 
     if (grepl("^day*", unit)) {
         group <- lubridate::floor_date(index, "days") %>% as.Date()
@@ -109,11 +111,11 @@ aggregate_index <- function(data, unit, fun = NULL, week_start = 1) {
     data %>%
         tsibble::index_by(.InDeX_pLaCeHoLdEr2 = group) %>%
         dplyr::summarise(dplyr::across(dplyr::everything(), fun)) %>%
-        dplyr::select(-.InDeX_pLaCeHoLdEr1) %>%
+        dplyr::select(-.indec_placeholder_) %>%
         dplyr::rename_with(~ gsub("^.InDeX_pLaCeHoLdEr2$", index_var, .x))
 }
 
-aggregate_index_default_function <- function(x) {
+aggregate_index_default_fun <- function(x) {
     checkmate::assert_atomic_vector(x)
 
     if (is.numeric(x) && !all(nchar(x) == 1, na.rm = TRUE)) {
