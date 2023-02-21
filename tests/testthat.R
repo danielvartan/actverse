@@ -14,29 +14,31 @@ test_check("actverse")
 # covr::package_coverage()
 # devtools::check()
 # devtools::check(remote = TRUE, manual = TRUE)
-# devtools::check_mac_release()
 # devtools::check_rhub()
+# rhub::platforms()
+# rversions::r_oldrel()
 # devtools::check_rhub(platforms = c(
 #     "windows-x86_64-devel", "windows-x86_64-release",
-#     "macos-highsierra-release-cran", "ubuntu-gcc-devel",
-#     "ubuntu-gcc-release", "debian-clang-devel", "debian-gcc-release",
-#     "fedora-clang-devel", "solaris-x86-patched"
+#     "windows-x86_64-oldrel", "macos-highsierra-release-cran",
+#     "ubuntu-gcc-devel", "ubuntu-gcc-release"
 # ))
 # devtools::check_win_devel()
 # devtools::check_win_release()
 # devtools::check_win_oldrelease()
+# devtools::check_mac_release()
 # devtools::document()
 # devtools::install()
 # devtools::release()
+# devtools::submit_cran()
 # devtools:test()
 # dlstats::cran_stats(c("mctq", "nparACT"))
 # goodpractice::gp()
 # normalizePath(readClipboard(), "/", mustWork = FALSE)
 # template <- list(package = "rotemplate")
-# pkgdown::build_article("mctq", override = list(template = template))
+# pkgdown::build_article("mctq")
 # pkgdown::build_favicons(overwrite = TRUE)
-# pkgdown::build_reference(override = list(template = template))
-# pkgdown::build_site(devel = FALSE, override = list(template = template))
+# pkgdown::build_reference()
+# pkgdown::build_site()
 # revdepcheck::revdep_check(num_workers = 4)
 # spelling::spell_check_package()
 # spelling::update_wordlist()

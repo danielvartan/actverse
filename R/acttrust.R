@@ -5,7 +5,7 @@
 #' `r lifecycle::badge("maturing")`
 #'
 #' A small sample (1 day length) of an
-#' [ActTrust](https://www.condorinst.com.br/acttrust-actigrafo/)
+#' [ActTrust](https://condorinst.com.br/acttrust-actigrafo/)
 #' actigraphy record.
 #'
 #' __Note__: We're always looking for actigraphy data samples. If you have a
@@ -14,7 +14,7 @@
 #' authors.
 #'
 #' ActTrust is a trademark of
-#' [Condor Instruments Ltda](https://www.condorinst.com.br/).
+#' [Condor Instruments Ltda](https://condorinst.com.br/).
 #'
 #' @details
 #'
@@ -96,8 +96,8 @@
 #'
 #' ## Actigraph
 #'
-#' * Brand: [Condor Instruments](https://www.condorinst.com.br/).
-#' * Model: [ActTrust 1](https://www.condorinst.com.br/acttrust-actigrafo/).
+#' * Brand: [Condor Instruments](https://condorinst.com.br/).
+#' * Model: [ActTrust 1](https://condorinst.com.br/acttrust-actigrafo/).
 #' * Hardware version: `3.1`.
 #' * Firmware version: `3.7`.
 #' * Manual: `1.0.13` (PT-BR).

@@ -6,13 +6,13 @@ First of all, thanks for considering contributing to `actverse`! 👍 It's peopl
 
 `actverse` is an open source project, maintained by people who care. We are not directly funded to do so.
 
-[repo]: https://github.com/gipso/actverse
-[issues]: https://github.com/gipso/actverse/issues
-[discussions]: https://github.com/gipso/actverse/discussions
-[new_issue]: https://github.com/gipso/actverse/issues/new
-[new_discussion]: https://github.com/gipso/actverse/discussions/new
-[website]: https://gipso.github.io/actverse
-[citation]: https://gipso.github.io/actverse/authors.html
+[repo]: https://github.com/giperbio/actverse
+[issues]: https://github.com/giperbio/actverse/issues
+[discussions]: https://github.com/giperbio/actverse/discussions
+[new_issue]: https://github.com/giperbio/actverse/issues/new
+[new_discussion]: https://github.com/giperbio/actverse/discussions/new
+[website]: https://giperbio.github.io/actverse
+[citation]: https://giperbio.github.io/actverse/authors.html
 [email]: mailto:danvartan@gmail.com
 
 ## Code of conduct

@@ -128,7 +128,7 @@ acttrust
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#maturing}{\figure{lifecycle-maturing.svg}{options: alt='[Maturing]'}}}{\strong{[Maturing]}}
 
 A small sample (1 day length) of an
-\href{https://www.condorinst.com.br/acttrust-actigrafo/}{ActTrust}
+\href{https://condorinst.com.br/acttrust-actigrafo/}{ActTrust}
 actigraphy record.
 
 \strong{Note}: We're always looking for actigraphy data samples. If you have a
@@ -137,7 +137,7 @@ personal actigraphy record made with a device that is not listed in the
 authors.
 
 ActTrust is a trademark of
-\href{https://www.condorinst.com.br/}{Condor Instruments Ltda}.
+\href{https://condorinst.com.br/}{Condor Instruments Ltda}.
 }
 \details{
 This dataset was created by one of the \code{actverse} package authors and is free
@@ -222,8 +222,8 @@ The raw data for this dataset can be found with
 
 \subsection{Actigraph}{
 \itemize{
-\item Brand: \href{https://www.condorinst.com.br/}{Condor Instruments}.
-\item Model: \href{https://www.condorinst.com.br/acttrust-actigrafo/}{ActTrust 1}.
+\item Brand: \href{https://condorinst.com.br/}{Condor Instruments}.
+\item Model: \href{https://condorinst.com.br/acttrust-actigrafo/}{ActTrust 1}.
 \item Hardware version: \code{3.1}.
 \item Firmware version: \code{3.7}.
 \item Manual: \verb{1.0.13} (PT-BR).
@@ -259,18 +259,17 @@ into consideration the event button and sleep diary records.
 }
 
 \references{
-Condor Instruments. (2019). \emph{ActTrust - user manual}. Sao Paulo, Brazil.
+Condor Instruments. (2019). \emph{ActTrust - user manual}. Condor Instruments.
 Model AT0503. ActStudio version 1.0.13.
 
-Van der Loo, M., & De Jonge, E. (2018).
-\emph{Statistical data cleaning with applications in R}. Hooboken, NJ: John
-Wiley & Sons. \doi{10.1002/9781118897126}.
+van der Loo, M., & de Jonge, E. (2018). \emph{Statistical data cleaning with
+applications in R}. John Wiley & Sons. \doi{10.1002/9781118897126}.
 
 Wickham, H. (2014). Tidy Data. \emph{Journal of Statistical Software}, \emph{59}(10),
 1-23. \doi{10.18637/jss.v059.i10}.
 
-Wickham, H., & Grolemund, G. (n.d.). \emph{R for data science}. Sebastopol, CA:
-O'Reilly Media. \url{https://r4ds.had.co.nz}
+Wickham, H., & Grolemund, G. (n.d.). \emph{R for data science}. (n.p.).
+\url{https://r4ds.had.co.nz}
 }
 \concept{datasets}
 \keyword{datasets}

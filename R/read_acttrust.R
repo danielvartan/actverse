@@ -9,7 +9,7 @@
 #' [`?acttrust`][actverse::acttrust].
 #'
 #' ActTrust is a trademark of
-#' [Condor Instruments Ltda](https://www.condorinst.com.br/).
+#' [Condor Instruments Ltda](https://condorinst.com.br/).
 #'
 #' @details
 #'
@@ -154,8 +154,14 @@ tidy_acttrust_data <- function(data, tz = "UTC") {
     cli::cli_progress_step("Tidying data")
 
     out <- data %>%
-        dplyr::mutate(dplyr::across(.fns = as.character)) %>%
-        dplyr::mutate(dplyr::across(.fns = trimws)) %>%
+        dplyr::mutate(dplyr::across(
+            .cols = dplyr::everything(),
+            .fns = as.character
+            )) %>%
+        dplyr::mutate(dplyr::across(
+            .cols = dplyr::everything(),
+            .fns = trimws
+            )) %>%
         dplyr::rename(ms = MS,
                       pim = PIM, pim_n = PIMn, tat = TAT, tat_n = TATn,
                       zcm = ZCM, zcm_n = ZCMn,
@@ -230,7 +236,7 @@ validate_acttrust_data <- function(data, regularize = TRUE) {
     out <- out %>%
         dplyr::mutate(dplyr::across(
             !dplyr::matches("^timestamp$|^state$"),
-            ~ dplyr::if_else(state == 4, na_as(.x), .x)))
+            ~ dplyr::if_else(state == 4, gutils::na_as(.x), .x)))
 
     offwrist_ints <- find_offwrist_intervals(out)
 
@@ -249,11 +255,11 @@ validate_acttrust_data <- function(data, regularize = TRUE) {
             )) %>%
         dplyr::mutate(dplyr::across(
             !dplyr::matches("^timestamp$|^orientation$"),
-            ~ dplyr::if_else(.x < 0, na_as(.x), .x)
+            ~ dplyr::if_else(.x < 0, gutils::na_as(.x), .x)
             )) %>%
         dplyr::mutate(dplyr::across(
             dplyr::ends_with("_temperature"),
-            ~ dplyr::if_else(.x >= 100, na_as(.x), .x)
+            ~ dplyr::if_else(.x >= 100, gutils::na_as(.x), .x)
             ))
 }
 
@@ -283,7 +289,7 @@ regularize_acttrust_data <- function(data) {
         out <- data %>% aggregate_index(epoch_unit) %>%
             dplyr::mutate(dplyr::across(
                 !dplyr::matches("^timestamp$"),
-                ~ dplyr::if_else(is.nan(.x), na_as(.x), .x)
+                ~ dplyr::if_else(is.nan(.x), gutils::na_as(.x), .x)
             ))
 
         count_gaps <- tsibble::count_gaps(out) %>%
@@ -338,7 +344,7 @@ find_offwrist_intervals <- function(data) {
     }
 }
 
-read_acttrust_gipso <- function(file = file.choose(),
+read_acttrust_giperbio <- function(file = file.choose(),
                                 tz = "America/Sao_Paulo") {
     checkmate::assert_string(file)
     checkmate::assert_file_exists(file)

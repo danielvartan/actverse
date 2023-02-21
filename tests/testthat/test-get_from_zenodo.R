@@ -191,16 +191,19 @@ test_that("get_data_from_zenodo() | error test", {
 test_that("check_zenodo_file_integrity() | general test", {
     mock_file <- tempfile()
     writeLines("test", mock_file)
+    # tools::md5sum(mock_file)
 
     expect_null(shush(check_zenodo_file_integrity(
         file_md5 = "md5:9f06243abcb89c70e0c331c61d871fa7",
         file_dest = mock_file
     )))
 
-    expect_message(check_zenodo_file_integrity(
-        file_md5 = "md5:d1985b883d7d188b316d864d0c8376ec",
-        file_dest = mock_file
-    ))
+    shush(
+        expect_message(check_zenodo_file_integrity(
+            file_md5 = "md5:d1985b883d7d188b316d864d0c8376ec",
+            file_dest = mock_file
+            ))
+        )
 })
 
 test_that("check_zenodo_file_integrity() | error test", {

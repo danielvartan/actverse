@@ -211,6 +211,7 @@ compute_interval_periodogram <- function(data, col, int_i, p_unit, p_seq,
     data <- data %>%
         tsibble::filter_index(as.character(lubridate::int_start(int_i)) ~
                                   as.character(lubridate::int_end(int_i))) %>%
+        shush() %>%
         magrittr::extract2(col)
 
     out <- p_seq %>%

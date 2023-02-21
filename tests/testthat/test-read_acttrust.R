@@ -319,7 +319,7 @@ test_that("find_offwrist_intervals() | error test", {
                  "Assertion on 'c\\(\"timestamp\", \"state\"\\)' failed")
 })
 
-test_that("read_acttrust_gipso() | general test", {
+test_that("read_acttrust_giperbio() | general test", {
     file <- tempfile()
     data <- paste0(
         "DATE/TIME;MS;EVENT;TEMPERATURE;EXT TEMPERATURE;ORIENTATION;PIM;",
@@ -335,7 +335,7 @@ test_that("read_acttrust_gipso() | general test", {
 
     writeLines(data, file)
 
-    object <- suppressMessages(read_acttrust_gipso(file, tz = "UTC"))
+    object <- suppressMessages(read_acttrust_giperbio(file, tz = "UTC"))
 
     expected <- dplyr::tibble(
         timestamp = c(lubridate::as_datetime("2020-01-01 00:00:00"),
@@ -351,19 +351,19 @@ test_that("read_acttrust_gipso() | general test", {
     expect_equal(object, expected)
 })
 
-test_that("read_acttrust_gipso() | error test", {
+test_that("read_acttrust_giperbio() | error test", {
     file <- tempfile()
     writeLines("Temp", file)
 
     # checkmate::assert_string(file)
-    expect_error(read_acttrust_gipso(file = 1, tz = "UTC"),
+    expect_error(read_acttrust_giperbio(file = 1, tz = "UTC"),
                  "Assertion on 'file' failed")
 
     # checkmate::assert_file_exists(file)
-    expect_error(read_acttrust_gipso(file = "iMpoSSiBle.alien", tz = "UTC"),
+    expect_error(read_acttrust_giperbio(file = "iMpoSSiBle.alien", tz = "UTC"),
                  "Assertion on 'file' failed")
 
     # checkmate::assert_choice(tz, OlsonNames())
-    expect_error(read_acttrust_gipso(file = file, tz = 1),
+    expect_error(read_acttrust_giperbio(file = file, tz = 1),
                  "Assertion on 'tz' failed")
 })

@@ -40,7 +40,7 @@
 #' in this piece of software.
 #'
 #' Please note that this code comes with an [MIT
-#' License](https://opensource.org/licenses/MIT). You can read the latter below.
+#' License](https://opensource.org/license/mit/). You can read the latter below.
 #'
 #' ```
 #' Copyright (c) 2016 Instituut voor Natuur en Bosonderzoek (INBO)

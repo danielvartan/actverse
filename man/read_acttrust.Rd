@@ -31,7 +31,7 @@ a consistent and easy manner. You can see the output data structure in
 \code{\link[=acttrust]{?acttrust}}.
 
 ActTrust is a trademark of
-\href{https://www.condorinst.com.br/}{Condor Instruments Ltda}.
+\href{https://condorinst.com.br/}{Condor Instruments Ltda}.
 }
 \details{
 \subsection{Requirements}{
@@ -90,15 +90,14 @@ location in Loo and Jonge (2018).
 read_acttrust(raw_data("acttrust.txt"))
 }
 \references{
-Van der Loo, M., & De Jonge, E. (2018).
-\emph{Statistical data cleaning with applications in R}. Hooboken, NJ: John
-Wiley & Sons. \doi{10.1002/9781118897126}.
+van der Loo, M., & de Jonge, E. (2018). \emph{Statistical data cleaning with
+applications in R}. John Wiley & Sons. \doi{10.1002/9781118897126}.
 
 Wickham, H. (2014). Tidy Data. \emph{Journal of Statistical Software}, \emph{59}(10),
 1-23. \doi{10.18637/jss.v059.i10}.
 
-Wickham, H., & Grolemund, G. (n.d.). \emph{R for data science}. Sebastopol, CA:
-O'Reilly Media. \url{https://r4ds.had.co.nz}
+Wickham, H., & Grolemund, G. (n.d.). \emph{R for data science}. (n.p.).
+\url{https://r4ds.had.co.nz}
 }
 \seealso{
 Other utility functions: 

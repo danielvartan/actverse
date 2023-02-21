@@ -1,16 +1,19 @@
-url: https://gipso.github.io/actverse/
+url: https://giperbio.github.io/actverse/
 
 template:
   params:
     bootswatch: cosmo
-    ganalytics: G-3FSQE6ZG2N
     mathjax: true
-    noindex: false
 
 navbar:
   structure:
-    left:  [intro, reference, articles, news]
-    right: [github]
+    left:
+    - home
+    - intro
+    - reference
+    - articles
+    - news
+    right: github
   components:
     home: ~
     news: ~
@@ -19,29 +22,42 @@ navbar:
 
 reference:
 - title: Read/Write
+  desc: >
+    Read and write different actigraphy data patterns.
   contents:
   - read_acttrust
   - write_acttrust
 
 - title: Period analysis
+  desc: >
+    Sokolove & Bushell's chi square periodogram and spectrogram.
   contents:
   - periodogram
   - spectrogram
 
 - title: Data interpolation
+  desc: >
+    Several interpolation techiniques to use with
+    [`tsibble`](https://tsibble.tidyverts.org/).
   contents:
   - na_approx
 
 - title: API clients
+  desc: >
+    APIs for gathering secondary data.
   contents:
   - get_from_zenodo
   - get_sun_stats
 
 - title: Data
+  desc: >
+    Datasets for testing and learning purposes.
   contents:
   - acttrust
 
 - title: Utilities
+  desc: >
+    Other functions to help with actigraphy data manipulation.
   contents:
   - aggregate_index
   - find_epoch
@@ -54,16 +70,10 @@ authors:
     href: https://github.com/matiasvinicius
   Cassio Almeida Mattos Serrano:
     href: https://github.com/cassioserrano
-  Ana Amelia Benedito-Silva:
-    href: https://github.com/AnaAmeliaBeneditoSIlva
-  Mario Pedrazzoli:
-    href: https://github.com/pedrazzo
-  Interdisciplinary Sleep Research Group (GIPSO):
-    href: http://each.usp.br/gipso
-  University of Sao Paulo (USP):
-    href: http://usp.br
   Bruno Ramalho Furlan:
     href: https://github.com/brfurlan
+  University of Sao Paulo (USP):
+    href: http://usp.br
 
 development:
   mode: auto

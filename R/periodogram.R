@@ -51,7 +51,7 @@
 #'
 #' * If you are visualizing this documentation in plain text, you may have some
 #' trouble understanding the equations. You can see this documentation on the
-#' package [website](https://gipso.github.io/actverse/reference/).
+#' package [website](https://giperbio.github.io/actverse/reference/).
 #'
 #' ## \eqn{A_{p}}{Ap}: The statistic adopted to express "importance"
 #'

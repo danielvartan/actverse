@@ -286,7 +286,7 @@ na_plot(x, index, na_zero(x))
 }
 \references{
 Tonon, A. C. et al. (2022). Handling missing data in rest-activity
-time series measured by actimetry. \emph{Chronobiology International}.
+time series measured by actimetry. \emph{Chronobiology International}, \emph{39}(7).
 \doi{10.1080/07420528.2022.2051714}.
 }
 \concept{interpolation functions}

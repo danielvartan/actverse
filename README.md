@@ -10,29 +10,25 @@ has not yet been a stable, usable release suitable for the
 public.](https://www.repostatus.org/badges/latest/wip.svg)](https://www.repostatus.org/#wip)
 [![Lifecycle:
 experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html)
-[![R-CMD-check](https://github.com/gipso/actverse/workflows/R-CMD-check/badge.svg)](https://github.com/gipso/actverse/actions)
+[![R-CMD-check](https://github.com/giperbio/actverse/workflows/R-CMD-check/badge.svg)](https://github.com/giperbio/actverse/actions)
 [![Codecov test
-coverage](https://codecov.io/gh/gipso/actverse/branch/main/graph/badge.svg)](https://app.codecov.io/gh/gipso/actverse?branch=main)
+coverage](https://codecov.io/gh/giperbio/actverse/branch/main/graph/badge.svg)](https://app.codecov.io/gh/giperbio/actverse?branch=main)
 [![License:
 MIT](https://img.shields.io/badge/license-MIT-green)](https://choosealicense.com/licenses/mit/)
 [![Contributor
-Covenant](https://img.shields.io/badge/Contributor%20Covenant-v2.0%20adopted-ff69b4.svg)](https://gipso.github.io/actverse/CODE_OF_CONDUCT.html)
+Covenant](https://img.shields.io/badge/Contributor%20Covenant-v2.0%20adopted-ff69b4.svg)](https://giperbio.github.io/actverse/CODE_OF_CONDUCT.html)
 <!-- badges: end -->
 
 ## Overview
 
 `actverse` is an R package that provides a complete toolkit to process,
-analyze and visualize actigraphy data in R. Its aim is to facilitate the
-work of sleep and chronobiology scientists with actigraphy data and help
-with research reproducibility.
+analyze and visualize actigraphy data. Its aim is to facilitate the work
+of sleep and chronobiology scientists with actigraphy data and to
+improve reproducibility in research.
 
 `actverse` adheres to the [tidyverse
 principles](https://tidyverse.tidyverse.org/articles/manifesto.html) and
 integrates with the [tidyverse ecosystem](https://www.tidyverse.org/).
-
-Our plan is to submit a first version of the `actverse` package to the
-[rOpenSci](https://ropensci.org/) software peer-review process in August
-2022.
 
 ## Prerequisites
 
@@ -44,7 +40,7 @@ language](https://www.r-project.org/) and with the
 In case you don’t feel comfortable with R, we strongly recommend
 checking Hadley Wickham and Garrett Grolemund’s free and online book [R
 for Data Science](https://r4ds.had.co.nz/) and the Coursera course from
-the John Hopkins University [Data Science: Foundations using
+John Hopkins University [Data Science: Foundations using
 R](https://www.coursera.org/specializations/data-science-foundations-r)
 (free for audit students).
 
@@ -61,15 +57,11 @@ Practice](https://otexts.com/fpp3/).
 
 ## Installation
 
-Our development process is based on an agile approach. That means that
-each feature is a separate project and it’s integrated to the main
-branch as soon as it’s reviewed and validated.
-
-You can install the development version from GitHub with:
+You can install `actverse` with:
 
 ``` r
 # install.packages("remotes")
-remotes::install_github("gipso/actverse")
+remotes::install_github("giperbio/actverse")
 ```
 
 ## Usage
@@ -79,23 +71,20 @@ number](https://cran.r-project.org/view=TimeSeries) of time series
 standards and we had to choose one of them while developing `actverse`.
 A standard for time objects is a must, because [time can have many
 representations](https://youtu.be/eelVqfm8vVc) and can be rooted in
-different numerical systems.
-
-We believe that the best time series standard available for packages
-that adheres to the [tidyverse
+different numerical systems. We believe that the best time series
+standard available for packages that adheres to the [tidyverse
 principles](https://tidyverse.tidyverse.org/articles/manifesto.html) is
 the [`tsibble`](https://tsibble.tidyverts.org/index.html). As the name
-suggests, `tsibble` is an adaptation of the
+suggests, `tsibble` is an adaptation for time series of the
 [tidyverse](https://www.tidyverse.org/)
-[`tibble`](https://tibble.tidyverse.org/) object for time series.
+[`tibble`](https://tibble.tidyverse.org/) object.
 
 Most `actverse` functions will require that your data be in the
 [`tsibble`](https://tsibble.tidyverts.org/index.html) standard. Adapting
 your data is a simple process and can make a big difference when dealing
-with time series. Please refer to
+with time series in R. Please refer to
 [`tsibble`](https://tsibble.tidyverts.org/index.html) documentation to
-learn how to do it. After your data is set to start, just use the
-`actverse` functions below.
+learn how to do this.
 
 We also recommend seeing the [`tsbox`](https://www.tsbox.help/) package,
 an R package that propose to be an “universal translator” (🖖) for R
@@ -103,10 +92,10 @@ time series standards.
 
 ### Read/Write
 
--   `read_acttrust()`: Read, tidy, and validate an
-    [ActTrust](https://www.condorinst.com.br/acttrust-actigrafo/) file.
--   `write_acttrust()`: Adapt and write a `tsibble` to a readable
-    [ActTrust](https://www.condorinst.com.br/acttrust-actigrafo/) file.
+- `read_acttrust()`: Read, tidy, and validate an
+  [ActTrust](https://condorinst.com.br/acttrust-actigrafo/) file.
+- `write_acttrust()`: Adapt and write a `tsibble` to a readable
+  [ActTrust](https://condorinst.com.br/acttrust-actigrafo/) file.
 
 Example:
 
@@ -120,31 +109,29 @@ data <- read_acttrust(file, tz = "America/Sao_Paulo")
 
 data
 #> # A tsibble: 51,806 x 17 [1m] <America/Sao_Paulo>
-#>    timestamp             pim   tat   zcm orientation wrist_temperature
-#>    <dttm>              <dbl> <dbl> <dbl>       <dbl>             <dbl>
-#>  1 2021-04-24 04:14:00  7815   608   228           0              26.9
-#>  2 2021-04-24 04:15:00  2661   160    64           0              27.2
-#>  3 2021-04-24 04:16:00  3402   243    80           0              27.7
-#>  4 2021-04-24 04:17:00  4580   317   125           0              27.9
-#>  5 2021-04-24 04:18:00  2624   255    33           0              28.0
-#>  6 2021-04-24 04:19:00  3929   246   105           0              28.1
-#>  7 2021-04-24 04:20:00  5812   369   171           0              28.2
-#>  8 2021-04-24 04:21:00  3182   270    54           0              28.4
-#>  9 2021-04-24 04:22:00  6362   373   189           0              28.6
-#> 10 2021-04-24 04:23:00  2621   159    64           0              28.7
-#> # … with 51,796 more rows, and 11 more variables: external_temperature <dbl>,
-#> #   light <dbl>, ambient_light <dbl>, red_light <dbl>, green_light <dbl>,
-#> #   blue_light <dbl>, ir_light <dbl>, uva_light <dbl>, uvb_light <dbl>,
-#> #   event <dbl>, state <dbl>
+#>    timestamp             pim   tat   zcm orienta…¹ wrist…² exter…³ light ambie…⁴
+#>    <dttm>              <dbl> <dbl> <dbl>     <dbl>   <dbl>   <dbl> <dbl>   <dbl>
+#>  1 2021-04-24 04:14:00  7815   608   228         0    26.9    24.6  3.58    1.45
+#>  2 2021-04-24 04:15:00  2661   160    64         0    27.2    25.1  5.23    2.12
+#>  3 2021-04-24 04:16:00  3402   243    80         0    27.7    25.5  3.93    1.59
+#>  4 2021-04-24 04:17:00  4580   317   125         0    27.9    25.8  4.14    1.68
+#>  5 2021-04-24 04:18:00  2624   255    33         0    28.0    25.9  3.16    1.28
+#>  6 2021-04-24 04:19:00  3929   246   105         0    28.1    26.1  3.63    1.47
+#>  7 2021-04-24 04:20:00  5812   369   171         0    28.2    26.4 11.5     4.67
+#>  8 2021-04-24 04:21:00  3182   270    54         0    28.4    26.7  2.4     0.97
+#>  9 2021-04-24 04:22:00  6362   373   189         0    28.6    26.9  3.28    1.33
+#> 10 2021-04-24 04:23:00  2621   159    64         0    28.7    27.1  2.97    1.2 
+#> # … with 51,796 more rows, 8 more variables: red_light <dbl>,
+#> #   green_light <dbl>, blue_light <dbl>, ir_light <dbl>, uva_light <dbl>,
+#> #   uvb_light <dbl>, event <dbl>, state <dbl>, and abbreviated variable names
+#> #   ¹​orientation, ²​wrist_temperature, ³​external_temperature, ⁴​ambient_light
 ```
 
 ### Period functions
 
--   `periodogram()`: Compute Sokolove & Bushell’s
-    ![\\chi^{2}](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;%5Cchi%5E%7B2%7D "\chi^{2}")
-    periodogram.
--   `spectrogram()`: Compute a spectrogram based on Sokolove & Bushell’s
-    periodogram.
+- `periodogram()`: Compute Sokolove & Bushell’s $\chi^{2}$ periodogram.
+- `spectrogram()`: Compute a spectrogram based on Sokolove & Bushell’s
+  periodogram.
 
 Example:
 
@@ -155,6 +142,7 @@ per <- periodogram(data, "pim")
 <img src="man/figures/README-unnamed-chunk-4-1.png" width="100%" />
 
 ``` r
+
 spec <- spectrogram(data, "pim")
 ```
 
@@ -162,9 +150,9 @@ spec <- spectrogram(data, "pim")
 
 ### Data interpolation
 
--   `na_approx()` `na_locf()` `na_overall_mean()` `na_overall_median()`
-    `na_overall_mode()` `na_spline()` `na_weekly_mean()` `na_zero()`
-    `na_plot()`: Replace `NA` by interpolation.
+- `na_approx()` `na_locf()` `na_overall_mean()` `na_overall_median()`
+  `na_overall_mode()` `na_spline()` `na_weekly_mean()` `na_zero()`
+  `na_plot()`: Replace `NA` by interpolation.
 
 Example:
 
@@ -181,42 +169,44 @@ na_plot(x, index, na_approx(x, index, fill_na_tips = TRUE))
 
 ### API clients
 
--   `get_from_zenodo()`: Get data from a Zenodo record.
--   `get_sun_stats()`: Get sun related statistics from different APIs.
+- `get_from_zenodo()`: Get data from a Zenodo record.
+- `get_sun_stats()`: Get sun related statistics from different APIs.
+
+Example:
 
 ``` r
 get_sun_stats(lat = -23.5489, lon = -46.6388, tz = "America/Sao_Paulo") %>%
     dplyr::as_tibble() %>% 
     t()
 #>                   [,1]               
-#> date              "2022-05-27"       
+#> date              "2023-02-21"       
 #> lat               "-23.5489"         
 #> lon               "-46.6388"         
 #> tz                "America/Sao_Paulo"
-#> sunrise_start     "06:40:20"         
-#> sunrise_end       "06:42:52"         
-#> golden_hour_end   "07:13:08"         
-#> solar_noon        "12:05:10"         
-#> golden_hour_start "16:57:11"         
-#> sunset_start      "17:27:27"         
-#> sunset_end        "17:29:59"         
-#> dusk              "17:54:16"         
-#> nautical_dusk     "18:22:01"         
-#> night_start       "18:49:25"         
-#> nadir             "00:05:10"         
-#> night_end         "05:20:54"         
-#> nautical_dawn     "05:48:18"         
-#> dawn              "06:16:03"
+#> sunrise_start     "05:59:10"         
+#> sunrise_end       "06:01:33"         
+#> golden_hour_end   "06:29:30"         
+#> solar_noon        "12:21:41"         
+#> golden_hour_start "18:13:52"         
+#> sunset_start      "18:41:49"         
+#> sunset_end        "18:44:11"         
+#> dusk              "19:07:21"         
+#> nautical_dusk     "19:34:34"         
+#> night_start       "20:02:16"         
+#> nadir             "00:21:41"         
+#> night_end         "04:41:06"         
+#> nautical_dawn     "05:08:48"         
+#> dawn              "05:36:01"
 ```
 
 ### Other features
 
-`actverse` also comes equipped with many utility functions. The package
-also provides free datasets for testing and learning purposes.
+`actverse` also comes with many utility functions and provides free
+actigraphy datasets for testing and learning purposes.
 
-All functions are well documented, showing all the guidelines behind the
-computations. Click [here](http://gipso.github.io/actverse) to see a
-list of them.
+All functions are properly documented, showing all the guidelines behind
+the computations. Click [here](https://giperbio.github.io/actverse/) to
+see a list of them.
 
 Example:
 
@@ -248,27 +238,38 @@ citation("actverse")
 #> 
 #> To cite {actverse} in publications use:
 #> 
-#>   Vartanian, D., Matias, V. A., Serrano, C. A. M., Benedito-Silva, A.
-#>   A., & Pedrazzoli, M. (2022). {actverse}: an R Package for actigraphy
-#>   data analysis (v. 0.0.0). https://gipso.github.io/actverse/
+#>   Vartanian, D., Matias, V. A., Serrano, C. A. M., & Benedito-Silva, A.
+#>   A. (2023). {actverse}: tools for actigraphy data analysis. R package
+#>   version 0.0.0.9000. https://giperbio.github.io/actverse/
 #> 
 #> A BibTeX entry for LaTeX users is
 #> 
 #>   @Unpublished{,
-#>     title = {{actverse}: an R Package for actigraphy data analysis},
-#>     author = {Daniel Vartanian and Vinicius Alves Matias and Cassio Almeida Mattos Serrano and Ana Amelia Benedito-Silva and Mario Pedrazzoli},
-#>     year = {2022},
-#>     url = {https://gipso.github.io/actverse/},
-#>     note = {(v. 0.0.0). Lifecycle: experimental},
+#>     title = {{actverse}: tools for actigraphy data analysis},
+#>     author = {Daniel Vartanian and Vinicius {Alves Matias} and Cassio {Almeida Mattos Serrano} and Ana Amelia Benedito-Silva},
+#>     year = {2023},
+#>     url = {https://giperbio.github.io/actverse/},
+#>     note = {R package version 0.0.0.9000},
 #>   }
 ```
 
 ## Contributing
 
-We welcome contributions, including bug reports. Take a moment to review
-our [Guidelines for
-Contributing](https://gipso.github.io/actverse/CONTRIBUTING.html).
+We welcome contributions, including bug reports.
 
-Please note that `actverse` is released with a [Contributor Code of
-Conduct](https://gipso.github.io/actverse/CODE_OF_CONDUCT.html). By
-contributing to this project, you agree to abide by its terms.
+Take a moment to review our [Guidelines for
+Contributing](https://giperbio.github.io/actverse/CONTRIBUTING.html).
+
+## Acknowledgments
+
+The initial development of `actverse` was supported by three
+scholarships provided by the [University of Sao Paulo
+(USP)](http://usp.br/) (❤️).
+
+<br>
+
+Become an `actverse` supporter!
+
+Click [here](https://github.com/sponsors/danielvartan) to make a
+donation. Please indicate the `actverse` package in your donation
+message.

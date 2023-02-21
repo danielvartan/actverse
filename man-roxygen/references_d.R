@@ -1,5 +1,5 @@
 #' @references
 #'
 #' Tonon, A. C. et al. (2022). Handling missing data in rest-activity
-#' time series measured by actimetry. _Chronobiology International_.
+#' time series measured by actimetry. _Chronobiology International_, _39_(7).
 #' \doi{10.1080/07420528.2022.2051714}.

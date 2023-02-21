@@ -124,7 +124,7 @@ Enright (1965) and Sokolove & Bushell (1978) guidelines for the
 \itemize{
 \item If you are visualizing this documentation in plain text, you may have some
 trouble understanding the equations. You can see this documentation on the
-package \href{https://gipso.github.io/actverse/reference/}{website}.
+package \href{https://giperbio.github.io/actverse/reference/}{website}.
 }
 }
 
@@ -242,7 +242,7 @@ utility for analysis of circadian rhythms. \emph{Journal of Theoretical Biology}
 \emph{72}(1), 131-160. \doi{10.1016/0022-5193(78)90022-x}.
 
 Tonon, A. C. et al. (2022). Handling missing data in rest-activity
-time series measured by actimetry. \emph{Chronobiology International}.
+time series measured by actimetry. \emph{Chronobiology International}, \emph{39}(7).
 \doi{10.1080/07420528.2022.2051714}.
 }
 \seealso{
