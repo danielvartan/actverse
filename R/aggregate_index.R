@@ -81,8 +81,8 @@ aggregate_index <- function(data, unit, fun = NULL, week_start = 1) {
     checkmate::assert_choice(week_start, c(1, 7))
 
     # R CMD Check variable bindings fix (see: https://bit.ly/3z24hbU)
-    # nolint start: object_usage_linter.
-    . <- .indec_placeholder_ <- NULL
+    # nolint start: object_usage_linter, object_name_linter.
+    . <- .iNdEx_PlAcEhOlDeR <- NULL
     # nolint end
 
     index_var <- tsibble::index_var(data)
@@ -90,7 +90,7 @@ aggregate_index <- function(data, unit, fun = NULL, week_start = 1) {
 
     # Workaround to avoid problems with dplyr::select()
     data <- data %>%
-        dplyr::rename(.indec_placeholder_ = tsibble::index_var(data))
+        dplyr::rename(.iNdEx_PlAcEhOlDeR = tsibble::index_var(data))
 
     if (is.null(fun)) fun <- aggregate_index_default_fun
 
@@ -111,7 +111,7 @@ aggregate_index <- function(data, unit, fun = NULL, week_start = 1) {
     data %>%
         tsibble::index_by(.InDeX_pLaCeHoLdEr2 = group) %>%
         dplyr::summarise(dplyr::across(dplyr::everything(), fun)) %>%
-        dplyr::select(-.indec_placeholder_) %>%
+        dplyr::select(-.iNdEx_PlAcEhOlDeR) %>%
         dplyr::rename_with(~ gsub("^.InDeX_pLaCeHoLdEr2$", index_var, .x))
 }
 
