@@ -39,7 +39,7 @@ library(hms)
 
 You need to have some familiarity with the [R programming language](https://www.r-project.org/) and with the [`tsibble`](https://tsibble.tidyverts.org/index.html) package to use `actverse` main functions.
 
-In case you don't feel comfortable with R, we strongly recommend checking Hadley Wickham and Garrett Grolemund's free and online book [R for Data Science](https://r4ds.had.co.nz/) and the Coursera course from John Hopkins University [Data Science: Foundations using R](https://www.coursera.org/specializations/data-science-foundations-r) (free for audit students).
+If you don't feel comfortable with R, we strongly recommend checking Hadley Wickham and Garrett Grolemund's free and online book [R for Data Science](https://r4ds.had.co.nz/) and the Coursera course from John Hopkins University [Data Science: Foundations using R](https://www.coursera.org/specializations/data-science-foundations-r) (free for audit students).
 
 Please refer to the [`tsibble`](https://tsibble.tidyverts.org/index.html) package documentation to learn more about it. `tsibble` is an essential package to deal with time series in R. We also recommend that you read the [Dates and times](https://r4ds.had.co.nz/dates-and-times.html) chapter from Wickham & Grolemund's book [R for Data Science](https://r4ds.had.co.nz/) and the [tsibble objects](https://otexts.com/fpp3/tsibbles.html) subchapter from Rob J. Hyndman  & George Athanasopoulos' book [Forecasting: Principles and Practice](https://otexts.com/fpp3/).
 

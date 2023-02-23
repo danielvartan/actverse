@@ -37,10 +37,10 @@ language](https://www.r-project.org/) and with the
 [`tsibble`](https://tsibble.tidyverts.org/index.html) package to use
 `actverse` main functions.
 
-In case you don’t feel comfortable with R, we strongly recommend
-checking Hadley Wickham and Garrett Grolemund’s free and online book [R
-for Data Science](https://r4ds.had.co.nz/) and the Coursera course from
-John Hopkins University [Data Science: Foundations using
+If you don’t feel comfortable with R, we strongly recommend checking
+Hadley Wickham and Garrett Grolemund’s free and online book [R for Data
+Science](https://r4ds.had.co.nz/) and the Coursera course from John
+Hopkins University [Data Science: Foundations using
 R](https://www.coursera.org/specializations/data-science-foundations-r)
 (free for audit students).
 
@@ -179,24 +179,24 @@ get_sun_stats(lat = -23.5489, lon = -46.6388, tz = "America/Sao_Paulo") %>%
     dplyr::as_tibble() %>% 
     t()
 #>                   [,1]               
-#> date              "2023-02-21"       
+#> date              "2023-02-23"       
 #> lat               "-23.5489"         
 #> lon               "-46.6388"         
 #> tz                "America/Sao_Paulo"
-#> sunrise_start     "05:59:10"         
-#> sunrise_end       "06:01:33"         
-#> golden_hour_end   "06:29:30"         
-#> solar_noon        "12:21:41"         
-#> golden_hour_start "18:13:52"         
-#> sunset_start      "18:41:49"         
-#> sunset_end        "18:44:11"         
-#> dusk              "19:07:21"         
-#> nautical_dusk     "19:34:34"         
-#> night_start       "20:02:16"         
-#> nadir             "00:21:41"         
-#> night_end         "04:41:06"         
-#> nautical_dawn     "05:08:48"         
-#> dawn              "05:36:01"
+#> sunrise_start     "06:00:15"         
+#> sunrise_end       "06:02:37"         
+#> golden_hour_end   "06:30:30"         
+#> solar_noon        "12:21:26"         
+#> golden_hour_start "18:12:22"         
+#> sunset_start      "18:40:15"         
+#> sunset_end        "18:42:37"         
+#> dusk              "19:05:42"         
+#> nautical_dusk     "19:32:49"         
+#> night_start       "20:00:22"         
+#> nadir             "00:21:26"         
+#> night_end         "04:42:30"         
+#> nautical_dawn     "05:10:04"         
+#> dawn              "05:37:10"
 ```
 
 ### Other features
