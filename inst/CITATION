@@ -4,7 +4,7 @@ utils::bibentry(
     title = paste0(
         "{actverse}:", " ",
         "tools for actigraphy data analysis"
-    ),
+        ),
     author = c(
         utils::person(
             given = "Daniel",
@@ -34,12 +34,12 @@ utils::bibentry(
             email = "aamelia@usp.br",
             comment = c(ORCID = "0000-0003-4976-2623")
             )
-    ),
+        ),
     year = "2023",
     url = paste0(
         "https://giperbio.github.io/",
         "actverse/"
-    ),
+        ),
     note = "R package version 0.0.0.9000",
     textVersion = paste0(
         "Vartanian, D.", ", ",
