@@ -231,7 +231,7 @@ read_acttrust(file, regularize = FALSE) %>%
 
 If you use `actverse` in your research, please consider citing it. We
 put a lot of work to build and maintain a free and open-source R
-package. You can find the `actverse` citation below.
+package. You can find the citation below.
 
 ``` r
 citation("actverse")
