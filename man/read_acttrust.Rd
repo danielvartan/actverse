@@ -31,7 +31,7 @@ a consistent and easy manner. You can see the output data structure in
 \code{\link[=acttrust]{?acttrust}}.
 
 ActTrust is a trademark of
-\href{https://condorinst.com.br/}{Condor Instruments Ltda}.
+\href{https://condorinst.com/en/}{Condor Instruments Ltda}.
 }
 \details{
 \subsection{Requirements}{

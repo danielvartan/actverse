@@ -93,9 +93,9 @@ time series standards.
 ### Read/Write
 
 - `read_acttrust()`: Read, tidy, and validate an
-  [ActTrust](https://condorinst.com.br/acttrust-actigrafo/) file.
+  [ActTrust](https://condorinst.com/en/acttrust-actigraph/) file.
 - `write_acttrust()`: Adapt and write a `tsibble` to a readable
-  [ActTrust](https://condorinst.com.br/acttrust-actigrafo/) file.
+  [ActTrust](https://condorinst.com/en/acttrust-actigraph/) file.
 
 Example:
 

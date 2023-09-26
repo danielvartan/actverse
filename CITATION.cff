@@ -1,5 +1,5 @@
 # -----------------------------------------------------------
-# CITATION file created with {cffr} R package, v0.4.1
+# CITATION file created with {cffr} R package, v0.5.0
 # See also: https://docs.ropensci.org/cffr/
 # -----------------------------------------------------------
  
@@ -77,7 +77,7 @@ references:
   year: '2023'
   institution:
     name: R Foundation for Statistical Computing
-  version: '>= 4.1'
+  version: '>= 4.2'
 - type: software
   title: checkmate
   abstract: 'checkmate: Fast and Versatile Argument Checks'
@@ -98,8 +98,8 @@ references:
   url: https://cli.r-lib.org
   repository: https://CRAN.R-project.org/package=cli
   authors:
-  - family-names: Csardi
-    given-names: Gabor
+  - family-names: Csárdi
+    given-names: Gábor
     email: csardi.gabor@gmail.com
   year: '2023'
   version: '>= 3.6.0'
@@ -114,12 +114,12 @@ references:
     given-names: Hadley
     email: hadley@posit.co
     orcid: https://orcid.org/0000-0003-4757-117X
-  - family-names: Francois
+  - family-names: François
     given-names: Romain
     orcid: https://orcid.org/0000-0002-2444-4226
   - family-names: Henry
     given-names: Lionel
-  - family-names: Muller
+  - family-names: Müller
     given-names: Kirill
     orcid: https://orcid.org/0000-0002-1416-3412
   - family-names: Vaughan
@@ -165,24 +165,13 @@ references:
   year: '2023'
   version: '>= 3.4.1'
 - type: software
-  title: gutils
-  abstract: 'gutils: Utility Functions Created by the GIPERBIO Developer Team'
-  notes: Imports
-  url: https://giperbio.github.io/gutils/
-  authors:
-  - family-names: Vartanian
-    given-names: Daniel
-    email: danvartan@gmail.com
-    orcid: https://orcid.org/0000-0001-7782-759X
-  year: '2023'
-- type: software
   title: hms
   abstract: 'hms: Pretty Time of Day'
   notes: Imports
   url: https://hms.tidyverse.org/
   repository: https://CRAN.R-project.org/package=hms
   authors:
-  - family-names: Muller
+  - family-names: Müller
     given-names: Kirill
     email: kirill@cynkra.com
     orcid: https://orcid.org/0000-0002-1416-3412
@@ -260,12 +249,23 @@ references:
   authors:
   - family-names: Henry
     given-names: Lionel
-    email: lionel@rstudio.com
+    email: lionel@posit.co
   - family-names: Wickham
     given-names: Hadley
-    email: hadley@rstudio.com
+    email: hadley@posit.co
   year: '2023'
   version: '>= 1.0.6'
+- type: software
+  title: rutils
+  abstract: 'rutils: Utility Functions for R'
+  notes: Imports
+  url: https://danielvartan.github.io/rutils/
+  authors:
+  - family-names: Vartanian
+    given-names: Daniel
+    email: danvartan@gmail.com
+    orcid: https://orcid.org/0000-0001-7782-759X
+  year: '2023'
 - type: software
   title: stats
   abstract: 'R: A Language and Environment for Statistical Computing'
@@ -277,7 +277,7 @@ references:
   year: '2023'
   institution:
     name: R Foundation for Statistical Computing
-  version: '>= 4.1.0'
+  version: '>= 4.2.0'
 - type: software
   title: tsibble
   abstract: 'tsibble: Tidy Temporal Data Frames and Tools'
@@ -328,7 +328,7 @@ references:
   title: curl
   abstract: 'curl: A Modern and Flexible Web Client for R'
   notes: Suggests
-  url: https://curl.se/libcurl/
+  url: https://jeroen.r-universe.dev/curl
   repository: https://CRAN.R-project.org/package=curl
   authors:
   - family-names: Ooms
@@ -341,7 +341,7 @@ references:
   title: jsonlite
   abstract: 'jsonlite: A Simple and Robust JSON Parser and Generator for R'
   notes: Suggests
-  url: https://arxiv.org/abs/1403.2805
+  url: https://jeroen.r-universe.dev/jsonlite
   repository: https://CRAN.R-project.org/package=jsonlite
   authors:
   - family-names: Ooms
@@ -370,7 +370,7 @@ references:
   url: https://krlmlr.github.io/mockr/
   repository: https://CRAN.R-project.org/package=mockr
   authors:
-  - family-names: M<U+00FC>ller
+  - family-names: Müller
     given-names: Kirill
     email: kirill@cynkra.com
   year: '2023'
@@ -446,35 +446,38 @@ references:
   authors:
   - family-names: Allaire
     given-names: JJ
-    email: jj@rstudio.com
+    email: jj@posit.co
   - family-names: Xie
     given-names: Yihui
     email: xie@yihui.name
     orcid: https://orcid.org/0000-0003-0645-5666
+  - family-names: Dervieux
+    given-names: Christophe
+    email: cderv@posit.co
+    orcid: https://orcid.org/0000-0003-4474-2498
   - family-names: McPherson
     given-names: Jonathan
-    email: jonathan@rstudio.com
+    email: jonathan@posit.co
   - family-names: Luraschi
     given-names: Javier
-    email: javier@rstudio.com
   - family-names: Ushey
     given-names: Kevin
-    email: kevin@rstudio.com
+    email: kevin@posit.co
   - family-names: Atkins
     given-names: Aron
-    email: aron@rstudio.com
+    email: aron@posit.co
   - family-names: Wickham
     given-names: Hadley
-    email: hadley@rstudio.com
+    email: hadley@posit.co
   - family-names: Cheng
     given-names: Joe
-    email: joe@rstudio.com
+    email: joe@posit.co
   - family-names: Chang
     given-names: Winston
-    email: winston@rstudio.com
+    email: winston@posit.co
   - family-names: Iannone
     given-names: Richard
-    email: rich@rstudio.com
+    email: rich@posit.co
     orcid: https://orcid.org/0000-0003-3925-190X
   year: '2023'
   version: '>= 2.20'
@@ -519,7 +522,7 @@ references:
   authors:
   - family-names: Wickham
     given-names: Hadley
-    email: hadley@rstudio.com
+    email: hadley@posit.co
   year: '2023'
   version: '>= 3.1.6'
 - type: software
@@ -529,9 +532,10 @@ references:
   url: https://tibble.tidyverse.org/
   repository: https://CRAN.R-project.org/package=tibble
   authors:
-  - family-names: M<U+00FC>ller
+  - family-names: Müller
     given-names: Kirill
-    email: krlmlr+r@mailbox.org
+    email: kirill@cynkra.com
+    orcid: https://orcid.org/0000-0002-1416-3412
   - family-names: Wickham
     given-names: Hadley
     email: hadley@rstudio.com
@@ -548,7 +552,7 @@ references:
   year: '2023'
   institution:
     name: R Foundation for Statistical Computing
-  version: '>= 4.1.0'
+  version: '>= 4.2.0'
 - type: software
   title: utils
   abstract: 'R: A Language and Environment for Statistical Computing'
@@ -560,7 +564,7 @@ references:
   year: '2023'
   institution:
     name: R Foundation for Statistical Computing
-  version: '>= 4.1.0'
+  version: '>= 4.2.0'
 - type: software
   title: zoo
   abstract: 'zoo: S3 Infrastructure for Regular and Irregular Time Series (Z''s Ordered

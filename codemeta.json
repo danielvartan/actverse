@@ -14,7 +14,7 @@
     "name": "R",
     "url": "https://r-project.org"
   },
-  "runtimePlatform": "R version 4.2.2 (2022-10-31 ucrt)",
+  "runtimePlatform": "R version 4.3.1 (2023-06-16 ucrt)",
   "author": [
     {
       "@type": "Person",
@@ -245,13 +245,13 @@
       "@type": "SoftwareApplication",
       "identifier": "tools",
       "name": "tools",
-      "version": ">= 4.1.0"
+      "version": ">= 4.2.0"
     },
     {
       "@type": "SoftwareApplication",
       "identifier": "utils",
       "name": "utils",
-      "version": ">= 4.1.0"
+      "version": ">= 4.2.0"
     },
     {
       "@type": "SoftwareApplication",
@@ -272,7 +272,7 @@
       "@type": "SoftwareApplication",
       "identifier": "R",
       "name": "R",
-      "version": ">= 4.1"
+      "version": ">= 4.2"
     },
     "2": {
       "@type": "SoftwareApplication",
@@ -328,12 +328,6 @@
     },
     "6": {
       "@type": "SoftwareApplication",
-      "identifier": "gutils",
-      "name": "gutils",
-      "sameAs": "https://github.com/giperbio/gutils"
-    },
-    "7": {
-      "@type": "SoftwareApplication",
       "identifier": "hms",
       "name": "hms",
       "version": ">= 1.1.2",
@@ -345,7 +339,7 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=hms"
     },
-    "8": {
+    "7": {
       "@type": "SoftwareApplication",
       "identifier": "lifecycle",
       "name": "lifecycle",
@@ -358,7 +352,7 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=lifecycle"
     },
-    "9": {
+    "8": {
       "@type": "SoftwareApplication",
       "identifier": "lubridate",
       "name": "lubridate",
@@ -371,7 +365,7 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=lubridate"
     },
-    "10": {
+    "9": {
       "@type": "SoftwareApplication",
       "identifier": "magrittr",
       "name": "magrittr",
@@ -384,7 +378,7 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=magrittr"
     },
-    "11": {
+    "10": {
       "@type": "SoftwareApplication",
       "identifier": "purrr",
       "name": "purrr",
@@ -397,7 +391,7 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=purrr"
     },
-    "12": {
+    "11": {
       "@type": "SoftwareApplication",
       "identifier": "rlang",
       "name": "rlang",
@@ -410,11 +404,17 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=rlang"
     },
+    "12": {
+      "@type": "SoftwareApplication",
+      "identifier": "rutils",
+      "name": "rutils",
+      "sameAs": "https://github.com/danielvartan/rutils"
+    },
     "13": {
       "@type": "SoftwareApplication",
       "identifier": "stats",
       "name": "stats",
-      "version": ">= 4.1.0"
+      "version": ">= 4.2.0"
     },
     "14": {
       "@type": "SoftwareApplication",
@@ -444,7 +444,7 @@
     },
     "SystemRequirements": null
   },
-  "fileSize": "662.378KB",
+  "fileSize": "664.515KB",
   "citation": [
     {
       "@type": "CreativeWork",

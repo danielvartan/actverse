@@ -9,7 +9,7 @@
 #' [`?acttrust`][actverse::acttrust].
 #'
 #' ActTrust is a trademark of
-#' [Condor Instruments Ltda](https://condorinst.com.br/).
+#' [Condor Instruments Ltda](https://condorinst.com/en/).
 #'
 #' @details
 #'

@@ -128,7 +128,7 @@ acttrust
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#maturing}{\figure{lifecycle-maturing.svg}{options: alt='[Maturing]'}}}{\strong{[Maturing]}}
 
 A small sample (1 day length) of an
-\href{https://condorinst.com.br/acttrust-actigrafo/}{ActTrust}
+\href{https://condorinst.com/en/acttrust-actigraph/}{ActTrust}
 actigraphy record.
 
 \strong{Note}: We're always looking for actigraphy data samples. If you have a
@@ -137,7 +137,7 @@ personal actigraphy record made with a device that is not listed in the
 authors.
 
 ActTrust is a trademark of
-\href{https://condorinst.com.br/}{Condor Instruments Ltda}.
+\href{https://condorinst.com/en/}{Condor Instruments Ltda}.
 }
 \details{
 This dataset was created by one of the \code{actverse} package authors and is free
@@ -222,8 +222,8 @@ The raw data for this dataset can be found with
 
 \subsection{Actigraph}{
 \itemize{
-\item Brand: \href{https://condorinst.com.br/}{Condor Instruments}.
-\item Model: \href{https://condorinst.com.br/acttrust-actigrafo/}{ActTrust 1}.
+\item Brand: \href{https://condorinst.com/en/}{Condor Instruments}.
+\item Model: \href{https://condorinst.com/en/acttrust-actigraph/}{ActTrust 1}.
 \item Hardware version: \code{3.1}.
 \item Firmware version: \code{3.7}.
 \item Manual: \verb{1.0.13} (PT-BR).
