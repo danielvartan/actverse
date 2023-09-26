@@ -65,7 +65,7 @@ write_acttrust <- function(data, file, delim = ";", header = NULL) {
 
     # R CMD Check variable bindings fix (see: https://bit.ly/3z24hbU)
     # nolint start: object_usage_linter.
-    acttrust <- acttrust
+    acttrust <- NULL
     . <- NULL
     timestamp <- date <- time <- ms <- NULL
     pim <- pim_n <- tat <- tat_n <- zcm <- zcm_n <- NULL
@@ -74,6 +74,10 @@ write_acttrust <- function(data, file, delim = ";", header = NULL) {
     ir_light <- uva_light <- uvb_light <- NULL
     event <- state <- NULL
     # nolint end
+
+    utils::data(
+        "acttrust", package = "actverse", envir = environment()
+    )
 
     epoch <- find_epoch(data)$best_match
     cols <- paste0("^timestamp$|^", tsibble::index2_var(data), "$") %>%

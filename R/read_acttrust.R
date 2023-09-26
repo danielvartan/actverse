@@ -239,7 +239,7 @@ validate_acttrust_data <- function(data, regularize = TRUE) {
     out <- out %>%
         dplyr::mutate(dplyr::across(
             !dplyr::matches("^timestamp$|^state$"),
-            ~ dplyr::if_else(state == 4, gutils::na_as(.x), .x)))
+            ~ dplyr::if_else(state == 4, rutils::na_as(.x), .x)))
 
     offwrist_ints <- find_offwrist_intervals(out)
 
@@ -258,11 +258,11 @@ validate_acttrust_data <- function(data, regularize = TRUE) {
             )) %>%
         dplyr::mutate(dplyr::across(
             !dplyr::matches("^timestamp$|^orientation$"),
-            ~ dplyr::if_else(.x < 0, gutils::na_as(.x), .x)
+            ~ dplyr::if_else(.x < 0, rutils::na_as(.x), .x)
             )) %>%
         dplyr::mutate(dplyr::across(
             dplyr::ends_with("_temperature"),
-            ~ dplyr::if_else(.x >= 100, gutils::na_as(.x), .x)
+            ~ dplyr::if_else(.x >= 100, rutils::na_as(.x), .x)
             ))
 }
 
@@ -295,7 +295,7 @@ regularize_acttrust_data <- function(data) {
             aggregate_index(epoch_unit) %>%
             dplyr::mutate(dplyr::across(
                 !dplyr::matches("^timestamp$"),
-                ~ dplyr::if_else(is.nan(.x), gutils::na_as(.x), .x)
+                ~ dplyr::if_else(is.nan(.x), rutils::na_as(.x), .x)
             ))
 
         count_gaps <- tsibble::count_gaps(out) %>%
