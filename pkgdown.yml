@@ -2,7 +2,7 @@ pandoc: 2.19.2
 pkgdown: 2.0.7
 pkgdown_sha: ~
 articles: {}
-last_built: 2023-09-26T04:27Z
+last_built: 2023-09-26T04:33Z
 urls:
   reference: https://giperbio.github.io/actverse/reference
   article: https://giperbio.github.io/actverse/articles
