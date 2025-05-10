@@ -4,16 +4,16 @@
 \name{actverse-package}
 \alias{actverse}
 \alias{actverse-package}
-\title{actverse: Tools for Actigraphy Data Analysis}
+\title{actverse: A Tidyverse-Style Toolbox for Actigraphy Data Analysis}
 \description{
-A complete toolkit to process, analyse and visualize actigraphy data.
+A comprehensive toolkit to process, analyze and visualize actigraphy data.
 }
 \seealso{
 Useful links:
 \itemize{
-  \item \url{https://giperbio.github.io/actverse/}
-  \item \url{https://github.com/giperbio/actverse/}
-  \item Report bugs at \url{https://github.com/giperbio/actverse/issues}
+  \item \url{https://danielvartan.github.io/actverse/}
+  \item \url{https://github.com/danielvartan/actverse/}
+  \item Report bugs at \url{https://github.com/danielvartan/actverse/issues/}
 }
 
 }
@@ -24,13 +24,12 @@ Authors:
 \itemize{
   \item Vinicius Alves Matias \email{viniciusmatias@usp.br} (\href{https://orcid.org/0000-0002-2047-5420}{ORCID})
   \item Cassio Almeida Mattos Serrano \email{cassio.serrano@usp.br} (\href{https://orcid.org/0000-0001-7149-1829}{ORCID})
-  \item Ana Amelia Benedito-Silva \email{aamelia@usp.br} (\href{https://orcid.org/0000-0003-4976-2623}{ORCID}) [scientific advisor]
+  \item Ana Amélia Benedito-Silva \email{aamelia@usp.br} (\href{https://orcid.org/0000-0003-0667-9504}{ORCID}) [scientific advisor]
 }
 
 Other contributors:
 \itemize{
   \item Bruno Ramalho Furlan \email{brfrlan@gmail.com} (\href{https://orcid.org/0000-0003-1654-0899}{ORCID}) [contributor]
-  \item University of Sao Paulo (USP) [funder]
 }
 
 }

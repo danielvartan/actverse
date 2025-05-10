@@ -2,8 +2,6 @@
 #'
 #' @description
 #'
-#' `r lifecycle::badge("experimental")`
-#'
 #' `periodogram()` returns the Sokolove & Bushell's \eqn{\chi^{2}}{chi square}
 #' periodogram plot and measures for a [`tsibble`][tsibble::tsibble()] object.
 #'
@@ -49,9 +47,9 @@
 #'
 #' ## Notes
 #'
-#' * If you are visualizing this documentation in plain text, you may have some
+#' - If you are visualizing this documentation in plain text, you may have some
 #' trouble understanding the equations. You can see this documentation on the
-#' package [website](https://giperbio.github.io/actverse/reference/).
+#' package [website](https://danielvartan.github.io/actverse/reference/).
 #'
 #' ## \eqn{A_{p}}{Ap}: The statistic adopted to express "importance"
 #'
@@ -71,7 +69,7 @@
 #' the difference between the columns, more intense will be the standard
 #' deviation (\eqn{A_{p}}{Ap}).
 #'
-#' * Buys-Ballot table for an integral period \eqn{p}:
+#' - Buys-Ballot table for an integral period \eqn{p}:
 #'
 #' ```
 #'                                P (count)
@@ -138,312 +136,431 @@
 #'
 #' @param data A [`tsibble`][tsibble::tsibble()] object.
 #' @param col A string indicating which column of `data` to use.
-#' @param p_unit (optional) a string indicating at which time unit the index
+#' @param p_unit (optional) A string indicating at which time unit the index
 #'   must be aggregated. By aggregating the index, this will change the time
 #'   series interval and, consequently, its `p` periods. Valid values are:
 #'   `“seconds”`, `“minutes”`, `“hours”`, `“days”`, `“weeks”`, `“months”`,
 #'   `“quarters”`, and `“years”`) (default: `"minutes"`).
-#' @param p_min (optional) an integer number indicating the minimum period
+#' @param p_min (optional) An integer number indicating the minimum period
 #'   (\eqn{p}), with the same unit as `p_unit`, to compute the test (e.g., if
 #'   `p_unit = "minutes"`, `p_min = 1` means a period of 1 minute) (default:
 #'   `1000`).
-#' @param p_max (optional) an integer number indicating the maximum period
+#' @param p_max (optional) An integer number indicating the maximum period
 #'  (\eqn{p}), with the same unit as `p_unit`, to compute the test (default:
 #'   `2500`).
-#' @param p_step (optional) an integer number indicating the range of values
+#' @param p_step (optional) An integer number indicating the range of values
 #'   that must be skipped between computing one test and the next (e.g., when
 #'   `p_min == 1`, `p_max == 7`, and `p_step == 2`, the test periods will be
 #'   `1`, `3`, `5`, and `7`) (default: `1`).
-#' @param alpha (optional) a number, from `0` to `1`, indicating the significant
+#' @param alpha (optional) A number, from `0` to `1`, indicating the significant
 #'   level (\eqn{\alpha}{alpha}) required for the peak significance test
 #'   (default: `0.05`).
-#' @param print (optional) a [`logical`][logical()] value indicating if the
+#' @param print (optional) A [`logical`][logical()] value indicating if the
 #'   function must print the \eqn{Q_{p}}{Qp} plot (default: `TRUE`).
 #'
 #' @return A [`list`][list()] object with the following elements:
 #'
-#' * `p_unit`: a string indicating the time unit in which the data was
+#' - `p_unit`: A string indicating the time unit in which the data was
 #' aggregated.
-#' * `p_seq`: a [`numeric`][numeric()] object with the the sequence of the
+#' - `p_seq`: A [`numeric`][numeric()] object with the the sequence of the
 #' tested periods.
-#' * `alpha`: a number indicating the significant level used.
-#' * `a_p`: a [`numeric`][numeric()] object with the root mean square amplitude
+#' - `alpha`: A number indicating the significant level used.
+#' - `a_p`: A [`numeric`][numeric()] object with the root mean square amplitude
 #' (\eqn{A_{p}}{Ap}) for each period.
-#' * `a_p_plot`: a [`ggplot`][ggplot2::ggplot()] object with a line chart
+#' - `a_p_plot`: A [`ggplot`][ggplot2::ggplot()] object with a line chart
 #' showing `a_p` (y) by `p_seq` (x).
-#' * `q_p`: a [`numeric`][numeric()] object with the peak significant test
+#' - `q_p`: A [`numeric`][numeric()] object with the peak significant test
 #' (\eqn{Q_{p}}{Qp}) for each period .
-#' * `q_p_critical`: a [`numeric`][numeric()] object with the
+#' - `q_p_critical`: A [`numeric`][numeric()] object with the
 #' \eqn{\chi^{2}}{chi square} critical values for each `q_p`, based on the
 #' `alpha` parameter.
-#' * `q_p_pvalue`: a [`numeric`][numeric()] object with the p-value for each
+#' - `q_p_pvalue`: A [`numeric`][numeric()] object with the p-value for each
 #' `q_p`, based on the `alpha` parameter.
-#' * `q_p_peaks`: a [`tibble`][tibble::tibble()] object listing each period that
+#' - `q_p_peaks`: A [`tibble`][tibble::tibble()] object listing each period that
 #' peaked above the critical value along with its `q_p`, `q_p_critical`,
 #' relative `q_p` (`q_p_rel = q_p_critical - q_p`), and `q_p_pvalue`.
-#' * `q_p_plot`: a [`ggplot`][ggplot2::ggplot()] object with a line chart
+#' - `q_p_plot`: A [`ggplot`][ggplot2::ggplot()] object with a line chart
 #' showing `q_p` (y1) and `q_p_critical` (y2) by `p_seq` (x).
 #'
-#' @template references_c
+#' @template references_a
 #' @family period analysis functions
 #' @export
 #'
 #' @examples
-#' \dontrun{
-#' if (requireNamespace("curl", quietly = TRUE) &&
-#'     requireNamespace("jsonlite", quietly = TRUE) &&
-#'     requireNamespace("tools", quietly = TRUE)) {
-#'         if (curl::has_internet()) {
-#'             file <- get_from_zenodo(
-#'                 doi = "10.5281/zenodo.4898822", path = tempdir(),
-#'                 file = "processed.txt"
-#'             )
+#' library(curl)
 #'
-#'             data <- read_acttrust(file, tz = "America/Sao_Paulo")
-#'             per <- periodogram(data, "pim")
-#'         }
+#' if (has_internet()) {
+#'   file <- get_from_zenodo(
+#'     doi = "10.5281/zenodo.4898822",
+#'     dir = tempdir(),
+#'     file = "processed.txt"
+#'   )
+#'
+#'   data <- read_acttrust(file, tz = "America/Sao_Paulo")
+#'   per <- periodogram(data, "pim")
 #' }
-#' }
-periodogram <- function(data, col, p_unit = "minutes", p_min = 1000,
-                        p_max = 2500, p_step = 1, alpha = 0.05, print = TRUE) {
-    p_unit_choices <- c("second", "minute", "hour", "day", "week", "month",
-                      "quarter", "year")
-    p_unit_choices <- append(p_unit_choices, paste0(p_unit_choices, "s"))
+periodogram <- function(
+  data,
+  col,
+  p_unit = "minutes",
+  p_min = 1000,
+  p_max = 2500,
+  p_step = 1,
+  alpha = 0.05,
+  print = TRUE
+) {
+  p_unit_choices <- c(
+    "second", "minute", "hour", "day", "week", "month",
+    "quarter", "year"
+  )
 
-    assert_tsibble(data, min.rows = 2, min.cols = 2)
-    assert_index_class(data)
-    assert_clear_epoch(data, 0.9)
-    checkmate::assert_choice(col, names(data))
-    checkmate::assert_numeric(data[[col]])
-    checkmate::assert_choice(p_unit, p_unit_choices)
-    assert_epoch_compatibility(data, p_unit)
-    checkmate::assert_int(p_min, lower = 1)
-    checkmate::assert_int(p_max, lower = 1)
-    checkmate::assert_int(p_step, lower = 1)
-    assert_leq(p_min + p_step, p_max)
-    checkmate::assert_number(alpha, lower = 0.001, upper = 0.999)
-    checkmate::assert_flag(print)
+  p_unit_choices <- append(p_unit_choices, paste0(p_unit_choices, "s"))
 
-    warn_regularity(data, 0.99)
-    warn_any_missing(data[[col]])
+  assert_tsibble(data, min_rows = 2, min_cols = 2)
+  assert_index_class(data)
+  assert_clear_epoch(data, 0.9)
+  checkmate::assert_choice(col, names(data))
+  checkmate::assert_numeric(data[[col]])
+  checkmate::assert_choice(p_unit, p_unit_choices)
+  assert_epoch_compatibility(data, p_unit)
+  checkmate::assert_int(p_min, lower = 1)
+  checkmate::assert_int(p_max, lower = 1)
+  checkmate::assert_int(p_step, lower = 1)
+  assert_leq(p_min + p_step, p_max)
+  checkmate::assert_number(alpha, lower = 0.001, upper = 0.999)
+  checkmate::assert_flag(print)
 
-    # R CMD Check variable bindings fix (see: https://bit.ly/3z24hbU)
-    # nolint start: object_usage_linter.
-    . <- NULL
-    # nolint end
+  warn_regularity(data, 0.99)
+  warn_any_missing(data[[col]])
 
-    data <- data %>%
-        dplyr::select(dplyr::all_of(c(tsibble::index2_var(.), col))) %>%
-        aggregate_index(p_unit) %>%
-        magrittr::extract2(col)
+  # R CMD Check variable bindings fix
+  # nolint start
+  . <- NULL
+  # nolint end
 
-    for (i in c("p_min", "p_max")) {
-        if (get(i) > length(data)) {
-            cli::cli_abort(paste0(
-                "{.strong {cli::col_red(i)}} is greater than the amount ",
-                "of the time series data when aggregate by ",
-                "{.strong cli::col_blue(p_unit)}."
-            ))
-        }
+  current_theme <- ggplot2::theme_get()
+  ggplot2::theme_set(get_actverse_theme())
+  withr::defer(ggplot2::theme_set(current_theme))
+
+  data <-
+    data %>%
+    dplyr::select(
+      dplyr::all_of(c(tsibble::index2_var(.), col))
+    ) |>
+    aggregate_index(p_unit) |>
+    magrittr::extract2(col)
+
+  for (i in c("p_min", "p_max")) {
+    if (get(i) > length(data)) {
+      cli::cli_abort(paste0(
+        "{.strong {cli::col_red(i)}} is greater than the amount ",
+        "of the time series data when aggregate by ",
+        "{.strong cli::col_blue(p_unit)}."
+      ))
     }
+  }
 
-    p_seq <- seq(p_min, p_max, by = p_step)
-    envir <- environment()
-    cli::cli_progress_bar(total = length(p_seq), clear = FALSE, .envir = envir)
+  p_seq <- seq(p_min, p_max, by = p_step)
+  envir <- environment()
 
-    out <- p_seq %>%
-        purrr::map(compute_periodogram, data = data, alpha = alpha,
-                   envir = envir) %>%
-        purrr::pmap(c) %>%
-        append(list(
-            p_unit = p_unit,
-            p_seq = p_seq,
-            alpha = alpha,
-            a_p_plot = plot_periodogram_a_p(
-                p_seq, .$a_p, paste0("Period (", p_unit, ")")
-                ),
-            q_p_peaks = find_periodogram_peaks(
-                p_seq, .$q_p, .$q_p_critical, .$q_p_pvalue
-                ),
-            q_p_plot = plot_periodogram_q_p(
-                p_seq, .$q_p, .$q_p_critical, alpha,
-                paste0("Period (", p_unit, ")")
-                )
-        )) %>%
-        magrittr::extract(c(
-            "p_unit", "p_seq", "alpha", "a_p", "a_p_plot", "q_p",
-            "q_p_critical", "q_p_pvalue", "q_p_peaks", "q_p_plot"
-            ))
+  cli::cli_progress_bar(
+    total = length(p_seq),
+    clear = FALSE,
+    .envir = envir
+  )
 
-    if (isTRUE(print)) shush(print(out$q_p_plot))
+  out <-
+    p_seq |>
+    purrr::map(
+      compute_periodogram,
+      data = data,
+      alpha = alpha,
+      envir = envir
+    ) |>
+    purrr::pmap(c) %>%
+    append(
+      list(
+        p_unit = p_unit,
+        p_seq = p_seq,
+        alpha = alpha,
+        a_p_plot = plot_periodogram_a_p(
+          p_seq,
+          .$a_p,
+          paste0("Period (", p_unit, ")")
+        ),
+        q_p_peaks = find_periodogram_peaks(
+          p_seq,
+          .$q_p,
+          .$q_p_critical,
+          .$q_p_pvalue
+        ),
+        q_p_plot = plot_periodogram_q_p(
+          p_seq,
+          .$q_p,
+          .$q_p_critical,
+          alpha,
+          paste0("Period (", p_unit, ")")
+        )
+      )
+    ) |>
+    magrittr::extract(
+      c(
+        "p_unit", "p_seq", "alpha", "a_p", "a_p_plot", "q_p",
+        "q_p_critical", "q_p_pvalue", "q_p_peaks", "q_p_plot"
+      )
+    )
 
-    invisible(out)
+  if (isTRUE(print)) {
+    out |> magrittr::extract2("q_p_plot") |> print() |> shush()
+  }
+
+  invisible(out)
 }
 
-compute_periodogram <- function(p, data, alpha = 0.05, envir = NULL) {
-    checkmate::assert_int(p, lower = 1)
-    checkmate::assert_numeric(data, min.len = 1)
-    checkmate::assert_number(alpha, lower = 0.001, upper = 0.999)
-    checkmate::assert_environment(envir, null.ok = TRUE)
+compute_periodogram <- function(
+  p,
+  data,
+  alpha = 0.05,
+  envir = NULL
+) {
+  checkmate::assert_int(p, lower = 1)
+  checkmate::assert_numeric(data, min.len = 1)
+  checkmate::assert_number(alpha, lower = 0.001, upper = 0.999)
+  checkmate::assert_environment(envir, null.ok = TRUE)
 
-    n <- length(data)
-    m <- floor(n / p)
+  n <- length(data)
+  m <- floor(n / p)
 
-    buys_ballot <- matrix(data[1:(m * p)],
-                          nrow = m,
-                          ncol = p,
-                          byrow = TRUE)
+  buys_ballot <- matrix(
+    data[1:(m * p)],
+    nrow = m,
+    ncol = p,
+    byrow = TRUE
+  )
 
-    y_ph <- colMeans(buys_ballot, na.rm = TRUE)
-    y_ph_mean <- mean(y_ph, na.rm = TRUE)
-    x_var <- stats::var(data[1:(m * p)], na.rm = TRUE)
+  y_ph <- colMeans(buys_ballot, na.rm = TRUE)
+  y_ph_mean <- mean(y_ph, na.rm = TRUE)
+  x_var <- stats::var(data[1:(m * p)], na.rm = TRUE)
 
-    a_p <- sqrt((sum((y_ph - y_ph_mean)^2)) / p)
-    q_p <- (p * (a_p^2)) / (x_var / m)
-    q_p_critical <- stats::qchisq(p = alpha, df = p - 1, lower.tail = FALSE)
-    q_p_pvalue <- stats::pchisq(q = q_p, df = p - 1, lower.tail = FALSE)
+  a_p <- sqrt((sum((y_ph - y_ph_mean)^2)) / p)
+  q_p <- (p * (a_p^2)) / (x_var / m)
+  q_p_critical <- stats::qchisq(p = alpha, df = p - 1, lower.tail = FALSE)
+  q_p_pvalue <- stats::pchisq(q = q_p, df = p - 1, lower.tail = FALSE)
 
-    if (!is.null(envir)) cli::cli_progress_update(.envir = envir)
+  if (!is.null(envir)) cli::cli_progress_update(.envir = envir)
 
-    list(a_p = a_p, q_p = q_p, q_p_critical = q_p_critical,
-         q_p_pvalue = q_p_pvalue)
+  list(
+    a_p = a_p,
+    q_p = q_p,
+    q_p_critical = q_p_critical,
+    q_p_pvalue = q_p_pvalue
+  )
 }
 
-find_periodogram_peaks <- function(p_seq, q_p, q_p_critical, q_p_pvalue = NULL,
-                                   max_diff = 1) {
-    checkmate::assert_numeric(p_seq, min.len = 1)
-    checkmate::assert_numeric(q_p, min.len = 1)
-    checkmate::assert_numeric(q_p_critical, min.len = 1)
-    checkmate::assert_numeric(q_p_pvalue, min.len = 1, null.ok = TRUE)
-    assert_identical(p_seq, q_p, q_p_critical, type = "length")
-    checkmate::assert_int(max_diff, lower = 1)
+find_periodogram_peaks <- function(
+  p_seq,
+  q_p,
+  q_p_critical,
+  q_p_pvalue = NULL,
+  max_diff = 1
+) {
+  checkmate::assert_numeric(p_seq, min.len = 1)
+  checkmate::assert_numeric(q_p, min.len = 1)
+  checkmate::assert_numeric(q_p_critical, min.len = 1)
+  checkmate::assert_numeric(q_p_pvalue, min.len = 1, null.ok = TRUE)
+  prettycheck::assert_identical(p_seq, q_p, q_p_critical, type = "length")
+  checkmate::assert_int(max_diff, lower = 1)
 
-    if (!is.null(q_p_pvalue)) {
-        assert_identical(p_seq, q_p, q_p_critical, q_p_pvalue, type = "length")
-    }
+  if (!is.null(q_p_pvalue)) {
+    prettycheck::assert_identical(
+      p_seq, q_p,
+      q_p_critical,
+      q_p_pvalue,
+      type = "length"
+    )
+  }
 
-    # R CMD Check variable bindings fix (see: https://bit.ly/3z24hbU)
-    # nolint start: object_usage_linter.
-    . <- q_p_rel <- NULL
-    # nolint end
+  # R CMD Check variable bindings fix
+  # nolint start
+  . <- q_p_rel <- NULL
+  # nolint end
 
-    if (length(which(q_p > q_p_critical)) == 0) {
-        out <- dplyr::tibble(period = numeric(), q_p = numeric(),
-                             q_p_critical = numeric(), q_p_rel = numeric(),
-                             q_p_pvalue = numeric())
+  if (length(which(q_p > q_p_critical)) == 0) {
+    out <- dplyr::tibble(
+      period = numeric(),
+      q_p = numeric(),
+      q_p_critical = numeric(),
+      q_p_rel = numeric(),
+      q_p_pvalue = numeric()
+    )
 
-        return(out)
-    }
-
+    out
+  } else {
     x <- which(q_p >= q_p_critical & !q_p == 0)
     groups <- list(x[1])
     level <- 1
 
     if (!length(x) == 1) {
-        for (i in seq(2, length(x))) {
-            if (abs(diff(c(x[i - 1], x[i]))) <= max_diff) {
-                groups[[level]] <- append(groups[[level]], x[i])
-            } else {
-                level <- level + 1
-                groups[[level]] <- x[i]
-            }
+      for (i in seq(2, length(x))) {
+        if (abs(diff(c(x[i - 1], x[i]))) <= max_diff) {
+          groups[[level]] <- append(groups[[level]], x[i])
+        } else {
+          level <- level + 1
+          groups[[level]] <- x[i]
         }
+      }
     }
 
-    peak_index <- purrr::map(groups, function(y) y[q_p[y] == max(q_p[y])]) %>%
-        unlist()
+    peak_index <-
+      purrr::map(
+        groups,
+        \(y) y[q_p[y] == max(q_p[y])]
+      ) |>
+      unlist()
 
-    dplyr::tibble(period = p_seq[peak_index],
-                  q_p = q_p[peak_index],
-                  q_p_critical = q_p_critical[peak_index],
-                  q_p_rel = q_p - q_p_critical,
-                  q_p_pvalue = q_p_pvalue[peak_index]) %>%
-        dplyr::arrange(dplyr::desc(q_p_rel)) %>%
-        dplyr::filter(!is.na(period))
+    dplyr::tibble(
+      period = p_seq[peak_index],
+      q_p = q_p[peak_index],
+      q_p_critical = q_p_critical[peak_index],
+      q_p_rel = q_p - q_p_critical,
+      q_p_pvalue = q_p_pvalue[peak_index]
+    ) |>
+      dplyr::arrange(dplyr::desc(q_p_rel)) |>
+      dplyr::filter(!is.na(period))
+  }
 }
 
-clean_periodogram_peaks <- function(peaks, prop_q_p_rel = 0.1,
-                                    prop_bump = 0.001) {
-    checkmate::assert_tibble(peaks)
-    checkmate::assert_number(prop_q_p_rel, lower = 0.001, upper = 0.999)
-    checkmate::assert_number(prop_bump, lower = 0.001, upper = 0.999)
+clean_periodogram_peaks <- function(
+  peaks,
+  prop_q_p_rel = 0.1,
+  prop_bump = 0.001
+) {
+  checkmate::assert_tibble(peaks)
+  checkmate::assert_number(prop_q_p_rel, lower = 0.001, upper = 0.999)
+  checkmate::assert_number(prop_bump, lower = 0.001, upper = 0.999)
 
-    # R CMD Check variable bindings fix (see: https://bit.ly/3z24hbU)
-    # nolint start: object_usage_linter.
-    . <- q_p_rel <- bump <- NULL
-    # nolint end
+  # R CMD Check variable bindings fix
+  # nolint start
+  . <- q_p_rel <- bump <- NULL
+  # nolint end
 
-    if (nrow(peaks) == 0) return(peaks)
+  if (nrow(peaks) == 0) {
+    peaks
+  } else {
+    out <-
+      peaks |>
+      dplyr::filter(
+        q_p_rel >= prop_q_p_rel * max(q_p_rel),
+        q_p_rel >= 100
+      ) |>
+      dplyr::arrange(period)
 
-    out <- peaks %>%
-        dplyr::filter(q_p_rel >= prop_q_p_rel * max(q_p_rel),
-                      q_p_rel >= 100) %>%
-        dplyr::arrange(period)
-
-    while (any(dplyr::lead(out$period) - out$period <=
-              prop_bump * mean(out$period), na.rm = TRUE) &&
-          any(dplyr::lag(out$period) - out$period <=
-              prop_bump * mean(out$period), na.rm = TRUE)) {
-        out <- out %>% dplyr::mutate(
-            bump = dplyr::case_when(
-                dplyr::lead(period) - period <= prop_bump * mean(period) &
-                    dplyr::lead(q_p_rel) >= q_p_rel ~ TRUE,
-                period - dplyr::lag(period) <= prop_bump * mean(period) &
-                    dplyr::lag(q_p_rel) >= q_p_rel ~ TRUE,
-                TRUE ~ FALSE
-            )) %>%
-            dplyr::filter(!bump == TRUE)
+    while (
+      any(
+        dplyr::lead(out$period) -
+          out$period <= prop_bump * mean(out$period), na.rm = TRUE
+      ) &&
+        any(
+          dplyr::lag(out$period) -
+            out$period <= prop_bump * mean(out$period),
+          na.rm = TRUE
+        )
+    ) {
+      out <-
+        out |>
+        dplyr::mutate(
+          bump = dplyr::case_when(
+            dplyr::lead(period) - period <= prop_bump * mean(period) &
+              dplyr::lead(q_p_rel) >= q_p_rel ~ TRUE,
+            period - dplyr::lag(period) <= prop_bump * mean(period) &
+              dplyr::lag(q_p_rel) >= q_p_rel ~ TRUE,
+            TRUE ~ FALSE
+          )
+        ) |>
+        dplyr::filter(!bump == TRUE)
     }
 
     out$period
+  }
 }
 
-plot_periodogram_a_p <- function(p_seq, a_p, xlab = "Period", print = FALSE) {
-    checkmate::assert_numeric(p_seq, min.len = 1)
-    checkmate::assert_numeric(a_p, min.len = 1)
-    checkmate::assert_string(xlab)
-    checkmate::assert_flag(print)
+plot_periodogram_a_p <- function(
+  p_seq,
+  a_p,
+  x_label = "Period",
+  print = FALSE
+) {
+  checkmate::assert_numeric(p_seq, min.len = 1)
+  checkmate::assert_numeric(a_p, min.len = 1)
+  checkmate::assert_string(x_label)
+  checkmate::assert_flag(print)
 
-    out <- ggplot2::ggplot(mapping = ggplot2::aes(x = p_seq, y = a_p)) +
-        ggplot2::geom_line() +
-        ggplot2::labs(x = xlab, y = "Ap")
+  out <-
+    ggplot2::ggplot(mapping = ggplot2::aes(x = p_seq, y = a_p)) +
+    ggplot2::geom_line() +
+    ggplot2::labs(x = x_label, y = "Ap")
 
-    if (isTRUE(print)) shush(print(out))
+  if (isTRUE(print)) out |> print() |> shush()
 
-    invisible(out)
+  invisible(out)
 }
 
-plot_periodogram_q_p <- function(p_seq, q_p, q_p_critical, alpha,
-                                 xlab = "Period", print = FALSE) {
-    checkmate::assert_numeric(p_seq, min.len = 1)
-    checkmate::assert_numeric(q_p, min.len = 1)
-    checkmate::assert_numeric(q_p_critical, min.len = 1)
-    checkmate::assert_number(alpha, lower = 0.001, upper = 0.999)
-    checkmate::assert_string(xlab)
-    checkmate::assert_flag(print)
+plot_periodogram_q_p <- function(
+  p_seq,
+  q_p,
+  q_p_critical,
+  alpha,
+  x_label = "Period",
+  print = FALSE
+) {
+  checkmate::assert_numeric(p_seq, min.len = 1)
+  checkmate::assert_numeric(q_p, min.len = 1)
+  checkmate::assert_numeric(q_p_critical, min.len = 1)
+  checkmate::assert_number(alpha, lower = 0.001, upper = 0.999)
+  checkmate::assert_string(x_label)
+  checkmate::assert_flag(print)
 
-    q_p_critical_legend <- paste0("Critical value ", "(alpha: ", alpha, ")")
+  current_theme <- ggplot2::theme_get()
+  ggplot2::theme_set(get_actverse_theme())
+  withr::defer(ggplot2::theme_set(current_theme))
 
-    out <- ggplot2::ggplot(mapping = ggplot2::aes(x = p_seq)) +
-        ggplot2::geom_line(ggplot2::aes(y = q_p, colour = "Qp")) +
-        ggplot2::geom_line(ggplot2::aes(y = q_p_critical,
-                                        colour = q_p_critical_legend),
-                           linetype = "dashed") +
-        ggplot2::scale_colour_manual("", breaks = c("Qp", q_p_critical_legend),
-                                     values = c("black", "red")) +
-        ggplot2::labs(x = xlab) +
-        ggplot2::theme(axis.title.y = ggplot2::element_blank(),
-                       legend.position = "top")
+  q_p_critical_legend <- paste0("Critical value ", "(alpha: ", alpha, ")")
 
-    peaks <- find_periodogram_peaks(p_seq, q_p, q_p_critical)
+  out <-
+    ggplot2::ggplot(mapping = ggplot2::aes(x = p_seq)) +
+    ggplot2::geom_line(ggplot2::aes(y = q_p, colour = "Qp")) +
+    ggplot2::geom_line(
+      ggplot2::aes(
+        y = q_p_critical,
+        colour = q_p_critical_legend
+      ),
+      linetype = "dashed"
+    ) +
+    ggplot2::scale_colour_manual(
+      "",
+      breaks = c("Qp", q_p_critical_legend),
+      values = c("#000040", "#FC2913")
+    ) +
+    ggplot2::labs(x = x_label) +
+    ggplot2::theme(
+      axis.title.y = ggplot2::element_blank(),
+      legend.position = "top"
+    )
 
-    if (!length(clean_periodogram_peaks(peaks)) == 0) {
-        out <- out + ggplot2::scale_x_continuous(
-            sec.axis = ggplot2::sec_axis(
-                ~.x, breaks = clean_periodogram_peaks(peaks)))
-    }
+  peaks <- find_periodogram_peaks(p_seq, q_p, q_p_critical)
 
-    if (isTRUE(print)) shush(print(out))
+  if (!length(clean_periodogram_peaks(peaks)) == 0) {
+    out <-
+      out +
+      ggplot2::scale_x_continuous(
+        sec.axis = ggplot2::sec_axis(
+          ~.x,
+          breaks = clean_periodogram_peaks(peaks)
+        )
+      )
+  }
 
-    invisible(out)
+  if (isTRUE(print)) out |> print() |> shush()
+
+  invisible(out)
 }

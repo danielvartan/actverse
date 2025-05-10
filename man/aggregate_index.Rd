@@ -14,37 +14,37 @@ aggregated. Valid values are: \verb{“seconds”}, \verb{“minutes”}, \verb{
 \verb{“days”}, \verb{“weeks”}, \verb{“months”}, \verb{“quarters”}, and \verb{“years”}) (default:
 \code{"minutes"}).}
 
-\item{fun}{(optional) The \code{function} to be applied to each measure variable
-of \code{data}. If \code{NULL}, \code{aggregate_index()} will apply its default function
-(see the Details section to learn more) (default: \code{NULL}).}
+\item{fun}{(optional) A \code{\link[base:is.function]{function}} to be applied to
+each measure variable of \code{data}. If \code{NULL}, \code{aggregate_index()} will apply
+its default function (see the Details section to learn more)
+(default: \code{NULL}).}
 
-\item{week_start}{(optional) an integer number indicating the day on which
+\item{week_start}{(optional) An integer number indicating the day on which
 the week starts (\code{1} for Monday and \code{7} for \code{Sunday}). This is only used
-when \verb{unit == "weeks} (default: \code{1}).}
+when \code{unit} is set to \code{"weeks"} (default: \code{1}).}
 }
 \value{
-A \code{\link[tsibble:tsibble]{tsibble}} object.
+A \code{\link[tsibble:tsibble]{tsibble}} object with the same columns as
+\code{data}, but with the index aggregated to the specified time unit.
 }
 \description{
-\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
-
 \code{aggregate_index()} allows you to aggregate the index of a
-\code{\link[tsibble:tsibble]{tsibble}} object by applying a specific function to its
-measured variables.
+\code{\link[tsibble:tsibble]{tsibble}} object by applying a specific function to
+its measured variables.
 }
 \details{
-\code{aggregate_index()} was created to easily regularize
-\code{\link[tsibble:tsibble]{tsibble}} objects. If you need more control while doing
-this operation, check the \code{\link[tsibble:index-by]{index_by()}} function
-provided by the \href{https://tsibble.tidyverts.org/}{\code{tsibble}} package.
+\code{aggregate_index()} is designed to simplify the regularization of
+\code{\link[tsibble:tsibble]{tsibble}} objects by aggregating their index to a
+specified time unit. For more advanced or customized aggregation, consider
+using the \code{\link[tsibble:index-by]{index_by()}} function from the
+\href{https://tsibble.tidyverts.org/}{\code{tsibble}} package, which offers greater
+flexibility and control.
 \subsection{Default function}{
 
-If \code{fun == NULL}, \code{aggregate_index()} will use the following function to
-transform each measured variable:
+If the \code{fun} argument is \code{NULL}, \code{aggregate_index()} will use the following
+function to transform each measured variable:
 
 \if{html}{\out{<div class="sourceCode">}}\preformatted{function(x) \{
-    checkmate::assert_atomic_vector(x)
-
     if (is.numeric(x) && !all(nchar(x) == 1, na.rm = TRUE)) \{
         mean(x, na.rm = TRUE)
     \} else \{
@@ -55,9 +55,9 @@ transform each measured variable:
 \}
 }\if{html}{\out{</div>}}
 
-This function average values for numeric variables and assigning the most
-frequent value (mode) for single integer or other type of variables. If no
-mode can be found, the function will return the first value of \code{x}.
+This function computes the mean for numeric variables and assigns the most
+frequent value (mode) for non-numeric variables. If no mode is found, it
+returns the first non-missing value of \code{x}.
 }
 }
 \examples{
@@ -78,8 +78,6 @@ aggregate_index(acttrust, unit = "year")
 \seealso{
 Other utility functions: 
 \code{\link{find_epoch}()},
-\code{\link{raw_data}()},
-\code{\link{read_acttrust}()},
-\code{\link{write_acttrust}()}
+\code{\link{get_raw_data}()}
 }
 \concept{utility functions}

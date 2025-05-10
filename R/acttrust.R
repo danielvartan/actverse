@@ -1,127 +1,110 @@
-#' An ActTrust actigraphy record
+#' An ActTrust 1 actigraphy record
 #'
 #' @description
 #'
-#' `r lifecycle::badge("maturing")`
-#'
-#' A small sample (1 day length) of an
-#' [ActTrust](https://condorinst.com/en/acttrust-actigraph/)
-#' actigraphy record.
-#'
-#' __Note__: We're always looking for actigraphy data samples. If you have a
-#' personal actigraphy record made with a device that is not listed in the
-#' `actverse` package and is ok with sharing it, please contact the package
-#' authors.
+#' A small sample (1 day length) of an [ActTrust](https://condorinst.com/en/)
+#' (model 1) actigraphy record.
 #'
 #' ActTrust is a trademark of
 #' [Condor Instruments Ltda](https://condorinst.com/en/).
 #'
+#' **Note**: This dataset is based on older methodologies, some of which have
+#' since been improved or replaced. For up-to-date recommendations on sleep
+#' scoring, please refer to the Brazilian Consensus on Actigraphy
+#' ([Pedrazzoli & Gonçalves, 2021](https://doi.org/10.5281/zenodo.15377336)).
+#'
 #' @details
 #'
 #' This dataset was created by one of the `actverse` package authors and is free
-#' for all kinds of use. You can download the full dataset at
-#' \url{https://zenodo.org/record/4898822}.
-#'
-#' ## Data wrangling
-#'
-#' This data was tidied and validated with the default settings of
-#' [`read_acttrust()`][actverse::read_acttrust()].
-#'
-#' The process of _tiding_ a dataset is understood as transforming it in input
-#' data, like described in Loo and Jonge (2018). It's a very similar process of
-#' tiding data described in the workflow proposed by Wickham and Grolemund
-#' (n.d.).
-#'
-#' The process of _validating_ a dataset is understood as detecting invalid
-#' data, by checking whether data satisfies certain assumptions from domain
-#' knowledge, to then,  removing or, if possible, fixing them. This process can
-#' be considered as part of the process of transforming data, described in the
-#' workflow proposed by Wickham and Grolemund (n.d.).
-#'
-#' To learn more about the concept of tidy data, see Wickham (2014) and Wickham
-#' and Grolemund (n.d.). You can find more about data validation and error
-#' location in Loo and Jonge (2018).
-#'
-#' ## Variable naming
-#'
-#' The `actverse` package stick to the [tidyverse
-#' principles](https://tidyverse.tidyverse.org/articles/manifesto.html). Our
-#' code and naming schemes follow the guidelines of the [tidyverse style
-#' guide](https://style.tidyverse.org/).
-#'
-#' ## Variable classes
-#'
-#' R has a [vast number](https://cran.r-project.org/view=TimeSeries) of time
-#' series standards. We choose to work with [`tsibble`][tsibble::tsibble()]
-#' because we think is the best standard that follows the [tidyverse
-#' principles](https://tidyverse.tidyverse.org/articles/manifesto.html).
-#'
-#' To make sure that the resulting data from `actverse` could be easily
-#' transformed to other standards, we decided to maintain all variable classes
-#' as [`numeric`][numeric()], except for the index (class
-#' [`POSIXct`][as.POSIXct()]).
-#'
-#' If you're looking for a good way to easily transform your data to other time
-#' series standards, check the [`tsbox`](https://www.tsbox.help/) package.
+#' for all kinds of use. You can download the full dataset at:
+#' \url{https://zenodo.org/record/4898822}
 #'
 #' ## Raw data
 #'
-#' The raw data for this dataset can be found with
-#' [`raw_data("acttrust.txt")`][raw_data()].
+#' The raw data for this dataset can be found by running the following code:
+#'
+#' ```r
+#' [`get_raw_data("acttrust.txt")`][get_raw_data()].
+#' ```
+#'
+#' ## Data munging
+#'
+#' This dataset was processed with the default settings of
+#' [`read_acttrust()`][actverse::read_acttrust()]. Details about the scoring
+#' process can be found in the Metadata section.
+#'
+#' ## Variable naming
+#'
+#' Variable names follow the
+#' [tidyverse style guide](https://style.tidyverse.org/),
+#' using lowercase letters and underscores to ensure clarity and consistency.
+#'
+#' ## Variable classes
+#'
+#' R supports a [wide variety](https://cran.r-project.org/view=TimeSeries) of
+#' time series data formats. We use [`tsibble`][tsibble::tsibble()] as it aligns
+#' well with [tidyverse
+#' principles](https://tidyverse.tidyverse.org/articles/manifesto.html) and
+#' offers a modern, consistent approach to time series data.
+#'
+#' To facilitate interoperability with other standards, all variables are stored
+#' as [`numeric`][numeric()] vectors except for the index, which is of class
+#' [`POSIXct`][as.POSIXct()]. This design choice ensures that data from
+#' `actverse` can be easily converted to other formats if needed.
 #'
 #' @section Metadata:
 #'
 #' ## Subject
 #'
-#' * Age: `35`.
-#' * Gender: Male.
-#' * Height: `180` cm.
-#' * Weight: `85` kg.
-#' * BMI: `~26.235` (overweight).
+#' - Age: `35`
+#' - Gender: Male
+#' - Height: `180` cm
+#' - Weight: `85` kg
+#' - BMI: `~26.235` (overweight)
 #'
 #' ## Record
 #'
-#' * Body part: Left wrist (non-dominant wrist).
-#' * Start: `2021-04-24 04:14:25`.
-#' * End: `2021-05-31 03:39:06`.
-#' * Days: `37`
-#' * Epoch (sample interval): `60` seconds.
-#' * Mode: PIM, TAT, and ZCM.
-#' * TAT Threshold: `1024`.
-#' * Location: Sao Paulo, SP, Brazil.
-#' * UTC: `-3`.
-#' * DST: `FALSE`.
-#' * Light phase: `06:23:59` - `17:44:58`.
-#' * Dark phase: `17:44:59` - `06:23:58`.
+#' - Body part: Left wrist (non-dominant wrist)
+#' - Start: `2021-04-24 04:14:25`
+#' - End: `2021-05-31 03:39:06`
+#' - Days: `37`
+#' - Epoch (sample interval): `60` seconds
+#' - Mode: PIM, TAT, and ZCM
+#' - TAT Threshold: `1024`
+#' - Location: São Paulo, SP, Brazil
+#' - UTC: `-3`
+#' - DST: `FALSE`
+#' - Light phase: `06:23:59` - `17:44:58`
+#' - Dark phase: `17:44:59` - `06:23:58`
 #'
 #' ## Actigraph
 #'
-#' * Brand: [Condor Instruments](https://condorinst.com/en/).
-#' * Model: [ActTrust 1](https://condorinst.com/en/acttrust-actigraph/).
-#' * Hardware version: `3.1`.
-#' * Firmware version: `3.7`.
-#' * Manual: `1.0.13` (PT-BR).
-#' * Software: ActStudio Alpha 1.0.17 (Win | Mac).
+#' - Brand: [Condor Instruments](https://condorinst.com/en/)
+#' - Model: [ActTrust 1](https://condorinst.com/en/)
+#' - Hardware version: `3.1`
+#' - Firmware version: `3.7`
+#' - Manual: `1.0.13` (PT-BR)
+#' - Software: ActStudio Alpha 1.0.17 (Win | Mac)
 #'
-#' ## Scoring settings
+#' ## Scoring algorithm settings
 #'
-#' * Scoring algorithm: Condor Instruments.
-#' * The sleep diary data was not used for scoring.
+#' - Condor Instruments algorithm version 1.0.17.
+#' - The sleep diary data was not used for scoring.
 #'
 #' ## Scoring review
 #'
-#' * Offwrist periods were indicated from sudden drops in wrist temperature.
+#' - Offwrist periods were indicated from sudden drops in wrist temperature.
 #' * Micro sleep states (isolated states lasting less than `5 minutes`) were
 #' removed.
-#' * Minor adjustments were made on the sleep onset and sleep offset, taking
+#' - Minor adjustments were made on the sleep onset and sleep offset, taking
 #' into consideration the event button and sleep diary records.
 #'
 #' ## Sleep statistics settings
 #'
-#' * Multiple main sleep periods: `TRUE`.
-#' * Main sleep period time of day: `Day or Night`.
-#' * Minimum duration for main sleep periods: `01:00:00`.
-#' * Awake period limit: `02:00:00`.
+#' - Multiple main sleep periods: `TRUE`.
+#' - Main sleep period time of day: `Day or Night`.
+#' - Minimum duration for main sleep periods: `01:00:00`.
+#' - Awake period limit: `02:00:00`.
 #'
 #' @format A [`tsibble`][tsibble::tsibble()] with 17 columns and 1,441 rows:
 #'
@@ -236,7 +219,9 @@
 #'   }
 #' }
 #'
-#' @source Created by Daniel Vartanian (package author).
+#' @template references_d
 #' @family datasets
-#' @template references_b
+#'
+#' @source Created by [Daniel Vartanian](https://linktr.ee/danielvartan)
+#'   (package author).
 "acttrust"

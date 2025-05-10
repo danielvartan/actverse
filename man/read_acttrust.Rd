@@ -4,19 +4,24 @@
 \alias{read_acttrust}
 \title{Read, tidy, and validate an ActTrust file}
 \usage{
-read_acttrust(file = file.choose(), tz = "UTC", regularize = TRUE)
+read_acttrust(
+  file = tcltk::tk_choose.files(mult = FALSE),
+  tz = "UTC",
+  regularize = TRUE
+)
 }
 \arguments{
-\item{file}{A string with the file path for the ActTrust data. If not
-assigned, a dialog window will open allowing the user to browse and select
-a file.}
+\item{file}{(optional) A string with the file path for the ActTrust data. If
+not assigned, a dialog window will open allowing the user to browse and
+select a file (default: \code{\link[tcltk:tk_choose.files]{tk_choose.files()}}).}
 
-\item{tz}{A string that specifies which time zone to parse the dates/time
-with. The string must be a time zone that is recognized by the user's OS.
-For more information see \code{\link[=OlsonNames]{?timezone}} (default: \code{"UTC"}).}
+\item{tz}{(optional) A string that specifies which time zone to parse the
+dates/time with. The string must be a time zone that is recognized by the
+user's OS. For more information see \code{\link[=OlsonNames]{?timezone}}
+(default: \code{"UTC"}).}
 
-\item{regularize}{(optional) a \code{\link[=logical]{logical}} value indicating if the
-function must correct irregular intervals (\strong{highly recommended}). See
+\item{regularize}{(optional) A \code{\link[=logical]{logical}} value indicating if the
+function must correct irregular intervals (\strong{strongly recommended}). See
 more about it in the Details section (default: \code{TRUE}).}
 }
 \value{
@@ -24,8 +29,6 @@ A \link[tsibble:tsibble]{tsibble} object. The data structure can be
 found in \code{\link[=acttrust]{?acttrust}}.
 }
 \description{
-\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
-
 \code{read_acttrust()} allows you to read, tidy, and validate an ActTrust file in
 a consistent and easy manner. You can see the output data structure in
 \code{\link[=acttrust]{?acttrust}}.
@@ -34,76 +37,34 @@ ActTrust is a trademark of
 \href{https://condorinst.com/en/}{Condor Instruments Ltda}.
 }
 \details{
-\subsection{Requirements}{
+\subsection{\code{regularize} parameter}{
 
-\code{read_acttrust()} requires the \code{\link[readr:readr-package]{readr}} package. If
-you don't already have it installed, you can install it with:
+ActTrust data files may have uneven epochs or intervals due to small drifts
+in the device's internal clock. These irregularities can affect analyses.
+Setting \code{regularize = TRUE} in \code{read_acttrust()} will detect and correct
+such issues by regularizing the time intervals.
 
-\if{html}{\out{<div class="sourceCode">}}\preformatted{install.packages("readr")
-}\if{html}{\out{</div>}}
-}
+Regularization is performed only if a clear epoch or periodicity is found.
+During this process, values within each epoch are aggregated: numeric
+variables are averaged, and categorical or integer variables are assigned
+their most frequent value (mode).
 
-\subsection{\code{Regularize} parameter}{
-
-It's common to find some uneven epochs/intervals in ActTrust data files. This
-occurs because the actigraph internal clock can go off by some seconds while
-recording and can become an issue while doing some computations. By using
-\code{regularize == TRUE}, \code{read_acttrust()} find and correct those
-irregularities.
-
-It's important to note that this process will only work if a clear
-epoch/periodicity can be found in the data. Regularization is made by
-aggregating the values between epochs, averaging values for numeric variables
-and assigning the most frequent value (mode) for single integer or other type
-of variables.
-
-Any gap found in the time series will be assign as \code{NA}, with a \code{state}
-value of \code{9}.
+Any gaps in the time series are filled with \code{NA}, and the corresponding
+\code{state} is set to \code{9}.
 }
 
 \subsection{Offwrist data}{
 
-\code{read_acttrust()} will transform any offwrist data (data with
-\code{state == 4}) into missing data (\code{NA}). They will still going to be
-classified as offwrist in the \code{state} variable.
-}
-
-\subsection{Data wrangling}{
-
-The process of \emph{tiding} a dataset is understood as transforming it in input
-data, like described in Loo and Jonge (2018). It's a very similar process of
-tiding data described in the workflow proposed by Wickham and Grolemund
-(n.d.).
-
-The process of \emph{validating} a dataset is understood as detecting invalid
-data, by checking whether data satisfies certain assumptions from domain
-knowledge, to then,  removing or, if possible, fixing them. This process can
-be considered as part of the process of transforming data, described in the
-workflow proposed by Wickham and Grolemund (n.d.).
-
-To learn more about the concept of tidy data, see Wickham (2014) and Wickham
-and Grolemund (n.d.). You can find more about data validation and error
-location in Loo and Jonge (2018).
+\code{read_acttrust()} will convert all offwrist data (where \code{state == 4}) to
+missing values (\code{NA}). These data points will remain classified as offwrist
+in the \code{state} variable.
 }
 }
 \examples{
-read_acttrust(raw_data("acttrust.txt"))
-}
-\references{
-van der Loo, M., & de Jonge, E. (2018). \emph{Statistical data cleaning with
-applications in R}. John Wiley & Sons. \doi{10.1002/9781118897126}.
-
-Wickham, H. (2014). Tidy Data. \emph{Journal of Statistical Software}, \emph{59}(10),
-1-23. \doi{10.18637/jss.v059.i10}.
-
-Wickham, H., & Grolemund, G. (n.d.). \emph{R for data science}. (n.p.).
-\url{https://r4ds.had.co.nz}
+get_raw_data("acttrust.txt") |> read_acttrust()
 }
 \seealso{
-Other utility functions: 
-\code{\link{aggregate_index}()},
-\code{\link{find_epoch}()},
-\code{\link{raw_data}()},
+Other read/write functions: 
 \code{\link{write_acttrust}()}
 }
-\concept{utility functions}
+\concept{read/write functions}

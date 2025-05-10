@@ -3,7 +3,7 @@
 \docType{data}
 \name{acttrust}
 \alias{acttrust}
-\title{An ActTrust actigraphy record}
+\title{An ActTrust 1 actigraphy record}
 \format{
 A \code{\link[tsibble:tsibble]{tsibble}} with 17 columns and 1,441 rows:
 
@@ -119,121 +119,106 @@ R class: \code{\link[=numeric]{numeric}}.
 }
 }
 \source{
-Created by Daniel Vartanian (package author).
+Created by \href{https://linktr.ee/danielvartan}{Daniel Vartanian}
+(package author).
 }
 \usage{
 acttrust
 }
 \description{
-\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#maturing}{\figure{lifecycle-maturing.svg}{options: alt='[Maturing]'}}}{\strong{[Maturing]}}
-
-A small sample (1 day length) of an
-\href{https://condorinst.com/en/acttrust-actigraph/}{ActTrust}
-actigraphy record.
-
-\strong{Note}: We're always looking for actigraphy data samples. If you have a
-personal actigraphy record made with a device that is not listed in the
-\code{actverse} package and is ok with sharing it, please contact the package
-authors.
+A small sample (1 day length) of an \href{https://condorinst.com/en/}{ActTrust}
+(model 1) actigraphy record.
 
 ActTrust is a trademark of
 \href{https://condorinst.com/en/}{Condor Instruments Ltda}.
+
+\strong{Note}: This dataset is based on older methodologies, some of which have
+since been improved or replaced. For up-to-date recommendations on sleep
+scoring, please refer to the Brazilian Consensus on Actigraphy
+(\href{https://doi.org/10.5281/zenodo.15377336}{Pedrazzoli & Gonçalves, 2021}).
 }
 \details{
 This dataset was created by one of the \code{actverse} package authors and is free
-for all kinds of use. You can download the full dataset at
-\url{https://zenodo.org/record/4898822}.
-\subsection{Data wrangling}{
+for all kinds of use. You can download the full dataset at:
+\url{https://zenodo.org/record/4898822}
+\subsection{Raw data}{
 
-This data was tidied and validated with the default settings of
-\code{\link[=read_acttrust]{read_acttrust()}}.
+The raw data for this dataset can be found by running the following code:
 
-The process of \emph{tiding} a dataset is understood as transforming it in input
-data, like described in Loo and Jonge (2018). It's a very similar process of
-tiding data described in the workflow proposed by Wickham and Grolemund
-(n.d.).
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{[`get_raw_data("acttrust.txt")`][get_raw_data()].
+}\if{html}{\out{</div>}}
+}
 
-The process of \emph{validating} a dataset is understood as detecting invalid
-data, by checking whether data satisfies certain assumptions from domain
-knowledge, to then,  removing or, if possible, fixing them. This process can
-be considered as part of the process of transforming data, described in the
-workflow proposed by Wickham and Grolemund (n.d.).
+\subsection{Data munging}{
 
-To learn more about the concept of tidy data, see Wickham (2014) and Wickham
-and Grolemund (n.d.). You can find more about data validation and error
-location in Loo and Jonge (2018).
+This dataset was processed with the default settings of
+\code{\link[=read_acttrust]{read_acttrust()}}. Details about the scoring
+process can be found in the Metadata section.
 }
 
 \subsection{Variable naming}{
 
-The \code{actverse} package stick to the \href{https://tidyverse.tidyverse.org/articles/manifesto.html}{tidyverse principles}. Our
-code and naming schemes follow the guidelines of the \href{https://style.tidyverse.org/}{tidyverse style guide}.
+Variable names follow the
+\href{https://style.tidyverse.org/}{tidyverse style guide},
+using lowercase letters and underscores to ensure clarity and consistency.
 }
 
 \subsection{Variable classes}{
 
-R has a \href{https://cran.r-project.org/view=TimeSeries}{vast number} of time
-series standards. We choose to work with \code{\link[tsibble:tsibble]{tsibble}}
-because we think is the best standard that follows the \href{https://tidyverse.tidyverse.org/articles/manifesto.html}{tidyverse principles}.
+R supports a \href{https://cran.r-project.org/view=TimeSeries}{wide variety} of
+time series data formats. We use \code{\link[tsibble:tsibble]{tsibble}} as it aligns
+well with \href{https://tidyverse.tidyverse.org/articles/manifesto.html}{tidyverse principles} and
+offers a modern, consistent approach to time series data.
 
-To make sure that the resulting data from \code{actverse} could be easily
-transformed to other standards, we decided to maintain all variable classes
-as \code{\link[=numeric]{numeric}}, except for the index (class
-\code{\link[=as.POSIXct]{POSIXct}}).
-
-If you're looking for a good way to easily transform your data to other time
-series standards, check the \href{https://www.tsbox.help/}{\code{tsbox}} package.
-}
-
-\subsection{Raw data}{
-
-The raw data for this dataset can be found with
-\code{\link[=raw_data]{raw_data("acttrust.txt")}}.
+To facilitate interoperability with other standards, all variables are stored
+as \code{\link[=numeric]{numeric}} vectors except for the index, which is of class
+\code{\link[=as.POSIXct]{POSIXct}}. This design choice ensures that data from
+\code{actverse} can be easily converted to other formats if needed.
 }
 }
 \section{Metadata}{
 
 \subsection{Subject}{
 \itemize{
-\item Age: \code{35}.
-\item Gender: Male.
-\item Height: \code{180} cm.
-\item Weight: \code{85} kg.
-\item BMI: \code{~26.235} (overweight).
+\item Age: \code{35}
+\item Gender: Male
+\item Height: \code{180} cm
+\item Weight: \code{85} kg
+\item BMI: \code{~26.235} (overweight)
 }
 }
 
 \subsection{Record}{
 \itemize{
-\item Body part: Left wrist (non-dominant wrist).
-\item Start: \verb{2021-04-24 04:14:25}.
-\item End: \verb{2021-05-31 03:39:06}.
+\item Body part: Left wrist (non-dominant wrist)
+\item Start: \verb{2021-04-24 04:14:25}
+\item End: \verb{2021-05-31 03:39:06}
 \item Days: \code{37}
-\item Epoch (sample interval): \code{60} seconds.
-\item Mode: PIM, TAT, and ZCM.
-\item TAT Threshold: \code{1024}.
-\item Location: Sao Paulo, SP, Brazil.
-\item UTC: \code{-3}.
-\item DST: \code{FALSE}.
-\item Light phase: \code{06:23:59} - \code{17:44:58}.
-\item Dark phase: \code{17:44:59} - \code{06:23:58}.
+\item Epoch (sample interval): \code{60} seconds
+\item Mode: PIM, TAT, and ZCM
+\item TAT Threshold: \code{1024}
+\item Location: São Paulo, SP, Brazil
+\item UTC: \code{-3}
+\item DST: \code{FALSE}
+\item Light phase: \code{06:23:59} - \code{17:44:58}
+\item Dark phase: \code{17:44:59} - \code{06:23:58}
 }
 }
 
 \subsection{Actigraph}{
 \itemize{
-\item Brand: \href{https://condorinst.com/en/}{Condor Instruments}.
-\item Model: \href{https://condorinst.com/en/acttrust-actigraph/}{ActTrust 1}.
-\item Hardware version: \code{3.1}.
-\item Firmware version: \code{3.7}.
-\item Manual: \verb{1.0.13} (PT-BR).
-\item Software: ActStudio Alpha 1.0.17 (Win | Mac).
+\item Brand: \href{https://condorinst.com/en/}{Condor Instruments}
+\item Model: \href{https://condorinst.com/en/}{ActTrust 1}
+\item Hardware version: \code{3.1}
+\item Firmware version: \code{3.7}
+\item Manual: \verb{1.0.13} (PT-BR)
+\item Software: ActStudio Alpha 1.0.17 (Win | Mac)
 }
 }
 
-\subsection{Scoring settings}{
+\subsection{Scoring algorithm settings}{
 \itemize{
-\item Scoring algorithm: Condor Instruments.
+\item Condor Instruments algorithm version 1.0.17.
 \item The sleep diary data was not used for scoring.
 }
 }
@@ -241,8 +226,12 @@ The raw data for this dataset can be found with
 \subsection{Scoring review}{
 \itemize{
 \item Offwrist periods were indicated from sudden drops in wrist temperature.
+}
+\itemize{
 \item Micro sleep states (isolated states lasting less than \verb{5 minutes}) were
 removed.
+}
+\itemize{
 \item Minor adjustments were made on the sleep onset and sleep offset, taking
 into consideration the event button and sleep diary records.
 }
@@ -259,17 +248,10 @@ into consideration the event button and sleep diary records.
 }
 
 \references{
-Condor Instruments. (2019). \emph{ActTrust - user manual}. Condor Instruments.
-Model AT0503. ActStudio version 1.0.13.
-
-van der Loo, M., & de Jonge, E. (2018). \emph{Statistical data cleaning with
-applications in R}. John Wiley & Sons. \doi{10.1002/9781118897126}.
-
-Wickham, H. (2014). Tidy Data. \emph{Journal of Statistical Software}, \emph{59}(10),
-1-23. \doi{10.18637/jss.v059.i10}.
-
-Wickham, H., & Grolemund, G. (n.d.). \emph{R for data science}. (n.p.).
-\url{https://r4ds.had.co.nz}
+Pedrazzoli, M., Gonçalves, B. da S. B., Benedito-Silva, A. A., Toscanini, A.
+C., Souza, A. P. P. B. de, Conway, B. A., Vartanian, D., Santos, E. H. R.,
+Pires, M. L. N., & Leocadio-Miguel, M. A. (2021). \emph{Consenso brasileiro de
+actigrafia}. Segmento Farma Editores. \doi{10.5281/zenodo.15377336}
 }
 \concept{datasets}
 \keyword{datasets}

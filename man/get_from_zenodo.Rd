@@ -4,57 +4,46 @@
 \alias{get_from_zenodo}
 \title{Get data from a Zenodo record}
 \usage{
-get_from_zenodo(doi, path = ".", file = NULL, parallel = FALSE)
+get_from_zenodo(doi, dir = ".", file = NULL, parallel = FALSE, force = FALSE)
 }
 \arguments{
 \item{doi}{A string indicating a Zenodo DOI (Digital Object Identifier)
 starting with \code{"10.5281/zenodo."}. See the Examples section to learn more.}
 
-\item{path}{(optional) a string indicating a directory path where the data
+\item{dir}{(optional) A string indicating a directory dir where the data
 must be downloaded (default: \code{"."}).}
 
-\item{file}{(optional) a \code{\link[base:character]{character}} object with the
+\item{file}{(optional) A \code{\link[base:character]{character}} vector with the
 names of the files that must be downloaded. If \code{NULL}, the function will
 download the entire record (default: \code{NULL}).}
 
-\item{parallel}{(optional) a \code{\link[base:logical]{logical}} value indicating if
+\item{parallel}{(optional) A \code{\link[base:logical]{logical}} flag indicating if
 the function must run a number of parallel processes, each downloading
-another file (requires the \code{\link[parallel:parallel-package]{parallel}}
-package). This is useful when multiple large files are present in the
-Zenodo record, which otherwise would be downloaded sequentially. Of course,
-the operation is limited by bandwidth and traffic limitations (default:
+another file. This is useful when multiple large files are present in the
+Zenodo record, which otherwise would be downloaded sequentially. This
+operation is limited by bandwidth and traffic limitations (default:
 \code{FALSE}).}
+
+\item{force}{(optional) A \code{\link[base:logical]{logical}} flag indicating if the
+function should download the files even if they already exist
+(default: \code{FALSE}).}
 }
 \value{
 A \code{\link[=character]{character}} object with the paths for all the files
 downloaded.
 }
 \description{
-\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
-
 \code{get_from_zenodo()} allows you to easy download a Zenodo record or
 a Zenodo file.
 
-This function only works for Zenodo created DOIs (not when the DOI is, for
-example, derived from Zookeys).
+\strong{Note}: This function only works for Zenodo created DOIs (not when the DOI
+is, for example, derived from Zookeys).
 }
 \details{
-\subsection{Requirements}{
-
-This function requires an internet connection and the
-\href{https://github.com/jeroen/curl}{\code{curl}},
-\href{https://github.com/jeroen/jsonlite}{\code{jsonlite}},
-\code{\link[parallel:parallel-package]{parallel}}, and
-\href{https://github.com/jeroen/jsonlite}{\code{tools}} packages to work.
-
-If you don't have any or one of the packages mentioned above, you can install
-them with \code{install.packages("curl", "jsonlite", "parallel", "tools")}.
-}
-
 \subsection{Zenodo API}{
 
-You can find more about the Zenodo API at
-\url{https://developers.zenodo.org/}.
+You can find more about the Zenodo API at:
+\url{https://developers.zenodo.org}
 }
 
 \subsection{License}{
@@ -68,7 +57,7 @@ and Floris Vanderhaeghe (floris.vanderhaeghe@inbo.be).
 We give our thanks for the INBO institute and for all developers involved
 in this piece of software.
 
-Please note that this code comes with an \href{https://opensource.org/license/mit/}{MIT License}. You can read the latter below.
+Please note that this code comes with an \href{https://opensource.org/license/mit}{MIT License}. You can read the latter below.
 
 \if{html}{\out{<div class="sourceCode">}}\preformatted{Copyright (c) 2016 Instituut voor Natuur en Bosonderzoek (INBO)
 
@@ -94,30 +83,28 @@ SOFTWARE.
 }
 \examples{
 \dontrun{
-## Downloading a single file from a Zenodo record
+  library(readr)
 
-path <- tempdir()
-file <- "sleep-diary.txt"
+  ## Downloading a single file from a Zenodo record
 
-get_from_zenodo(
-    doi = "10.5281/zenodo.4898822", path = path, file = file
-    )
+  dir <- tempdir()
+  file <- "sleep-diary.txt"
 
-readLines(file.path(path, file))
+  get_from_zenodo(
+    doi = "10.5281/zenodo.4898822",
+    dir = dir,
+    file = file
+  )
 
-## Downloading all the files from a Zenodo record
+  read_lines(file.path(dir, file))
 
-get_from_zenodo(
-    doi = "10.5281/zenodo.4898822", path = tempdir(), file = NULL
-    )
+  ## Downloading all the files from a Zenodo record
 
-## Downloading all the files from a Zenodo record using parallel
-## computation
-
-get_from_zenodo(
-    doi = "10.5281/zenodo.4898822", path = tempdir(), file = NULL,
-    parallel = TRUE
-    )
+  get_from_zenodo(
+    doi = "10.5281/zenodo.4898822",
+    dir = tempdir(),
+    file = NULL
+  )
 }
 }
 \seealso{

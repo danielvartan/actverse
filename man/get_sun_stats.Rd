@@ -4,32 +4,38 @@
 \alias{get_sun_stats}
 \title{Get sun related statistics from different APIs}
 \usage{
-get_sun_stats(lat, lon, date = Sys.Date(), tz = "UTC", method = "suncalc")
+get_sun_stats(
+  latitude,
+  longitude,
+  date = Sys.Date(),
+  tz = "UTC",
+  method = "suncalc"
+)
 }
 \arguments{
-\item{lat}{A number indicating the latitude, in decimal degrees,
-of the desired location.}
+\item{latitude}{A number indicating the latitude of the desired location in
+decimal degrees.}
 
-\item{lon}{A number indicating the longitude, in decimal degrees,
-of the desired location.}
+\item{longitude}{A number indicating the longitude of the desired location in
+decimal degrees.}
 
-\item{date}{(optional) a \code{\link[base:as.Date]{Date}} value indicating the
+\item{date}{(optional) A \code{\link[base:as.Date]{Date}} value indicating the
 moment in time (default: \code{Sys.Date()}).}
 
-\item{tz}{(optional) a string indicating the time zone of the results. See
+\item{tz}{(optional) A string indicating the time zone of the results. See
 \code{\link[base:timezones]{timezones}} to learn more (default: \code{"UTC"}).}
 
-\item{method}{(optional) a string indicating which API to use. Valid values
-are: \code{"suncalc"} and \code{"sunrise-sunset.org"}. See the Details section to
-learn more (default: \code{"suncalc"}).}
+\item{method}{(optional) A string indicating which method or API to use.
+Valid values are: \code{"suncalc"} and \code{"sunrise-sunset.org"}. See the Details
+section to learn more (default: \code{"suncalc"}).}
 }
 \value{
 A \code{\link[=list]{list}} object with the following elements:
 \itemize{
-\item \code{date}: A \code{\link[base:as.Date]{Date}} object with the same value of the
+\item \code{date}: A \code{\link[base:as.Date]{Date}} vector with the same value of the
 \code{date} parameter.
-\item \code{lat}: A number with the same value of the \code{lat} parameter.
-\item \code{lon}: A number with the same value of the \code{lon} parameter.
+\item \code{latitude}: A number with the same value of the \code{latitude} parameter.
+\item \code{longitude}: A number with the same value of the \code{longitude} parameter.
 \item \code{tz}: A string with the same value of the \code{tz} parameter.
 \item \code{sunrise_start}: An \code{\link[hms:hms]{hms}} value indicating the moment when
 the top edge of the sun appears on the horizon.
@@ -53,8 +59,8 @@ nautical dusk starts. This is also the moment when the evening astronomical
 twilight starts.
 \item \code{night_start}: An \code{\link[hms:hms]{hms}} value indicating the moment when
 the night starts (dark enough for astronomical observations).
-\item \code{nadir}: An \code{\link[hms:hms]{hms}} value indicating the moment the darkest
-moment of the night, i.e., when the sun is in the lowest position.
+\item \code{nadir}: An \code{\link[hms:hms]{hms}} value indicating the darkest moment of the
+night, i.e., when the sun is in the lowest position.
 \item \code{night_end}: An \code{\link[hms:hms]{hms}} value indicating the moment when the
 night ends. This is also the moment when the morning astronomical twilight
 starts.
@@ -67,30 +73,17 @@ the morning civil twilight starts.
 }
 }
 \description{
-\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
+\code{get_sun_stats()} retrieves sun statistics using different models and
+data sources.
 
-\code{get_sun_stats()} allows you to get sun statistics using different APIs.
-
-At the moment, none of the \code{get_sun_stats()} methods use real world data. All
-of them are based on models.
+At the moment, none of the \code{get_sun_stats()} methods uses real-world data.
+All of them are based on models.
 
 Each API have its peculiarities. We recommend checking the API documentation
-for a better understanding of the mechanisms behind them.
+for a better understanding of the mechanisms behind them (see the Details
+section).
 }
 \details{
-\subsection{Requirements}{
-
-When \code{method = "suncalc"}, \code{get_sun_stats()} will require the
-\href{https://github.com/datastorm-open/suncalc}{\code{suncalc}} package.
-
-When \code{method = "sunrise-sunset.org"}, \code{get_sun_stats()} will require an
-internet connection and the \href{https://github.com/jeroen/curl}{\code{curl}} and
-\href{https://github.com/jeroen/jsonlite}{\code{jsonlite}} packages.
-
-If you don't have any or one of the packages mentioned above, you can install
-them with \code{install.packages("curl", "jsonlite", "suncalc")}.
-}
-
 \subsection{\code{methods} argument}{
 
 At the moment, \code{get_sun_stats()} can access the results of two APIs,
@@ -99,17 +92,17 @@ described below.
 \item \code{"suncalc"}: Use the sun statistics provided by the
 \href{https://github.com/datastorm-open/suncalc}{\code{suncalc}} package.
 \item \code{"sunrise-sunset.org"}: Use the sun statistics provided by the
-\url{https://sunrise-sunset.org/} API (requires an internet connection). See
-\url{https://sunrise-sunset.org/api} to learn more.
+\href{https://sunrise-sunset.org/}{Sunrise-Sunset} API (requires an internet
+connection). Click \href{https://sunrise-sunset.org/api}{here} to learn more.
 }
 
 The \code{"sunrise-sunset.org"} method tends to give a close, but usually lower,
 result when compared with the \code{"suncalc"} method.
 
 Please note that when using \code{method = "sunrise-sunset.org"} you need to show
-attribution with a link to \url{https://sunrise-sunset.org/}. Also note that
-summer time adjustments are not included in the returned data when using
-this method.
+attribution with a link to \url{https://sunrise-sunset.org}. Also note that
+summer time adjustments are not included in the returned data when using this
+method.
 }
 
 \subsection{Other statistics}{
@@ -118,30 +111,39 @@ The purpose of this function is to return basic statistics about the sun. If
 you need other related statistics, we recommend checking the following
 packages.
 \itemize{
-\item \href{https://github.com/rpradosiqueira/cptec}{\code{cptec}}: An Interface to the
-'CPTEC/INPE' API.
-\item \href{https://docs.ropensci.org/nasapower/}{\code{nasapower}}: NASA POWER API Client.
-\item \href{https://docs.ropensci.org/rnoaa/}{\code{rnoaa}}: 'NOAA' Weather Data from R.
+\item \href{https://github.com/rpradosiqueira/cptec/}{\code{cptec}}: An Interface to the
+\href{https://www.cptec.inpe.br/}{CPTEC}/
+\href{https://www.gov.br/inpe/}{INPE} API.
+\item \href{https://docs.ropensci.org/nasapower/}{\code{nasapower}}: \href{https://power.larc.nasa.gov/}{NASA POWER} API Client.
+\item \href{https://docs.ropensci.org/rnoaa/}{\code{rnoaa}}: \href{https://www.noaa.gov/}{NOAA}
+Weather Data from R.
 }
 }
 }
 \examples{
-lat <- -23.5489
-lon <- -46.6388
+latitude <- -23.5489
+longitude <- -46.6388
 date <- Sys.Date()
-tz = "America/Sao_Paulo"
+tz <- "America/Sao_Paulo"
 
-if (requireNamespace("suncalc", quietly = TRUE)) {
-    get_sun_stats(lat = lat, lon, date, tz, method = "suncalc")
-}
+get_sun_stats(
+  latitude = latitude,
+  longitude = longitude,
+  date = date,
+  tz = tz,
+  method = "suncalc"
+)
 
-if (requireNamespace("curl", quietly = TRUE) &&
-    requireNamespace("jsonlite", quietly = TRUE)) {
-    if (curl::has_internet()) {
-        get_sun_stats(
-            lat = lat, lon, date, tz, method = "sunrise-sunset.org"
-            )
-    }
+library(curl)
+
+if (has_internet()) {
+  get_sun_stats(
+    latitude = latitude,
+    longitude = longitude,
+    date = date,
+    tz = tz,
+    method = "sunrise-sunset.org"
+  )
 }
 }
 \seealso{

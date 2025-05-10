@@ -2,7 +2,7 @@
 % Please edit documentation in R/spectrogram.R
 \name{spectrogram}
 \alias{spectrogram}
-\title{Compute a spectrogram based on Sokolove & Bushell's periodogram}
+\title{Create a spectrogram plot based on Sokolove & Bushell's periodogram}
 \usage{
 spectrogram(
   data,
@@ -23,80 +23,79 @@ spectrogram(
 
 \item{col}{A string indicating which column of \code{data} to use.}
 
-\item{p_unit}{(optional) a string indicating at which time unit the index
+\item{p_unit}{(optional) A string indicating at which time unit the index
 must be aggregated. By aggregating the index, this will change the time
 series interval and, consequently, its \code{p} periods. Valid values are:
 \verb{“seconds”}, \verb{“minutes”}, \verb{“hours”}, \verb{“days”}, \verb{“weeks”}, \verb{“months”},
 \verb{“quarters”}, and \verb{“years”}) (default: \code{"minutes"}).}
 
-\item{p_min}{(optional) an integer number indicating the minimum period
+\item{p_min}{(optional) An integer number indicating the minimum period
 (\eqn{p}), with the same unit as \code{p_unit}, to compute the test (e.g., if
 \code{p_unit = "minutes"}, \code{p_min = 1} means a period of 1 minute) (default:
 \code{1000}).}
 
-\item{p_max}{(optional) an integer number indicating the maximum period
+\item{p_max}{(optional) An integer number indicating the maximum period
 (\eqn{p}), with the same unit as \code{p_unit}, to compute the test (default:
 \code{2500}).}
 
-\item{p_step}{(optional) an integer number indicating the range of values
+\item{p_step}{(optional) An integer number indicating the range of values
 that must be skipped between computing one test and the next (e.g., when
 \code{p_min == 1}, \code{p_max == 7}, and \code{p_step == 2}, the test periods will be
 \code{1}, \code{3}, \code{5}, and \code{7}) (default: \code{1}).}
 
-\item{int_unit}{(optional) a string indicating the interval unit. Valid
+\item{int_unit}{(optional) A string indicating the interval unit. Valid
 values are: \verb{“seconds”}, \verb{“minutes”}, \verb{“hours”}, \verb{“days”}, \verb{“weeks”},
 \verb{“months”}, \verb{“quarters”}, and \verb{“years”}) (default: \code{"days"}).}
 
-\item{int_n}{(optional) an integer number indicating the size of the
+\item{int_n}{(optional) An integer number indicating the size of the
 intervals, with the same unit as \code{int_unit} (default: \code{7}).}
 
-\item{int_step}{(optional) an integer number indicating the amount of epochs
+\item{int_step}{(optional) An integer number indicating the amount of epochs
 to advance at the end of each interval (default: \code{720}).}
 
-\item{alpha}{(optional) a number, from \code{0} to \code{1}, indicating the significant
+\item{alpha}{(optional) A number, from \code{0} to \code{1}, indicating the significant
 level required for the peaks. The spectrogram plot only shows the
 significant peaks (default: \code{0.05}).}
 
-\item{print}{(optional) a \code{\link[=logical]{logical}} value indicating if the
+\item{print}{(optional) A \code{\link[=logical]{logical}} value indicating if the
 function must print the spectrogram plot (default: \code{TRUE}).}
 }
 \value{
 A \code{\link[=list]{list}} object with the following elements:
 \itemize{
-\item \code{periodograms}: a \code{\link[=list]{list}} object with the periodogram data for
-each interval. See \code{\link[=periodogram]{?periodogram()}} to learn more about the
+\item \code{periodograms}: A \code{\link[=list]{list}} object with the periodogram data for
+each interval. See \code{\link[=periodogram]{periodogram()}} to learn more about the
 list elements.
-\item \code{spectrogram}: a \code{\link[ggplot2:ggplot]{ggplot}} object with a heat map chart
-showing one periodogram per line (\code{q_p})(y) by the period sequence (\code{p_seq})
+\item \code{spectrogram}: A \code{\link[ggplot2:ggplot]{ggplot}} object with a heat map chart
+showing one periodogram per line (\code{q_p}) (y) by the period sequence (\code{p_seq})
 (x).
 }
 }
 \description{
-\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
-
 \code{spectrogram()} computes a series of Sokolove & Bushell's (1978)
-\eqn{\chi^{2}}{chi square} periodograms with the purpose of visualize
-differences in periodicities in a given interval of a
-\code{\link[tsibble:tsibble]{tsibble}} object.
+\eqn{\chi^{2}}{chi square} periodograms to visualize changes in periodicities
+across intervals within a \code{\link[tsibble:tsibble]{tsibble}} object.
 
-See \link[=periodogram]{?periodogram} to learn more about the periodogram
+This function enables the detection of temporal variations in rhythmicity by
+generating periodograms for consecutive or overlapping time windows.
+
+See the \code{\link[=periodogram]{periodogram()}} function for details on periodogram
 computation.
 }
 \examples{
-\dontrun{
-if (requireNamespace("curl", quietly = TRUE) &&
-    requireNamespace("jsonlite", quietly = TRUE) &&
-    requireNamespace("tools", quietly = TRUE)) {
-        if (curl::has_internet()) {
-            file <- get_from_zenodo(
-                doi = "10.5281/zenodo.4898822", path = tempdir(),
-                file = "processed.txt"
-            )
+if (curl::has_internet()) {
+  file <- get_from_zenodo(
+    doi = "10.5281/zenodo.4898822",
+    dir = tempdir(),
+    file = "processed.txt"
+  )
 
-            data <- read_acttrust(file, tz = "America/Sao_Paulo")
-            spec <- spectrogram(data, "pim")
-        }
-}
+  data <- read_acttrust(
+    file,
+    tz = "America/Sao_Paulo"
+  )
+
+  spec <- spectrogram(data, "pim")
 }
 }
 \references{

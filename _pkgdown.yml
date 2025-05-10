@@ -1,9 +1,18 @@
-url: https://giperbio.github.io/actverse/
+url: https://danielvartan.github.io/actverse/
 
 template:
+  bslib:
+    version: 5
+    navbar-bg: "#410085"
+    navbar-dark-brand-color: "#FFFFFF"
+    secondary: "#410085"
+  math-rendering: mathjax
+  light-switch: true
+  opengraph:
+    image:
+      src: man/figures/og-image.svg
+      alt: "{actverse}"
   params:
-    bootswatch: cosmo
-    mathjax: true
     noindex: false
 
 navbar:
@@ -14,7 +23,10 @@ navbar:
     - reference
     - articles
     - news
-    right: github
+    right:
+    - search
+    - lightswitch
+    - github
   components:
     home: ~
     intro: ~
@@ -23,58 +35,64 @@ navbar:
 reference:
 - title: Read/Write
   desc: >
-    Read and write different actigraphy data patterns.
+    Functions to read and write various actigraphy data formats.
   contents:
   - read_acttrust
   - write_acttrust
 
 - title: Period analysis
   desc: >
-    Sokolove & Bushell's chi square periodogram and spectrogram.
+    Functions for period analysis.
   contents:
   - periodogram
   - spectrogram
 
+- title: Data visualization
+  desc: >
+    Functions to visualize actigraphy data.
+  contents:
+  - actogram
+
 - title: Data interpolation
   desc: >
-    Several interpolation techiniques to use with
+    Functions for data interpolation using several techniques compatible with
     [`tsibble`](https://tsibble.tidyverts.org/).
   contents:
   - na_approx
 
 - title: API clients
   desc: >
-    APIs for gathering secondary data.
+    Client functions for accessing external data sources via APIs.
   contents:
   - get_from_zenodo
   - get_sun_stats
 
 - title: Data
   desc: >
-    Datasets for testing and learning purposes.
+    Example datasets for testing and learning purposes.
   contents:
   - acttrust
 
 - title: Utilities
   desc: >
-    Other functions to help with actigraphy data manipulation.
+    Miscellaneous utility functions for actigraphy data manipulation and
+    analysis.
   contents:
   - aggregate_index
   - find_epoch
-  - raw_data
+  - get_raw_data
 
 authors:
   Daniel Vartanian:
-    href: https://github.com/danielvartan
+    href: https://github.com/danielvartan/
   Vinicius Alves Matias:
-    href: https://github.com/matiasvinicius
+    href: https://github.com/matiasvinicius/
   Cassio Almeida Mattos Serrano:
-    href: https://github.com/cassioserrano
+    href: https://github.com/cassioserrano/
   Bruno Ramalho Furlan:
-    href: https://github.com/brfurlan
-  University of Sao Paulo (USP):
-    href: http://usp.br
-
+    href: https://github.com/brfurlan/
+  Ana Amélia Benedito-Silva:
+    href: https://github.com/AnaAmeliaBeneditoSIlva/
 development:
   mode: auto
   version_label: warning

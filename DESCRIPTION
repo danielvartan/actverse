@@ -1,6 +1,6 @@
 Package: actverse
-Title: Tools for Actigraphy Data Analysis
-Version: 0.0.0.9000
+Title:  A Tidyverse-Style Toolbox for Actigraphy Data Analysis
+Version: 0.1.0
 Authors@R: c(
         person(
             given = "Daniel",
@@ -8,87 +8,87 @@ Authors@R: c(
             role = c("aut", "cre", "ccp", "cph"),
             email = "danvartan@gmail.com",
             comment = c(ORCID = "0000-0001-7782-759X")
-            ),
+        ),
         person(
-            given = "Vinicius",
-            family = "Alves Matias",
+            given = "Vinicius Alves",
+            family = "Matias",
             role = "aut",
             email = "viniciusmatias@usp.br",
             comment = c(ORCID = "0000-0002-2047-5420")
-            ),
+        ),
         person(
             given = "Cassio",
             family = "Almeida Mattos Serrano",
             role = "aut",
             email = "cassio.serrano@usp.br",
             comment = c(ORCID = "0000-0001-7149-1829")
-            ),
-        person(
-            given = "Ana Amelia",
-            family = "Benedito-Silva",
-            role = c("aut", "sad"),
-            email = "aamelia@usp.br",
-            comment = c(ORCID = "0000-0003-4976-2623")
-            ),
+        ),
         person(
             given = "Bruno",
             family = "Ramalho Furlan",
             role = "ctb",
             email = "brfrlan@gmail.com",
             comment = c(ORCID = "0000-0003-1654-0899")
-            ),
+        ),
         person(
-            given = "University of Sao Paulo (USP)",
-            role = "fnd"
-            )
+            given = "Ana Amélia",
+            family = "Benedito-Silva",
+            role = c("aut", "sad"),
+            email = "aamelia@usp.br",
+            comment = c(ORCID = "0000-0003-0667-9504")
+        )
     )
-Description: A complete toolkit to process, analyse and visualize actigraphy 
-    data.
+Description: A comprehensive toolkit to process, analyze and visualize
+    actigraphy data.
 biocViews: Infrastructure, Visualization
 License: MIT + file LICENSE
-URL: https://giperbio.github.io/actverse/, https://github.com/giperbio/actverse/
-BugReports: https://github.com/giperbio/actverse/issues
-Depends: 
-    R (>= 4.2)
-Imports: 
-    checkmate (>= 2.1.0),
-    cli (>= 3.6.0),
-    dplyr (>= 1.1.0),
-    ggplot2 (>= 3.4.1),
-    hms (>= 1.1.2),
-    lifecycle (>= 1.0.3),
-    lubridate (>= 1.9.2),
+URL: https://danielvartan.github.io/actverse/,
+    https://github.com/danielvartan/actverse/
+BugReports: https://github.com/danielvartan/actverse/issues/
+Depends:
+    R (>= 4.4)
+Imports:
+    anonymizer,
+    checkmate (>= 2.3.2),
+    cli (>= 3.6.5),
+    clipr (>= 0.8.0),
+    curl (>= 6.2.2),
+    dplyr (>= 1.1.4),
+    fs (>= 1.6.6),
+    ggplot2 (>= 3.5.2),
+    glue (>= 1.8.0),
+    hms (>= 1.1.3),
+    jsonlite (>= 2.0.0),
+    lifecycle (>= 1.0.4),
+    lubridate (>= 1.9.4),
     magrittr (>= 2.0.3),
-    purrr (>= 1.0.1),
-    rlang (>= 1.0.6),
-    rutils,
-    stats (>= 4.2.0),
-    tsibble (>= 1.1.3),
-    viridis (>= 0.6.2)
-Suggests: 
-    covr (>= 3.6.1),
-    curl (>= 5.0.0),
-    jsonlite (>= 1.8.4),
-    knitr (>= 1.42),
-    mockr (>= 0.2.1),
-    parallel (>= 4.1.0),
-    plotly (>= 4.10.1),
-    readr (>= 2.1.4),
-    rmarkdown (>= 2.20),
-    spelling (>= 2.2),
+    parallel (>= 4.4),
+    prettycheck,
+    purrr (>= 1.0.4),
+    readr (>= 2.1.5),
+    rlang (>= 1.1.6),
+    stats (>= 4.4),
+    stringr (>= 1.5.1),
     suncalc (>= 0.5.1),
-    testthat (>= 3.1.6),
-    tibble (>= 3.1.8),
-    tools (>= 4.2.0),
-    utils (>= 4.2.0),
-    zoo (>= 1.8-11)
-Remotes: 
-    github::danielvartan/rutils
-VignetteBuilder: 
-    knitr
+    tools (>= 4.4),
+    tsibble (>= 1.1.6),
+    utils (>= 4.4),
+    viridis (>= 0.6.5),
+    withr (>= 3.0.2),
+    zoo (>= 1.8.14)
+Suggests:
+    covr (>= 3.6.4),
+    knitr (>= 1.50),
+    rmarkdown (>= 2.29),
+    spelling (>= 2.3.1),
+    testthat (>= 3.2.3),
+    tibble (>= 3.2.1)
+Remotes:
+    github::paulhendricks/anonymizer,
+    github::danielvartan/prettycheck,
 Config/testthat/edition: 3
 Encoding: UTF-8
 Language: en-US
 LazyData: true
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.2.3
+RoxygenNote: 7.3.2

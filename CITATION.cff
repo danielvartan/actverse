@@ -1,22 +1,25 @@
-# -----------------------------------------------------------
-# CITATION file created with {cffr} R package, v0.5.0
+# --------------------------------------------
+# CITATION file created with {cffr} R package
 # See also: https://docs.ropensci.org/cffr/
-# -----------------------------------------------------------
+# --------------------------------------------
  
 cff-version: 1.2.0
 message: 'To cite package "actverse" in publications use:'
 type: software
 license: MIT
-title: 'actverse: Tools for Actigraphy Data Analysis'
-version: 0.0.0.9000
-abstract: A complete toolkit to process, analyse and visualize actigraphy data.
+title: 'actverse: A Tidyverse-Style Toolbox for Actigraphy Data Analysis'
+version: 0.1.0
+identifiers:
+- type: url
+  value: https://github.com/danielvartan/actverse/
+abstract: A comprehensive toolkit to process, analyze and visualize actigraphy data.
 authors:
 - family-names: Vartanian
   given-names: Daniel
   email: danvartan@gmail.com
   orcid: https://orcid.org/0000-0001-7782-759X
-- family-names: Alves Matias
-  given-names: Vinicius
+- family-names: Matias
+  given-names: Vinicius Alves
   email: viniciusmatias@usp.br
   orcid: https://orcid.org/0000-0002-2047-5420
 - family-names: Almeida Mattos Serrano
@@ -24,47 +27,40 @@ authors:
   email: cassio.serrano@usp.br
   orcid: https://orcid.org/0000-0001-7149-1829
 - family-names: Benedito-Silva
-  given-names: Ana Amelia
+  given-names: Ana Amélia
   email: aamelia@usp.br
-  orcid: https://orcid.org/0000-0003-4976-2623
+  orcid: https://orcid.org/0000-0003-0667-9504
 preferred-citation:
-  type: unpublished
-  title: 'actverse: tools for actigraphy data analysis'
+  type: generic
+  title: 'actverse: A Tidyverse-style toolbox for actigraphy data analysis'
   authors:
   - family-names: Vartanian
     given-names: Daniel
     email: danvartan@gmail.com
     orcid: https://orcid.org/0000-0001-7782-759X
-  - family-names: Alves Matias
-    given-names: Vinicius
+  - family-names: Matias
+    given-names: Vinicius Alves
     email: viniciusmatias@usp.br
     orcid: https://orcid.org/0000-0002-2047-5420
-  - family-names: Almeida Mattos Serrano
-    given-names: Cassio
+  - family-names: Serrano
+    given-names: Cassio Almeida Mattos
     email: cassio.serrano@usp.br
     orcid: https://orcid.org/0000-0001-7149-1829
   - family-names: Benedito-Silva
-    given-names: Ana Amelia
+    given-names: Ana Amélia
     email: aamelia@usp.br
-    orcid: https://orcid.org/0000-0003-4976-2623
-  year: '2023'
-  url: https://giperbio.github.io/actverse/
-  notes: R package version 0.0.0.9000
+    orcid: https://orcid.org/0000-0003-0667-9504
+  year: '2025'
+  url: https://danielvartan.github.io/actverse/
+  notes: R package
 repository: https://bioconductor.org/
-repository-code: https://github.com/giperbio/actverse
-url: https://giperbio.github.io/actverse/
+repository-code: https://github.com/danielvartan/actverse/issues/
+url: https://danielvartan.github.io/actverse/
 contact:
 - family-names: Vartanian
   given-names: Daniel
   email: danvartan@gmail.com
   orcid: https://orcid.org/0000-0001-7782-759X
-keywords:
-- actigraphy
-- chronobiology
-- r
-- r-package
-- rstats
-- sleep
 references:
 - type: software
   title: 'R: A Language and Environment for Statistical Computing'
@@ -72,12 +68,21 @@ references:
   url: https://www.R-project.org/
   authors:
   - name: R Core Team
-  location:
-    name: Vienna, Austria
-  year: '2023'
   institution:
     name: R Foundation for Statistical Computing
-  version: '>= 4.2'
+    address: Vienna, Austria
+  year: '2025'
+  version: '>= 4.4'
+- type: software
+  title: anonymizer
+  abstract: 'anonymizer: Anonymize Data Containing Personally Identifiable Information'
+  notes: Imports
+  url: https://github.com/paulhendricks/anonymizer
+  authors:
+  - family-names: Hendricks
+    given-names: Paul
+    email: paul.hendricks.2013@owu.edu
+  year: '2025'
 - type: software
   title: checkmate
   abstract: 'checkmate: Fast and Versatile Argument Checks'
@@ -89,8 +94,9 @@ references:
     given-names: Michel
     email: michellang@gmail.com
     orcid: https://orcid.org/0000-0001-9754-0393
-  year: '2023'
-  version: '>= 2.1.0'
+  year: '2025'
+  doi: 10.32614/CRAN.package.checkmate
+  version: '>= 2.3.2'
 - type: software
   title: cli
   abstract: 'cli: Helpers for Developing Command Line Interfaces'
@@ -100,9 +106,38 @@ references:
   authors:
   - family-names: Csárdi
     given-names: Gábor
-    email: csardi.gabor@gmail.com
-  year: '2023'
-  version: '>= 3.6.0'
+    email: gabor@posit.co
+  year: '2025'
+  doi: 10.32614/CRAN.package.cli
+  version: '>= 3.6.5'
+- type: software
+  title: clipr
+  abstract: 'clipr: Read and Write from the System Clipboard'
+  notes: Imports
+  url: http://matthewlincoln.net/clipr/
+  repository: https://CRAN.R-project.org/package=clipr
+  authors:
+  - family-names: Lincoln
+    given-names: Matthew
+    email: matthew.d.lincoln@gmail.com
+    orcid: https://orcid.org/0000-0002-4387-3384
+  year: '2025'
+  doi: 10.32614/CRAN.package.clipr
+  version: '>= 0.8.0'
+- type: software
+  title: curl
+  abstract: 'curl: A Modern and Flexible Web Client for R'
+  notes: Imports
+  url: https://jeroen.r-universe.dev/curl
+  repository: https://CRAN.R-project.org/package=curl
+  authors:
+  - family-names: Ooms
+    given-names: Jeroen
+    email: jeroenooms@gmail.com
+    orcid: https://orcid.org/0000-0002-4035-0289
+  year: '2025'
+  doi: 10.32614/CRAN.package.curl
+  version: '>= 6.2.2'
 - type: software
   title: dplyr
   abstract: 'dplyr: A Grammar of Data Manipulation'
@@ -126,8 +161,27 @@ references:
     given-names: Davis
     email: davis@posit.co
     orcid: https://orcid.org/0000-0003-4777-038X
-  year: '2023'
-  version: '>= 1.1.0'
+  year: '2025'
+  doi: 10.32614/CRAN.package.dplyr
+  version: '>= 1.1.4'
+- type: software
+  title: fs
+  abstract: 'fs: Cross-Platform File System Operations Based on ''libuv'''
+  notes: Imports
+  url: https://fs.r-lib.org
+  repository: https://CRAN.R-project.org/package=fs
+  authors:
+  - family-names: Hester
+    given-names: Jim
+  - family-names: Wickham
+    given-names: Hadley
+    email: hadley@posit.co
+  - family-names: Csárdi
+    given-names: Gábor
+    email: csardi.gabor@gmail.com
+  year: '2025'
+  doi: 10.32614/CRAN.package.fs
+  version: '>= 1.6.6'
 - type: software
   title: ggplot2
   abstract: 'ggplot2: Create Elegant Data Visualisations Using the Grammar of Graphics'
@@ -162,8 +216,30 @@ references:
   - family-names: Dunnington
     given-names: Dewey
     orcid: https://orcid.org/0000-0002-9415-4582
-  year: '2023'
-  version: '>= 3.4.1'
+  - family-names: Brand
+    given-names: Teun
+    name-particle: van den
+    orcid: https://orcid.org/0000-0002-9335-7468
+  year: '2025'
+  doi: 10.32614/CRAN.package.ggplot2
+  version: '>= 3.5.2'
+- type: software
+  title: glue
+  abstract: 'glue: Interpreted String Literals'
+  notes: Imports
+  url: https://glue.tidyverse.org/
+  repository: https://CRAN.R-project.org/package=glue
+  authors:
+  - family-names: Hester
+    given-names: Jim
+    orcid: https://orcid.org/0000-0002-2739-7082
+  - family-names: Bryan
+    given-names: Jennifer
+    email: jenny@posit.co
+    orcid: https://orcid.org/0000-0002-6983-2759
+  year: '2025'
+  doi: 10.32614/CRAN.package.glue
+  version: '>= 1.8.0'
 - type: software
   title: hms
   abstract: 'hms: Pretty Time of Day'
@@ -175,8 +251,23 @@ references:
     given-names: Kirill
     email: kirill@cynkra.com
     orcid: https://orcid.org/0000-0002-1416-3412
-  year: '2023'
-  version: '>= 1.1.2'
+  year: '2025'
+  doi: 10.32614/CRAN.package.hms
+  version: '>= 1.1.3'
+- type: software
+  title: jsonlite
+  abstract: 'jsonlite: A Simple and Robust JSON Parser and Generator for R'
+  notes: Imports
+  url: https://jeroen.r-universe.dev/jsonlite
+  repository: https://CRAN.R-project.org/package=jsonlite
+  authors:
+  - family-names: Ooms
+    given-names: Jeroen
+    email: jeroenooms@gmail.com
+    orcid: https://orcid.org/0000-0002-4035-0289
+  year: '2025'
+  doi: 10.32614/CRAN.package.jsonlite
+  version: '>= 2.0.0'
 - type: software
   title: lifecycle
   abstract: 'lifecycle: Manage the Life Cycle of your Package Functions'
@@ -186,13 +277,14 @@ references:
   authors:
   - family-names: Henry
     given-names: Lionel
-    email: lionel@rstudio.com
+    email: lionel@posit.co
   - family-names: Wickham
     given-names: Hadley
-    email: hadley@rstudio.com
+    email: hadley@posit.co
     orcid: https://orcid.org/0000-0003-4757-117X
-  year: '2023'
-  version: '>= 1.0.3'
+  year: '2025'
+  doi: 10.32614/CRAN.package.lifecycle
+  version: '>= 1.0.4'
 - type: software
   title: lubridate
   abstract: 'lubridate: Make Dealing with Dates a Little Easier'
@@ -207,8 +299,9 @@ references:
     given-names: Garrett
   - family-names: Wickham
     given-names: Hadley
-  year: '2023'
-  version: '>= 1.9.2'
+  year: '2025'
+  doi: 10.32614/CRAN.package.lubridate
+  version: '>= 1.9.4'
 - type: software
   title: magrittr
   abstract: 'magrittr: A Forward-Pipe Operator for R'
@@ -222,8 +315,31 @@ references:
   - family-names: Wickham
     given-names: Hadley
     email: hadley@rstudio.com
-  year: '2023'
+  year: '2025'
+  doi: 10.32614/CRAN.package.magrittr
   version: '>= 2.0.3'
+- type: software
+  title: parallel
+  abstract: 'R: A Language and Environment for Statistical Computing'
+  notes: Imports
+  authors:
+  - name: R Core Team
+  institution:
+    name: R Foundation for Statistical Computing
+    address: Vienna, Austria
+  year: '2025'
+  version: '>= 4.4'
+- type: software
+  title: prettycheck
+  abstract: 'prettycheck: Pretty assertive programming'
+  notes: Imports
+  url: https://danielvartan.github.io/prettycheck/
+  authors:
+  - family-names: Vartanian
+    given-names: Daniel
+    email: danvartan@gmail.com
+    orcid: https://orcid.org/0000-0001-7782-759X
+  year: '2025'
 - type: software
   title: purrr
   abstract: 'purrr: Functional Programming Tools'
@@ -233,13 +349,33 @@ references:
   authors:
   - family-names: Wickham
     given-names: Hadley
-    email: hadley@rstudio.com
+    email: hadley@posit.co
     orcid: https://orcid.org/0000-0003-4757-117X
   - family-names: Henry
     given-names: Lionel
-    email: lionel@rstudio.com
-  year: '2023'
-  version: '>= 1.0.1'
+    email: lionel@posit.co
+  year: '2025'
+  doi: 10.32614/CRAN.package.purrr
+  version: '>= 1.0.4'
+- type: software
+  title: readr
+  abstract: 'readr: Read Rectangular Text Data'
+  notes: Imports
+  url: https://readr.tidyverse.org
+  repository: https://CRAN.R-project.org/package=readr
+  authors:
+  - family-names: Wickham
+    given-names: Hadley
+    email: hadley@posit.co
+  - family-names: Hester
+    given-names: Jim
+  - family-names: Bryan
+    given-names: Jennifer
+    email: jenny@posit.co
+    orcid: https://orcid.org/0000-0002-6983-2759
+  year: '2025'
+  doi: 10.32614/CRAN.package.readr
+  version: '>= 2.1.5'
 - type: software
   title: rlang
   abstract: 'rlang: Functions for Base Types and Core R and ''Tidyverse'' Features'
@@ -253,31 +389,61 @@ references:
   - family-names: Wickham
     given-names: Hadley
     email: hadley@posit.co
-  year: '2023'
-  version: '>= 1.0.6'
-- type: software
-  title: rutils
-  abstract: 'rutils: Utility Functions for R'
-  notes: Imports
-  url: https://danielvartan.github.io/rutils/
-  authors:
-  - family-names: Vartanian
-    given-names: Daniel
-    email: danvartan@gmail.com
-    orcid: https://orcid.org/0000-0001-7782-759X
-  year: '2023'
+  year: '2025'
+  doi: 10.32614/CRAN.package.rlang
+  version: '>= 1.1.6'
 - type: software
   title: stats
   abstract: 'R: A Language and Environment for Statistical Computing'
   notes: Imports
   authors:
   - name: R Core Team
-  location:
-    name: Vienna, Austria
-  year: '2023'
   institution:
     name: R Foundation for Statistical Computing
-  version: '>= 4.2.0'
+    address: Vienna, Austria
+  year: '2025'
+  version: '>= 4.4'
+- type: software
+  title: stringr
+  abstract: 'stringr: Simple, Consistent Wrappers for Common String Operations'
+  notes: Imports
+  url: https://stringr.tidyverse.org
+  repository: https://CRAN.R-project.org/package=stringr
+  authors:
+  - family-names: Wickham
+    given-names: Hadley
+    email: hadley@posit.co
+  year: '2025'
+  doi: 10.32614/CRAN.package.stringr
+  version: '>= 1.5.1'
+- type: software
+  title: suncalc
+  abstract: 'suncalc: Compute Sun Position, Sunlight Phases, Moon Position and Lunar
+    Phase'
+  notes: Imports
+  url: https://github.com/datastorm-open/suncalc
+  repository: https://CRAN.R-project.org/package=suncalc
+  authors:
+  - family-names: Thieurmel
+    given-names: Benoit
+    email: bthieurmel@gmail.com
+  - family-names: Elmarhraoui
+    given-names: Achraf
+    email: achraf.elmar@gmail.com
+  year: '2025'
+  doi: 10.32614/CRAN.package.suncalc
+  version: '>= 0.5.1'
+- type: software
+  title: tools
+  abstract: 'R: A Language and Environment for Statistical Computing'
+  notes: Imports
+  authors:
+  - name: R Core Team
+  institution:
+    name: R Foundation for Statistical Computing
+    address: Vienna, Austria
+  year: '2025'
+  version: '>= 4.4'
 - type: software
   title: tsibble
   abstract: 'tsibble: Tidy Temporal Data Frames and Tools'
@@ -298,8 +464,20 @@ references:
   - family-names: O'Hara-Wild
     given-names: Mitchell
     orcid: https://orcid.org/0000-0001-6729-7695
-  year: '2023'
-  version: '>= 1.1.3'
+  year: '2025'
+  doi: 10.32614/CRAN.package.tsibble
+  version: '>= 1.1.6'
+- type: software
+  title: utils
+  abstract: 'R: A Language and Environment for Statistical Computing'
+  notes: Imports
+  authors:
+  - name: R Core Team
+  institution:
+    name: R Foundation for Statistical Computing
+    address: Vienna, Austria
+  year: '2025'
+  version: '>= 4.4'
 - type: software
   title: viridis
   abstract: 'viridis: Colorblind-Friendly Color Maps for R'
@@ -310,8 +488,56 @@ references:
   - family-names: Garnier
     given-names: Simon
     email: garnier@njit.edu
-  year: '2023'
-  version: '>= 0.6.2'
+  year: '2025'
+  doi: 10.32614/CRAN.package.viridis
+  version: '>= 0.6.5'
+- type: software
+  title: withr
+  abstract: 'withr: Run Code ''With'' Temporarily Modified Global State'
+  notes: Imports
+  url: https://withr.r-lib.org
+  repository: https://CRAN.R-project.org/package=withr
+  authors:
+  - family-names: Hester
+    given-names: Jim
+  - family-names: Henry
+    given-names: Lionel
+    email: lionel@posit.co
+  - family-names: Müller
+    given-names: Kirill
+    email: krlmlr+r@mailbox.org
+  - family-names: Ushey
+    given-names: Kevin
+    email: kevinushey@gmail.com
+  - family-names: Wickham
+    given-names: Hadley
+    email: hadley@posit.co
+  - family-names: Chang
+    given-names: Winston
+  year: '2025'
+  doi: 10.32614/CRAN.package.withr
+  version: '>= 3.0.2'
+- type: software
+  title: zoo
+  abstract: 'zoo: S3 Infrastructure for Regular and Irregular Time Series (Z''s Ordered
+    Observations)'
+  notes: Imports
+  url: https://zoo.R-Forge.R-project.org/
+  repository: https://CRAN.R-project.org/package=zoo
+  authors:
+  - family-names: Zeileis
+    given-names: Achim
+    email: Achim.Zeileis@R-project.org
+    orcid: https://orcid.org/0000-0003-0918-3766
+  - family-names: Grothendieck
+    given-names: Gabor
+    email: ggrothendieck@gmail.com
+  - family-names: Ryan
+    given-names: Jeffrey A.
+    email: jeff.a.ryan@gmail.com
+  year: '2025'
+  doi: 10.32614/CRAN.package.zoo
+  version: '>= 1.8.14'
 - type: software
   title: covr
   abstract: 'covr: Test Coverage for Packages'
@@ -322,34 +548,9 @@ references:
   - family-names: Hester
     given-names: Jim
     email: james.f.hester@gmail.com
-  year: '2023'
-  version: '>= 3.6.1'
-- type: software
-  title: curl
-  abstract: 'curl: A Modern and Flexible Web Client for R'
-  notes: Suggests
-  url: https://jeroen.r-universe.dev/curl
-  repository: https://CRAN.R-project.org/package=curl
-  authors:
-  - family-names: Ooms
-    given-names: Jeroen
-    email: jeroen@berkeley.edu
-    orcid: https://orcid.org/0000-0002-4035-0289
-  year: '2023'
-  version: '>= 5.0.0'
-- type: software
-  title: jsonlite
-  abstract: 'jsonlite: A Simple and Robust JSON Parser and Generator for R'
-  notes: Suggests
-  url: https://jeroen.r-universe.dev/jsonlite
-  repository: https://CRAN.R-project.org/package=jsonlite
-  authors:
-  - family-names: Ooms
-    given-names: Jeroen
-    email: jeroen@berkeley.edu
-    orcid: https://orcid.org/0000-0002-4035-0289
-  year: '2023'
-  version: '>= 1.8.4'
+  year: '2025'
+  doi: 10.32614/CRAN.package.covr
+  version: '>= 3.6.4'
 - type: software
   title: knitr
   abstract: 'knitr: A General-Purpose Package for Dynamic Report Generation in R'
@@ -361,82 +562,9 @@ references:
     given-names: Yihui
     email: xie@yihui.name
     orcid: https://orcid.org/0000-0003-0645-5666
-  year: '2023'
-  version: '>= 1.42'
-- type: software
-  title: mockr
-  abstract: 'mockr: Mocking in R'
-  notes: Suggests
-  url: https://krlmlr.github.io/mockr/
-  repository: https://CRAN.R-project.org/package=mockr
-  authors:
-  - family-names: Müller
-    given-names: Kirill
-    email: kirill@cynkra.com
-  year: '2023'
-  version: '>= 0.2.1'
-- type: software
-  title: parallel
-  abstract: 'R: A Language and Environment for Statistical Computing'
-  notes: Suggests
-  authors:
-  - name: R Core Team
-  location:
-    name: Vienna, Austria
-  year: '2023'
-  institution:
-    name: R Foundation for Statistical Computing
-  version: '>= 4.1.0'
-- type: software
-  title: plotly
-  abstract: 'plotly: Create Interactive Web Graphics via ''plotly.js'''
-  notes: Suggests
-  url: https://plotly-r.com
-  repository: https://CRAN.R-project.org/package=plotly
-  authors:
-  - family-names: Sievert
-    given-names: Carson
-    email: cpsievert1@gmail.com
-    orcid: https://orcid.org/0000-0002-4958-2844
-  - family-names: Parmer
-    given-names: Chris
-    email: chris@plot.ly
-  - family-names: Hocking
-    given-names: Toby
-    email: tdhock5@gmail.com
-  - family-names: Chamberlain
-    given-names: Scott
-    email: myrmecocystus@gmail.com
-  - family-names: Ram
-    given-names: Karthik
-    email: karthik.ram@gmail.com
-  - family-names: Corvellec
-    given-names: Marianne
-    email: marianne.corvellec@igdore.org
-    orcid: https://orcid.org/0000-0002-1994-3581
-  - family-names: Despouy
-    given-names: Pedro
-    email: pedro@plot.ly
-  year: '2023'
-  version: '>= 4.10.1'
-- type: software
-  title: readr
-  abstract: 'readr: Read Rectangular Text Data'
-  notes: Suggests
-  url: https://readr.tidyverse.org
-  repository: https://CRAN.R-project.org/package=readr
-  authors:
-  - family-names: Wickham
-    given-names: Hadley
-    email: hadley@posit.co
-  - family-names: Hester
-    given-names: Jim
-  - family-names: Bryan
-    given-names: Jennifer
-    email: jenny@posit.co
-    orcid: https://orcid.org/0000-0002-6983-2759
-  year: '2023'
-  version: '>= 2.1.4'
+  year: '2025'
+  doi: 10.32614/CRAN.package.knitr
+  version: '>= 1.50'
 - type: software
   title: rmarkdown
   abstract: 'rmarkdown: Dynamic Documents for R'
@@ -479,40 +607,26 @@ references:
     given-names: Richard
     email: rich@posit.co
     orcid: https://orcid.org/0000-0003-3925-190X
-  year: '2023'
-  version: '>= 2.20'
+  year: '2025'
+  doi: 10.32614/CRAN.package.rmarkdown
+  version: '>= 2.29'
 - type: software
   title: spelling
   abstract: 'spelling: Tools for Spell Checking in R'
   notes: Suggests
-  url: https://docs.ropensci.org/spelling/
+  url: https://ropensci.r-universe.dev/spelling
   repository: https://CRAN.R-project.org/package=spelling
   authors:
   - family-names: Ooms
     given-names: Jeroen
-    email: jeroen@berkeley.edu
+    email: jeroenooms@gmail.com
     orcid: https://orcid.org/0000-0002-4035-0289
   - family-names: Hester
     given-names: Jim
     email: james.hester@rstudio.com
-  year: '2023'
-  version: '>= 2.2'
-- type: software
-  title: suncalc
-  abstract: 'suncalc: Compute Sun Position, Sunlight Phases, Moon Position and Lunar
-    Phase'
-  notes: Suggests
-  url: https://github.com/datastorm-open/suncalc
-  repository: https://CRAN.R-project.org/package=suncalc
-  authors:
-  - family-names: Thieurmel
-    given-names: Benoit
-    email: bthieurmel@gmail.com
-  - family-names: Elmarhraoui
-    given-names: Achraf
-    email: achraf.elmar@gmail.com
-  year: '2023'
-  version: '>= 0.5.1'
+  year: '2025'
+  doi: 10.32614/CRAN.package.spelling
+  version: '>= 2.3.1'
 - type: software
   title: testthat
   abstract: 'testthat: Unit Testing for R'
@@ -523,8 +637,9 @@ references:
   - family-names: Wickham
     given-names: Hadley
     email: hadley@posit.co
-  year: '2023'
-  version: '>= 3.1.6'
+  year: '2025'
+  doi: 10.32614/CRAN.package.testthat
+  version: '>= 3.2.3'
 - type: software
   title: tibble
   abstract: 'tibble: Simple Data Frames'
@@ -539,52 +654,7 @@ references:
   - family-names: Wickham
     given-names: Hadley
     email: hadley@rstudio.com
-  year: '2023'
-  version: '>= 3.1.8'
-- type: software
-  title: tools
-  abstract: 'R: A Language and Environment for Statistical Computing'
-  notes: Suggests
-  authors:
-  - name: R Core Team
-  location:
-    name: Vienna, Austria
-  year: '2023'
-  institution:
-    name: R Foundation for Statistical Computing
-  version: '>= 4.2.0'
-- type: software
-  title: utils
-  abstract: 'R: A Language and Environment for Statistical Computing'
-  notes: Suggests
-  authors:
-  - name: R Core Team
-  location:
-    name: Vienna, Austria
-  year: '2023'
-  institution:
-    name: R Foundation for Statistical Computing
-  version: '>= 4.2.0'
-- type: software
-  title: zoo
-  abstract: 'zoo: S3 Infrastructure for Regular and Irregular Time Series (Z''s Ordered
-    Observations)'
-  notes: Suggests
-  url: https://zoo.R-Forge.R-project.org/
-  repository: https://CRAN.R-project.org/package=zoo
-  authors:
-  - family-names: Zeileis
-    given-names: Achim
-    email: Achim.Zeileis@R-project.org
-    orcid: https://orcid.org/0000-0003-0918-3766
-  - family-names: Grothendieck
-    given-names: Gabor
-    email: ggrothendieck@gmail.com
-  - family-names: Ryan
-    given-names: Jeffrey A.
-    email: jeff.a.ryan@gmail.com
-  year: '2023'
-  version: '>= 1.8-11'
-identifiers:
-- type: url
-  value: https://github.com/giperbio/actverse/
+  year: '2025'
+  doi: 10.32614/CRAN.package.tibble
+  version: '>= 3.2.1'
+

@@ -20,62 +20,60 @@ periodogram(
 
 \item{col}{A string indicating which column of \code{data} to use.}
 
-\item{p_unit}{(optional) a string indicating at which time unit the index
+\item{p_unit}{(optional) A string indicating at which time unit the index
 must be aggregated. By aggregating the index, this will change the time
 series interval and, consequently, its \code{p} periods. Valid values are:
 \verb{“seconds”}, \verb{“minutes”}, \verb{“hours”}, \verb{“days”}, \verb{“weeks”}, \verb{“months”},
 \verb{“quarters”}, and \verb{“years”}) (default: \code{"minutes"}).}
 
-\item{p_min}{(optional) an integer number indicating the minimum period
+\item{p_min}{(optional) An integer number indicating the minimum period
 (\eqn{p}), with the same unit as \code{p_unit}, to compute the test (e.g., if
 \code{p_unit = "minutes"}, \code{p_min = 1} means a period of 1 minute) (default:
 \code{1000}).}
 
-\item{p_max}{(optional) an integer number indicating the maximum period
+\item{p_max}{(optional) An integer number indicating the maximum period
 (\eqn{p}), with the same unit as \code{p_unit}, to compute the test (default:
 \code{2500}).}
 
-\item{p_step}{(optional) an integer number indicating the range of values
+\item{p_step}{(optional) An integer number indicating the range of values
 that must be skipped between computing one test and the next (e.g., when
 \code{p_min == 1}, \code{p_max == 7}, and \code{p_step == 2}, the test periods will be
 \code{1}, \code{3}, \code{5}, and \code{7}) (default: \code{1}).}
 
-\item{alpha}{(optional) a number, from \code{0} to \code{1}, indicating the significant
+\item{alpha}{(optional) A number, from \code{0} to \code{1}, indicating the significant
 level (\eqn{\alpha}{alpha}) required for the peak significance test
 (default: \code{0.05}).}
 
-\item{print}{(optional) a \code{\link[=logical]{logical}} value indicating if the
+\item{print}{(optional) A \code{\link[=logical]{logical}} value indicating if the
 function must print the \eqn{Q_{p}}{Qp} plot (default: \code{TRUE}).}
 }
 \value{
 A \code{\link[=list]{list}} object with the following elements:
 \itemize{
-\item \code{p_unit}: a string indicating the time unit in which the data was
+\item \code{p_unit}: A string indicating the time unit in which the data was
 aggregated.
-\item \code{p_seq}: a \code{\link[=numeric]{numeric}} object with the the sequence of the
+\item \code{p_seq}: A \code{\link[=numeric]{numeric}} object with the the sequence of the
 tested periods.
-\item \code{alpha}: a number indicating the significant level used.
-\item \code{a_p}: a \code{\link[=numeric]{numeric}} object with the root mean square amplitude
+\item \code{alpha}: A number indicating the significant level used.
+\item \code{a_p}: A \code{\link[=numeric]{numeric}} object with the root mean square amplitude
 (\eqn{A_{p}}{Ap}) for each period.
-\item \code{a_p_plot}: a \code{\link[ggplot2:ggplot]{ggplot}} object with a line chart
+\item \code{a_p_plot}: A \code{\link[ggplot2:ggplot]{ggplot}} object with a line chart
 showing \code{a_p} (y) by \code{p_seq} (x).
-\item \code{q_p}: a \code{\link[=numeric]{numeric}} object with the peak significant test
+\item \code{q_p}: A \code{\link[=numeric]{numeric}} object with the peak significant test
 (\eqn{Q_{p}}{Qp}) for each period .
-\item \code{q_p_critical}: a \code{\link[=numeric]{numeric}} object with the
+\item \code{q_p_critical}: A \code{\link[=numeric]{numeric}} object with the
 \eqn{\chi^{2}}{chi square} critical values for each \code{q_p}, based on the
 \code{alpha} parameter.
-\item \code{q_p_pvalue}: a \code{\link[=numeric]{numeric}} object with the p-value for each
+\item \code{q_p_pvalue}: A \code{\link[=numeric]{numeric}} object with the p-value for each
 \code{q_p}, based on the \code{alpha} parameter.
-\item \code{q_p_peaks}: a \code{\link[tibble:tibble]{tibble}} object listing each period that
+\item \code{q_p_peaks}: A \code{\link[tibble:tibble]{tibble}} object listing each period that
 peaked above the critical value along with its \code{q_p}, \code{q_p_critical},
 relative \code{q_p} (\code{q_p_rel = q_p_critical - q_p}), and \code{q_p_pvalue}.
-\item \code{q_p_plot}: a \code{\link[ggplot2:ggplot]{ggplot}} object with a line chart
+\item \code{q_p_plot}: A \code{\link[ggplot2:ggplot]{ggplot}} object with a line chart
 showing \code{q_p} (y1) and \code{q_p_critical} (y2) by \code{p_seq} (x).
 }
 }
 \description{
-\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
-
 \code{periodogram()} returns the Sokolove & Bushell's \eqn{\chi^{2}}{chi square}
 periodogram plot and measures for a \code{\link[tsibble:tsibble]{tsibble}} object.
 
@@ -124,7 +122,7 @@ Enright (1965) and Sokolove & Bushell (1978) guidelines for the
 \itemize{
 \item If you are visualizing this documentation in plain text, you may have some
 trouble understanding the equations. You can see this documentation on the
-package \href{https://giperbio.github.io/actverse/reference/}{website}.
+package \href{https://danielvartan.github.io/actverse/reference/}{website}.
 }
 }
 
@@ -216,20 +214,17 @@ Buys-Ballot table.
 }
 
 \examples{
-\dontrun{
-if (requireNamespace("curl", quietly = TRUE) &&
-    requireNamespace("jsonlite", quietly = TRUE) &&
-    requireNamespace("tools", quietly = TRUE)) {
-        if (curl::has_internet()) {
-            file <- get_from_zenodo(
-                doi = "10.5281/zenodo.4898822", path = tempdir(),
-                file = "processed.txt"
-            )
+library(curl)
 
-            data <- read_acttrust(file, tz = "America/Sao_Paulo")
-            per <- periodogram(data, "pim")
-        }
-}
+if (has_internet()) {
+  file <- get_from_zenodo(
+    doi = "10.5281/zenodo.4898822",
+    dir = tempdir(),
+    file = "processed.txt"
+  )
+
+  data <- read_acttrust(file, tz = "America/Sao_Paulo")
+  per <- periodogram(data, "pim")
 }
 }
 \references{

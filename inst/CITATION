@@ -1,56 +1,56 @@
 utils::bibentry(
-    header = "To cite {actverse} in publications use:",
-    bibtype  = "Unpublished",
-    title = paste0(
-        "{actverse}:", " ",
-        "tools for actigraphy data analysis"
-        ),
-    author = c(
-        utils::person(
-            given = "Daniel",
-            family = "Vartanian",
-            role = c("aut", "cre", "ccp", "cph"),
-            email = "danvartan@gmail.com",
-            comment = c(ORCID = "0000-0001-7782-759X")
-            ),
-        utils::person(
-            given = "Vinicius",
-            family = "Alves Matias",
-            role = "aut",
-            email = "viniciusmatias@usp.br",
-            comment = c(ORCID = "0000-0002-2047-5420")
-            ),
-        utils::person(
-            given = "Cassio",
-            family = "Almeida Mattos Serrano",
-            role = "aut",
-            email = "cassio.serrano@usp.br",
-            comment = c(ORCID = "0000-0001-7149-1829")
-            ),
-        utils::person(
-            given = "Ana Amelia",
-            family = "Benedito-Silva",
-            role = c("aut", "sad"),
-            email = "aamelia@usp.br",
-            comment = c(ORCID = "0000-0003-4976-2623")
-            )
-        ),
-    year = "2023",
-    url = paste0(
-        "https://giperbio.github.io/",
-        "actverse/"
-        ),
-    note = "R package version 0.0.0.9000",
-    textVersion = paste0(
-        "Vartanian, D.", ", ",
-        "Matias, V. A.", ", ",
-        "Serrano, C. A. M.", ", & ",
-        "Benedito-Silva, A. A.", " ",
-        "(2023)",  ". ",
-        "{actverse}:", " ",
-        "tools for actigraphy data analysis", ". ",
-        "R package version 0.0.0.9000", ". ",
-        "https://giperbio.github.io/",
-        "actverse/"
-        )
+  header = "To cite {actverse} in publications use:",
+  bibtype = "Misc",
+  title = paste0(
+    "{actverse}:", " ",
+    "A Tidyverse-style toolbox for actigraphy data analysis"
+  ),
+  author = c(
+    utils::person(
+      given = "Daniel",
+      family = "Vartanian",
+      role = c("aut", "cre", "ccp", "cph"),
+      email = "danvartan@gmail.com",
+      comment = c(ORCID = "0000-0001-7782-759X")
+    ),
+    utils::person(
+      given = "Vinicius Alves",
+      family = "Matias",
+      role = "aut",
+      email = "viniciusmatias@usp.br",
+      comment = c(ORCID = "0000-0002-2047-5420")
+    ),
+    utils::person(
+      given = "Cassio Almeida Mattos",
+      family = "Serrano",
+      role = "aut",
+      email = "cassio.serrano@usp.br",
+      comment = c(ORCID = "0000-0001-7149-1829")
+    ),
+    person(
+      given = "Ana Amélia",
+      family = "Benedito-Silva",
+      role = c("aut", "sad"),
+      email = "aamelia@usp.br",
+      comment = c(ORCID = "0000-0003-0667-9504")
     )
+  ),
+  year = "2025",
+  url = paste0(
+    "https://danielvartan.github.io/",
+    "actverse/"
+  ),
+  note = "R package",
+  textVersion = paste0(
+    "Vartanian, D.", ", ",
+    "Matias, V. A.", ", ",
+    "Serrano, C. A. M.", ", & ",
+    "Benedito-Silva, A. A.", " ",
+    "(2025)", ". ",
+    "{actverse}:", " ",
+    "A Tidyverse-style toolbox for actigraphy data analysis", " ",
+    "[Computer software, R package]", ". ",
+    "https://danielvartan.github.io/",
+    "actverse/"
+  )
+)

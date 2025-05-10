@@ -2,7 +2,7 @@
 % Please edit documentation in R/write_acttrust.R
 \name{write_acttrust}
 \alias{write_acttrust}
-\title{Adapt and write a \code{tsibble} to a readable ActTrust file}
+\title{Write a \code{tsibble} to a readable ActTrust file}
 \usage{
 write_acttrust(data, file, delim = ";", header = NULL)
 }
@@ -13,20 +13,18 @@ type of index.}
 
 \item{file}{A string with a file path to write to.}
 
-\item{delim}{(optional) a string indicating the delimiter that must be used
+\item{delim}{(optional) A string indicating the delimiter that must be used
 to separate values. Valid delimiters are: \code{";"} and \code{"\t"} (default:
 \code{";"}).}
 
-\item{header}{(optional) a string indicating the path to a file (usually
+\item{header}{(optional) A string indicating the path to a file (usually
 the raw data file) with the ActTrust header. This is not mandatory,
 the ActTrust software can read files without it (default: \code{NULL}).}
 }
 \value{
-An invisible \code{NULL}. This function don't aim to return values.
+An invisible \code{NULL}. This function is used for its side effect.
 }
 \description{
-\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
-
 \code{write_acttrust()} allows you to adapt and write a
 \code{\link[tsibble:tsibble]{tsibble}} object to a readable ActTrust file.
 
@@ -37,15 +35,6 @@ ActTrust is a trademark of
 \href{https://condorinst.com/en/}{Condor Instruments Ltda}.
 }
 \details{
-\subsection{Requirements}{
-
-\code{write_acttrust()} requires the \code{\link[readr:readr-package]{readr}} package. If
-you don't already have it installed, you can install it with:
-
-\if{html}{\out{<div class="sourceCode">}}\preformatted{install.packages("readr")
-}\if{html}{\out{</div>}}
-}
-
 \subsection{\code{NA} values}{
 
 \code{write_acttrust()} will transform any \code{NA} value to \code{0}. This is because
@@ -53,20 +42,22 @@ the ActTrust software only deals with numeric values.
 }
 }
 \examples{
+library(readr)
+
 acttrust
 
 file <- tempfile()
-header <- raw_data("acttrust.txt")
 
-write_acttrust(acttrust, file, header = header)
+write_acttrust(
+  data = acttrust,
+  file = file,
+  header = get_raw_data("acttrust.txt")
+)
 
-readLines(file, n = 30)
+readr::read_lines(file, n_max = 30)
 }
 \seealso{
-Other utility functions: 
-\code{\link{aggregate_index}()},
-\code{\link{find_epoch}()},
-\code{\link{raw_data}()},
+Other read/write functions: 
 \code{\link{read_acttrust}()}
 }
-\concept{utility functions}
+\concept{read/write functions}
