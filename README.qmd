@@ -1,4 +1,4 @@
-# actverse <a href = "https://danielvartan.github.io/brandr/"><img src = "man/figures/logo.png" align="right" width="120" /></a>
+# actverse <a href = "https://danielvartan.github.io/brandr/"><img src = "man/figures/logo.svg" align="right" width="120" /></a>
 
 <!-- quarto render -->
 
@@ -208,8 +208,6 @@ citation("actverse")
 [![Contributor Covenant](https://img.shields.io/badge/Contributor%20Covenant-2.1-4baaaa.svg)](https://www.contributor-covenant.org/version/2/1/code_of_conduct/)
 
 Contributions are welcome, including bug reports. Take a moment to review our [Guidelines for Contributing](https://danielvartan.github.io/actverse/CONTRIBUTING.html).
-
-<br>
 
 [![Github Sponsor](man/figures/sponsor-badge.svg)](https://github.com/sponsors/danielvartan)
 

@@ -1,8 +1,3 @@
-# # Notes
-#
-# - Source the file before running the function.
-# - Do not forget to uncomment the `library` functions below.
-
 # library(actverse)
 # library(dplyr)
 # library(readr)
@@ -11,8 +6,6 @@
 #' Build and save an ActTrust data file
 #'
 #' @description
-#'
-#' `r lifecycle::badge("experimental")`
 #'
 #' `build_acttrust()` reads, tidy, validate, and saves an ActTrust
 #' example dataset to the `actverse` package. The raw data can be found with
@@ -36,7 +29,9 @@
 #' @noRd
 #'
 #' @examples
-#' build_acttrust()
+#' \dontrun{
+#'   build_acttrust()
+#' }
 build_acttrust <- function(write_csv = FALSE, write_rda = FALSE) {
   checkmate::assert_flag(write_rda)
   checkmate::assert_flag(write_csv)
