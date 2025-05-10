@@ -197,25 +197,25 @@ get_sun_stats(
   rutils:::list_as_tibble() |>
   print(n = Inf)
 #> # A tibble: 18 × 2
-#>    name              value
-#>    <chr>             <chr>
-#>  1 date              2025-05-10
-#>  2 latitude          -23.5489
-#>  3 longitude         -46.6388
+#>    name              value            
+#>    <chr>             <chr>            
+#>  1 date              2025-05-10       
+#>  2 latitude          -23.5489         
+#>  3 longitude         -46.6388         
 #>  4 tz                America/Sao_Paulo
-#>  5 sunrise_start     06:32:22
-#>  6 sunrise_end       06:34:50
-#>  7 golden_hour_end   07:04:14
-#>  8 solar_noon        12:04:16
-#>  9 golden_hour_start 17:04:19
-#> 10 sunset_start      17:33:43
-#> 11 sunset_end        17:36:10
-#> 12 dusk              17:59:51
-#> 13 nautical_dusk     18:27:01
-#> 14 night_start       18:53:54
-#> 15 nadir             00:04:16
-#> 16 night_end         05:14:39
-#> 17 nautical_dawn     05:41:31
+#>  5 sunrise_start     06:32:22         
+#>  6 sunrise_end       06:34:50         
+#>  7 golden_hour_end   07:04:14         
+#>  8 solar_noon        12:04:16         
+#>  9 golden_hour_start 17:04:19         
+#> 10 sunset_start      17:33:43         
+#> 11 sunset_end        17:36:10         
+#> 12 dusk              17:59:51         
+#> 13 nautical_dusk     18:27:01         
+#> 14 night_start       18:53:54         
+#> 15 nadir             00:04:16         
+#> 16 night_end         05:14:39         
+#> 17 nautical_dawn     05:41:31         
 #> 18 dawn              06:08:41
 ```
 
@@ -237,12 +237,12 @@ file |>
   find_epoch()
 #> $best_match
 #> [1] 60
-#>
+#> 
 #> $prevalence
 #> # A tibble: 4 × 2
 #>   epoch proportion
 #>   <dbl>      <dbl>
-#> 1    60  1.00
+#> 1    60  1.00     
 #> 2    94  0.0000193
 #> 3    86  0.0000193
 #> 4   101  0.0000193
@@ -253,14 +253,14 @@ file |>
 ``` r
 citation("actverse")
 #> To cite {actverse} in publications use:
-#>
+#> 
 #>   Vartanian, D., Matias, V. A., Serrano, C. A. M., & Benedito-Silva,
 #>   A. A. (2025). {actverse}: A Tidyverse-style toolbox for actigraphy
 #>   data analysis [Computer software, R package].
 #>   https://danielvartan.github.io/actverse/
-#>
+#> 
 #> A BibTeX entry for LaTeX users is
-#>
+#> 
 #>   @Misc{,
 #>     title = {{actverse}: A Tidyverse-style toolbox for actigraphy data analysis},
 #>     author = {Daniel Vartanian and Vinicius Alves Matias and Cassio Almeida Mattos Serrano and Ana Amélia Benedito-Silva},

@@ -244,14 +244,6 @@ actogram <- function(
 
   index <- data |> tsibble::index_var()
 
-  # n_days <-
-  #   lubridate::interval(
-  #     dplyr::first(data[[index]]),
-  #     dplyr::last(data[[index]])
-  #   ) |>
-  #   lubridate::time_length(unit = "days") |>
-  #   ceiling()
-
   n_days <-
     data[[index]] |>
     lubridate::as_date() |>
@@ -829,8 +821,8 @@ make_actogram_ld_data <- function(
     method = sun_stats_method
   )
 
-  night_start <- sun_stats |> magrittr::extract2("night_start")
-  night_end <- sun_stats |> magrittr::extract2("night_end")
+  lp_start <- sun_stats |> magrittr::extract2("sunrise_start")
+  lp_end <- sun_stats |> magrittr::extract2("sunset_end")
 
   out <-
     data |>
@@ -838,8 +830,8 @@ make_actogram_ld_data <- function(
       ld = dplyr::if_else(
         dplyr::between(
           time |> as.numeric(),
-          night_end |> as.numeric(),
-          night_start |> as.numeric()
+          lp_start |> as.numeric(),
+          lp_end |> as.numeric()
         ),
         light_phase_label,
         dark_phase_label
@@ -871,13 +863,13 @@ make_actogram_ld_data <- function(
           dplyr::between(
             time |> as.numeric(),
             hms::parse_hm("24:00") |> as.numeric(),
-            (night_end + hms::parse_hm("23:59")) |> as.numeric()
+            (lp_start + hms::parse_hm("23:59")) |> as.numeric()
           ) ~ dark_phase_label,
-          time > (night_start + hms::parse_hm("24:00")) ~ dark_phase_label,
+          time > (lp_end + hms::parse_hm("24:00")) ~ dark_phase_label,
           dplyr::between(
             time |> as.numeric(),
-            (night_end + hms::parse_hm("24:00")) |> as.numeric(),
-            (night_start + hms::parse_hm("23:59")) |> as.numeric()
+            (lp_start + hms::parse_hm("24:00")) |> as.numeric(),
+            (lp_end + hms::parse_hm("23:59")) |> as.numeric()
           ) ~ light_phase_label,
           TRUE ~ ld
         )

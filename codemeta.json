@@ -483,7 +483,7 @@
     },
     "SystemRequirements": null
   },
-  "fileSize": "1602.4KB",
+  "fileSize": "1601.174KB",
   "citation": [
     {
       "@type": "CreativeWork",
@@ -527,5 +527,5 @@
   "readme": "https://github.com/danielvartan/actverse/blob/main/README.md",
   "contIntegration": ["https://github.com/danielvartan/actverse/actions/workflows/check-standard.yaml", "https://app.codecov.io/gh/danielvartan/actverse?branch=main"],
   "developmentStatus": "https://www.repostatus.org/#active",
-  "keywords": ["actigraphy", "sleep", "chronobiology", "r", "rstats", "physiology", "actogram", "data-interpolation", "periodograms", "spectograms", "time-series", "time-series-analysis", "accelerometry", "biomedical-data-science", "health-data", "r-packages", "sensor-data", "wearables", "physiological-monitoring"]
+  "keywords": ["actigraphy", "sleep", "chronobiology", "r", "rstats", "physiology", "actogram", "data-interpolation", "periodograms", "spectograms", "time-series", "time-series-analysis", "accelerometry", "biomedical-data-science", "health-data", "r-packages", "sensor-data", "wearables", "physiological-monitoring", "actimetry"]
 }
