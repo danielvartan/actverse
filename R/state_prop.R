@@ -43,9 +43,9 @@
 #'   data <- read_acttrust(file, tz = "America/Sao_Paulo")
 #'   state_prop_data <- data |> state_prop(state_values = 1) # Sleeping state
 #'
-#'   state_prop_data
+#'   state_prop_data |> print()
 #'
-#'   state_prop_data |> pull(prop) |> summary()
+#'   state_prop_data |> pull(prop) |> summary() |> print()
 #'
 #'   data |>
 #'     actogram(
@@ -68,6 +68,7 @@
 #'       breaks = breaks_width("6 hours"),
 #'       labels = label_time("%-H") # Use "%#H" for Windows
 #'     ) +
+#'     scale_y_continuous(limits = c(NA, 100)) +
 #'     actverse:::get_actverse_theme()
 #' }
 state_prop <- function(

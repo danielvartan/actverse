@@ -57,6 +57,10 @@ indicates perfectly regular sleep/wake patterns, while a score of 0
 indicates completely random patterns.
 }
 
+Note: While SRI values below 0 are theoretically possible (e.g., in cases of
+highly irregular patterns such as alternating 24-hour periods of sleep and
+wake), such occurrences are extremely rare in practice.
+
 See Phillips et al. (2017) to learn more about the SRI and its
 applications in sleep research.
 }
@@ -76,9 +80,9 @@ if (has_internet()) {
   data <- read_acttrust(file, tz = "America/Sao_Paulo")
   sri_data <- data |> sri()
 
-  sri_data
+  sri_data |> print()
 
-  sri_data |> pull(sri) |> summary()
+  sri_data |> pull(sri) |> summary() |> print()
 
   data |>
     actogram(
@@ -100,6 +104,7 @@ if (has_internet()) {
       breaks = breaks_width("6 hours"),
       labels = label_time("\%-H") # Use "\%#H" for Windows
     ) +
+    scale_y_continuous(limits = c(0, NA)) +
     actverse:::get_actverse_theme()
 }
 }

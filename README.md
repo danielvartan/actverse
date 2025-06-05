@@ -180,9 +180,10 @@ sri_data |>
     y = "Sleep Regularity Index (SRI)"
   ) +
   scale_x_time(
-    breaks = scales::breaks_width("6 hours"),
-    labels = scales::label_time("%-H") # Use "%#H" for Windows
+    breaks = breaks_width("6 hours"),
+    labels = label_time("%-H") # Use "%#H" for Windows
   ) +
+  scale_y_continuous(limits = c(0, NA)) +
   actverse:::get_actverse_theme()
 ```
 

@@ -23,6 +23,10 @@
 #'    indicates perfectly regular sleep/wake patterns, while a score of 0
 #'    indicates completely random patterns.
 #'
+#' Note: While SRI values below 0 are theoretically possible (e.g., in cases of
+#' highly irregular patterns such as alternating 24-hour periods of sleep and
+#' wake), such occurrences are extremely rare in practice.
+#'
 #' See Phillips et al. (2017) to learn more about the SRI and its
 #' applications in sleep research.
 #'
@@ -69,9 +73,9 @@
 #'   data <- read_acttrust(file, tz = "America/Sao_Paulo")
 #'   sri_data <- data |> sri()
 #'
-#'   sri_data
+#'   sri_data |> print()
 #'
-#'   sri_data |> pull(sri) |> summary()
+#'   sri_data |> pull(sri) |> summary() |> print()
 #'
 #'   data |>
 #'     actogram(
@@ -93,6 +97,7 @@
 #'       breaks = breaks_width("6 hours"),
 #'       labels = label_time("%-H") # Use "%#H" for Windows
 #'     ) +
+#'     scale_y_continuous(limits = c(0, NA)) +
 #'     actverse:::get_actverse_theme()
 #' }
 sri <- function(
@@ -155,4 +160,25 @@ sri <- function(
     ) |>
     dplyr::arrange(time) |>
     tsibble::as_tsibble(index = time, regular = TRUE)
+}
+
+check_sri <- function(sri_data, row) {
+  assert_tsibble(sri_data)
+  checkmate::assert_int(row, lower = 1, upper = nrow(sri_data))
+
+  # R CMD Check variable bindings fix
+  # nolint start
+  time <- state <- previous_state <- agreement <- sri <- NULL
+  # nolint end
+
+  out <- sri_data |> dplyr::slice(row)
+
+  dplyr::tibble(
+    time = out |> dplyr::pull(time),
+    state = out |> dplyr::pull(state) |> unlist(),
+    previous_state = out |> dplyr::pull(previous_state) |> unlist(),
+    agreement = out |> dplyr::pull(agreement) |> unlist(),
+    unscaled_sri = agreement |> prop(TRUE),
+    sri = out |> dplyr::pull(sri)
+  )
 }
