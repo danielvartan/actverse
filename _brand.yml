@@ -12,10 +12,10 @@ meta:
 logo:
   images:
     logo:
-      path: images/logo.svg
+      path: man/figures/logo.svg
       alt: "Logo"
     og-image:
-      path: images/og-image.svg
+      path: man/figures/og-image.svg
       alt: "Open Graph Image"
   small: logo
   medium: logo

@@ -1,9 +1,10 @@
-library(actverse)
 library(checkmate)
 library(dplyr)
 library(prettycheck)
 library(readr)
 library(testthat)
+
+library(actverse)
 
 test_check("actverse")
 

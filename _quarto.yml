@@ -4,4 +4,7 @@ project:
   render: [README.qmd]
   post-render: "R/.post-render.R"
 
-format: gfm
+format:
+  gfm:
+    html-table-processing: none
+    default-image-extension: ""

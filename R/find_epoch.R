@@ -109,20 +109,22 @@ compute_prevalence <- function(diff, threshold = 0.9) {
 
   # R CMD Check variable bindings fix
   # nolint start
-  proportion <- NULL
+  epoch <- proportion <- NULL
   # nolint end
 
   prevalence <-
     diff |>
     unique() |>
     purrr::map(
-      ~ dplyr::tibble(
-        epoch = .x,
-        proportion = length(which(diff == .x)) / length(diff)
-      )
+      function(x) {
+        dplyr::tibble(
+          epoch = x,
+          proportion = length(which(diff == x)) / length(diff)
+        )
+      }
     ) |>
     purrr::reduce(dplyr::bind_rows) |>
-    dplyr::arrange(dplyr::desc(proportion))
+    dplyr::arrange(dplyr::desc(proportion), epoch)
 
   if (prevalence$proportion[1] >= threshold) {
     best_match <- prevalence$epoch[1]

@@ -40,6 +40,12 @@ reference:
   - read_acttrust
   - write_acttrust
 
+- title: Sleep analysis
+  desc: Functions to compute sleep statistics.
+  contents:
+  - sri
+  - state_prop
+
 - title: Period analysis
   desc: >
     Functions for period analysis.
@@ -93,6 +99,7 @@ authors:
     href: https://github.com/brfurlan/
   Ana Amélia Benedito-Silva:
     href: https://github.com/AnaAmeliaBeneditoSIlva/
+
 development:
-  mode: auto
+  mode: unreleased
   version_label: warning

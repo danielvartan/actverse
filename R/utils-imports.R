@@ -129,6 +129,26 @@ na_as.Interval <- function(x) {
 }
 
 # Borrowed from `rutils`: github.com/danielvartan/rutils
+prop <- function(x, value, na_rm = TRUE) {
+  checkmate::assert_atomic_vector(x)
+  prettycheck::assert_identical(x, value, type = "class")
+  checkmate::assert_flag(na_rm)
+
+  if (na_rm) x <- x[!is.na(x)]
+
+  value |>
+    purrr::map_dbl(
+      function(value) {
+        if (!value %in% x) {
+          0
+        } else {
+          length(which(x == value)) / length(x)
+        }
+      }
+    )
+}
+
+# Borrowed from `rutils`: github.com/danielvartan/rutils
 shush <- function(x, quiet = TRUE) {
   if (isTRUE(quiet)) {
     suppressMessages(suppressWarnings(x))

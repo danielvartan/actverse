@@ -8,7 +8,7 @@
   "codeRepository": "https://github.com/danielvartan/actverse/",
   "issueTracker": "https://github.com/danielvartan/actverse/issues/",
   "license": "https://spdx.org/licenses/MIT",
-  "version": "0.1.0",
+  "version": "0.1.0.9000",
   "programmingLanguage": {
     "@type": "ComputerLanguage",
     "name": "R",
@@ -208,7 +208,7 @@
       "@type": "SoftwareApplication",
       "identifier": "curl",
       "name": "curl",
-      "version": ">= 6.2.2",
+      "version": ">= 6.2.3",
       "provider": {
         "@id": "https://cran.r-project.org",
         "@type": "Organization",
@@ -387,11 +387,24 @@
     },
     "21": {
       "@type": "SoftwareApplication",
+      "identifier": "scales",
+      "name": "scales",
+      "version": ">= 1.4.0",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=scales"
+    },
+    "22": {
+      "@type": "SoftwareApplication",
       "identifier": "stats",
       "name": "stats",
       "version": ">= 4.4"
     },
-    "22": {
+    "23": {
       "@type": "SoftwareApplication",
       "identifier": "stringr",
       "name": "stringr",
@@ -404,7 +417,7 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=stringr"
     },
-    "23": {
+    "24": {
       "@type": "SoftwareApplication",
       "identifier": "suncalc",
       "name": "suncalc",
@@ -417,13 +430,13 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=suncalc"
     },
-    "24": {
+    "25": {
       "@type": "SoftwareApplication",
       "identifier": "tools",
       "name": "tools",
       "version": ">= 4.4"
     },
-    "25": {
+    "26": {
       "@type": "SoftwareApplication",
       "identifier": "tsibble",
       "name": "tsibble",
@@ -436,13 +449,13 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=tsibble"
     },
-    "26": {
+    "27": {
       "@type": "SoftwareApplication",
       "identifier": "utils",
       "name": "utils",
       "version": ">= 4.4"
     },
-    "27": {
+    "28": {
       "@type": "SoftwareApplication",
       "identifier": "viridis",
       "name": "viridis",
@@ -455,7 +468,7 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=viridis"
     },
-    "28": {
+    "29": {
       "@type": "SoftwareApplication",
       "identifier": "withr",
       "name": "withr",
@@ -468,7 +481,7 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=withr"
     },
-    "29": {
+    "30": {
       "@type": "SoftwareApplication",
       "identifier": "zoo",
       "name": "zoo",
@@ -483,7 +496,7 @@
     },
     "SystemRequirements": null
   },
-  "fileSize": "1601.174KB",
+  "fileSize": "2003.21KB",
   "citation": [
     {
       "@type": "CreativeWork",

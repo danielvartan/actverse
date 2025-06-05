@@ -1,6 +1,6 @@
 Package: actverse
 Title:  A Tidyverse-Style Toolbox for Actigraphy Data Analysis
-Version: 0.1.0
+Version: 0.1.0.9000
 Authors@R: c(
         person(
             given = "Daniel",
@@ -52,7 +52,7 @@ Imports:
     checkmate (>= 2.3.2),
     cli (>= 3.6.5),
     clipr (>= 0.8.0),
-    curl (>= 6.2.2),
+    curl (>= 6.2.3),
     dplyr (>= 1.1.4),
     fs (>= 1.6.6),
     ggplot2 (>= 3.5.2),
@@ -67,6 +67,7 @@ Imports:
     purrr (>= 1.0.4),
     readr (>= 2.1.5),
     rlang (>= 1.1.6),
+    scales (>= 1.4.0),
     stats (>= 4.4),
     stringr (>= 1.5.1),
     suncalc (>= 0.5.1),

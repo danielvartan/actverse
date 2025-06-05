@@ -10,7 +10,7 @@ developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.re
 [![Codecov test
 coverage](https://codecov.io/gh/danielvartan/actverse/branch/main/graph/badge.svg)](https://app.codecov.io/gh/danielvartan/actverse?branch=main)
 [![License:
-MIT](https://img.shields.io/badge/license-MIT-green.png)](https://choosealicense.com/licenses/mit/)
+MIT](https://img.shields.io/badge/license-MIT-green)](https://choosealicense.com/licenses/mit/)
 [![Contributor
 Covenant](https://img.shields.io/badge/Contributor%20Covenant-2.1-4baaaa.svg)](CODE_OF_CONDUCT.md)
 <!-- badges: end -->
@@ -18,9 +18,10 @@ Covenant](https://img.shields.io/badge/Contributor%20Covenant-2.1-4baaaa.svg)](C
 ## Overview
 
 `actverse` is an R package that offers a comprehensive toolkit for
-processing, analyzing, and visualizing actigraphy data. It is designed
-to support sleep and chronobiology researchers by streamlining workflows
-and enhancing reproducibility in actigraphy research.
+processing, analyzing, and visualizing
+[actigraphy](https://en.wikipedia.org/wiki/Actigraphy) data. It is
+designed to support sleep and chronobiology researchers by streamlining
+workflows and enhancing reproducibility in actigraphy research.
 
 The package is built on [tidyverse
 principles](https://tidyverse.tidyverse.org/articles/manifesto.html) and
@@ -30,7 +31,7 @@ user-friendly experience for data manipulation and analysis.
 
 > If you find this project useful, please consider giving it a star!  
 > [![GitHub repo
-> stars](https://img.shields.io/github/stars/danielvartan/actverse.png)](https://github.com/danielvartan/actverse/)
+> stars](https://img.shields.io/github/stars/danielvartan/actverse)](https://github.com/danielvartan/actverse/)
 
 ## Installation
 
@@ -65,10 +66,12 @@ guidance on adapting your data.
 
 ### Read/Write
 
-- `read_acttrust()`: Read, tidy, and validate an
-  [ActTrust](https://condorinst.com/en/) file.
-- `write_acttrust()`: Write a `tsibble` to a readable
-  [ActTrust](https://condorinst.com/en/) file.
+- [`read_acttrust()`](https://danielvartan.github.io/actverse/reference/read_acttrust.html):
+  Read, tidy, and validate an [ActTrust](https://condorinst.com/en/)
+  file.
+- [`write_acttrust()`](https://danielvartan.github.io/actverse/reference/write_acttrust.html):
+  Write a `tsibble` to a readable [ActTrust](https://condorinst.com/en/)
+  file.
 
 Example:
 
@@ -108,6 +111,82 @@ data |> glimpse()
 #> $ event                <dbl> 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0…
 #> $ state                <dbl> 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0…
 ```
+
+### Sleep Statistics
+
+- [`sri()`](https://danielvartan.github.io/actverse/reference/sri.html):
+  Compute Phillips et al. Sleep Regularity Index
+  ([SRI](https://doi.org/10.1038/s41598-017-03171-4)).
+- [`state_prop()`](https://danielvartan.github.io/actverse/reference/state_prop.html):
+  Compute the proportion of time spent in a specific state (e.g.,
+  Sleeping, Awake).
+
+Example:
+
+> Compare the results with the actogram plot shown in the following
+> sections.
+
+``` r
+sri_data <- data |> sri()
+
+sri_data
+#> # A tsibble: 1,440 x 5 [1m]
+#>   time   state      previous_state agreement    sri
+#>   <time> <list>     <list>         <list>     <dbl>
+#> 1 00'00" <fct [36]> <fct [36]>     <lgl [36]>  77.1
+#> 2 01'00" <fct [36]> <fct [36]>     <lgl [36]>  77.1
+#> 3 02'00" <fct [36]> <fct [36]>     <lgl [36]>  77.1
+#> 4 03'00" <fct [36]> <fct [36]>     <lgl [36]>  77.1
+#> 5 04'00" <fct [36]> <fct [36]>     <lgl [36]>  77.1
+#> 6 05'00" <fct [36]> <fct [36]>     <lgl [36]>  77.1
+#> # ℹ 1,434 more rows
+```
+
+``` r
+library(rutils) # github.com/danielvartan/rutils
+
+sri_data |>
+  rutils:::stats_summary("sri", threshold = NULL) |>
+  print(n = Inf)
+#> # A tibble: 15 × 2
+#>    name     value             
+#>    <chr>    <chr>             
+#>  1 n        1440              
+#>  2 n_rm_na  1440              
+#>  3 n_na     0                 
+#>  4 mean     58.7795701029482  
+#>  5 var      785.141504008496  
+#>  6 sd       28.0203765857723  
+#>  7 min      -25               
+#>  8 q_1      37.1428571428571  
+#>  9 median   63.6363636363637  
+#> 10 q_3      86.6666666666667  
+#> 11 max      100               
+#> 12 iqr      49.5238095238095  
+#> 13 range    125               
+#> 14 skewness -0.401815749365758
+#> 15 kurtosis 2.10073487543524
+```
+
+``` r
+library(ggplot2)
+library(scales)
+
+sri_data |>
+  ggplot(ggplot2::aes(x = time, y = sri)) +
+  geom_smooth(color = "#FC2913") +
+  labs(
+    x = "Time of day (Hour)",
+    y = "Sleep Regularity Index (SRI)"
+  ) +
+  scale_x_time(
+    breaks = scales::breaks_width("6 hours"),
+    labels = scales::label_time("%-H") # Use "%#H" for Windows
+  ) +
+  actverse:::get_actverse_theme()
+```
+
+![](man/figures/readme-sri-1.png)
 
 ### Period Functions
 
@@ -199,24 +278,24 @@ get_sun_stats(
 #> # A tibble: 18 × 2
 #>    name              value            
 #>    <chr>             <chr>            
-#>  1 date              2025-05-10       
+#>  1 date              2025-06-05       
 #>  2 latitude          -23.5489         
 #>  3 longitude         -46.6388         
 #>  4 tz                America/Sao_Paulo
-#>  5 sunrise_start     06:32:22         
-#>  6 sunrise_end       06:34:50         
-#>  7 golden_hour_end   07:04:14         
-#>  8 solar_noon        12:04:16         
-#>  9 golden_hour_start 17:04:19         
-#> 10 sunset_start      17:33:43         
-#> 11 sunset_end        17:36:10         
-#> 12 dusk              17:59:51         
-#> 13 nautical_dusk     18:27:01         
-#> 14 night_start       18:53:54         
-#> 15 nadir             00:04:16         
-#> 16 night_end         05:14:39         
-#> 17 nautical_dawn     05:41:31         
-#> 18 dawn              06:08:41
+#>  5 sunrise_start     06:44:16         
+#>  6 sunrise_end       06:46:50         
+#>  7 golden_hour_end   07:17:28         
+#>  8 solar_noon        12:06:31         
+#>  9 golden_hour_start 16:55:34         
+#> 10 sunset_start      17:26:13         
+#> 11 sunset_end        17:28:46         
+#> 12 dusk              17:53:17         
+#> 13 nautical_dusk     18:21:18         
+#> 14 night_start       18:48:54         
+#> 15 nadir             00:06:31         
+#> 16 night_end         05:24:08         
+#> 17 nautical_dawn     05:51:44         
+#> 18 dawn              06:19:45
 ```
 
 ### Other Features
@@ -243,8 +322,8 @@ file |>
 #>   epoch proportion
 #>   <dbl>      <dbl>
 #> 1    60  1.00     
-#> 2    94  0.0000193
-#> 3    86  0.0000193
+#> 2    86  0.0000193
+#> 3    94  0.0000193
 #> 4   101  0.0000193
 ```
 
@@ -272,8 +351,7 @@ citation("actverse")
 
 ## License
 
-[![License:
-MIT](https://img.shields.io/badge/License-MIT-10D810.svg)](https://choosealicense.com/licenses/mit/)
+[![](https://img.shields.io/badge/license-MIT-green.svg)](https://choosealicense.com/licenses/mit/)
 
 `actverse` code is released under the [MIT
 license](https://opensource.org/license/mit). This means you can use,
@@ -283,18 +361,14 @@ portions of the software.
 
 ## Contributing
 
-[![Contributor
-Covenant](https://img.shields.io/badge/Contributor%20Covenant-2.1-4baaaa.svg)](https://www.contributor-covenant.org/version/2/1/code_of_conduct/)
+[![](https://img.shields.io/badge/Contributor%20Covenant-2.1-4baaaa.svg)](CODE_OF_CONDUCT.md)
 
 Contributions are welcome, including bug reports. Take a moment to
 review our [Guidelines for
 Contributing](https://danielvartan.github.io/actverse/CONTRIBUTING.html).
 
-[![Github
-Sponsor](man/figures/sponsor-badge.svg)](https://github.com/sponsors/danielvartan)
+[![](https://img.shields.io/static/v1?label=Sponsor&message=%E2%9D%A4&logo=GitHub&color=%23fe8e86)](https://github.com/sponsors/danielvartan)
 
-Become an `actverse` sponsor!
-
-Click [here](https://github.com/sponsors/danielvartan) to make a
-donation. Please indicate the `actverse` package in your donation
-message.
+You can also support the development of `actverse` by becoming a
+sponsor. Click [here](https://github.com/sponsors/danielvartan) to make
+a donation. Please mention `actverse` in your donation message.

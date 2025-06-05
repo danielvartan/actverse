@@ -8,7 +8,7 @@ message: 'To cite package "actverse" in publications use:'
 type: software
 license: MIT
 title: 'actverse: A Tidyverse-Style Toolbox for Actigraphy Data Analysis'
-version: 0.1.0
+version: 0.1.0.9000
 identifiers:
 - type: url
   value: https://github.com/danielvartan/actverse/
@@ -137,7 +137,7 @@ references:
     orcid: https://orcid.org/0000-0002-4035-0289
   year: '2025'
   doi: 10.32614/CRAN.package.curl
-  version: '>= 6.2.2'
+  version: '>= 6.2.3'
 - type: software
   title: dplyr
   abstract: 'dplyr: A Grammar of Data Manipulation'
@@ -392,6 +392,25 @@ references:
   year: '2025'
   doi: 10.32614/CRAN.package.rlang
   version: '>= 1.1.6'
+- type: software
+  title: scales
+  abstract: 'scales: Scale Functions for Visualization'
+  notes: Imports
+  url: https://scales.r-lib.org
+  repository: https://CRAN.R-project.org/package=scales
+  authors:
+  - family-names: Wickham
+    given-names: Hadley
+    email: hadley@posit.co
+  - family-names: Pedersen
+    given-names: Thomas Lin
+    email: thomas.pedersen@posit.co
+    orcid: https://orcid.org/0000-0002-5147-4711
+  - family-names: Seidel
+    given-names: Dana
+  year: '2025'
+  doi: 10.32614/CRAN.package.scales
+  version: '>= 1.4.0'
 - type: software
   title: stats
   abstract: 'R: A Language and Environment for Statistical Computing'
