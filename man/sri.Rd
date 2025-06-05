@@ -2,7 +2,7 @@
 % Please edit documentation in R/sri.R
 \name{sri}
 \alias{sri}
-\title{Compute Phillips et al. Sleep Regularity Index (SRI)}
+\title{Compute Phillips et al.'s Sleep Regularity Index (SRI)}
 \usage{
 sri(data, state_col = "state", sleeping_states = 1, awake_states = c(0, 2))
 }

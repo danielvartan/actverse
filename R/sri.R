@@ -1,4 +1,4 @@
-#' Compute Phillips et al. Sleep Regularity Index (SRI)
+#' Compute Phillips et al.'s Sleep Regularity Index (SRI)
 #'
 #' @description
 #'
