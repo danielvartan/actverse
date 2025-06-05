@@ -110,7 +110,10 @@ agreement).</p></li>
 <li><p>Scale this proportion to a range from -100 to 100: a score of 100
 indicates perfectly regular sleep/wake patterns, while a score of 0
 indicates completely random patterns.</p></li>
-</ol><p>See Phillips et al. (2017) to learn more about the SRI and its
+</ol><p>Note: While SRI values below 0 are theoretically possible (e.g., in cases of
+highly irregular patterns such as alternating 24-hour periods of sleep and
+wake), such occurrences are extremely rare in practice.</p>
+<p>See Phillips et al. (2017) to learn more about the SRI and its
 applications in sleep research.</p>
     </div>
     <div class="section level2">
@@ -152,9 +155,9 @@ and delayed circadian and sleep/wake timing. <em>Scientific Reports</em>, <em>7<
 <span class="r-in"><span>  <span class="va">data</span> <span class="op">&lt;-</span> <span class="fu"><a href="read_acttrust.html">read_acttrust</a></span><span class="op">(</span><span class="va">file</span>, tz <span class="op">=</span> <span class="st">"America/Sao_Paulo"</span><span class="op">)</span></span></span>
 <span class="r-in"><span>  <span class="va">sri_data</span> <span class="op">&lt;-</span> <span class="va">data</span> <span class="op">|&gt;</span> <span class="fu">sri</span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span>  <span class="va">sri_data</span></span></span>
+<span class="r-in"><span>  <span class="va">sri_data</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span>  <span class="va">sri_data</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/pull.html" class="external-link">pull</a></span><span class="op">(</span><span class="va">sri</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="va">sri_data</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/pull.html" class="external-link">pull</a></span><span class="op">(</span><span class="va">sri</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span>  <span class="va">data</span> <span class="op">|&gt;</span></span></span>
 <span class="r-in"><span>    <span class="fu"><a href="actogram.html">actogram</a></span><span class="op">(</span></span></span>
@@ -176,23 +179,42 @@ and delayed circadian and sleep/wake timing. <em>Scientific Reports</em>, <em>7<
 <span class="r-in"><span>      breaks <span class="op">=</span> <span class="fu"><a href="https://scales.r-lib.org/reference/breaks_width.html" class="external-link">breaks_width</a></span><span class="op">(</span><span class="st">"6 hours"</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>      labels <span class="op">=</span> <span class="fu"><a href="https://scales.r-lib.org/reference/label_date.html" class="external-link">label_time</a></span><span class="op">(</span><span class="st">"%-H"</span><span class="op">)</span> <span class="co"># Use "%#H" for Windows</span></span></span>
 <span class="r-in"><span>    <span class="op">)</span> <span class="op">+</span></span></span>
+<span class="r-in"><span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html" class="external-link">scale_y_continuous</a></span><span class="op">(</span>limits <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="cn">NA</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span></span>
 <span class="r-in"><span>    <span class="fu">actverse</span><span class="fu">:::</span><span class="fu">get_actverse_theme</span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">}</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Reading data</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Reading data <span style="color: #B2B2B2;">[131ms]</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Reading data <span style="color: #B2B2B2;">[137ms]</span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Tidying data</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Tidying data <span style="color: #B2B2B2;">[401ms]</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Tidying data <span style="color: #B2B2B2;">[389ms]</span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Validating data</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Found <span style="color: #BB0000; font-weight: bold;">2</span> gap in the time series: 2021-04-26 03:14:00/2021-04-26 03:14:00 and 2021-05-01 17:34:00/2021-05-01 17:34:00 (showing up to a total of 5 values).</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Validating data</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Found <span style="color: #BB0000; font-weight: bold;">21</span> offwrist blocks in the time series. All values were set as <span style="font-weight: bold;">NA</span>.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Validating data</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Validating data <span style="color: #B2B2B2;">[17.9s]</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Validating data <span style="color: #B2B2B2;">[18.5s]</span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tsibble: 1,440 x 5 [1m]</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    time   state      previous_state agreement    sri</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;time&gt;</span> <span style="color: #949494; font-style: italic;">&lt;list&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;list&gt;</span>         <span style="color: #949494; font-style: italic;">&lt;list&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> 00<span style="color: #949494;">'</span>00<span style="color: #949494;">"</span> <span style="color: #949494;">&lt;fct [36]&gt;</span> <span style="color: #949494;">&lt;fct [36]&gt;</span>     <span style="color: #949494;">&lt;lgl [36]&gt;</span>  77.1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> 01<span style="color: #949494;">'</span>00<span style="color: #949494;">"</span> <span style="color: #949494;">&lt;fct [36]&gt;</span> <span style="color: #949494;">&lt;fct [36]&gt;</span>     <span style="color: #949494;">&lt;lgl [36]&gt;</span>  77.1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> 02<span style="color: #949494;">'</span>00<span style="color: #949494;">"</span> <span style="color: #949494;">&lt;fct [36]&gt;</span> <span style="color: #949494;">&lt;fct [36]&gt;</span>     <span style="color: #949494;">&lt;lgl [36]&gt;</span>  77.1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> 03<span style="color: #949494;">'</span>00<span style="color: #949494;">"</span> <span style="color: #949494;">&lt;fct [36]&gt;</span> <span style="color: #949494;">&lt;fct [36]&gt;</span>     <span style="color: #949494;">&lt;lgl [36]&gt;</span>  77.1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> 04<span style="color: #949494;">'</span>00<span style="color: #949494;">"</span> <span style="color: #949494;">&lt;fct [36]&gt;</span> <span style="color: #949494;">&lt;fct [36]&gt;</span>     <span style="color: #949494;">&lt;lgl [36]&gt;</span>  77.1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> 05<span style="color: #949494;">'</span>00<span style="color: #949494;">"</span> <span style="color: #949494;">&lt;fct [36]&gt;</span> <span style="color: #949494;">&lt;fct [36]&gt;</span>     <span style="color: #949494;">&lt;lgl [36]&gt;</span>  77.1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> 06<span style="color: #949494;">'</span>00<span style="color: #949494;">"</span> <span style="color: #949494;">&lt;fct [36]&gt;</span> <span style="color: #949494;">&lt;fct [36]&gt;</span>     <span style="color: #949494;">&lt;lgl [36]&gt;</span>  77.1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> 07<span style="color: #949494;">'</span>00<span style="color: #949494;">"</span> <span style="color: #949494;">&lt;fct [36]&gt;</span> <span style="color: #949494;">&lt;fct [36]&gt;</span>     <span style="color: #949494;">&lt;lgl [36]&gt;</span>  77.1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> 08<span style="color: #949494;">'</span>00<span style="color: #949494;">"</span> <span style="color: #949494;">&lt;fct [36]&gt;</span> <span style="color: #949494;">&lt;fct [36]&gt;</span>     <span style="color: #949494;">&lt;lgl [36]&gt;</span>  77.1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> 09<span style="color: #949494;">'</span>00<span style="color: #949494;">"</span> <span style="color: #949494;">&lt;fct [36]&gt;</span> <span style="color: #949494;">&lt;fct [36]&gt;</span>     <span style="color: #949494;">&lt;lgl [36]&gt;</span>  77.1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 1,430 more rows</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  -25.00   37.14   63.64   58.78   86.67  100.00 </span>
 <span class="r-plt img"><img src="sri-1.png" alt="" width="700" height="433"></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> `geom_smooth()` using method = 'gam' and formula = 'y ~ s(x, bs = "cs")'</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Removed 21 rows containing non-finite outside the scale range</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> (`stat_smooth()`).</span>
 <span class="r-plt img"><img src="sri-2.png" alt="" width="700" height="433"></span>
 </code></pre></div>
     </div>
