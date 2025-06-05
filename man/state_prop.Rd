@@ -10,11 +10,12 @@ state_prop(data, state_col = "state", state_values = 1)
 \item{data}{A \code{\link[tsibble:tsibble]{tsibble}} object.}
 
 \item{state_col}{(optional) A string indicating which column of \code{data} have
-the states/categories data (default: \code{"state"}).}
+the states data (default: \code{"state"}).}
 
-\item{state_values}{A \code{\link[checkmate:checkIntegerish]{integerish}} vector
-indicating which state values are considered as the target state(s) for
-calculating the proportion (default: \code{1}).}
+\item{state_values}{(optional) An
+\code{\link[checkmate:checkIntegerish]{integerish}} vector indicating which state
+values are considered as the target state(s) for calculating the proportion
+(default: \code{1}).}
 }
 \value{
 A \code{\link[tsibble:tsibble]{tsibble}} object with the following columns:

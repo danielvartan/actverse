@@ -12,12 +12,13 @@ sri(data, state_col = "state", sleeping_states = 1, awake_states = c(0, 2))
 \item{state_col}{(optional) A string indicating which column of \code{data} have
 the states/categories data (default: \code{"state"}).}
 
-\item{sleeping_states}{A \code{\link[checkmate:checkIntegerish]{integerish}} vector
-indicating which state values are considered as sleeping states
-(default: \code{1}).}
+\item{sleeping_states}{(optional) An
+\code{\link[checkmate:checkIntegerish]{integerish}} vector indicating which state
+values are considered as sleeping states (default: \code{1}).}
 
-\item{awake_states}{A \code{\link[checkmate:checkIntegerish]{integerish}} vector
-indicating which states values are considered as awake states.}
+\item{awake_states}{(optional) An
+\code{\link[checkmate:checkIntegerish]{integerish}} vector indicating which states
+values are considered as awake states.}
 }
 \value{
 A \code{\link[tsibble:tsibble]{tsibble}} object with the following columns:

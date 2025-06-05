@@ -33,11 +33,12 @@
 #' @param data A [`tsibble`][tsibble::tsibble()] object.
 #' @param state_col (optional) A string indicating which column of `data` have
 #'   the states/categories data (default: `"state"`).
-#' @param sleeping_states A [`integerish`][checkmate::assert_integerish] vector
-#'   indicating which state values are considered as sleeping states
-#'   (default: `1`).
-#' @param awake_states A [`integerish`][checkmate::assert_integerish] vector
-#'   indicating which states values are considered as awake states.
+#' @param sleeping_states (optional) An
+#'   [`integerish`][checkmate::assert_integerish] vector indicating which state
+#'   values are considered as sleeping states (default: `1`).
+#' @param awake_states (optional) An
+#'   [`integerish`][checkmate::assert_integerish] vector indicating which states
+#'   values are considered as awake states.
 #'
 #' @return A [`tsibble`][tsibble::tsibble()] object with the following columns:
 #'

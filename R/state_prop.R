@@ -9,10 +9,11 @@
 #'
 #' @param data A [`tsibble`][tsibble::tsibble()] object.
 #' @param state_col (optional) A string indicating which column of `data` have
-#'   the states/categories data (default: `"state"`).
-#' @param state_values A [`integerish`][checkmate::assert_integerish] vector
-#'   indicating which state values are considered as the target state(s) for
-#'   calculating the proportion (default: `1`).
+#'   the states data (default: `"state"`).
+#' @param state_values (optional) An
+#'   [`integerish`][checkmate::assert_integerish] vector indicating which state
+#'   values are considered as the target state(s) for calculating the proportion
+#'   (default: `1`).
 #'
 #' @return A [`tsibble`][tsibble::tsibble()] object with the following columns:
 #'
