@@ -38,8 +38,9 @@ the SRI is computed.
 }
 \description{
 \code{sri()} computes the Sleep Regularity Index (SRI) as described by Phillips et
-al. (2017) from a \code{\link[tsibble:tsibble]{tsibble}} object, quantifying the
-consistency of sleep/wake patterns across days.
+al. (\href{https://doi.org/10.1038/s41598-017-03171-4}{2017}) from a
+\code{\link[tsibble:tsibble]{tsibble}} object, quantifying the consistency of
+sleep/wake patterns across days.
 }
 \details{
 The Sleep Regularity Index (SRI) is a measure of sleep regularity, which
@@ -62,8 +63,8 @@ Note: While SRI values below 0 are theoretically possible (e.g., in cases of
 highly irregular patterns such as alternating 24-hour periods of sleep and
 wake), such occurrences are extremely rare in practice.
 
-See Phillips et al. (2017) to learn more about the SRI and its
-applications in sleep research.
+See Phillips et al. (\href{https://doi.org/10.1038/s41598-017-03171-4}{2017}) to
+learn more about the SRI and its applications in sleep research.
 }
 \examples{
 library(curl)

@@ -3,8 +3,9 @@
 #' @description
 #'
 #' `sri()` computes the Sleep Regularity Index (SRI) as described by Phillips et
-#' al. (2017) from a [`tsibble`][tsibble::tsibble()] object, quantifying the
-#' consistency of sleep/wake patterns across days.
+#' al. ([2017](https://doi.org/10.1038/s41598-017-03171-4)) from a
+#' [`tsibble`][tsibble::tsibble()] object, quantifying the consistency of
+#' sleep/wake patterns across days.
 #'
 #' @details
 #'
@@ -27,8 +28,8 @@
 #' highly irregular patterns such as alternating 24-hour periods of sleep and
 #' wake), such occurrences are extremely rare in practice.
 #'
-#' See Phillips et al. (2017) to learn more about the SRI and its
-#' applications in sleep research.
+#' See Phillips et al. ([2017](https://doi.org/10.1038/s41598-017-03171-4)) to
+#' learn more about the SRI and its applications in sleep research.
 #'
 #' @param data A [`tsibble`][tsibble::tsibble()] object.
 #' @param state_col (optional) A string indicating which column of `data` have

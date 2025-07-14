@@ -2,7 +2,7 @@
 
 # actverse 0.1.0
 
-- 🎉 First release.
+- First release. 🎉
 
 # actverse 0.0.0.9000
 
