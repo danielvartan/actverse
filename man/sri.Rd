@@ -34,6 +34,9 @@ vector indicating whether the state matches the previous day's state.
 \item \code{sri}: A \code{\link[base:numeric]{numeric}} vector representing the Sleep
 Regularity Index (SRI). See the Details section to learn more about how
 the SRI is computed.
+\item \code{valid_agreement}: A \code{\link[base:numeric]{numeric}} vector representing the
+proportion of non-missing values in the \code{agreement} column, i.e., the
+amount of information available to compute the SRI for each time point.
 }
 }
 \description{

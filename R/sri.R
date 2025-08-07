@@ -54,6 +54,9 @@
 #' - `sri`: A [`numeric`][base::numeric()] vector representing the Sleep
 #'   Regularity Index (SRI). See the Details section to learn more about how
 #'   the SRI is computed.
+#' - `valid_agreement`: A [`numeric`][base::numeric()] vector representing the
+#'   proportion of non-missing values in the `agreement` column, i.e., the
+#'   amount of information available to compute the SRI for each time point.
 #'
 #' @template references_e
 #' @family sleep statistics functions
@@ -158,7 +161,10 @@ sri <- function(
       sri =
         agreement |>
         purrr::map_dbl(\(x) prop(x, TRUE, na_rm = TRUE)) |>
-        scales::rescale(to = c(-100, 100), from = c(0, 1))
+        scales::rescale(to = c(-100, 100), from = c(0, 1)),
+      valid_agreement =
+        agreement |>
+        purrr::map_dbl(\(x) prop(!is.na(x), TRUE))
     ) |>
     dplyr::arrange(time) |>
     tsibble::as_tsibble(index = time, regular = TRUE)
