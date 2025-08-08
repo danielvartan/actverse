@@ -105,7 +105,8 @@ read_acttrust_data <- function(
       na = c("", " ", "NA"),
       col_types = readr::cols(.default = "c"),
       skip = skip,
-      trim_ws = TRUE
+      trim_ws = TRUE,
+      progress = FALSE
     )
 }
 
