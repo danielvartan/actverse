@@ -40,6 +40,12 @@
 #' @param awake_states (optional) An
 #'   [`integerish`][checkmate::assert_integerish] vector indicating which states
 #'   values are considered as awake states.
+#' @param min_data (optional) A number indicating the minimum proportion of
+#'  non-missing values in the agreements required to compute the SRI for each
+#'  time point. The SRI will only be computed if the proportion of non-missing
+#'  values is greater than or equal to this threshold. This is useful to avoid
+#'  computing the SRI when there is insufficient data. Values below this
+#'  threshold will result in an SRI of `NA` (default: `0.75`).
 #'
 #' @return A [`tsibble`][tsibble::tsibble()] object with the following columns:
 #'
@@ -54,7 +60,7 @@
 #' - `sri`: A [`numeric`][base::numeric()] vector representing the Sleep
 #'   Regularity Index (SRI). See the Details section to learn more about how
 #'   the SRI is computed.
-#' - `valid_agreement`: A [`numeric`][base::numeric()] vector representing the
+#' - `valid_data`: A [`numeric`][base::numeric()] vector representing the
 #'   proportion of non-missing values in the `agreement` column, i.e., the
 #'   amount of information available to compute the SRI for each time point.
 #'
@@ -109,7 +115,8 @@ sri <- function(
   data,
   state_col = "state",
   sleeping_states = 1,
-  awake_states = c(0, 2)
+  awake_states = c(0, 2),
+  min_data = 0.75
 ) {
   assert_tsibble(data)
   assert_regularity(data, strict = TRUE)
@@ -120,10 +127,12 @@ sri <- function(
   checkmate::assert_integerish(awake_states, min.len = 1)
   checkmate::assert_subset(awake_states, data[[state_col]])
   prettycheck::assert_posixt(data[[tsibble::index_var(data)]])
+  checkmate::assert_number(min_data, lower = 0, upper = 1)
 
   # R CMD Check variable bindings fix
   # nolint start
   timestamp <- time <- state <- previous_state <- agreement <- NULL
+  valid_data <- sri <- NULL
   # nolint end
 
   interval <- data |> find_epoch() |> magrittr::extract2("best_match")
@@ -162,9 +171,14 @@ sri <- function(
         agreement |>
         purrr::map_dbl(\(x) prop(x, TRUE, na_rm = TRUE)) |>
         scales::rescale(to = c(-100, 100), from = c(0, 1)),
-      valid_agreement =
+      valid_data =
         agreement |>
-        purrr::map_dbl(\(x) prop(!is.na(x), TRUE))
+        purrr::map_dbl(\(x) prop(!is.na(x), TRUE)),
+      sri = dplyr::if_else(
+        valid_data < min_data,
+        NA_real_,
+        sri
+      )
     ) |>
     dplyr::arrange(time) |>
     tsibble::as_tsibble(index = time, regular = TRUE)

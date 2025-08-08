@@ -4,7 +4,13 @@
 \alias{sri}
 \title{Compute Phillips et al.'s Sleep Regularity Index (SRI)}
 \usage{
-sri(data, state_col = "state", sleeping_states = 1, awake_states = c(0, 2))
+sri(
+  data,
+  state_col = "state",
+  sleeping_states = 1,
+  awake_states = c(0, 2),
+  min_data = 0.75
+)
 }
 \arguments{
 \item{data}{A \code{\link[tsibble:tsibble]{tsibble}} object.}
@@ -19,6 +25,13 @@ values are considered as sleeping states (default: \code{1}).}
 \item{awake_states}{(optional) An
 \code{\link[checkmate:checkIntegerish]{integerish}} vector indicating which states
 values are considered as awake states.}
+
+\item{min_data}{(optional) A number indicating the minimum proportion of
+non-missing values in the agreements required to compute the SRI for each
+time point. The SRI will only be computed if the proportion of non-missing
+values is greater than or equal to this threshold. This is useful to avoid
+computing the SRI when there is insufficient data. Values below this
+threshold will result in an SRI of \code{NA} (default: \code{0.75}).}
 }
 \value{
 A \code{\link[tsibble:tsibble]{tsibble}} object with the following columns:
@@ -34,7 +47,7 @@ vector indicating whether the state matches the previous day's state.
 \item \code{sri}: A \code{\link[base:numeric]{numeric}} vector representing the Sleep
 Regularity Index (SRI). See the Details section to learn more about how
 the SRI is computed.
-\item \code{valid_agreement}: A \code{\link[base:numeric]{numeric}} vector representing the
+\item \code{valid_data}: A \code{\link[base:numeric]{numeric}} vector representing the
 proportion of non-missing values in the \code{agreement} column, i.e., the
 amount of information available to compute the SRI for each time point.
 }
