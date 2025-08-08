@@ -13,7 +13,7 @@
 #' @param state_values (optional) An
 #'   [`integerish`][checkmate::assert_integerish] vector indicating which state
 #'   values are considered as the target state(s) for calculating the proportion
-#'   (default: `1`).
+#'   (default: `c(1, 2)`).
 #'
 #' @return A [`tsibble`][tsibble::tsibble()] object with the following columns:
 #'
@@ -42,7 +42,7 @@
 #'   )
 #'
 #'   data <- read_acttrust(file, tz = "America/Sao_Paulo")
-#'   state_prop_data <- data |> state_prop(state_values = 1) # Sleeping state
+#'   state_prop_data <- data |> state_prop() # Sleeping + Resting states
 #'
 #'   state_prop_data |> print()
 #'
@@ -75,7 +75,7 @@
 state_prop <- function(
   data,
   state_col = "state",
-  state_values = 1
+  state_values = c(1, 2)
 ) {
   assert_tsibble(data)
   assert_regularity(data, strict = TRUE)

@@ -4,7 +4,7 @@
 \alias{state_prop}
 \title{Compute the proportion of time spent in a specific state}
 \usage{
-state_prop(data, state_col = "state", state_values = 1)
+state_prop(data, state_col = "state", state_values = c(1, 2))
 }
 \arguments{
 \item{data}{A \code{\link[tsibble:tsibble]{tsibble}} object.}
@@ -15,7 +15,7 @@ the states data (default: \code{"state"}).}
 \item{state_values}{(optional) An
 \code{\link[checkmate:checkIntegerish]{integerish}} vector indicating which state
 values are considered as the target state(s) for calculating the proportion
-(default: \code{1}).}
+(default: \code{c(1, 2)}).}
 }
 \value{
 A \code{\link[tsibble:tsibble]{tsibble}} object with the following columns:
