@@ -7,8 +7,8 @@
 sri(
   data,
   state_col = "state",
-  sleeping_states = 1,
-  awake_states = c(0, 2),
+  sleeping_states = c(1, 2),
+  awake_states = 0,
   min_data = 0.75
 )
 }
@@ -20,11 +20,11 @@ the states/categories data (default: \code{"state"}).}
 
 \item{sleeping_states}{(optional) An
 \code{\link[checkmate:checkIntegerish]{integerish}} vector indicating which state
-values are considered as sleeping states (default: \code{1}).}
+values are considered as sleeping states (default: \code{c(1, 2)}).}
 
 \item{awake_states}{(optional) An
 \code{\link[checkmate:checkIntegerish]{integerish}} vector indicating which states
-values are considered as awake states.}
+values are considered as awake states (default: \code{0}).}
 
 \item{min_data}{(optional) A number indicating the minimum proportion of
 non-missing values in the agreements required to compute the SRI for each
