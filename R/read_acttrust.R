@@ -74,7 +74,19 @@ read_acttrust_data <- function(
 
   cli::cli_progress_step("Reading data")
 
-  lines <- readLines(file, n = 100)
+  temp_file <- tempfile(fileext = ".txt")
+
+  file |>
+    readr::read_lines(progress = FALSE) |>
+    iconv(to = "ASCII//TRANSLIT") |>
+    readr::write_lines(temp_file)
+
+  lines <-
+    temp_file |>
+    readr::read_lines(
+      n_max = 100,
+      progress = FALSE
+    )
 
   if (grepl("Condor Instruments Report", lines[1])) {
     for (i in seq(2, length(lines))) {
@@ -93,13 +105,21 @@ read_acttrust_data <- function(
     n <- 1
   }
 
-  if (grepl(";", readLines(file, n = n)[n])) {
+  lines <-
+    temp_file |>
+    readr::read_lines(
+      n_max = n,
+      progress = FALSE
+    )
+
+  if (grepl(";", lines[n])) {
     delim <- ";"
   } else {
     delim <- "\t"
   }
 
-  file |>
+  out <-
+    temp_file |>
     readr::read_delim(
       delim = delim,
       na = c("", " ", "NA"),
@@ -108,6 +128,10 @@ read_acttrust_data <- function(
       trim_ws = TRUE,
       progress = FALSE
     )
+
+  file.remove(temp_file)
+
+  out
 }
 
 tidy_acttrust_data <- function(data, tz = "UTC") {
