@@ -205,17 +205,17 @@ and delayed circadian and sleep/wake timing. <em>Scientific Reports</em>, <em>7<
 <span class="r-in"><span>    <span class="fu">actverse</span><span class="fu">:::</span><span class="fu">get_actverse_theme</span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">}</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Reading data</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Reading data <span style="color: #B2B2B2;">[147ms]</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Reading data <span style="color: #B2B2B2;">[144ms]</span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Tidying data</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Tidying data <span style="color: #B2B2B2;">[405ms]</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Tidying data <span style="color: #B2B2B2;">[375ms]</span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Validating data</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Found <span style="color: #BB0000; font-weight: bold;">2</span> gap in the time series: 2021-04-26 03:14:00/2021-04-26 03:14:00 and 2021-05-01 17:34:00/2021-05-01 17:34:00 (showing up to a total of 5 values).</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Validating data</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Found <span style="color: #BB0000; font-weight: bold;">21</span> offwrist blocks in the time series. All values were set as <span style="font-weight: bold;">NA</span>.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Validating data</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Validating data <span style="color: #B2B2B2;">[18.4s]</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Validating data <span style="color: #B2B2B2;">[18.6s]</span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tsibble: 1,440 x 6 [1m]</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    time   state      previous_state agreement    sri valid_data</span>
@@ -232,11 +232,10 @@ and delayed circadian and sleep/wake timing. <em>Scientific Reports</em>, <em>7<
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> 09<span style="color: #949494;">'</span>00<span style="color: #949494;">"</span> <span style="color: #949494;">&lt;fct [36]&gt;</span> <span style="color: #949494;">&lt;fct [36]&gt;</span>     <span style="color: #949494;">&lt;lgl [36]&gt;</span>  77.1      0.972</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 1,430 more rows</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  -25.00   37.14   63.64   58.78   86.67  100.00 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  -2.857  60.000  71.429  68.076  86.667  94.286 </span>
 <span class="r-plt img"><img src="sri-1.png" alt="" width="700" height="433"></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> `geom_smooth()` using method = 'gam' and formula = 'y ~ s(x, bs = "cs")'</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Removed 21 rows containing non-finite outside the scale range</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> (`stat_smooth()`).</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Removed 6 rows containing non-finite outside the scale range (`stat_smooth()`).</span>
 <span class="r-plt img"><img src="sri-2.png" alt="" width="700" height="433"></span>
 </code></pre></div>
     </div>
