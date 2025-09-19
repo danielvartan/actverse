@@ -31,7 +31,9 @@ non-missing values in the agreements required to compute the SRI for each
 time point. The SRI will only be computed if the proportion of non-missing
 values is greater than or equal to this threshold. This is useful to avoid
 computing the SRI when there is insufficient data. Values below this
-threshold will result in an SRI of \code{NA} (default: \code{0.75}).}
+threshold will result in an SRI of \code{NA}. Note that the first agreement
+value is always \code{NA} because there is no previous day for comparison, hence
+it is not treated as missing data. (default: \code{0.75}).}
 }
 \value{
 A \code{\link[tsibble:tsibble]{tsibble}} object with the following columns:
@@ -75,9 +77,14 @@ indicates perfectly regular sleep/wake patterns, while a score of 0
 indicates completely random patterns.
 }
 
-Note: While SRI values below 0 are theoretically possible (e.g., in cases of
+Note 1: While SRI values below 0 are theoretically possible (e.g., in cases of
 highly irregular patterns such as alternating 24-hour periods of sleep and
 wake), such occurrences are extremely rare in practice.
+
+Note 2: The first agreement value is always \code{NA} because there is no
+previous day for comparison. This \code{NA} is not treated as missing data
+because it simply reflects the absence of a reference point, and it is
+excluded from the calculation of valid data.
 
 See Phillips et al. (\href{https://doi.org/10.1038/s41598-017-03171-4}{2017}) to
 learn more about the SRI and its applications in sleep research.

@@ -49,7 +49,7 @@ if (has_internet()) {
   )
 
   data <- read_acttrust(file, tz = "America/Sao_Paulo")
-  state_prop_data <- data |> state_prop(state_values = 1) # Sleeping state
+  state_prop_data <- data |> state_prop() # Sleeping + Resting states
 
   state_prop_data |> print()
 

@@ -24,9 +24,14 @@
 #'    indicates perfectly regular sleep/wake patterns, while a score of 0
 #'    indicates completely random patterns.
 #'
-#' Note: While SRI values below 0 are theoretically possible (e.g., in cases of
+#' Note 1: While SRI values below 0 are theoretically possible (e.g., in cases of
 #' highly irregular patterns such as alternating 24-hour periods of sleep and
 #' wake), such occurrences are extremely rare in practice.
+#'
+#' Note 2: The first agreement value is always `NA` because there is no
+#' previous day for comparison. This `NA` is not treated as missing data
+#' because it simply reflects the absence of a reference point, and it is
+#' excluded from the calculation of valid data.
 #'
 #' See Phillips et al. ([2017](https://doi.org/10.1038/s41598-017-03171-4)) to
 #' learn more about the SRI and its applications in sleep research.
@@ -45,7 +50,9 @@
 #'  time point. The SRI will only be computed if the proportion of non-missing
 #'  values is greater than or equal to this threshold. This is useful to avoid
 #'  computing the SRI when there is insufficient data. Values below this
-#'  threshold will result in an SRI of `NA` (default: `0.75`).
+#'  threshold will result in an SRI of `NA`. Note that the first agreement
+#'  value is always `NA` because there is no previous day for comparison, hence
+#'  it is not treated as missing data. (default: `0.75`).
 #'
 #' @return A [`tsibble`][tsibble::tsibble()] object with the following columns:
 #'
@@ -173,7 +180,7 @@ sri <- function(
         scales::rescale(to = c(-100, 100), from = c(0, 1)),
       valid_data =
         agreement |>
-        purrr::map_dbl(\(x) prop(!is.na(x), TRUE)),
+        purrr::map_dbl(\(x) prop(!is.na(x[-1]), TRUE)),
       sri = dplyr::if_else(
         valid_data < min_data,
         NA_real_,

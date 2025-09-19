@@ -8,7 +8,7 @@ library(actverse)
 
 test_check("actverse")
 
-# # For development use only (comment the code after use (Ctrl + Shift + C)).
+# # For Development Use Only (Comment the Code After Use)
 #
 # cffr::cff_write()
 # codemetar::write_codemeta()

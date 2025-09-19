@@ -1,6 +1,6 @@
 Package: actverse
 Title:  A Tidyverse-Style Toolbox for Actigraphy Data Analysis
-Version: 0.1.0.9001
+Version: 0.1.0.9000
 Authors@R: c(
         person(
             given = "Daniel",
