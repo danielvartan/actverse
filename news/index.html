@@ -43,7 +43,29 @@
       <small>Source: <a href="https://github.com/danielvartan/actverse/blob/main/NEWS.md" class="external-link"><code>NEWS.md</code></a></small>
     </div>
 
-  </main></div>
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="development version" id="actverse-development-version">actverse (development version)<a class="anchor" aria-label="anchor" href="#actverse-development-version"></a></h2>
+<ul><li>
+<code><a href="../reference/read_acttrust.html">read_acttrust()</a></code> has been updated to handle special characters in the input files more robustly. It now reads the file content, removes any special characters, and then writes it to a temporary file before processing. This ensures that the function can handle files with special characters without errors.</li>
+<li>
+<code><a href="../reference/sri.html">sri()</a></code> now has <code>min_data</code> as an argument, which specifies the minimum proportion of non-missing values required to compute the SRI for each time point. If the proportion of non-missing values is below this threshold, the SRI will be set to <code>NA</code> for that time point. This helps to avoid computing the SRI when there is insufficient data. Note that the first agreement value is always <code>NA</code> because there is no previous day for comparison, hence it is not treated as missing data.</li>
+<li>
+<code><a href="../reference/sri.html">sri()</a></code> now returns a <code>valid_data</code> column, which indicates the proportion of non-missing values in the <code>agreement</code> column for each time point. This provides additional information about the data quality used to compute the SRI.</li>
+<li>
+<code><a href="../reference/sri.html">sri()</a></code> now has different default values for <code>sleeping_states</code> and <code>awake_states</code>. The new defaults are <code>sleeping_states = c(1, 2)</code> and <code>awake_states = 0</code>. The previous defaults were <code>sleeping_states = 1</code> and <code>awake_states = c(0, 2)</code>, which considered <em>resting</em> states as awake, differing from the way that the index was originally computed.</li>
+<li>
+<code><a href="../reference/state_prop.html">state_prop()</a></code> now has a default value of <code>c(1, 2)</code> for <code>state_values</code>, which considers both <em>sleeping</em> and <em>resting</em> states (for Condor Instruments actigraphy data) as the target states for calculating the proportion. The previous default was <code>1</code>, which only considered the <em>sleeping</em> state.</li>
+</ul></div>
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="0.1.0" id="actverse-010">actverse 0.1.0<a class="anchor" aria-label="anchor" href="#actverse-010"></a></h2>
+<ul><li>First release. 🎉</li>
+</ul></div>
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="0.0.0.9000" id="actverse-0009000">actverse 0.0.0.9000<a class="anchor" aria-label="anchor" href="#actverse-0009000"></a></h2>
+<ul><li>Added a <code>NEWS.md</code> file to track changes to the package.</li>
+</ul></div>
+  </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
+    </nav></aside></div>
 
 
     <footer><div class="pkgdown-footer-left">
