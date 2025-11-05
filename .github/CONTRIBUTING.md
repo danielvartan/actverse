@@ -38,7 +38,7 @@ Are you using `actverse` in a publication or project? Please consider [citing it
 
 ### Propose an Idea 💡
 
-Have an idea for a new `actverse` feature? Take a look at the [documentation][website] and [issue list][issue] to see if it isn't included or suggested yet. If not, suggest your idea as an [issue on GitHub][issue]. While we can't promise to implement your idea, it helps to:
+Have an idea for a new `actverse` feature? Take a look at the [documentation][website] and [issue list][issues] to see if it isn't included or suggested yet. If not, suggest your idea as an [issue on GitHub][issues]. While we can't promise to implement your idea, it helps to:
 
 - Explain in detail how it would work.
 - Keep the scope as narrow as possible.
@@ -59,7 +59,7 @@ Noticed a typo on the website? Think a function could use a better example? Good
 
 #### The Website
 
-[This website][website] is generated with [`pkgdown`](http://pkgdown.r-lib.org/). That means we don't have to write any HTML: Content is pulled together from documentation in the code, vignettes, [Markdown](https://guides.github.com/features/mastering-markdown/) files, the package `DESCRIPTION` and `_pkgdown.yml` settings. If you know your way around `pkgdown`, you can [propose a file change](https://help.github.com/articles/editing-files-in-another-user-s-repository/) to improve documentation.
+The [website][website] is generated with [`pkgdown`](http://pkgdown.r-lib.org/). That means we don't have to write any HTML: Content is pulled together from documentation in the code, vignettes, [Markdown](https://guides.github.com/features/mastering-markdown/) files, the package `DESCRIPTION` and `_pkgdown.yml` settings. If you know your way around `pkgdown`, you can [propose a file change](https://help.github.com/articles/editing-files-in-another-user-s-repository/) to improve documentation.
 
 #### Function Documentation
 
@@ -75,22 +75,22 @@ Care to fix bugs or implement new functionality for `actverse`? Awesome! 👏 Ha
 
 ## Code of Conduct
 
-[![Contributor Covenant](https://img.shields.io/badge/Contributor%20Covenant-2.1-4baaaa.svg)](https://www.contributor-covenant.org/version/2/1/code_of_conduct/)
+[![Contributor Covenant 3.0 Code of Conduct](https://img.shields.io/badge/Contributor%20Covenant-3.0-4baaaa.svg)](https://www.contributor-covenant.org/version/3/0/code_of_conduct/)
 
 Please note that this project is released with a [Contributor Code of Conduct](CODE_OF_CONDUCT.md). By participating in this project you agree to abide by its terms.
 
 ## Development Guidelines
 
-We follow the [GitHub flow](https://guides.github.com/introduction/flow/) for development. This means all changes should be made in feature branches, submitted as pull requests, and reviewed before merging into the main branch. Please keep your branches focused on a single topic or fix to make reviews easier and the project history clearer. Here are the steps to follow:
+We follow the [GitHub Flow](https://guides.github.com/introduction/flow/) for development. This means all changes should be made in feature branches, submitted as pull requests, and reviewed before merging into the main branch. Please keep your branches focused on a single topic or fix to make reviews easier and the project history clearer. Here are the steps to follow:
 
 1. Fork [this repo][repo] and clone it to your computer. To learn more about this process, see [this guide](https://guides.github.com/activities/forking/).
 2. If you have forked and cloned the project before, and it has been a while since you worked on it, [pull changes from the original repo](https://help.github.com/articles/merging-an-upstream-repository-into-your-fork/) to your clone by using `git pull upstream main`.
 3. Open the project in RStudio or other IDE of your choice.
 4. Make your changes:
-    - Write your code.
-    - Test your code (Bonus points for adding unit tests).
-    - Document your code (See function documentation above).
-    - Check your code with `devtools::check()` and aim for 0 errors, warnings, and notes.
+      - Write your code.
+      - Test your code (bonus points for adding unit tests).
+      - Document your code (see function documentation above).
+      - Check your code with `devtools::check()` and aim for 0 errors, warnings, and notes.
 5. Commit and push your changes.
 6. Submit a [pull request](https://guides.github.com/activities/forking/#making-a-pull-request).
 

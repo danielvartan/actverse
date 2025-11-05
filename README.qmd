@@ -7,19 +7,37 @@
 #| include: false
 
 library(actverse)
+
 library(badger)
 library(dplyr)
-# library(rutils) # github.com/danielvartan/rutils
+library(rutils) # github.com/danielvartan/rutils
 
 source(here::here("R", ".setup.R"))
 ```
 
 <!-- badges: start -->
-[![Project Status: Active - The project has reached a stable, usable state and is being actively developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
-[![R-CMD-check.yaml](https://github.com/danielvartan/actverse/actions/workflows/check-standard.yaml/badge.svg)](https://github.com/danielvartan/actverse/actions/workflows/check-standard.yaml)
-[![Codecov test coverage](https://codecov.io/gh/danielvartan/actverse/branch/main/graph/badge.svg)](https://app.codecov.io/gh/danielvartan/actverse?branch=main)
-[![License: MIT](https://img.shields.io/badge/license-MIT-green)](https://choosealicense.com/licenses/mit/)
-[![Contributor Covenant](https://img.shields.io/badge/Contributor%20Covenant-2.1-4baaaa.svg)](CODE_OF_CONDUCT.md)
+```{r}
+#| echo: false
+#| output: asis
+
+cat(
+  badge_repostatus("active"),
+  badge_github_actions(action = "R-CMD-check.yaml"),
+  badge_codecov() |> shush(),
+  badge_license(
+    license = "GPLv3",
+    color = "bd0000",
+    url = "https://www.gnu.org/licenses/gpl-3.0"
+  ),
+  badge_custom(
+    x = "Contributor%20Covenant",
+    y = "3.0",
+    color = "4baaaa",
+    url = "https://www.contributor-covenant.org/version/3/0/code_of_conduct/",
+    alt = "Contributor Covenant 3.0 Code of Conduct"
+  )
+)
+```
 <!-- badges: end -->
 
 ## Overview
@@ -28,13 +46,14 @@ source(here::here("R", ".setup.R"))
 
 The package is built on [tidyverse principles](https://tidyverse.tidyverse.org/articles/manifesto.html) and integrates seamlessly with the [tidyverse ecosystem](https://www.tidyverse.org/), ensuring a consistent and user-friendly experience for data manipulation and analysis.
 
-> If you find this project useful, please consider giving it a star! &nbsp; [![GitHub repo stars](https://img.shields.io/github/stars/danielvartan/actverse)](https://github.com/danielvartan/actverse/)
+> If you find this project useful, please consider giving it a star! &nbsp; [![GitHub Repository Stars](https://img.shields.io/github/stars/danielvartan/actverse)](https://github.com/danielvartan/actverse/)
 
 ## Installation
 
 You can install `actverse` using the [`remotes`](https://github.com/r-lib/remotes) package:
 
 ```r
+# install.packages("remotes")
 remotes::install_github("danielvartan/actverse")
 ```
 
@@ -274,16 +293,17 @@ cat(
 #| output: asis
 
 cat(
-  badger::badge_custom( # Contributor Covenant
-    "Contributor%20Covenant",
-    "2.1",
-    "4baaaa",
-    "CODE_OF_CONDUCT.md"
+  badge_custom(
+    x = "Contributor%20Covenant",
+    y = "3.0",
+    color = "4baaaa",
+    url = "https://www.contributor-covenant.org/version/3/0/code_of_conduct/",
+    alt = "Contributor Covenant 3.0 Code of Conduct"
   )
 )
 ```
 
-Contributions are welcome, including bug reports. Take a moment to review our [Guidelines for Contributing](https://danielvartan.github.io/actverse/CONTRIBUTING.html).
+Contributions are always welcome! Whether you want to report bugs, suggest new features, or help improve the code or documentation, your input makes a difference. Before opening a new issue, please take a moment to review our [Guidelines for Contributing](https://danielvartan.github.io/actverse/CONTRIBUTING.html) and check the [issues tab](https://github.com/danielvartan/actverse/issues) to see if your topic has already been reported.
 
 [![](https://img.shields.io/static/v1?label=Sponsor&message=%E2%9D%A4&logo=GitHub&color=%23fe8e86)](https://github.com/sponsors/danielvartan)
 
