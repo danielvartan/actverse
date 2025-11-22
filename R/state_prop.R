@@ -82,12 +82,24 @@ state_prop <- function(
   checkmate::assert_choice(state_col, names(data))
   checkmate::assert_integerish(data[[state_col]])
   checkmate::assert_integerish(state_values, min.len = 1)
-  checkmate::assert_subset(state_values, data[[state_col]])
 
   # R CMD Check variable bindings fix
   # nolint start
   timestamp <- time <- state <- NULL
   # nolint end
+
+  if (!checkmate::test_subset(state_values, data[[state_col]])) {
+    values <- setdiff(state_values, unique(data[[state_col]]))
+
+    cli::cli_alert_warning(
+      paste(
+        "The following {.var state_values} are not present in",
+        "the {.var state_col} column of the data: ",
+        "{.val {values}}."
+      ),
+      wrap = TRUE
+    )
+  }
 
   data |>
     dplyr::as_tibble() |>
