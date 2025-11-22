@@ -55,6 +55,8 @@
 <code><a href="../reference/sri.html">sri()</a></code> now has different default values for <code>sleeping_states</code> and <code>awake_states</code>. The new defaults are <code>sleeping_states = c(1, 2)</code> and <code>awake_states = 0</code>. The previous defaults were <code>sleeping_states = 1</code> and <code>awake_states = c(0, 2)</code>, which considered <em>resting</em> states as awake, differing from the way that the index was originally computed.</li>
 <li>
 <code><a href="../reference/state_prop.html">state_prop()</a></code> now has a default value of <code>c(1, 2)</code> for <code>state_values</code>, which considers both <em>sleeping</em> and <em>resting</em> states (for Condor Instruments actigraphy data) as the target states for calculating the proportion. The previous default was <code>1</code>, which only considered the <em>sleeping</em> state.</li>
+<li>
+<code><a href="../reference/state_prop.html">state_prop()</a></code> now accepts cases when a specific value in <code>state_values</code> is not present in the data.</li>
 </ul></div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.1.0" id="actverse-010">actverse 0.1.0<a class="anchor" aria-label="anchor" href="#actverse-010"></a></h2>
@@ -73,7 +75,7 @@
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.3.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
 </div>
 
     </footer></div>
