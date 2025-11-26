@@ -41,7 +41,7 @@ Authors@R: c(
 Description: A comprehensive toolkit to process, analyze and visualize
     actigraphy data.
 biocViews: Infrastructure, Visualization
-License: MIT + file LICENSE
+License: GPL (>= 3)
 URL: https://danielvartan.github.io/actverse/,
     https://github.com/danielvartan/actverse/
 BugReports: https://github.com/danielvartan/actverse/issues/

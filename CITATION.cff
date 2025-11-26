@@ -6,7 +6,7 @@
 cff-version: 1.2.0
 message: 'To cite package "actverse" in publications use:'
 type: software
-license: MIT
+license: GPL-3.0-or-later
 title: 'actverse: A Tidyverse-Style Toolbox for Actigraphy Data Analysis'
 version: 0.1.0.9000
 identifiers:

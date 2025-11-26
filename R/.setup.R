@@ -1,26 +1,18 @@
-# Load packages -----
+# Load Packages -----
 
-# library(actverse)
-# library(beepr)
+library(brandr)
 library(downlit)
-# library(cffr)
-# library(codemetar)
-# library(fs)
 library(ggplot2)
-# library(groomr) # https://github.com/danielvartan/groomr
-# library(here)
-library(httpgd)
+library(here)
+library(knitr)
 library(magrittr)
 library(ragg)
-# library(readr)
-library(rlang)
 library(rutils) # https://github.com/danielvartan/rutils
 library(showtext)
 library(sysfonts)
 library(xml2)
-# library(yaml)
 
-# Set general options -----
+# Set Options -----
 
 options(
   dplyr.print_min = 6,
@@ -34,56 +26,60 @@ options(
   width = 77 # 80 - 3 for #> Comment
 )
 
-# Set variables -----
+# Set Variables -----
 
 set.seed(2025)
 
-# Set knitr -----
+# Set `knitr`` -----
 
-knitr::clean_cache() |> rutils::shush()
+clean_cache()
 
-knitr::opts_chunk$set(
+opts_chunk$set(
   comment = "#>",
   collapse = TRUE,
-  root.dir = here::here(),
+  root.dir = here(),
   dev = "ragg_png",
   fig.showtext = TRUE
 )
 
-# Set and load graph fonts -----
+# Set `brandr` -----
 
-sysfonts::font_paths(here::here("ttf")) |> invisible()
+options(BRANDR_BRAND_YML = here("_brand.yml"))
 
-sysfonts::font_add(
+# Set and Load Fonts -----
+
+font_paths(here("ttf"))
+
+font_add(
   family = "lexend-deca",
-  regular = here::here("ttf", "lexenddeca-regular.ttf"),
-  bold = here::here("ttf", "lexenddeca-bold.ttf"),
+  regular = here("ttf", "lexenddeca-regular.ttf"),
+  bold = here("ttf", "lexenddeca-bold.ttf"),
   symbol = NULL
 )
 
-sysfonts::font_add(
+font_add(
   family = "lexend-exa",
-  regular = here::here("ttf", "lexendexa-regular.ttf"),
-  bold = here::here("ttf", "lexendexa-bold.ttf"),
+  regular = here("ttf", "lexendexa-regular.ttf"),
+  bold = here("ttf", "lexendexa-bold.ttf"),
   symbol = NULL
 )
 
-sysfonts::font_add(
+font_add(
   family = "roboto-mono",
-  regular = here::here("ttf", "robotomono-regular.ttf"),
-  bold = here::here("ttf", "robotomono-bold.ttf"),
-  italic = here::here("ttf", "robotomono-italic.ttf"),
-  bolditalic = here::here("ttf", "robotomono-bolditalic.ttf"),
+  regular = here("ttf", "robotomono-regular.ttf"),
+  bold = here("ttf", "robotomono-bold.ttf"),
+  italic = here("ttf", "robotomono-italic.ttf"),
+  bolditalic = here("ttf", "robotomono-bolditalic.ttf"),
   symbol = NULL
 )
 
-showtext::showtext_auto()
+showtext_auto()
 
-# Set `ggplot2` theme -----
+# Set `ggplot2` Theme -----
 
-ggplot2::theme_set(
-  # ggplot2::theme(
-  #   text = ggplot2::element_text(
+theme_set(
+  # theme(
+  #   text = element_text(
   #     color = "black",
   #     family = "lexend-deca",
   #     face = "plain"

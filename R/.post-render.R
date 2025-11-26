@@ -1,58 +1,62 @@
-# library(beepr)
-# library(cffr)
-# library(codemetar)
-# library(fs)
-# library(groomr) # https://github.com/danielvartan/groomr
-# library(here)
-# library(readr)
-# library(rutils) # https://github.com/danielvartan/rutils
+# Load Packages -----
 
-# Remove empty lines from `README.md` -----
+library(beepr)
+library(cffr)
+library(checkmate)
+library(codemetar)
+library(fs)
+library(groomr) # github.com/danielvartan/groomr
+library(here)
+library(readr)
+library(rutils) # github.com/danielvartan/rutils
+library(stringr)
 
-here::here("README.md") |> groomr::remove_blank_line_dups()
+# Remove Empty Lines from `README.md` -----
 
-# Fix image links in `README.md` -----
+remove_blank_line_dups(here("README.md"))
 
-readme_files_dir <- here::here("README_files")
-readme_image_dir <- fs::path(readme_files_dir, "figure-commonmark")
-pkg_image_dir <- here::here("man", "figures")
+# Fix Image Links in `README.md` -----
 
-if (checkmate::test_directory_exists(readme_files_dir)) {
-  if (checkmate::test_directory_exists(readme_image_dir)) {
-    fs::dir_map(
+readme_files_dir <- here("README_files")
+readme_image_dir <- path(readme_files_dir, "figure-commonmark")
+pkg_image_dir <- here("man", "figures")
+
+if (test_directory_exists(readme_files_dir)) {
+  if (test_directory_exists(readme_image_dir)) {
+    dir_map(
       path = readme_image_dir,
-      \(x) fs::file_move(x, fs::path(pkg_image_dir, basename(x)))
+      \(x) file_move(x, path(pkg_image_dir, basename(x)))
     )
   }
 
-  fs::dir_delete(readme_files_dir)
+  dir_delete(readme_files_dir)
 }
 
-file <- here::here("README.md")
+file <- here("README.md")
 
 file |>
-  readr::read_lines() |>
-  stringr::str_replace_all(
+  read_lines() |>
+  str_replace_all(
     pattern = "README_files/figure-commonmark/",
     replacement = "man/figures/"
   ) |>
-  readr::write_lines(file)
+  write_lines(file)
 
-# Update package versions in `DESCRIPTION` -----
+# Update Package Versions in `DESCRIPTION` -----
 
-rutils::update_pkg_versions()
+update_pkg_versions()
 
-# Update package year in `LICENSE`, `LICENSE.md`, and `inst/CITATION` -----
+# Update Package Year in `inst/CITATION` -----
 
-rutils::update_pkg_year()
+update_pkg_year(c(here("inst", "CITATION")))
 
 # Update `cffr` and `codemeta` -----
 
-cffr::cff_write()
-codemetar::write_codemeta()
+cff_write()
+write_codemeta()
 
-# Check if the script ran successfully -----
+# Check If the Script Ran Successfully -----
 
-beepr::beep(1)
+beep(1)
 
 Sys.sleep(3)

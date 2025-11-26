@@ -7,7 +7,7 @@
   "relatedLink": "https://danielvartan.github.io/actverse/",
   "codeRepository": "https://github.com/danielvartan/actverse/",
   "issueTracker": "https://github.com/danielvartan/actverse/issues/",
-  "license": "https://spdx.org/licenses/MIT",
+  "license": "https://spdx.org/licenses/GPL-3.0",
   "version": "0.1.0.9000",
   "programmingLanguage": {
     "@type": "ComputerLanguage",
@@ -496,7 +496,7 @@
     },
     "SystemRequirements": null
   },
-  "fileSize": "1729.169KB",
+  "fileSize": "1730.124KB",
   "citation": [
     {
       "@type": "CreativeWork",

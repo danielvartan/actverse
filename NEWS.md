@@ -7,6 +7,8 @@
 - `state_prop()` now has a default value of `c(1, 2)` for `state_values`, which considers both *sleeping* and *resting* states (for Condor Instruments actigraphy data) as the target states for calculating the proportion. The previous default was `1`, which only considered the *sleeping* state.
 - `state_prop()` now accepts cases when a specific value in `state_values` is not present in the data.
 - Changed charts typefaces, colors and text casing, for better aesthetics and readability.
+- Changed package license from [MIT](https://opensource.org/license/mit) to [GPLv3](https://www.gnu.org/licenses/gpl-3.0).
+- Updated the Code of Conduct to [Contributor Covenant 3.0](https://www.contributor-covenant.org/version/3/0/code_of_conduct/).
 - Updated documentation and examples to reflect the changes in function arguments and behavior.
 - Update package dependencies to their latest versions.
 
