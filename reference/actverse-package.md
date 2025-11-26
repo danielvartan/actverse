@@ -1,7 +1,9 @@
-# actverse: A Tidyverse-Style Toolbox for Actigraphy Data Analysis
+# actverse: Process, Visualize, and Analyze Actigraphy Data
 
 A comprehensive toolkit to process, analyze and visualize actigraphy
-data.
+data. Designed to support sleep and chronobiology researchers by
+streamlining workflows and enhancing reproducibility in actigraphy
+research.
 
 ## See also
 

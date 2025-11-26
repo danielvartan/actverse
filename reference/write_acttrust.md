@@ -100,7 +100,7 @@ write_acttrust(
 #> ✔ Adapting data [31ms]
 #> 
 #> ℹ Adding header
-#> ✔ Adding header [19ms]
+#> ✔ Adding header [18ms]
 #> 
 #> ℹ Writing data
 #> ✔ Writing data [46ms]

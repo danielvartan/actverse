@@ -81,13 +81,13 @@ Other read/write functions:
 ``` r
 get_raw_data("acttrust.txt") |> read_acttrust()
 #> ℹ Reading data
-#> ✔ Reading data [55ms]
+#> ✔ Reading data [56ms]
 #> 
 #> ℹ Tidying data
-#> ✔ Tidying data [49ms]
+#> ✔ Tidying data [52ms]
 #> 
 #> ℹ Validating data
-#> ✔ Validating data [671ms]
+#> ✔ Validating data [714ms]
 #> 
 #> # A tsibble: 1,441 x 17 [1m] <UTC>
 #>    timestamp             pim   tat   zcm orientation wrist_temperature

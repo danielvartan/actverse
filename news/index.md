@@ -2,6 +2,8 @@
 
 ## actverse (development version)
 
+## actverse 0.2.0
+
 - [`read_acttrust()`](https://danielvartan.github.io/actverse/reference/read_acttrust.md)
   has been updated to handle special characters in the input files more
   robustly. It now reads the file content, removes any special
@@ -40,6 +42,7 @@
   aesthetics and readability.
 - Changed package license from [MIT](https://opensource.org/license/mit)
   to [GPLv3](https://www.gnu.org/licenses/gpl-3.0).
+- Changed hex logo, removing the package name from the images.
 - Updated the Code of Conduct to [Contributor Covenant
   3.0](https://www.contributor-covenant.org/version/3/0/code_of_conduct/).
 - Updated documentation and examples to reflect the changes in function

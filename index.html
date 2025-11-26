@@ -5,7 +5,7 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<title>A Tidyverse-Style Toolbox for Actigraphy Data Analysis • actverse</title>
+<title>Process, Visualize, and Analyze Actigraphy Data • actverse</title>
 <!-- favicons --><link rel="icon" type="image/png" sizes="96x96" href="favicon-96x96.png">
 <link rel="icon" type="”image/svg+xml”" href="favicon.svg">
 <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
@@ -23,9 +23,9 @@
 <link href="deps/Roboto_Mono-0.4.10/font.css" rel="stylesheet">
 <link href="deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
 <link href="deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
-<script src="deps/headroom-0.11.0/headroom.min.js"></script><script src="deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="deps/search-1.0.0/fuse.min.js"></script><script src="deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="pkgdown.js"></script><meta property="og:title" content="A Tidyverse-Style Toolbox for Actigraphy Data Analysis">
-<meta name="description" content="A comprehensive toolkit to process, analyze and visualize actigraphy data.">
-<meta property="og:description" content="A comprehensive toolkit to process, analyze and visualize actigraphy data.">
+<script src="deps/headroom-0.11.0/headroom.min.js"></script><script src="deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="deps/search-1.0.0/fuse.min.js"></script><script src="deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="pkgdown.js"></script><meta property="og:title" content="Process, Visualize, and Analyze Actigraphy Data">
+<meta name="description" content="A comprehensive toolkit to process, analyze and visualize actigraphy data. Designed to support sleep and chronobiology researchers by streamlining workflows and enhancing reproducibility in actigraphy research.">
+<meta property="og:description" content="A comprehensive toolkit to process, analyze and visualize actigraphy data. Designed to support sleep and chronobiology researchers by streamlining workflows and enhancing reproducibility in actigraphy research.">
 <meta property="og:image" content="https://danielvartan.github.io/actverse/reference/figures/og-image.svg">
 <meta property="og:image:alt" content="{actverse}">
 </head>
@@ -37,7 +37,7 @@
 
     <a class="navbar-brand me-2" href="index.html">actverse</a>
 
-    <small class="nav-text text-warning me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Unreleased version">0.1.0.9000</small>
+    <small class="nav-text text-warning me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Unreleased version">0.2.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -341,21 +341,20 @@
 </h2>
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/citation.html" class="external-link">citation</a></span><span class="op">(</span><span class="st">"actverse"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; To cite {actverse} in publications use:</span></span>
+<span><span class="co">#&gt; To cite actverse in publications use:</span></span>
 <span><span class="co">#&gt;</span></span>
 <span><span class="co">#&gt;   Vartanian, D., Matias, V. A., Serrano, C. A. M., &amp; Benedito-Silva,</span></span>
-<span><span class="co">#&gt;   A. A. (2025). {actverse}: A Tidyverse-style toolbox for actigraphy</span></span>
-<span><span class="co">#&gt;   data analysis [Computer software, R package].</span></span>
-<span><span class="co">#&gt;   https://danielvartan.github.io/actverse/</span></span>
+<span><span class="co">#&gt;   A. A. (2025). actverse: An R package for actigraphy data analysis</span></span>
+<span><span class="co">#&gt;   [Computer software]. https://danielvartan.github.io/actverse</span></span>
 <span><span class="co">#&gt;</span></span>
 <span><span class="co">#&gt; A BibTeX entry for LaTeX users is</span></span>
 <span><span class="co">#&gt;</span></span>
 <span><span class="co">#&gt;   @Misc{,</span></span>
-<span><span class="co">#&gt;     title = {{actverse}: A Tidyverse-style toolbox for actigraphy data analysis},</span></span>
+<span><span class="co">#&gt;     title = {actverse: An R package for actigraphy data analysis},</span></span>
 <span><span class="co">#&gt;     author = {Daniel Vartanian and Vinicius Alves Matias and Cassio Almeida Mattos Serrano and Ana Amélia Benedito-Silva},</span></span>
 <span><span class="co">#&gt;     year = {2025},</span></span>
-<span><span class="co">#&gt;     url = {https://danielvartan.github.io/actverse/},</span></span>
-<span><span class="co">#&gt;     note = {R package},</span></span>
+<span><span class="co">#&gt;     url = {https://danielvartan.github.io/actverse},</span></span>
+<span><span class="co">#&gt;     note = {Computer software},</span></span>
 <span><span class="co">#&gt;   }</span></span></code></pre></div>
 </div>
 <div class="section level2">
