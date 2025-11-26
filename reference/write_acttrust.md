@@ -97,13 +97,13 @@ write_acttrust(
   header = get_raw_data("acttrust.txt")
 )
 #> ℹ Adapting data
-#> ✔ Adapting data [34ms]
+#> ✔ Adapting data [31ms]
 #> 
 #> ℹ Adding header
-#> ✔ Adding header [19ms]
+#> ✔ Adding header [17ms]
 #> 
 #> ℹ Writing data
-#> ✔ Writing data [47ms]
+#> ✔ Writing data [45ms]
 #> 
 
 readr::read_lines(file, n_max = 30)

@@ -89,10 +89,10 @@ if (has_internet()) {
   state_prop_data |>
     mutate(per = prop * 100) |>
     ggplot(ggplot2::aes(x = time, y = per)) +
-    geom_smooth(color = "#FC2913") +
+    geom_smooth(color = "#FF0000") +
     labs(
-      x = "Time of day (Hour)",
-      y = "Percentage of time asleep (%)",
+      x = "Time of Day (Hour)",
+      y = "Percentage of Time Asleep (%)",
     ) +
     scale_x_time(
       breaks = breaks_width("6 hours"),
@@ -102,17 +102,17 @@ if (has_internet()) {
     actverse:::get_actverse_theme()
 }
 #> ℹ Reading data
-#> ✔ Reading data [231ms]
+#> ✔ Reading data [241ms]
 #> 
 #> ℹ Tidying data
-#> ✔ Tidying data [373ms]
+#> ✔ Tidying data [339ms]
 #> 
 #> ℹ Validating data
 #> ℹ Found 2 gap in the time series: 2021-04-26 03:14:00/2021-04-26 03:14:00 and 2021-05-01 17:34:00/2021-05-01 17:34:00 (showing up to a total of 5 values).
 #> ℹ Validating data
 #> ℹ Found 21 offwrist blocks in the time series. All values were set as NA.
 #> ℹ Validating data
-#> ✔ Validating data [18.3s]
+#> ✔ Validating data [18.6s]
 #> 
 #> # A tsibble: 1,440 x 3 [1m]
 #>    time   state       prop

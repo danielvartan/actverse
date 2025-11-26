@@ -198,9 +198,9 @@ and delayed circadian and sleep/wake timing. <em>Scientific Reports</em>, <em>7<
 <span class="r-in"><span></span></span>
 <span class="r-in"><span>  <span class="va">sri_data</span> <span class="op">|&gt;</span></span></span>
 <span class="r-in"><span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">time</span>, y <span class="op">=</span> <span class="va">sri</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span></span>
-<span class="r-in"><span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_smooth.html" class="external-link">geom_smooth</a></span><span class="op">(</span>color <span class="op">=</span> <span class="st">"#FC2913"</span><span class="op">)</span> <span class="op">+</span></span></span>
+<span class="r-in"><span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_smooth.html" class="external-link">geom_smooth</a></span><span class="op">(</span>color <span class="op">=</span> <span class="st">"#FF0000"</span><span class="op">)</span> <span class="op">+</span></span></span>
 <span class="r-in"><span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span></span></span>
-<span class="r-in"><span>      x <span class="op">=</span> <span class="st">"Time of day (Hour)"</span>,</span></span>
+<span class="r-in"><span>      x <span class="op">=</span> <span class="st">"Time of Day (Hour)"</span>,</span></span>
 <span class="r-in"><span>      y <span class="op">=</span> <span class="st">"Sleep Regularity Index (SRI)"</span></span></span>
 <span class="r-in"><span>    <span class="op">)</span> <span class="op">+</span></span></span>
 <span class="r-in"><span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_date.html" class="external-link">scale_x_time</a></span><span class="op">(</span></span></span>
@@ -211,7 +211,7 @@ and delayed circadian and sleep/wake timing. <em>Scientific Reports</em>, <em>7<
 <span class="r-in"><span>    <span class="fu">actverse</span><span class="fu">:::</span><span class="fu">get_actverse_theme</span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">}</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Reading data</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Reading data <span style="color: #B2B2B2;">[247ms]</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Reading data <span style="color: #B2B2B2;">[246ms]</span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Tidying data</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Tidying data <span style="color: #B2B2B2;">[338ms]</span></span>
@@ -221,7 +221,7 @@ and delayed circadian and sleep/wake timing. <em>Scientific Reports</em>, <em>7<
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Validating data</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Found <span style="color: #BB0000; font-weight: bold;">21</span> offwrist blocks in the time series. All values were set as <span style="font-weight: bold;">NA</span>.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Validating data</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Validating data <span style="color: #B2B2B2;">[17.7s]</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Validating data <span style="color: #B2B2B2;">[18.1s]</span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tsibble: 1,440 x 6 [1m]</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    time   state      previous_state agreement    sri valid_data</span>

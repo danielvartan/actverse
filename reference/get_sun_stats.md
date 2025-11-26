@@ -188,7 +188,7 @@ get_sun_stats(
   method = "suncalc"
 )
 #> $date
-#> [1] "2025-11-22"
+#> [1] "2025-11-26"
 #> 
 #> $latitude
 #> [1] -23.5489
@@ -200,46 +200,46 @@ get_sun_stats(
 #> [1] "America/Sao_Paulo"
 #> 
 #> $sunrise_start
-#> 05:13:24
+#> 05:12:58
 #> 
 #> $sunrise_end
-#> 05:15:55
+#> 05:15:29
 #> 
 #> $golden_hour_end
-#> 05:45:20
+#> 05:45:05
 #> 
 #> $solar_noon
-#> 11:54:12
+#> 11:55:24
 #> 
 #> $golden_hour_start
-#> 18:03:04
+#> 18:05:43
 #> 
 #> $sunset_start
-#> 18:32:29
+#> 18:35:18
 #> 
 #> $sunset_end
-#> 18:35:00
+#> 18:37:50
 #> 
 #> $dusk
-#> 18:59:38
+#> 19:02:39
 #> 
 #> $nautical_dusk
-#> 19:28:58
+#> 19:32:13
 #> 
 #> $night_start
-#> 19:59:20
+#> 20:02:55
 #> 
 #> $nadir
-#> 23:54:12
+#> 23:55:24
 #> 
 #> $night_end
-#> 03:49:04
+#> 03:47:52
 #> 
 #> $nautical_dawn
-#> 04:19:26
+#> 04:18:34
 #> 
 #> $dawn
-#> 04:48:46
+#> 04:48:09
 #> 
 
 library(curl)
@@ -254,7 +254,7 @@ if (has_internet()) {
   )
 }
 #> $date
-#> [1] "2025-11-22"
+#> [1] "2025-11-26"
 #> 
 #> $latitude
 #> [1] -23.5489
@@ -266,7 +266,7 @@ if (has_internet()) {
 #> [1] "America/Sao_Paulo"
 #> 
 #> $sunrise_start
-#> 05:04:03
+#> 05:03:36
 #> 
 #> $sunrise_end
 #> NA
@@ -275,7 +275,7 @@ if (has_internet()) {
 #> NA
 #> 
 #> $solar_noon
-#> 11:46:18
+#> 11:47:29
 #> 
 #> $golden_hour_start
 #> NA
@@ -284,27 +284,27 @@ if (has_internet()) {
 #> NA
 #> 
 #> $sunset_end
-#> 18:28:33
+#> 18:31:22
 #> 
 #> $dusk
-#> 18:51:56
+#> 18:54:55
 #> 
 #> $nautical_dusk
-#> 19:21:17
+#> 19:24:31
 #> 
 #> $night_start
-#> 19:51:42
+#> 19:55:15
 #> 
 #> $nadir
 #> NA
 #> 
 #> $night_end
-#> 03:40:54
+#> 03:39:44
 #> 
 #> $nautical_dawn
-#> 04:11:19
+#> 04:10:27
 #> 
 #> $dawn
-#> 04:40:40
+#> 04:40:03
 #> 
 ```

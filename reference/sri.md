@@ -170,9 +170,9 @@ if (has_internet()) {
 
   sri_data |>
     ggplot(ggplot2::aes(x = time, y = sri)) +
-    geom_smooth(color = "#FC2913") +
+    geom_smooth(color = "#FF0000") +
     labs(
-      x = "Time of day (Hour)",
+      x = "Time of Day (Hour)",
       y = "Sleep Regularity Index (SRI)"
     ) +
     scale_x_time(
@@ -183,7 +183,7 @@ if (has_internet()) {
     actverse:::get_actverse_theme()
 }
 #> ℹ Reading data
-#> ✔ Reading data [247ms]
+#> ✔ Reading data [246ms]
 #> 
 #> ℹ Tidying data
 #> ✔ Tidying data [338ms]
@@ -193,7 +193,7 @@ if (has_internet()) {
 #> ℹ Validating data
 #> ℹ Found 21 offwrist blocks in the time series. All values were set as NA.
 #> ℹ Validating data
-#> ✔ Validating data [17.7s]
+#> ✔ Validating data [18.1s]
 #> 
 #> # A tsibble: 1,440 x 6 [1m]
 #>    time   state      previous_state agreement    sri valid_data

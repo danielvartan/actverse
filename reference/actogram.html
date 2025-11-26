@@ -289,12 +289,12 @@ Click
 to see the <code>ggplot2</code> color reference.</p>
 <p>Example (default setting):</p>
 <p></p><div class="sourceCode r"><pre><code><span><span class="va">colors</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
-<span>  <span class="st">"1"</span> <span class="op">=</span> <span class="st">"#410085"</span>,</span>
-<span>  <span class="st">"2"</span> <span class="op">=</span> <span class="st">"#FFB426"</span>,</span>
-<span>  <span class="st">"4"</span> <span class="op">=</span> <span class="st">"#FC2913"</span>,</span>
-<span>  <span class="st">"base"</span> <span class="op">=</span> <span class="st">"#000040"</span>,</span>
+<span>  <span class="st">"1"</span> <span class="op">=</span> <span class="st">"#0000FF"</span>,</span>
+<span>  <span class="st">"2"</span> <span class="op">=</span> <span class="st">"#FFFF00"</span>,</span>
+<span>  <span class="st">"4"</span> <span class="op">=</span> <span class="st">"#FF0000"</span>,</span>
+<span>  <span class="st">"base"</span> <span class="op">=</span> <span class="st">"#000000"</span>,</span>
 <span>  <span class="st">"lp"</span> <span class="op">=</span> <span class="st">"#FFFFFF"</span>,</span>
-<span>  <span class="st">"dp"</span> <span class="op">=</span> <span class="st">"#DBD7D3"</span></span>
+<span>  <span class="st">"dp"</span> <span class="op">=</span> <span class="st">"#D7D7D7"</span></span>
 <span><span class="op">)</span></span></code></pre><p></p></div>
 </div>
 
@@ -322,33 +322,57 @@ to see the <code>ggplot2</code> color reference.</p>
 <span class="r-in"><span>      <span class="co"># orbis::get_brazil_state_latitude("sp")</span></span></span>
 <span class="r-in"><span>      latitude <span class="op">=</span> <span class="op">-</span><span class="fl">23.55065</span>,</span></span>
 <span class="r-in"><span>      <span class="co"># orbis::get_brazil_state_longitude("sp"),</span></span></span>
-<span class="r-in"><span>      longitude <span class="op">=</span> <span class="op">-</span><span class="fl">46.63338</span>,</span></span>
-<span class="r-in"><span>      double_plot <span class="op">=</span> <span class="cn">TRUE</span></span></span>
+<span class="r-in"><span>      longitude <span class="op">=</span> <span class="op">-</span><span class="fl">46.63338</span></span></span>
 <span class="r-in"><span>    <span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">}</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Downloading metadata</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Downloading metadata <span style="color: #B2B2B2;">[730ms]</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Downloading metadata <span style="color: #B2B2B2;">[807ms]</span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Downloading file</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Downloading file <span style="color: #B2B2B2;">[8ms]</span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Checking file integrity</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Checking file integrity <span style="color: #B2B2B2;">[17ms]</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Checking file integrity <span style="color: #B2B2B2;">[16ms]</span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Reading data</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Reading data <span style="color: #B2B2B2;">[377ms]</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Reading data <span style="color: #B2B2B2;">[379ms]</span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Tidying data</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Tidying data <span style="color: #B2B2B2;">[504ms]</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Tidying data <span style="color: #B2B2B2;">[593ms]</span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Validating data</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Found <span style="color: #BB0000; font-weight: bold;">2</span> gap in the time series: 2021-04-26 03:14:00/2021-04-26 03:14:00 and 2021-05-01 17:34:00/2021-05-01 17:34:00 (showing up to a total of 5 values).</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Validating data</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Found <span style="color: #BB0000; font-weight: bold;">21</span> offwrist blocks in the time series. All values were set as <span style="font-weight: bold;">NA</span>.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Validating data</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Validating data <span style="color: #B2B2B2;">[17.2s]</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Validating data <span style="color: #B2B2B2;">[16s]</span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-plt img"><img src="actogram-1.png" alt="" width="700" height="433"></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://jeroen.r-universe.dev/curl/reference/nslookup.html" class="external-link">has_internet</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span>  <span class="va">data</span> <span class="op">|&gt;</span></span></span>
+<span class="r-in"><span>    <span class="fu">actogram</span><span class="op">(</span></span></span>
+<span class="r-in"><span>      col <span class="op">=</span> <span class="st">"pim"</span>,</span></span>
+<span class="r-in"><span>      days <span class="op">=</span> <span class="fl">7</span>,</span></span>
+<span class="r-in"><span>      <span class="co"># github.com/danielvartan/orbis</span></span></span>
+<span class="r-in"><span>      <span class="co"># orbis::get_brazil_state_latitude("sp")</span></span></span>
+<span class="r-in"><span>      latitude <span class="op">=</span> <span class="op">-</span><span class="fl">23.55065</span>,</span></span>
+<span class="r-in"><span>      <span class="co"># orbis::get_brazil_state_longitude("sp"),</span></span></span>
+<span class="r-in"><span>      longitude <span class="op">=</span> <span class="op">-</span><span class="fl">46.63338</span>,</span></span>
+<span class="r-in"><span>      locale <span class="op">=</span> <span class="st">"pt_BR.UTF-8"</span>,</span></span>
+<span class="r-in"><span>      x_label <span class="op">=</span> <span class="st">"2 Dias — Horas"</span>,</span></span>
+<span class="r-in"><span>      y_label <span class="op">=</span> <span class="st">"Dias"</span>,</span></span>
+<span class="r-in"><span>      labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>        <span class="st">"1"</span> <span class="op">=</span> <span class="st">"Sono"</span>,</span></span>
+<span class="r-in"><span>        <span class="st">"2"</span> <span class="op">=</span> <span class="st">"Despertar"</span>,</span></span>
+<span class="r-in"><span>        <span class="st">"4"</span> <span class="op">=</span> <span class="st">"Offwrist"</span>,</span></span>
+<span class="r-in"><span>        <span class="st">"base"</span> <span class="op">=</span> <span class="st">"Atividade (PIM)"</span>,</span></span>
+<span class="r-in"><span>        <span class="st">"lp"</span> <span class="op">=</span> <span class="st">"Fase Clara"</span>,</span></span>
+<span class="r-in"><span>        <span class="st">"dp"</span> <span class="op">=</span> <span class="st">"Fase Escura"</span></span></span>
+<span class="r-in"><span>      <span class="op">)</span></span></span>
+<span class="r-in"><span>    <span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
+<span class="r-plt img"><img src="actogram-2.png" alt="" width="700" height="433"></span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>

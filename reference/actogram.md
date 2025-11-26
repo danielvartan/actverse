@@ -237,12 +237,12 @@ to see the `ggplot2` color reference.
 Example (default setting):
 
     colors = c(
-      "1" = "#410085",
-      "2" = "#FFB426",
-      "4" = "#FC2913",
-      "base" = "#000040",
+      "1" = "#0000FF",
+      "2" = "#FFFF00",
+      "4" = "#FF0000",
+      "base" = "#000000",
       "lp" = "#FFFFFF",
-      "dp" = "#DBD7D3"
+      "dp" = "#D7D7D7"
     )
 
 ## Examples
@@ -268,30 +268,54 @@ if (has_internet()) {
       # orbis::get_brazil_state_latitude("sp")
       latitude = -23.55065,
       # orbis::get_brazil_state_longitude("sp"),
-      longitude = -46.63338,
-      double_plot = TRUE
+      longitude = -46.63338
     )
 }
 #> ℹ Downloading metadata
-#> ✔ Downloading metadata [730ms]
+#> ✔ Downloading metadata [807ms]
 #> 
 #> ℹ Downloading file
 #> ✔ Downloading file [8ms]
 #> 
 #> ℹ Checking file integrity
-#> ✔ Checking file integrity [17ms]
+#> ✔ Checking file integrity [16ms]
 #> 
 #> ℹ Reading data
-#> ✔ Reading data [377ms]
+#> ✔ Reading data [379ms]
 #> 
 #> ℹ Tidying data
-#> ✔ Tidying data [504ms]
+#> ✔ Tidying data [593ms]
 #> 
 #> ℹ Validating data
 #> ℹ Found 2 gap in the time series: 2021-04-26 03:14:00/2021-04-26 03:14:00 and 2021-05-01 17:34:00/2021-05-01 17:34:00 (showing up to a total of 5 values).
 #> ℹ Validating data
 #> ℹ Found 21 offwrist blocks in the time series. All values were set as NA.
 #> ℹ Validating data
-#> ✔ Validating data [17.2s]
+#> ✔ Validating data [16s]
 #> 
+
+
+if (has_internet()) {
+  data |>
+    actogram(
+      col = "pim",
+      days = 7,
+      # github.com/danielvartan/orbis
+      # orbis::get_brazil_state_latitude("sp")
+      latitude = -23.55065,
+      # orbis::get_brazil_state_longitude("sp"),
+      longitude = -46.63338,
+      locale = "pt_BR.UTF-8",
+      x_label = "2 Dias — Horas",
+      y_label = "Dias",
+      labels = c(
+        "1" = "Sono",
+        "2" = "Despertar",
+        "4" = "Offwrist",
+        "base" = "Atividade (PIM)",
+        "lp" = "Fase Clara",
+        "dp" = "Fase Escura"
+      )
+    )
+}
 ```

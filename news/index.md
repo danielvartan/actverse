@@ -36,6 +36,11 @@
 - [`state_prop()`](https://danielvartan.github.io/actverse/reference/state_prop.md)
   now accepts cases when a specific value in `state_values` is not
   present in the data.
+- Changed charts typefaces, colors and text casing, for better
+  aesthetics and readability.
+- Updated documentation and examples to reflect the changes in function
+  arguments and behavior.
+- Update package dependencies to their latest versions.
 
 ## actverse 0.1.0
 
