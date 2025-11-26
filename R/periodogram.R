@@ -299,7 +299,7 @@ periodogram <- function(
           .$q_p,
           .$q_p_critical,
           alpha,
-          paste0("Period (", p_unit, ")")
+          paste0("Period (", stringr::str_to_title(p_unit), ")")
         )
       )
     ) |>
@@ -524,7 +524,7 @@ plot_periodogram_q_p <- function(
   ggplot2::theme_set(get_actverse_theme())
   withr::defer(ggplot2::theme_set(current_theme))
 
-  q_p_critical_legend <- paste0("Critical value ", "(alpha: ", alpha, ")")
+  q_p_critical_legend <- paste0("Critical Value ", "(Alpha: ", alpha, ")")
 
   out <-
     ggplot2::ggplot(mapping = ggplot2::aes(x = p_seq)) +
@@ -539,7 +539,7 @@ plot_periodogram_q_p <- function(
     ggplot2::scale_colour_manual(
       "",
       breaks = c("Qp", q_p_critical_legend),
-      values = c("#000040", "#FC2913")
+      values = c("#000000", "#FF0000")
     ) +
     ggplot2::labs(x = x_label) +
     ggplot2::theme(

@@ -82,12 +82,12 @@ showtext::showtext_auto()
 # Set `ggplot2` theme -----
 
 ggplot2::theme_set(
-  ggplot2::theme(
-    text = ggplot2::element_text(
-      color = brandr::get_brand_color("black"),
-      family = "lexend-deca",
-      face = "plain"
-    )
-  ) +
+  # ggplot2::theme(
+  #   text = ggplot2::element_text(
+  #     color = "black",
+  #     family = "lexend-deca",
+  #     face = "plain"
+  #   )
+  # ) +
     actverse:::get_actverse_theme()
 )

@@ -198,7 +198,7 @@ spectrogram <- function(
       p_seq = p_seq,
       per_ints = per_ints,
       peaks = peaks,
-      x_label = paste0("Period (", p_unit, ")")
+      x_label = paste0("Period (", stringr::str_to_title(p_unit), ")")
     )
   )
 

@@ -120,9 +120,9 @@ if (has_internet()) {
 
   sri_data |>
     ggplot(ggplot2::aes(x = time, y = sri)) +
-    geom_smooth(color = "#FC2913") +
+    geom_smooth(color = "#FF0000") +
     labs(
-      x = "Time of day (Hour)",
+      x = "Time of Day (Hour)",
       y = "Sleep Regularity Index (SRI)"
     ) +
     scale_x_time(

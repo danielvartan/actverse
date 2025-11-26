@@ -48,6 +48,8 @@ The package is built on [tidyverse principles](https://tidyverse.tidyverse.org/a
 
 > If you find this project useful, please consider giving it a star! &nbsp; [![GitHub Repository Stars](https://img.shields.io/github/stars/danielvartan/actverse)](https://github.com/danielvartan/actverse/)
 
+> The continuous development of `actverse` depends on community support. If you find this project useful, and can afford to do so, please consider becoming a sponsor. &nbsp; [![](https://img.shields.io/static/v1?label=Sponsor&message=%E2%9D%A4&logo=GitHub&color=%23fe8e86)](https://github.com/sponsors/danielvartan)
+
 ## Installation
 
 You can install `actverse` using the [`remotes`](https://github.com/r-lib/remotes) package:
@@ -62,6 +64,10 @@ remotes::install_github("danielvartan/actverse")
 The R ecosystem offers a [wide variety](https://cran.r-project.org/view=TimeSeries) of time series standards, and selecting the right one was an important decision in developing `actverse`. A consistent standard for time objects is essential, as [time can be represented in many ways](https://youtu.be/eelVqfm8vVc) and may be based on different numerical systems. For packages that follow [tidyverse principles](https://tidyverse.tidyverse.org/articles/manifesto.html), we believe the [`tsibble`](https://tsibble.tidyverts.org/index.html) package provides the best time series standard. As its name suggests, `tsibble` extends the [tidyverse](https://www.tidyverse.org/) [`tibble`](https://tibble.tidyverse.org/) object for time series data.
 
 Most `actverse` functions require your data to be in the [`tsibble`](https://tsibble.tidyverts.org/index.html) format. Converting your data is straightforward and can significantly improve your experience working with time series in R. Please refer to the [`tsibble`](https://tsibble.tidyverts.org/index.html) documentation for guidance on adapting your data.
+
+```{r}
+library(actverse)
+```
 
 ### Read/Write
 
@@ -119,7 +125,7 @@ sri_data
 library(rutils) # github.com/danielvartan/rutils
 
 sri_data |>
-  rutils:::stats_summary("sri", threshold = NULL) |>
+  stats_summary("sri") |>
   print(n = Inf)
 ```
 
@@ -127,8 +133,8 @@ sri_data |>
 #| label: readme-sri
 #| message: false
 #| warning: false
-#| fig-width: 8
-#| fig-height: 6
+#| fig-width: 7
+#| fig-height: 5.25
 
 library(ggplot2)
 library(scales)
@@ -137,7 +143,7 @@ sri_data |>
   ggplot(ggplot2::aes(x = time, y = sri)) +
   geom_smooth(color = "#FC2913") +
   labs(
-    x = "Time of day (Hour)",
+    x = "Time of Day (Hour)",
     y = "Sleep Regularity Index (SRI)"
   ) +
   scale_x_time(
@@ -159,8 +165,8 @@ Example:
 #| label: readme-periodogram
 #| message: false
 #| warning: false
-#| fig-width: 8
-#| fig-height: 6
+#| fig-width: 7
+#| fig-height: 5.25
 
 data |> periodogram("pim")
 ```
@@ -169,8 +175,8 @@ data |> periodogram("pim")
 #| label: readme-spectrogram
 #| message: false
 #| warning: false
-#| fig-width: 8
-#| fig-height: 6
+#| fig-width: 7
+#| fig-height: 5.25
 
 data |> spectrogram("pim")
 ```
@@ -185,16 +191,15 @@ We strongly recommend using the [`ragg`](https://ragg.r-lib.org/) package as you
 #| label: readme-actogram
 #| message: false
 #| warning: false
-#| fig-width: 12
-#| fig-height: 12
+#| fig-width: 10
+#| fig-height: 10
 
 data |>
   actogram(
     col = "pim",
-    days = -1,
+    days = 18,
     latitude = -23.55065,
-    longitude = -46.63338,
-    double_plot = TRUE
+    longitude = -46.63338
   )
 ```
 
@@ -218,8 +223,8 @@ na_approx(x, index, fill_na_tips = TRUE)
 #| label: readme-na-approx
 #| message: false
 #| warning: false
-#| fig-width: 8
-#| fig-height: 6
+#| fig-width: 7
+#| fig-height: 5.25
 
 na_plot(x, index, na_approx(x, index, fill_na_tips = TRUE))
 ```
@@ -242,7 +247,7 @@ get_sun_stats(
   longitude = -46.6388,
   tz = "America/Sao_Paulo"
 ) |>
-  rutils:::list_as_tibble() |>
+  list_as_tibble() |>
   print(n = Inf)
 ```
 

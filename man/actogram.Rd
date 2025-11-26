@@ -196,12 +196,12 @@ to see the \code{ggplot2} color reference.
 Example (default setting):
 
 \if{html}{\out{<div class="sourceCode r">}}\preformatted{colors = c(
-  "1" = "#410085",
-  "2" = "#FFB426",
-  "4" = "#FC2913",
-  "base" = "#000040",
+  "1" = "#0000FF",
+  "2" = "#FFFF00",
+  "4" = "#FF0000",
+  "base" = "#000000",
   "lp" = "#FFFFFF",
-  "dp" = "#DBD7D3"
+  "dp" = "#D7D7D7"
 )
 }\if{html}{\out{</div>}}
 }
@@ -226,8 +226,31 @@ if (has_internet()) {
       # orbis::get_brazil_state_latitude("sp")
       latitude = -23.55065,
       # orbis::get_brazil_state_longitude("sp"),
+      longitude = -46.63338
+    )
+}
+
+if (has_internet()) {
+  data |>
+    actogram(
+      col = "pim",
+      days = 7,
+      # github.com/danielvartan/orbis
+      # orbis::get_brazil_state_latitude("sp")
+      latitude = -23.55065,
+      # orbis::get_brazil_state_longitude("sp"),
       longitude = -46.63338,
-      double_plot = TRUE
+      locale = "pt_BR.UTF-8",
+      x_label = "2 Dias — Horas",
+      y_label = "Dias",
+      labels = c(
+        "1" = "Sono",
+        "2" = "Despertar",
+        "4" = "Offwrist",
+        "base" = "Atividade (PIM)",
+        "lp" = "Fase Clara",
+        "dp" = "Fase Escura"
+      )
     )
 }
 }

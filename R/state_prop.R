@@ -60,10 +60,10 @@
 #'   state_prop_data |>
 #'     mutate(per = prop * 100) |>
 #'     ggplot(ggplot2::aes(x = time, y = per)) +
-#'     geom_smooth(color = "#FC2913") +
+#'     geom_smooth(color = "#FF0000") +
 #'     labs(
-#'       x = "Time of day (Hour)",
-#'       y = "Percentage of time asleep (%)",
+#'       x = "Time of Day (Hour)",
+#'       y = "Percentage of Time Asleep (%)",
 #'     ) +
 #'     scale_x_time(
 #'       breaks = breaks_width("6 hours"),

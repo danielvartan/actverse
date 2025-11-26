@@ -6,6 +6,9 @@
 - `sri()` now has different default values for `sleeping_states` and `awake_states`. The new defaults are `sleeping_states = c(1, 2)` and `awake_states = 0`. The previous defaults were `sleeping_states = 1` and `awake_states = c(0, 2)`, which considered *resting* states as awake, differing from the way that the index was originally computed.
 - `state_prop()` now has a default value of `c(1, 2)` for `state_values`, which considers both *sleeping* and *resting* states (for Condor Instruments actigraphy data) as the target states for calculating the proportion. The previous default was `1`, which only considered the *sleeping* state.
 - `state_prop()` now accepts cases when a specific value in `state_values` is not present in the data.
+- Changed charts typefaces, colors and text casing, for better aesthetics and readability.
+- Updated documentation and examples to reflect the changes in function arguments and behavior.
+- Update package dependencies to their latest versions.
 
 # actverse 0.1.0
 

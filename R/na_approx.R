@@ -472,17 +472,17 @@ na_plot <- function(x, index, intp = NULL, print = TRUE) {
         colour = "#B8B0A8"
       ) +
       ggplot2::geom_point(
-        ggplot2::aes(y = x, colour = "Original data"),
+        ggplot2::aes(y = x, colour = "Original Data"),
         size = 3
       ) +
       ggplot2::geom_point(
-        ggplot2::aes(y = intp_points, colour = "Interpolated data"),
+        ggplot2::aes(y = intp_points, colour = "Interpolated Data"),
         size = 3
       ) +
       ggplot2::scale_colour_manual(
         "",
-        breaks = c("Original data", "Interpolated data"),
-        values = c("#000040", "#FC2913")
+        breaks = c("Original Data", "Interpolated Data"),
+        values = c("#000000", "#FF0000")
       ) +
       ggplot2::labs(x = "Index") +
       ggplot2::theme(
@@ -495,13 +495,13 @@ na_plot <- function(x, index, intp = NULL, print = TRUE) {
       ggplot2::geom_point(
         ggplot2::aes(
           y = x,
-          colour = "Original points"
+          colour = "Original Points"
         ),
         size = 3
       ) +
       ggplot2::scale_colour_manual(
         "",
-        breaks = c("Original points"),
+        breaks = c("Original Points"),
         values = c("black")
       ) +
       ggplot2::labs(x = "index") +
