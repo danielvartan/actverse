@@ -71,7 +71,7 @@
 #'   proportion of non-missing values in the `agreement` column, i.e., the
 #'   amount of information available to compute the SRI for each time point.
 #'
-#' @template references_e
+#' @template references-e
 #' @family sleep statistics functions
 #' @export
 #'

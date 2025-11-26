@@ -219,7 +219,7 @@
 #'   }
 #' }
 #'
-#' @template references_d
+#' @template references-d
 #' @family datasets
 #'
 #' @source Created by [Daniel Vartanian](https://linktr.ee/danielvartan)

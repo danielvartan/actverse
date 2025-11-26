@@ -182,7 +182,7 @@
 #' - `q_p_plot`: A [`ggplot`][ggplot2::ggplot()] object with a line chart
 #' showing `q_p` (y1) and `q_p_critical` (y2) by `p_seq` (x).
 #'
-#' @template references_a
+#' @template references-a
 #' @family period analysis functions
 #' @export
 #'

@@ -165,7 +165,7 @@
 #' - For `na_plot()`: A [`ggplot`][ggplot2::ggplot()] object with a point and
 #' line chart showing the original data versus the interpolated data.
 #'
-#' @template references_b
+#' @template references-b
 #' @family interpolation functions
 #' @export
 #'
