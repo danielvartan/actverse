@@ -23,7 +23,7 @@
 ## Citation
 
 Source:
-[`inst/CITATION`](https://github.com/danielvartan/actverse/blob/main/inst/CITATION)
+[`inst/CITATION`](https://github.com/danielvartan/actverse/blob/v0.2.0/inst/CITATION)
 
 Vartanian, D., Matias, V. A., Serrano, C. A. M., & Benedito-Silva, A. A.
 (2025). actverse: An R package for actigraphy data analysis \[Computer

@@ -102,17 +102,17 @@ if (has_internet()) {
     actverse:::get_actverse_theme()
 }
 #> ℹ Reading data
-#> ✔ Reading data [215ms]
+#> ✔ Reading data [242ms]
 #> 
 #> ℹ Tidying data
-#> ✔ Tidying data [384ms]
+#> ✔ Tidying data [334ms]
 #> 
 #> ℹ Validating data
 #> ℹ Found 2 gap in the time series: 2021-04-26 03:14:00/2021-04-26 03:14:00 and 2021-05-01 17:34:00/2021-05-01 17:34:00 (showing up to a total of 5 values).
 #> ℹ Validating data
 #> ℹ Found 21 offwrist blocks in the time series. All values were set as NA.
 #> ℹ Validating data
-#> ✔ Validating data [18.7s]
+#> ✔ Validating data [19s]
 #> 
 #> # A tsibble: 1,440 x 3 [1m]
 #>    time   state       prop

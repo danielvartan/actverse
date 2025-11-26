@@ -282,17 +282,17 @@ if (has_internet()) {
   per <- periodogram(data, "pim")
 }
 #> ℹ Reading data
-#> ✔ Reading data [336ms]
+#> ✔ Reading data [334ms]
 #> 
 #> ℹ Tidying data
-#> ✔ Tidying data [339ms]
+#> ✔ Tidying data [338ms]
 #> 
 #> ℹ Validating data
 #> ℹ Found 2 gap in the time series: 2021-04-26 03:14:00/2021-04-26 03:14:00 and 2021-05-01 17:34:00/2021-05-01 17:34:00 (showing up to a total of 5 values).
 #> ℹ Validating data
 #> ℹ Found 21 offwrist blocks in the time series. All values were set as NA.
 #> ℹ Validating data
-#> ✔ Validating data [16s]
+#> ✔ Validating data [16.3s]
 #> 
 #> ! data[[col]] has missing values. Results may diverge.
 #> ■■■■■■■■■■■■■■                    43% | ETA:  1s

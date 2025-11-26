@@ -272,7 +272,7 @@ if (has_internet()) {
     )
 }
 #> ℹ Downloading metadata
-#> ✔ Downloading metadata [663ms]
+#> ✔ Downloading metadata [1.2s]
 #> 
 #> ℹ Downloading file
 #> ✔ Downloading file [7ms]
@@ -281,17 +281,17 @@ if (has_internet()) {
 #> ✔ Checking file integrity [17ms]
 #> 
 #> ℹ Reading data
-#> ✔ Reading data [370ms]
+#> ✔ Reading data [369ms]
 #> 
 #> ℹ Tidying data
-#> ✔ Tidying data [605ms]
+#> ✔ Tidying data [665ms]
 #> 
 #> ℹ Validating data
 #> ℹ Found 2 gap in the time series: 2021-04-26 03:14:00/2021-04-26 03:14:00 and 2021-05-01 17:34:00/2021-05-01 17:34:00 (showing up to a total of 5 values).
 #> ℹ Validating data
 #> ℹ Found 21 offwrist blocks in the time series. All values were set as NA.
 #> ℹ Validating data
-#> ✔ Validating data [16.3s]
+#> ✔ Validating data [16.5s]
 #> 
 
 
