@@ -1,6 +1,6 @@
 Package: actverse
-Title: A Tidyverse-Style Toolbox for Actigraphy Data Analysis
-Version: 0.1.0.9000
+Title: Process, Visualize, and Analyze Actigraphy Data
+Version: 0.2.0
 Authors@R: c(
         person(
             given = "Daniel",
@@ -39,7 +39,9 @@ Authors@R: c(
         )
     )
 Description: A comprehensive toolkit to process, analyze and visualize
-    actigraphy data.
+    actigraphy data. Designed to support sleep and chronobiology researchers
+    by streamlining workflows and enhancing reproducibility in actigraphy
+    research.
 biocViews: Infrastructure, Visualization
 License: GPL (>= 3)
 URL: https://danielvartan.github.io/actverse/,

@@ -7,12 +7,14 @@ cff-version: 1.2.0
 message: 'To cite package "actverse" in publications use:'
 type: software
 license: GPL-3.0-or-later
-title: 'actverse: A Tidyverse-Style Toolbox for Actigraphy Data Analysis'
-version: 0.1.0.9000
+title: 'actverse: Process, Visualize, and Analyze Actigraphy Data'
+version: 0.2.0
 identifiers:
 - type: url
   value: https://github.com/danielvartan/actverse/
 abstract: A comprehensive toolkit to process, analyze and visualize actigraphy data.
+  Designed to support sleep and chronobiology researchers by streamlining workflows
+  and enhancing reproducibility in actigraphy research.
 authors:
 - family-names: Vartanian
   given-names: Daniel
@@ -32,7 +34,7 @@ authors:
   orcid: https://orcid.org/0000-0003-0667-9504
 preferred-citation:
   type: generic
-  title: 'actverse: A Tidyverse-style toolbox for actigraphy data analysis'
+  title: 'actverse: An R package for actigraphy data analysis'
   authors:
   - family-names: Vartanian
     given-names: Daniel
@@ -51,8 +53,8 @@ preferred-citation:
     email: aamelia@usp.br
     orcid: https://orcid.org/0000-0003-0667-9504
   year: '2025'
-  url: https://danielvartan.github.io/actverse/
-  notes: R package
+  url: https://danielvartan.github.io/actverse
+  notes: Computer software
 repository: https://bioconductor.org/
 repository-code: https://github.com/danielvartan/actverse/issues/
 url: https://danielvartan.github.io/actverse/

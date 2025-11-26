@@ -4,9 +4,9 @@
 \name{actverse-package}
 \alias{actverse}
 \alias{actverse-package}
-\title{actverse: A Tidyverse-Style Toolbox for Actigraphy Data Analysis}
+\title{actverse: Process, Visualize, and Analyze Actigraphy Data}
 \description{
-A comprehensive toolkit to process, analyze and visualize actigraphy data.
+A comprehensive toolkit to process, analyze and visualize actigraphy data. Designed to support sleep and chronobiology researchers by streamlining workflows and enhancing reproducibility in actigraphy research.
 }
 \seealso{
 Useful links:

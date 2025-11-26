@@ -342,21 +342,20 @@ file |>
 
 ``` r
 citation("actverse")
-#> To cite {actverse} in publications use:
+#> To cite actverse in publications use:
 #>
 #>   Vartanian, D., Matias, V. A., Serrano, C. A. M., & Benedito-Silva,
-#>   A. A. (2025). {actverse}: A Tidyverse-style toolbox for actigraphy
-#>   data analysis [Computer software, R package].
-#>   https://danielvartan.github.io/actverse/
+#>   A. A. (2025). actverse: An R package for actigraphy data analysis
+#>   [Computer software]. https://danielvartan.github.io/actverse
 #>
 #> A BibTeX entry for LaTeX users is
 #>
 #>   @Misc{,
-#>     title = {{actverse}: A Tidyverse-style toolbox for actigraphy data analysis},
+#>     title = {actverse: An R package for actigraphy data analysis},
 #>     author = {Daniel Vartanian and Vinicius Alves Matias and Cassio Almeida Mattos Serrano and Ana Amélia Benedito-Silva},
 #>     year = {2025},
-#>     url = {https://danielvartan.github.io/actverse/},
-#>     note = {R package},
+#>     url = {https://danielvartan.github.io/actverse},
+#>     note = {Computer software},
 #>   }
 ```
 

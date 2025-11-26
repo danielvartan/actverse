@@ -1,9 +1,9 @@
 utils::bibentry(
-  header = "To cite {actverse} in publications use:",
+  header = "To cite actverse in publications use:",
   bibtype = "Misc",
   title = paste0(
-    "{actverse}:", " ",
-    "A Tidyverse-style toolbox for actigraphy data analysis"
+    "actverse:", " ",
+    "An R package for actigraphy data analysis"
   ),
   author = c(
     utils::person(
@@ -38,19 +38,19 @@ utils::bibentry(
   year = "2025",
   url = paste0(
     "https://danielvartan.github.io/",
-    "actverse/"
+    "actverse"
   ),
-  note = "R package",
+  note = "Computer software",
   textVersion = paste0(
     "Vartanian, D.", ", ",
     "Matias, V. A.", ", ",
     "Serrano, C. A. M.", ", & ",
     "Benedito-Silva, A. A.", " ",
     "(2025)", ". ",
-    "{actverse}:", " ",
-    "A Tidyverse-style toolbox for actigraphy data analysis", " ",
-    "[Computer software, R package]", ". ",
+    "actverse:", " ",
+    "An R package for actigraphy data analysis", " ",
+    "[Computer software]", ". ",
     "https://danielvartan.github.io/",
-    "actverse/"
+    "actverse"
   )
 )

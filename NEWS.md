@@ -1,5 +1,7 @@
 # actverse (development version)
 
+# actverse 0.2.0
+
 - `read_acttrust()` has been updated to handle special characters in the input files more robustly. It now reads the file content, removes any special characters, and then writes it to a temporary file before processing. This ensures that the function can handle files with special characters without errors.
 - `sri()` now has `min_data` as an argument, which specifies the minimum proportion of non-missing values required to compute the SRI for each time point. If the proportion of non-missing values is below this threshold, the SRI will be set to `NA` for that time point. This helps to avoid computing the SRI when there is insufficient data. Note that the first agreement value is always `NA` because there is no previous day for comparison, hence it is not treated as missing data.
 - `sri()` now returns a `valid_data` column, which indicates the proportion of non-missing values in the `agreement` column for each time point. This provides additional information about the data quality used to compute the SRI.

@@ -134,8 +134,8 @@ sri_data |>
 #| label: readme-sri
 #| message: false
 #| warning: false
-#| fig-width: 7
-#| fig-height: 5.25
+#| fig-width: 9
+#| fig-height: 6.75
 
 library(ggplot2)
 library(scales)
@@ -166,8 +166,8 @@ Example:
 #| label: readme-periodogram
 #| message: false
 #| warning: false
-#| fig-width: 7
-#| fig-height: 5.25
+#| fig-width: 9
+#| fig-height: 6.75
 
 data |> periodogram("pim")
 ```
@@ -176,8 +176,8 @@ data |> periodogram("pim")
 #| label: readme-spectrogram
 #| message: false
 #| warning: false
-#| fig-width: 7
-#| fig-height: 5.25
+#| fig-width: 9
+#| fig-height: 6.75
 
 data |> spectrogram("pim")
 ```
@@ -224,8 +224,8 @@ na_approx(x, index, fill_na_tips = TRUE)
 #| label: readme-na-approx
 #| message: false
 #| warning: false
-#| fig-width: 7
-#| fig-height: 5.25
+#| fig-width: 9
+#| fig-height: 6.75
 
 na_plot(x, index, na_approx(x, index, fill_na_tips = TRUE))
 ```
