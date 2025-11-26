@@ -100,10 +100,10 @@ write_acttrust(
 #> ✔ Adapting data [31ms]
 #> 
 #> ℹ Adding header
-#> ✔ Adding header [17ms]
+#> ✔ Adding header [19ms]
 #> 
 #> ℹ Writing data
-#> ✔ Writing data [45ms]
+#> ✔ Writing data [46ms]
 #> 
 
 readr::read_lines(file, n_max = 30)

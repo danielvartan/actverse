@@ -353,13 +353,23 @@ citation("actverse")
 
 ## License
 
-[![](https://img.shields.io/badge/license-MIT-green.svg)](https://choosealicense.com/licenses/mit/)
+[![](https://img.shields.io/badge/license-GPLv3-bd0000.svg)](https://www.gnu.org/licenses/gpl-3.0)
 
-`actverse` code is released under the [MIT
-license](https://opensource.org/license/mit). This means you can use,
-modify, and distribute the code freely, as long as you include the
-original license and copyright notice in any copies or substantial
-portions of the software.
+``` text
+Copyright (C) 2025 Daniel Vartanian
+
+actverse is free software: you can redistribute it and/or modify it under the
+terms of the GNU General Public License as published by the Free Software
+Foundation, either version 3 of the License, or (at your option) any later
+version.
+
+This program is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
+PARTICULAR PURPOSE. See the GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License along with
+this program. If not, see <https://www.gnu.org/licenses/>.
+```
 
 ## Contributing
 
