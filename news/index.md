@@ -4,45 +4,52 @@
 
 ## actverse 0.2.0
 
-- [`read_acttrust()`](https://danielvartan.github.io/actverse/reference/read_acttrust.md)
-  has been updated to handle special characters in the input files more
-  robustly. It now reads the file content, removes any special
-  characters, and then writes it to a temporary file before processing.
-  This ensures that the function can handle files with special
-  characters without errors.
-- [`sri()`](https://danielvartan.github.io/actverse/reference/sri.md)
-  now has `min_data` as an argument, which specifies the minimum
-  proportion of non-missing values required to compute the SRI for each
-  time point. If the proportion of non-missing values is below this
-  threshold, the SRI will be set to `NA` for that time point. This helps
-  to avoid computing the SRI when there is insufficient data. Note that
-  the first agreement value is always `NA` because there is no previous
-  day for comparison, hence it is not treated as missing data.
-- [`sri()`](https://danielvartan.github.io/actverse/reference/sri.md)
-  now returns a `valid_data` column, which indicates the proportion of
-  non-missing values in the `agreement` column for each time point. This
-  provides additional information about the data quality used to compute
-  the SRI.
-- [`sri()`](https://danielvartan.github.io/actverse/reference/sri.md)
-  now has different default values for `sleeping_states` and
-  `awake_states`. The new defaults are `sleeping_states = c(1, 2)` and
-  `awake_states = 0`. The previous defaults were `sleeping_states = 1`
-  and `awake_states = c(0, 2)`, which considered *resting* states as
-  awake, differing from the way that the index was originally computed.
-- [`state_prop()`](https://danielvartan.github.io/actverse/reference/state_prop.md)
-  now has a default value of `c(1, 2)` for `state_values`, which
-  considers both *sleeping* and *resting* states (for Condor Instruments
-  actigraphy data) as the target states for calculating the proportion.
-  The previous default was `1`, which only considered the *sleeping*
-  state.
-- [`state_prop()`](https://danielvartan.github.io/actverse/reference/state_prop.md)
-  now accepts cases when a specific value in `state_values` is not
-  present in the data.
+- Changed
+  [`read_acttrust()`](https://danielvartan.github.io/actverse/reference/read_acttrust.md)
+  to handle special characters in the input files more robustly. It now
+  reads the file content, removes any special characters, and then
+  writes it to a temporary file before processing. This ensures that the
+  function can handle files with special characters without errors.
+- Changed
+  [`sri()`](https://danielvartan.github.io/actverse/reference/sri.md)
+  parameters. Now the function has a `min_data` parameter, which
+  specifies the minimum proportion of non-missing values required to
+  compute the SRI for each time point. If the proportion of non-missing
+  values is below this threshold, the SRI will be set to `NA` for that
+  time point. This helps to avoid computing the SRI when there is
+  insufficient data. Note that the first agreement value is always `NA`
+  because there is no previous day for comparison, hence it is not
+  treated as missing data.
+- Changed
+  [`sri()`](https://danielvartan.github.io/actverse/reference/sri.md)
+  output. Now the function returns a `valid_data` column, which
+  indicates the proportion of non-missing values in the `agreement`
+  column for each time point. This provides additional information about
+  the data quality used to compute the SRI.
+- Changed
+  [`sri()`](https://danielvartan.github.io/actverse/reference/sri.md)
+  default parameter values. Now the function has different default
+  values for `sleeping_states` and `awake_states`. The new defaults are
+  `sleeping_states = c(1, 2)` and `awake_states = 0`. The previous
+  defaults were `sleeping_states = 1` and `awake_states = c(0, 2)`,
+  which considered *resting* states as awake, differing from the way
+  that the index was originally computed.
+- Changed
+  [`state_prop()`](https://danielvartan.github.io/actverse/reference/state_prop.md)
+  default values. Now the function has a default value of `c(1, 2)` for
+  `state_values`, which considers both *sleeping* and *resting* states
+  (for Condor Instruments actigraphy data) as the target states for
+  calculating the proportion. The previous default was `1`, which only
+  considered the *sleeping* state.
+- Changed
+  [`state_prop()`](https://danielvartan.github.io/actverse/reference/state_prop.md)
+  defensive programming. Now the function accepts cases when a specific
+  value in `state_values` is not present in the data.
 - Changed charts typefaces, colors and text casing, for better
   aesthetics and readability.
 - Changed package license from [MIT](https://opensource.org/license/mit)
   to [GPLv3](https://www.gnu.org/licenses/gpl-3.0).
-- Changed hex logo, removing the package name from the images.
+- Changed the Hex logo, removing the package name from the images.
 - Updated the Code of Conduct to [Contributor Covenant
   3.0](https://www.contributor-covenant.org/version/3/0/code_of_conduct/).
 - Updated documentation and examples to reflect the changes in function

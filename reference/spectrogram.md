@@ -144,32 +144,30 @@ if (curl::has_internet()) {
   spec <- spectrogram(data, "pim")
 }
 #> ℹ Reading data
-#> ✔ Reading data [225ms]
+#> ✔ Reading data [215ms]
 #> 
 #> ℹ Tidying data
-#> ✔ Tidying data [381ms]
+#> ✔ Tidying data [339ms]
 #> 
 #> ℹ Validating data
 #> ℹ Found 2 gap in the time series: 2021-04-26 03:14:00/2021-04-26 03:14:00 and 2021-05-01 17:34:00/2021-05-01 17:34:00 (showing up to a total of 5 values).
 #> ℹ Validating data
 #> ℹ Found 21 offwrist blocks in the time series. All values were set as NA.
 #> ℹ Validating data
-#> ✔ Validating data [20s]
+#> ✔ Validating data [18.7s]
 #> 
 #> ! data[[col]] has missing values. Results may diverge.
-#> Computing periodograms ■■                                 3% | ETA: 35s
-#> Computing periodograms ■■■■                               9% | ETA: 35s
-#> Computing periodograms ■■■■■■                            17% | ETA: 31s
-#> Computing periodograms ■■■■■■■■■                         26% | ETA: 28s
-#> Computing periodograms ■■■■■■■■■■■                       33% | ETA: 25s
-#> Computing periodograms ■■■■■■■■■■■■■                     41% | ETA: 22s
-#> Computing periodograms ■■■■■■■■■■■■■■■                   48% | ETA: 20s
-#> Computing periodograms ■■■■■■■■■■■■■■■■■■                57% | ETA: 16s
-#> Computing periodograms ■■■■■■■■■■■■■■■■■■■■■             66% | ETA: 13s
-#> Computing periodograms ■■■■■■■■■■■■■■■■■■■■■■■           74% | ETA: 10s
-#> Computing periodograms ■■■■■■■■■■■■■■■■■■■■■■■■■         81% | ETA:  7s
+#> Computing periodograms ■■                                 3% | ETA: 32s
+#> Computing periodograms ■■■■■                             12% | ETA: 31s
+#> Computing periodograms ■■■■■■■                           21% | ETA: 28s
+#> Computing periodograms ■■■■■■■■■■                        29% | ETA: 25s
+#> Computing periodograms ■■■■■■■■■■■■                      38% | ETA: 22s
+#> Computing periodograms ■■■■■■■■■■■■■■■                   47% | ETA: 19s
+#> Computing periodograms ■■■■■■■■■■■■■■■■■■                57% | ETA: 15s
+#> Computing periodograms ■■■■■■■■■■■■■■■■■■■■■             66% | ETA: 12s
+#> Computing periodograms ■■■■■■■■■■■■■■■■■■■■■■■           72% | ETA: 10s
+#> Computing periodograms ■■■■■■■■■■■■■■■■■■■■■■■■■■        83% | ETA:  6s
 #> Computing periodograms ■■■■■■■■■■■■■■■■■■■■■■■■■■■■      90% | ETA:  4s
-#> Computing periodograms ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■    98% | ETA:  1s
 #> Computing periodograms ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  100% | ETA:  0s
 #> 
 ```
